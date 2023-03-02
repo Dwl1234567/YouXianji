@@ -1,0 +1,453 @@
+.border-view {
+	position: relative;
+	background: #efebeb;
+	margin: 0 27.27rpx;	
+	height: 2rpx;
+}
+.banner-swiper-box {
+	position: relative;
+	width: 100%;
+	.screen-swiper {
+	    min-height: 750rpx;
+	}
+	.page {
+		position: absolute;
+		bottom: 27.27rpx;
+		right: 27.27rpx;
+		padding: 18.18rpx;
+	}
+}
+
+.limited-seckill-box {
+	position: relative;
+	//background-image: url('/static/delect_images/home/sundry/aiu.png');
+	//background-repeat: no-repeat;
+	//background-size: 100% 100%;
+	padding: 18.18rpx 27.27rpx;
+	color: #ffffff;
+	//width: 100%;
+	.text-xxl {
+	    font-size: 80.54rpx;
+	}
+	.cost-price-num {
+	    position: absolute;
+		font-weight: 200;
+		right: 250.99rpx;
+	    top: 30.81rpx;
+	}
+	.cost-price-num.price-6{
+		left: 254.54rpx;
+	}
+	.cost-price-num.price-5 {
+		left: 227.27rpx;
+	}
+	.cost-price-num.price-4 {
+		left: 199.99rpx;
+	}
+	.cost-price-num.price-3 {
+		left: 163.63rpx;	
+	}
+	.cost-price-num.price-2{
+		left: 136.36rpx;
+	}
+	.cost-price-num.price-1{
+		left: 99.99rpx;	
+	}
+	.time-right {
+		position: absolute;
+		right: 27.27rpx;
+		top: 30.36rpx;
+	}
+}
+.view-box {
+	position: relative;
+	padding: 18.18rpx 27.27rpx;
+}
+.title-view-box {
+	position: relative;
+	.title-view{
+		font-size:46rpx;
+		margin-bottom:10rpx;
+	}
+	.cu-tag {
+	    margin-top: -9.09rpx;
+	    margin-right: 9.09rpx;
+	}
+	.title-tip-box {
+		position: relative;
+		padding: 9.09rpx 18.18rpx;
+		width: 100%;
+		.text-cut {
+			padding-right: 27.27rpx;
+		}
+		.icon {
+			position: absolute;
+			right: 18.18rpx;
+			top: 16.36rpx;
+		}
+	}
+}
+.service-view-box {
+	position: relative;
+	.flex {
+		.basis-1 {
+			flex-basis: 10%;
+		}
+		.basis-7 {
+			flex-basis: 70%;
+		}
+		.basis-2 {
+			flex-basis: 20%;
+		}
+	}
+	.tag-view {
+		margin-right: 9.09rpx;
+	}
+	.icon-view {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		.icon {
+			position: absolute;
+			right: 15px;
+		}
+	}
+}
+.baogao-view-box {
+	.flex {
+		.basis-1 {
+			flex-basis: 10%;
+		}
+		.basis-7 {
+			flex-basis: 70%;
+		}
+		.basis-2 {
+			flex-basis: 20%;
+		}
+	}
+	.text-view {
+		margin-left: 9.09rpx;
+	}
+	.icon-view {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		.icon {
+			position: absolute;
+			right: 15px;
+		}
+	}
+}
+.promotion-view-box {
+	.flex {
+		.basis-2 {
+			flex-basis: 20%;
+		}
+		.basis-6 {
+			flex-basis: 60%;
+			text-align:right;
+		}
+		.basis-2 {
+			flex-basis: 20%;
+		}
+	}
+	.text-view {
+		margin-left: 9.09rpx;
+	}
+	.icon-view {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		.icon {
+			position: absolute;
+			right: 15px;
+		}
+	}
+}
+
+.select-view-box {
+	.flex {
+		.basis-1 {
+			flex-basis: 10%;
+		}
+		.basis-9 {
+			flex-basis: 90%;
+		}
+		.basis-8 {
+			flex-basis: 80%;
+		}
+	}
+	.icon {
+	    position: relative;
+	    top: 3.63rpx;	
+	}
+}
+
+.comment-view-box {
+	.view-box {
+		.flex {
+			.basis-1 {
+				flex-basis: 10%;
+			}
+			.basis-9 {
+				flex-basis: 90%;
+			}
+		}
+	}
+}
+
+.goods-info-view-box {
+	.shop-view {
+		position: relative;
+		width: 100%;
+		.cu-avatar {
+		    position: absolute;
+			height: 80rpx;
+			width: 80rpx;
+		}
+		.text-view {
+		    padding-left: 99.99rpx;
+		    padding-right: 145.45rpx;	
+		}
+		.cu-btn {
+		    position: absolute;
+			top: 21.81rpx;
+		    right: 0;
+		}
+	}
+	.live-tag-view {
+		position: relative;
+		width: 100%;
+		.text-view {
+			padding-right: 127.27rpx;
+			.cu-tag {
+			    position: relative;
+			    top: -3.63rpx;	
+			}
+		}
+		.text-right-view {
+			position: absolute;
+			right: 0;
+			top: 3.63rpx;
+		}
+	}
+	.recommend-list-box {
+		.recommend-scroll-box {
+			position: relative;
+			width: 100%;
+			.recommend-scroll {
+				position: relative;
+				height: 363.63rpx;
+				white-space: nowrap;
+				width: 100%;
+				.recommend-scroll-item {
+					display: inline-block;
+					padding-top: 27.27rpx;
+					width: 199.99rpx;
+					padding-right: 18.18rpx;
+					white-space: initial;
+					.cu-avatar{
+						width: 181.81rpx;
+						height: 181.81rpx;
+					}
+				}
+			}
+		}
+	}
+}
+
+.goods-details-box {
+	position: relative;
+	image {
+		width: 100%;
+	}
+}
+
+.goods-help-view-box {
+	.flex {
+		.basis-1 {
+			flex-basis: 10%;
+		}
+		.basis-9 {
+			flex-basis: 90%;
+		}
+	}
+}
+
+.recommend-list-view-box {
+	padding: 18.18rpx 0;
+	.flex {
+		.img-aau {
+			width: 81.81rpx;
+			margin-top: 12.72rpx;
+		}
+		.text-right {
+			.img-aau {
+				margin-right: 14.54rpx;
+			}
+		}
+		.text-left {
+			.img-aau {
+				margin-left: 14.54rpx;
+			}
+		}
+	}
+	.goods-list-box {
+		position: relative;
+		width: 100%;
+		margin: 27.27rpx 0;
+		.col-2 {
+			margin: 0 18.18rpx;
+			.list-itme {
+				padding: 9.09rpx;
+				.list-radius {
+					border-radius: 18.18rpx;
+					.goods-img {
+						position: relative;
+						width: 100%;
+						.cu-avatar {
+							width: 340rpx;
+							height: 340rpx;
+						    border-radius: 18.18rpx 18.18rpx 0 0;	
+						}
+						.mold-view {
+						    position: absolute;
+						    bottom: 0;	
+						}
+					}
+					.view-goods-info {
+						position: relative;
+					    padding: 18.18rpx;
+						.text-lg {
+						    font-size: 36.36rpx;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.footer-fixed {
+	.cu-bar.tabbar.shop .action {
+		color: #333333;
+	}
+}
+
+.bottom-modal-box {
+	.title-bar {
+		position: relative;
+		width: 100%;
+		.close-icon {
+		    position: absolute;
+		    right: 36.36rpx;	
+		}
+	}
+	.modal-content {
+		position: relative;
+		width: 100%;
+		overflow-y: auto;
+		height: calc(100vh - 654.54rpx);
+		padding: 0 29.09rpx 29.09rpx;
+		margin-bottom: 118.18rpx;
+		.view-box {
+			position: relative;
+			width: 100%;
+			padding: 0;
+			text-align: left;
+		}
+		.view-box.service {
+			.text-view {
+				margin-bottom: 18.18rpx;
+			}
+			.text-list-view {
+				position: relative;
+				width: 100%;
+				margin-bottom: 18.18rpx;
+				.text-cut {
+					padding-right: 21rpx;
+				}
+			}
+			.text-list-view + .text-view {
+				margin-top: 36.36rpx;
+			}
+		}
+		.view-box.baogao {
+			.text-view {
+				margin-bottom: 18.18rpx;
+			}
+			.text-list-view {
+				position: relative;
+				width: 100%;
+				margin-bottom: 18.18rpx;
+				.text-cut {
+					padding-right: 21rpx;
+				}
+			}
+			.text-list-view + .text-view {
+				margin-top: 36.36rpx;
+			}
+		}
+		.view-box.promotion {
+			.text-view {
+				margin-bottom: 18.18rpx;
+				.cu-tag {
+					position: relative;
+					top: -3.63rpx;
+				}
+			}
+			.text-list-view {
+				position: relative;
+				width: 100%;
+				margin-bottom: 18.18rpx;
+				.text-cut {
+					padding-right: 218.18rpx;
+				}
+				.text-right-view {
+					position: absolute;
+					right: 0;
+					top: 2rpx;
+				}
+			}
+			.text-list-view + .text-view {
+				margin-top: 36.36rpx;
+			}
+		}
+		.view-box.select {
+			.cu-list.menu-avatar>.cu-item {
+				.content {
+					width: calc(100% - 94.54rpx - 59.99rpx);
+				}
+			}
+			.select-btn-list-boox {
+				.select-item {
+					padding: 18.18rpx 0;
+					border-bottom: 2rpx solid #f3f3f3;
+					.select-btn {
+						position: relative;
+						margin-top: 14.54rpx;
+						width: 100%;
+						.cu-btn {
+							font-size: 23.63rpx;
+							margin: 5rpx 16.36rpx 5rpx 0;
+						}
+						.cu-btn.light {
+						    border: 2rpx solid;	
+						}
+						.cu-btn[disabled] {
+						    color: #aaaaaa;
+						}
+					}
+				}
+			}
+		}
+		.footer-fixed {
+			padding: 9.09rpx 29.09rpx 29.09rpx;
+		}
+	}
+}
+.bottom-modal-box.cu-modal.bottom-modal {
+	.cu-dialog {
+		border-radius: 36.36rpx 36.36rpx 0 0;
+	}
+}

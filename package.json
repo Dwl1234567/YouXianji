@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "vuex-persistedstate": "^4.1.0"
+  },
+  "devDependencies": {
+    "html2canvas": "^1.4.1"
+  }
+}

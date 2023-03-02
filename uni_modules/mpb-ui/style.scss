@@ -1,0 +1,28 @@
+// 引入公共基础类
+@import "./libs/css/base.scss"; //基础
+@import "./libs/css/module.scss";	//模块
+@import "./libs/css/skin.scss";	//皮肤 远程
+@import "./libs/css/iconfont.scss";	//优闲集-阿里图标库 远程
+
+
+@import "./shop/app.scss"; //基础
+
+// 非nvue的样式
+/* #ifndef APP-NVUE */
+//@import "./libs/css/vue.scss";
+/* #endif */
+
+// nvue的特有样式
+/* #ifdef APP-NVUE */
+//@import "./libs/css/nvue.scss";
+/* #endif */
+
+// 小程序特有的样式
+/* #ifdef MP */
+//@import "./libs/css/mp.scss";
+/* #endif */
+
+// H5特有的样式
+/* #ifdef H5 */
+//@import "./libs/css/h5.scss";
+/* #endif */

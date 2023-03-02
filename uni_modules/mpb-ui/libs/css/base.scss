@@ -1,0 +1,178 @@
+.cu-bar.tabbar .action [class*="iconfont"] {
+	width: 100upx;
+	position: relative;
+	display: block;
+	height: auto;
+	margin: 0 auto 10upx;
+	text-align: center;
+	font-size: 40upx;
+}
+.cu-bar .action:first-child>text[class*="iconfont"] {
+	margin-left: -0.3em;
+	margin-right: 0.3em;
+}
+.cu-bar .action>text[class*="iconfont"],
+.cu-bar .action>view[class*="iconfont"] {
+	font-size: 36upx;
+}
+.cu-bar .action>text[class*="iconfont"]+text[class*="iconfont"] {
+	margin-left: 0.5em;
+}
+.cu-bar .search-form [class*="iconfont"] {
+	margin: 0 0.5em 0 0.8em;
+}
+
+.cu-bar .search-form [class*="icon-"]::before {
+	top: 0upx;
+}
+.cu-bar.tabbar .action [class*="icon-"] {
+	width: 100upx;
+	position: relative;
+	display: block;
+	height: auto;
+	margin: 0 auto 10upx;
+	text-align: center;
+	font-size: 40upx;
+}
+.cu-bar.input .action [class*="icon-"] {
+	font-size: 48upx;
+}
+.cu-bar.input .action:first-child [class*="icon-"] {
+	margin-left: 0upx;
+}
+.cu-timeline>.cu-item:not([class*="icon-"])::before {
+	content: "\e763";
+}
+
+.cu-timeline>.cu-item[class*="icon-"]::before {
+	background-color: #ffffff;
+	width: 50upx;
+	height: 50upx;
+	text-align: center;
+	border: none;
+	line-height: 50upx;
+	left: 36upx;
+}
+.cu-form-group>text[class*="icon-"] {
+	font-size: 36upx;
+	padding: 0;
+	box-sizing: border-box;
+}
+.cu-list.grid>.cu-item [class*=icon] {
+	position: relative;
+	display: block;
+	margin-top: 20upx;
+	width: 100%;
+	font-size: 48upx
+}
+.grid.grid-square>view>text[class*="icon-"] {
+	font-size: 52upx;
+	position: absolute;
+	margin: auto;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.cu-steps .cu-item [class*="icon-"]{
+	display: block;
+	font-size: 40upx;
+	line-height: 80upx;
+}
+.cu-tag:empty:not([class*="icon-"]) {
+	padding: 0upx;
+	width: 16upx;
+	height: 16upx;
+	top: -4upx;
+	right: -4upx;
+}
+.cu-tag[class*="icon-"] {
+	width: 32upx;
+	height: 32upx;
+	top: -4upx;
+	right: -4upx;
+}
+.cu-load.load-modal [class*="icon-"] {
+	font-size: 60upx;
+}
+//清浮动
+.cl {
+	zoom: 1;
+}
+.cl:after {
+	clear: both;
+	display: block;
+	visibility: hidden;
+	height: 0;
+	content: '\20';
+}
+.seat-height {
+	width: 100%;
+	// height: calc(var(--status-bar-height) + 101rpx);
+}
+
+
+.nav.z .cu-item {
+	height: 64rpx;
+	line-height: 64rpx;
+	position: relative;
+}
+.nav.z .cu-item.select {
+	font-size: 30rpx;
+	.tab-dot {
+		position: absolute;
+		height: 8rpx;
+		border-radius: 20rpx;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 40rpx;
+		margin: auto;
+	}
+}
+.nav.z .cu-item.nf.select {
+	font-size: inherit;
+}
+.nav.z .cu-item.cur {
+	border-bottom: 0;
+}
+.nav.z .cu-item.select .tab-dot {
+	height: 5.45rpx;	
+}
+
+
+//悬浮球
+.add-btn-view-box {
+	position: fixed;
+	z-index: 999999;
+	bottom: 181.81rpx;
+	right: 27.27rpx;
+	.cu-btn {
+		margin: auto;
+		width: 91.91rpx;
+		height: 91.91rpx;
+		font-weight: 800;
+		border-radius: 50%;
+		font-size: 46.46rpx;
+		border: 9.09rpx solid #fff;
+		box-shadow: 0 0 14.54rpx 7.27rpx #d0d0d0;
+	}
+}
+
+//colorui补丁
+.cu-avatar.xxl {
+	width: 256upx;
+	height: 256upx;
+	font-size: 2.5em;
+}
+.cu-tag.tag_1{margin-left: 10rpx;}
+
+.cu-tag.xl {
+	//font-size: 24upx;
+	padding: 0upx 15upx;
+	height: 58upx;
+}

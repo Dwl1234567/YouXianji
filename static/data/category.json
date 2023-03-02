@@ -1,0 +1,1724 @@
+[{
+		"value": 1,
+		"text": "手机",
+		"checked": false,
+		"children": [{
+				"value": 1,
+				"text": "苹果",
+				"checked": false,
+				"children": [{
+						"value": 1,
+						"text": "iPhone 13",
+						"checked": false,
+						"children": [{
+								"value": 1,
+								"text": "iPhone 13 Pro",
+								"checked": false,
+								"children": [{
+										"value": 0,
+										"text": "无需合约版"
+									},
+									
+									
+									
+									
+									
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 2,
+								"text": "iPhone 13 Pro Max",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 3,
+								"text": "iPhone 13 mini",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 4,
+								"text": "iPhone 13",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"value": 2,
+						"text": "iPhone SE",
+						"checked": false,
+						"children": [{
+								"value": 5,
+								"text": "iPhone SE",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 6,
+								"text": "iPhone SE 3",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 7,
+								"text": "iPhone SE 2",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"value": 3,
+						"text": "iPhone 12",
+						"checked": false,
+						"children": [{
+								"value": 8,
+								"text": "iPhone 12 Pro",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 9,
+								"text": "iPhone 12 Pro Max",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 10,
+								"text": "iPhone 12 mini",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 11,
+								"text": "iPhone 12",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"value": 4,
+						"text": "iPhone 11",
+						"checked": false,
+						"children": [{
+								"value": 12,
+								"text": "iPhone 11",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 13,
+								"text": "iPhone 11 Pro",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							},
+							{
+								"value": 14,
+								"text": "iPhone 11 Pro Max",
+								"checked": false,
+								"children": [{
+										"children": [{
+											"value": 0,
+											"text": "无需合约版"
+										}]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "苍岭绿色"
+											},
+											{
+												"value": 1,
+												"text": "远峰蓝色"
+											},
+											{
+												"value": 2,
+												"text": "石墨色"
+											},
+											{
+												"value": 3,
+												"text": "银色"
+											},
+											{
+												"value": 4,
+												"text": "金色"
+											},
+											{
+												"value": 5,
+												"text": "绿色"
+											},
+											{
+												"value": 6,
+												"text": "粉色"
+											},
+											{
+												"value": 7,
+												"text": "蓝色"
+											},
+											{
+												"value": 8,
+												"text": "午夜色"
+											},
+											{
+												"value": 9,
+												"text": "星光色"
+											},
+											{
+												"value": 10,
+												"text": "红色"
+											},
+											{
+												"value": 11,
+												"text": " 白色"
+											},
+											{
+												"value": 12,
+												"text": " 黑色"
+											},
+											{
+												"value": 13,
+												"text": " 蓝色"
+											},
+											{
+												"value": 14,
+												"text": " 绿色"
+											},
+											{
+												"value": 15,
+												"text": " 紫色"
+											},
+											{
+												"value": 16,
+												"text": " 红色"
+											}
+										]
+									},
+									{
+										"children": [{
+												"value": 0,
+												"text": "128G"
+											},
+											{
+												"value": 1,
+												"text": "256G"
+											},
+											{
+												"value": 2,
+												"text": "512G"
+											},
+											{
+												"value": 3,
+												"text": "1T"
+											},
+											{
+												"value": 4,
+												"text": "64G"
+											},
+											{
+												"value": 5,
+												"text": " 128G"
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"value": 5,
+						"text": "iPhone XS",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 6,
+						"text": "iPhone XR",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 7,
+						"text": "iPhone X",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 8,
+						"text": "iPhone 8",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 9,
+						"text": "iPhone 7",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 10,
+						"text": "iPhone 6S",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 11,
+						"text": "iPhone 6",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 12,
+						"text": "iPhone 5",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 13,
+						"text": "iPhone 4",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 14,
+						"text": "iPhone 3",
+						"checked": false,
+						"children": []
+					}
+				]
+			},
+			{
+				"value": 2,
+				"text": "华为",
+				"checked": false,
+				"children": [{
+						"value": 15,
+						"text": "Mate",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 16,
+						"text": "nova",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 17,
+						"text": "P",
+						"checked": false,
+						"children": []
+					},
+					{
+						"value": 18,
+						"text": "畅享",
+						"checked": false,
+						"children": []
+					}
+				]
+			},
+			{
+				"value": 3,
+				"text": "荣耀",
+				"checked": false,
+				"children": []
+			},
+			{
+				"value": 4,
+				"text": "vivo",
+				"checked": false,
+				"children": []
+			},
+			{
+				"value": 5,
+				"text": "OPPO",
+				"checked": false,
+				"children": []
+			},
+			{
+				"value": 6,
+				"text": "小米",
+				"checked": false,
+				"children": []
+			}
+		]
+	},
+	{
+		"value": 2,
+		"text": "电脑",
+		"checked": false,
+		"children": [{
+				"value": 3,
+				"text": "荣耀",
+				"checked": false,
+				"children": []
+			},
+			{
+				"value": 4,
+				"text": "vivo",
+				"checked": false,
+				"children": []
+			},
+			{
+				"value": 5,
+				"text": "OPPO",
+				"checked": false,
+				"children": []
+			}
+		]
+	},
+	{
+		"value": 3,
+		"text": "平板电脑",
+		"checked": false,
+		"children": []
+	}
+]

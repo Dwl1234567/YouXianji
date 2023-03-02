@@ -1,0 +1,211 @@
+[{
+	"value": "01",
+	"text": "智能手机",
+	"children": [{
+		"value": "0101",
+		"text": "苹果",
+		"children": [{
+			"value": "01011",
+			"text": "iPhone 14",
+			"children": [{
+				"value": "010111",
+				"text": "iPhone 14 Pro Max"
+			}, {
+				"value": "010211",
+				"text": "iPhone 14 Mini"
+			}, {
+				"value": "010311",
+				"text": "iPhone 14"
+			}]
+		}, {
+			"value": "01021",
+			"text": "iPhone 13"
+		}, {
+			"value": "01031",
+			"text": "iPhone 12"
+		}, {
+			"value": "01041",
+			"text": "iPhone 11"
+		}]
+	}, {
+		"value": "0102",
+		"text": "华为",
+		"children": [{
+			"value": "01011",
+			"text": "Mate系列",
+			"children": [{
+				"value": "010111",
+				"text": "Mate 50 Pro"
+			}, {
+				"value": "010211",
+				"text": "Mate 40 Pro 5G版"
+			}, {
+				"value": "010311",
+				"text": "Mate 30 5G版"
+			}, {
+				"value": "010411",
+				"text": "Mate 30 RS保时捷"
+			}]
+		}, {
+			"value": "01021",
+			"text": "nova系列"
+		}, {
+			"value": "01031",
+			"text": "P系列"
+		}, {
+			"value": "01041",
+			"text": "畅想系列"
+		}, {
+			"value": "01051",
+			"text": "麦芒系列"
+		}, {
+			"value": "01061",
+			"text": "C系列"
+		}, {
+			"value": "01071",
+			"text": "G系列"
+		}]
+	}, {
+		"value": "0103",
+		"text": "荣耀"
+	}, {
+		"value": "0104",
+		"text": "小米"
+	}]
+}, {
+	"value": "03",
+	"text": "手提电脑",
+	"children": [{
+		"value": "0301",
+		"text": "消防员防护装备"
+	}, {
+		"value": "0302",
+		"text": "消防枪"
+	}, {
+		"value": "0303",
+		"text": "消防炮"
+	}, {
+		"value": "0304",
+		"text": "消防摩托车"
+	}, {
+		"value": "0305",
+		"text": "消防机器人"
+	}, {
+		"value": "0306",
+		"text": "抢险救援装备"
+	}]
+}, {
+	"value": "04",
+	"text": "平板电脑",
+	"children": [{
+		"value": "0401",
+		"text": "消防水带"
+	}, {
+		"value": "0402",
+		"text": "轻便消防水龙"
+	}, {
+		"value": "0403",
+		"text": "消防软管卷盘"
+	}, {
+		"value": "0404",
+		"text": "消防吸水胶管"
+	}]
+}, {
+	"value": "05",
+	"text": "智能手表",
+	"children": [{
+		"value": "0501",
+		"text": "手提式灭火器"
+	}, {
+		"value": "0502",
+		"text": "推车式灭火器"
+	}, {
+		"value": "0503",
+		"text": "简易式灭火器"
+	}]
+}, {
+	"value": "06",
+	"text": "智能手表",
+	"children": [{
+		"value": "0601",
+		"text": "气体灭火剂"
+	}, {
+		"value": "0602",
+		"text": "泡沫灭火剂"
+	}, {
+		"value": "0603",
+		"text": "干粉灭火剂"
+	}, {
+		"value": "0604",
+		"text": "水系灭火剂"
+	}]
+}, {
+	"value": "07",
+	"text": "智能耳机",
+	"children": [{
+		"value": "0701",
+		"text": "消防泵"
+	}, {
+		"value": "0702",
+		"text": "固定消防给水设备"
+	}, {
+		"value": "0703",
+		"text": "消火栓"
+	}, {
+		"value": "0704",
+		"text": "消防水泵接合器"
+	}, {
+		"value": "0705",
+		"text": "分集水器"
+	}, {
+		"value": "0706",
+		"text": "消防接口"
+	}]
+}, {
+	"value": "08",
+	"text": "手持云台",
+	"children": [{
+		"value": "0801",
+		"text": "喷头"
+	}, {
+		"value": "0802",
+		"text": "报警阀"
+	}, {
+		"value": "0803",
+		"text": "通用阀门"
+	}, {
+		"value": "0804",
+		"text": "管道及附件"
+	}, {
+		"value": "0805",
+		"text": "其他喷水灭火装置"
+	}]
+}, {
+	"value": "09",
+	"text": "周边配件",
+	"children": [{
+		"value": "0901",
+		"text": "泡沫产生装置"
+	}, {
+		"value": "0902",
+		"text": "泡沫喷射装置"
+	}, {
+		"value": "0903",
+		"text": "泡沫比例混合装置"
+	}, {
+		"value": "0904",
+		"text": "泡沫液泵"
+	}, {
+		"value": "0905",
+		"text": "泡沫消火栓箱"
+	}, {
+		"value": "0906",
+		"text": "轻便式泡沫灭火装置"
+	}, {
+		"value": "0907",
+		"text": "闭式泡沫-水喷淋装置"
+	}, {
+		"value": "0908",
+		"text": "其他泡沫灭火装置"
+	}]
+}]
