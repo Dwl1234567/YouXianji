@@ -395,9 +395,11 @@
 						if (res.errMsg == 'scanCode:ok') {
 							// 扫描到的信息
 							let code = res.result;
-							uni.navigateTo({
-								url: res.result,
-							});
+							setTimeout(()=>{
+								uni.navigateTo({
+									url: res.result,
+								});
+							})
 							// that.erpproductSnDataFuc();
 						} else {
 							uni.$u.toast('未识别到二维码，请重新尝试！');

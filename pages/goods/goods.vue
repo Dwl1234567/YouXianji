@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!--标题栏-->
-		<bar-title bgColor="bg-white">
+		<bar-title bgColor="bg-white" :datas="datas">
 			<block slot="content">商品详情</block>
 			<!-- 分享 操作
 			<block slot="right">
@@ -496,6 +496,7 @@
 				imageData: '',
 				qrUrl: '', // 生成二维码的链接
 				userInfo: {},
+				datas: '',
 				scrollConf: {
 					showTop: 10,
 					opacityTop: 200,
@@ -556,25 +557,12 @@
 			if (options.nameId) {
 				uni.setStorageSync('url', `/` + currentPage.route + `?id=` + options.id + `&nameId=` + options.nameId);
 				this.$api.checkLogin();
-				console.log(userInfo, 'userInfo')
 				if (userInfo.token) {
 					this.bindingUser(options.nameId);
-					console.log(userInfo.user_id, '登陆成功');
+					this.datas = '1'
 				}
 			}
-			qrcode
-				.make({
-					canvasId: 'qrcode',
-					componentInstance: this,
-					text: this.qrUrl,
-					size: 58,
-					margin: 0,
-					backgroundColor: '#ffffff',
-					foregroundColor: '#000000',
-					fileType: 'jpg',
-					errorCorrectLevel: qrcode.errorCorrectLevel.H,
-				})
-				.then((res) => {});
+			
 			this.goodsid = options.id;
 			let flash_id = options.flash ? options.flash : 0;
 			if (flash_id != 0) {
@@ -673,15 +661,31 @@
 				console.log(res, '绑定成功')
 			},
 			async onCanvas() {
-				const userInfo = Vue.prototype.$store.state.userInfo;
-				const ctx = uni.createCanvasContext('img1', this);
-				const ctx2 = uni.createCanvasContext('img2', this);
-				ctx.fillRect(0, 0, 324, 268);
-				ctx.drawImage(this.product.images_text[0], 0, 0, 324, 268);
-				ctx2.drawImage(this.userInfo.avatar, 0, 0, 40, 40);
-				let pic = await this.setTime(ctx);
-				let pic2 = await this.setTime(ctx2);
-				this.$emit('success', pic);
+				qrcode
+					.make({
+						canvasId: 'qrcode',
+						componentInstance: this,
+						text: this.qrUrl,
+						size: 58,
+						margin: 0,
+						backgroundColor: '#ffffff',
+						foregroundColor: '#000000',
+						fileType: 'jpg',
+						errorCorrectLevel: qrcode.errorCorrectLevel.H,
+					})
+					.then((res) => {
+						
+					});
+					const userInfo = Vue.prototype.$store.state.userInfo;
+					const ctx = uni.createCanvasContext('img1', this);
+					const ctx2 = uni.createCanvasContext('img2', this);
+					ctx.fillRect(0, 0, 324, 268);
+					ctx.drawImage(this.product.images_text[0], 0, 0, 324, 268);
+					ctx2.drawImage(this.userInfo.avatar, 0, 0, 40, 40);
+					let pic = await this.setTime(ctx);
+					let pic2 = await this.setTime(ctx2);
+					this.$emit('success', pic);
+				
 			},
 			setTime(ctx) {
 				return new Promise((resole, err) => {

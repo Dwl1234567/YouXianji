@@ -31,6 +31,10 @@
 				type: String,
 				default: ''
 			},
+			datas: {
+				type: String,
+				default: ''
+			},
 			isBack: {
 				type: Boolean,
 				default: true
@@ -48,22 +52,33 @@
 				default: false
 			}
 		},
+		created() {
+				console.log(this.datas, this.bgColor)
+		},
 		methods: {
 			BackPage() {
 				const canNavBack = getCurrentPages()
-				//判断是否刷新了浏览器，刷新了浏览器，页面栈只有当前一个
-				// #ifdef H5
-				if (canNavBack && canNavBack.length > 1) {
+				console.log(canNavBack, 'canNavBack2222222222')
+				if (this.datas == 1) {
 					uni.navigateBack({
-						delta: 1
+						delta: 6
 					})
 				} else {
-					history.back()
+					//判断是否刷新了浏览器，刷新了浏览器，页面栈只有当前一个
+					// #ifdef H5
+					if (canNavBack && canNavBack.length > 1) {
+						uni.navigateBack({
+							delta: 1
+						})
+					} else {
+						history.back()
+					}
+					// #endif
+					// #ifndef H5
+					uni.navigateBack()
+					// #endif
 				}
-				// #endif
-				// #ifndef H5
-				uni.navigateBack()
-				// #endif
+				
 			},
 			leftTap() {
 				this.$emit('leftTap');
