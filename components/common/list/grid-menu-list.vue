@@ -3,7 +3,7 @@
 		<block v-for="(item,index) in ListData" :key="index">
 			<view class="cu-item text-center" @tap="listTap(item,index)">
 				<view class="grid-icon circle">
-					<image class="icon" :src="item.img" mode="widthFix"/>
+					<image class="icon" :src="item.img" />
 					<view class="cu-tag badge z" :class="['bg-' + item.color]" v-if="item.badge">{{item.badge}}</view>
 					<text class="text-black">{{item.name}}</text>
 				</view>
@@ -61,7 +61,9 @@
 
 <style lang="scss" scoped>
 	.cu-list.grid {
-		background-color: inherit;
+		background-color: #FFFFFF;
+		border: 0.5px solid rgba(213,218,223,1);
+		border-radius: 6px;
 		.grid-icon {
 			margin: 0 10rpx;
 			.icon {
@@ -69,23 +71,33 @@
 			}
 		}
 	}
+	.text-black{
+		font-family: PingFangSC-Regular;
+		font-size: 14px;
+		color: #101010;
+		font-weight: 400;
+	}
 	.cu-list.grid>.cu-item .cu-tag {
 	    transform: scale(0.8);
 	}
+	.cu-list{
+		padding-top: 12px !important;
+		padding-bottom: 6px !important;
+	}
 	.cu-list.grid.no-border, .cu-list.grid.no-border>.cu-item{
 		padding-top:0;
-		padding-bottom:0;
+		padding-bottom:0px;
 	}
 	.cu-list.grid>.cu-item .circle{
 		margin: 0 auto !important;
 		.icon{
 			display:inline-block;
 			margin:0;
-			padding:24upx;
+			// padding:24upx;
 			background-color: #ffffff;
-			width: 120upx;
-			height: 120upx;
-			border-radius: 100% !important;
+			width: 33px;
+			height: 33px;
+			border-radius: 0% !important;
 		}
 		text{
 			margin-top:0;

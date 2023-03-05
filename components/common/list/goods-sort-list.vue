@@ -40,10 +40,9 @@
 							<text class="text-sm">优闲集小强回收直营店</text>
 						</view>
 					</view>
-					<view class="action">
+					<!-- <view class="action">
 						<text class="text-red text-xl iconfont icon-add"></text>
-						<!--<image class="" src="/static/img/add.png" mode="widthFix" style="width: 60%;height: auto"/>-->
-					</view>
+					</view> -->
 				</view>
 			</block>
 		</view>
@@ -81,19 +80,23 @@
 	.goods-list-box {
 		display: none;
 		.cu-list.menu-avatar > .cu-item {
-			height: 218.18rpx;
+			height: 140px;
+			background: #FFFFFF;
+			border: 0.5px solid rgba(213,218,223,1);
+			border-radius: 6px;
+			overflow: hidden;
 			&:after {
 				width: 0;
 				height: 0;
 				border-bottom: 0;
 			}
 			.cu-avatar.lg {
-				width: 200.81rpx;
-				height: 200.81rpx;
+				width: 140px;
+				height: 140px;
 				font-size: 2em;
 			}
 			.content {
-				left: 246.36rpx;
+				left: 153px;
 				width: calc(100% - 94.54rpx - 59.99rpx - 119.99rpx);
 				line-height: 1.7em;
 				.cu-tag.sm {
@@ -106,8 +109,10 @@
 					margin-bottom: 9.09rpx;
 				}
 				view:first-child {
-					font-size: 32rpx;
-					font-weight:blod;
+					font-family: PingFangSC-Medium;
+					font-size: 16px;
+					color: #101010;
+					font-weight: 500;
 					display: inherit;
 					align-items: inherit;
 				}
@@ -115,6 +120,11 @@
 					text-decoration:line-through;
 				}
 				.tag-view {
+					margin-top: 12px;
+					font-family: PingFangSC-Medium;
+					font-size: 20px;
+					color: #FF3A31;
+					font-weight: 500;
 					text {
 						margin-right: 9.09rpx;
 					}

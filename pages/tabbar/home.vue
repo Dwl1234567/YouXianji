@@ -25,7 +25,7 @@
 			<!--搜索框-->
 			<view class="cu-bar search search-box">
 				<view class="search-form round" @tap="searchTap">
-					<text class="cuIcon-search"></text>
+					<!-- <text class="cuIcon-search"></text> -->
 					<text>iPhone 13 Pro</text>
 					<view class="sbtn cu-btn btn bg-red radius-4">搜索</view>
 				</view>
@@ -148,8 +148,20 @@
 			</view>
 			-->
 
-			<view class="padding-lr-sm bg-gray">
-				<image class="" src="/static/home/baozhang.png" mode="widthFix" style="width: 100%; height: auto" />
+			<view class="padding-lr-sm bg-white products">
+				<view class="products-item">
+					<image src="/static/home/安全保障@1.5x.svg"></image>
+					<text>正品保障</text>
+				</view>
+				<view class="products-item">
+					<image src="/static/home/快速高效@1.5x.svg"></image>
+					<text>极速发货</text>
+				</view>
+				<view class="products-item">
+					<image src="/static/home/售后 (2)@1.5x.svg"></image>
+					<text>售后无忧</text>
+				</view>
+				<!-- <image class="" src="/static/home/baozhang.png" mode="widthFix" style="width: 100%; height: auto" /> -->
 			</view>
 
 			<view class="tab-list">
@@ -395,11 +407,11 @@
 						if (res.errMsg == 'scanCode:ok') {
 							// 扫描到的信息
 							let code = res.result;
-							setTimeout(()=>{
+							setTimeout(() => {
 								uni.navigateTo({
 									url: res.result,
 								});
-							})
+							}, 1000);
 							// that.erpproductSnDataFuc();
 						} else {
 							uni.$u.toast('未识别到二维码，请重新尝试！');
@@ -554,12 +566,9 @@
 			goSell() {
 				this.$emit('goSell');
 			},
-			identifyTap(e) {
-			},
-			quicklyTap(e) {
-			},
-			activityTap(e) {
-			},
+			identifyTap(e) {},
+			quicklyTap(e) {},
+			activityTap(e) {},
 			//商品列表上的分类tab被点击
 			goodsTab(e) {
 				this.goodsTabData.TabCur = e.currentTarget.dataset.id;
@@ -582,10 +591,8 @@
 					url: '/pages/goods/goods?id=' + e.data.product_id,
 				});
 			},
-			liveListTap(e) {
-			},
-			videoListTap(e) {
-			},
+			liveListTap(e) {},
+			videoListTap(e) {},
 			gridSortTap(e) {
 				// 点击品牌
 				uni.navigateTo({
@@ -655,6 +662,26 @@
 </script>
 
 <style lang="scss" scoped>
+	.products{
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+		.products-item{
+			display: flex;
+			align-items: center;
+			image{
+				margin-right: 5px;
+				width: 20px;
+				height: 20px;
+			}
+			text{
+				font-family: PingFangSC-Regular;
+				font-size: 12px;
+				color: #101010;
+				font-weight: 400;
+			}
+		}
+	}
 	.head-search-box {
 		position: fixed;
 		width: 100%;
@@ -668,10 +695,19 @@
 			position: relative;
 			.search-form {
 				.sbtn {
-					height: 48rpx;
-					line-height: 48rpx;
+					height: 32px;
+					line-height: 32px;
 					position: absolute;
-					right: 80rpx;
+					right: 37px;
+					background-image: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+				}
+				text{
+					font-family: PingFangSC-Regular;
+					font-size: 17px;
+					color: #8E8E8E;
+					font-weight: 400;
+					position: absolute;
+					left: 25px;
 				}
 			}
 			.cuIcon-scan {
@@ -689,6 +725,9 @@
 					flex-basis: 90%;
 					width: 90%;
 					z-index: 1;
+					.nav{
+						padding-left: 10px;
+					}
 				}
 
 				.basis-xxs {
@@ -780,7 +819,7 @@
 		width: 100%;
 
 		.screen-swiper {
-			height: 420rpx;
+			height: 262px;
 			uni-image {
 				border-radius: 6rpx;
 			}
