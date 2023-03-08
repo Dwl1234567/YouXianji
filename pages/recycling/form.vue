@@ -169,7 +169,7 @@
 					</view>
 					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[1] ? '#111f3a':'#dd514c'}"  @tap="uploadImg(1)">
 						<view :class="phoneImgArr[1] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(1)"></u-icon>
+							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -181,7 +181,7 @@
 					</view>
 					<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[2] ? '#111f3a':'#dd514c'}" @tap="uploadImg(2)" >
 						<view :class="phoneImgArr[2] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(2)"></u-icon>
+							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -193,7 +193,7 @@
 					</view>
 					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[3] ? '#111f3a':'#dd514c'}" @tap="uploadImg(3)">
 						<view :class="phoneImgArr[3] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(3)"></u-icon>
+							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -207,7 +207,7 @@
 					</view>
 					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[4] ? '#111f3a':'#dd514c'}" @tap="uploadImg(4)">
 						<view :class="phoneImgArr[4] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(4)"></u-icon>
+							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -219,7 +219,7 @@
 					</view>
 					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[5] ? '#111f3a':'#dd514c'}" @tap="uploadImg(5)">
 						<view :class="phoneImgArr[5] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(5)"></u-icon>
+							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -231,7 +231,7 @@
 					</view>
 					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[6] ? '#111f3a':'#dd514c'}" @tap="uploadImg(6)">
 						<view :class="phoneImgArr[6] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(6)"></u-icon>
+							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -243,7 +243,7 @@
 					</view>
 					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[7] ? '#111f3a':'#dd514c'}" @tap="uploadImg(7)">
 						<view :class="phoneImgArr[7] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(7)"></u-icon>
+							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -513,11 +513,17 @@
 				}
 			},
 			uploadImg(type) {
-				let that = this;
-				that.uploadImgtype = type;
-				uni.navigateTo({
-					url:'/pages/idphoto/idphoto'
-				})
+				console.log(this.phoneImgArr[type]);
+				if (!this.phoneImgArr[type]) {
+					let that = this;
+					that.uploadImgtype = type;
+					uni.navigateTo({
+						url:'/pages/idphoto/idphoto'
+					})
+				} else {
+					this.deleteImg(type)
+				}
+				
 			},
 			//设置图片
 			setImage(e) {
