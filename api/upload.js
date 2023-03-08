@@ -2,6 +2,7 @@ import {
 	UPLOAD_IMG_URL
 } from '@/config/app';
 export function upload(filePath) {
+	console.log(filePath[0],111111111111);
 	return new Promise((resolve, reject) => {
 		// console.log(filePath);
 		uni.showLoading({
@@ -16,6 +17,7 @@ export function upload(filePath) {
 				'file': filePath[0]
 			},
 			success: (uploadFileRes) => {
+				console.log(uploadFileRes, 'upload');
 				// console.log(uploadFileRes.data);
 				let data = JSON.parse(uploadFileRes.data);
 				return resolve(data);

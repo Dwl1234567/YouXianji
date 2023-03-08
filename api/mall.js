@@ -354,6 +354,14 @@ export function PayGetPayType(data) {
 export function PayUnify(data) {
 	return request.get('/thirdstore/pay/unify',data,{'noLogin':true});
 }
+
+/**
+ * 支付成功后返佣接口
+ * 
+ */
+export function moneyScale(data) {
+	return request.get('/thirdstore/Product/moneyScale',data,{'noLogin':true});
+}
 /**
  * 货到付款
  * 

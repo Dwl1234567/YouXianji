@@ -153,7 +153,7 @@
 			<view class="pic padding flex justify-between align-center">
 				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[0] ?  addpicicon : 'url('+phoneImgArr[0]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,0)">
-						<text class="text">正面</text>
+						<text class="text">正面</text>7
 					</view>
 					<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[0] ? '#111f3a':'#dd514c'}"  @tap="uploadImg(0)">
 						<view :class="phoneImgArr[0] ? 'translate45':''">

@@ -470,5 +470,5 @@ export function getOtherAttr(data) {
  * 
  */
 export function bindingUser(data) {
-	return request.post('/thirdstore/User/binding',data,{'noLogin':true});
+	return request.get('/thirdstore/Product/binding',data,{'noLogin':true});
 }

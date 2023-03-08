@@ -556,6 +556,7 @@
 			// 首页扫码进入后 未登陆状态跳转登陆页面
 			if (options.nameId) {
 				uni.setStorageSync('url', `/` + currentPage.route + `?id=` + options.id + `&nameId=` + options.nameId);
+				uni.setStorageSync('nameId', options.nameId);
 				this.$api.checkLogin();
 				if (userInfo.token) {
 					this.bindingUser(options.nameId);
@@ -626,7 +627,6 @@
 			query
 				.selectAll('#pinglunBlock, #canshuBlock, #xiangqingBlock')
 				.boundingClientRect((data) => {
-					console.log('data', data);
 					let that = this;
 					data.forEach(function (item) {
 						if (item.id == 'pinglunBlock') {
@@ -646,7 +646,6 @@
 			//加载虚拟数据
 		},
 		onPageScroll(e) {
-			console.log(e);
 			if (e.scrollTop > this.scrollConf.showTop) {
 				this.show = true;
 				this.tabBarOpacity = e.scrollTop / this.scrollConf.opacityTop;
@@ -656,8 +655,7 @@
 		},
 		methods: {
 			async bindingUser(item) {
-				console.log(item)
-				const res = await bindingUser({userId: item});
+				const res = await bindingUser({userId: item, downId: this.userInfo.user_id, type: 'lowernum'});
 				console.log(res, '绑定成功')
 			},
 			async onCanvas() {
@@ -764,7 +762,6 @@
 									// quality: 'quality'  // 图片清晰度
 								},
 								(i) => {
-									console.log(i.target);
 									uni.saveImageToPhotosAlbum({
 										filePath: i.target,
 										success: function () {
@@ -778,7 +775,6 @@
 													url: imgurl[i], // 图片地址
 													methods: 'GET',
 													success: (res) => {
-														console.log(res, 'res');
 														var tempFilePath = res.tempFilePath; // 这里拿到后端返回的图片路径
 														uni.saveImageToPhotosAlbum({
 															// 然后调用这个方法
@@ -795,7 +791,6 @@
 																}
 															},
 															fail: (err) => {
-																console.log(err);
 																that.$u.toast(err);
 															},
 															complete: () => {
@@ -814,7 +809,6 @@
 									});
 								},
 								(e) => {
-									console.log(e, '');
 									uni.hideLoading();
 									uni.showToast({
 										title: '图片保存失败',
@@ -825,7 +819,6 @@
 							);
 						},
 						(e) => {
-							console.log(e, '123');
 							uni.hideLoading();
 							uni.showToast({
 								title: '图片保存失败',
@@ -855,7 +848,6 @@
 					.select(css)
 					.boundingClientRect((data) => {
 						console.log(data, 'data');
-						//console.log(data.height)
 						this.jumpTop = data.height - 95;
 					})
 					.exec();
@@ -864,7 +856,6 @@
 				this.TabCur = e.currentTarget.dataset.id;
 				// this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60;
 				// this.getElementScollTop(this.TabCur)
-				console.log(this.TabCur);
 				let adjustedTop = this.scrollConf.nodeList[this.TabCur].top;
 				// #ifdef APP-PLUS
 				if (plus.os.name == 'Android') {
@@ -873,7 +864,6 @@
 					adjustedTop = this.scrollConf.nodeList[this.TabCur].top - this.scrollConf.offsetIos;
 				}
 				// #endif
-				console.log(adjustedTop);
 				uni.pageScrollTo({
 					scrollTop: adjustedTop, //滚动的距离
 					duration: 300, //过渡时间
@@ -937,8 +927,6 @@
 								this.specList = specList;
 								this.specChildList = specChildList;
 								this.specTableList = specTableList;
-								// 	//console.log(this.specList)
-								// 	//console.log(specChildList)
 
 								//规格 默认选中第一条
 								this.specSelected = [];
@@ -995,7 +983,6 @@
 				 * 选择的规格存放在specSelected中
 				 */
 				this.specSelected = [];
-				//console.log(list)
 				list.forEach((item) => {
 					if (item.selected === true) {
 						this.specSelected.push(item.name);
@@ -1084,8 +1071,6 @@
 				let that = this;
 				let imgurl = this.product.images_text;
 				// this.showImageModal();
-				console.log(this.qrUrl);
-				console.log(123);
 				const dateEditor = uni.createSelectorQuery().in(this).select('#qrcode');
 				dateEditor
 					.boundingClientRect((rect) => {

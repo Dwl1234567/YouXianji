@@ -54,7 +54,7 @@ export default {
 	data() {
 		return {
 			dotype: 'idphoto', //操作类型
-			message: '今天摄了吗', //提示
+			message: '', //提示
 			aspect: '1:1', //比例
 			cameraWidth: '', //相机画面宽度
 			cameraHeight: '', //相机画面宽度
@@ -168,8 +168,9 @@ export default {
 		setImage() {
 			let pages = getCurrentPages();
 			let prevPage = pages[pages.length - 2]; //上一个页面
-			console.log(prevPage);
+			console.log(prevPage, '上一个页面');
 			//直接调用上一个页面的setImage()方法，把数据存到上一个页面中去
+			console.log(_this.snapshotsrc, '_this.snapshotsrc')
 			prevPage.$vm.setImage({ path: _this.snapshotsrc, dotype: this.dotype });
 		}
 	}

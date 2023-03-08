@@ -60,10 +60,12 @@
 				</view>
 			</view>
 		</view>
-
+		
 		<!--中间内容区域-->
 		<view class="view-content" :class="[viewContent.welcome?'welcome':'',headTab.TabCur==0?'show':'']">
 			<!--滑动菜单-->
+			<!-- 123 -->
+			<!-- <uni-steps :options="[{title: '事件一'}, {title: '事件二'}, {title: '事件三'}, {title: '事件四'}]" :active="1"></uni-steps> -->
 			<view class="padding-sm">
 				<grid-menu-list :list_data="gridMenuData" @listTap="gridMenuTap" />
 			</view>
@@ -116,7 +118,7 @@
 									</view>
 									<view class="text-center">
 										<text
-											class="padding-lr-xl cu-btn btn bg-deepblue radius-4"
+											class="padding-lr-xl btn radius-4"
 											@click="goevaluation()"
 										>
 											立即估价
@@ -403,7 +405,6 @@
 					scanType: ['qrCode'], //条形码
 					success: function (res) {
 						// 微信小程序
-						console.log(res.errMsg == 'scanCode:ok');
 						if (res.errMsg == 'scanCode:ok') {
 							// 扫描到的信息
 							let code = res.result;
@@ -908,50 +909,57 @@
 	}
 
 	.block {
-		height: 420rpx;
+		height: 260px;
 		.video {
 			width: 100%;
-			height: 210rpx;
+			height: 127px;
 			color: #0081ff;
 			image {
-				max-height: 200rpx;
+				max-height: 127px;
 			}
 		}
 		.baojia-bar {
 			width: 100%;
-			height: 200rpx;
+			height: 127px;
 			color: #0081ff;
-			background-color: #fff;
-			border: 1px solid #cecece;
-			border-radius: 20rpx;
+			background-image: linear-gradient(-44deg, #FDF1FF 0%, #CCDEF8 100%);
+			border: 0.5px solid rgba(213,218,223,1);
+			border-radius: 6px;
 			padding: 0 10rpx;
+			text-align: center;
 			.process-info {
 				//box-shadow: 0px 0px 10rpx 0px rgba(136, 136, 136, 0.5);
 				color: #929292;
 				padding: 20rpx 10rpx;
+				font-family: PingFangSC-Medium;
+				font-size: 16px;
+				color: #101010;
+				font-weight: 500;
 
 				.model {
-					font-size: 28rpx;
-					color: #323232;
-					font-weight: bold;
+					font-size: 14px;
+					// color: #323232;
+					// font-weight: bold;
 				}
 
 				.price {
-					font-size: 28rpx;
+					font-size: 20px;
 					color: #f48d31;
 					font-weight: bold;
 				}
 
 				.btn {
-					height: 46rpx;
-					font-size: 24rpx;
-					line-height: 46rpx;
-					//text-align: center;
-					//color: #D0D7E2;
-					//box-shadow: 0px 0px 10rpx 0px rgba(136, 136, 136, 1);
-					//background-color: #0F366F;
-					//padding: 2rpx 6rpx;
-					//border-radius: 20rpx;
+					border: 1px solid rgba(30,129,255,1);
+					border-radius: 4px;
+					color: rgba(30,129,255,1);
+					font-size: 10px;
+					height: 23px !important;
+					line-height: 23px;
+					font-weight: 400;
+					width: 118px;
+					display: block;
+					margin: 0 auto;
+					margin-top: 3px;
 				}
 
 				.line {
