@@ -10,13 +10,6 @@ export function agentUserLevellist(data) {
 	return request.get('/agent/user/levellist',data,{'noLogin':true});
 }
 /**
- * 我的等级记录
- * 
- */
-export function agentUserMylevellog(data) {
-	return request.get('/agent/user/mylevellog',data,{'noLogin':true});
-}
-/**
  * 等级任务列表
  * 
  */

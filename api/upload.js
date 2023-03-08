@@ -13,8 +13,11 @@ export function upload(filePath) {
 			url: `${UPLOAD_IMG_URL}`,
 			filePath: filePath[0],
 			name: 'file',
+			header: {
+			        'content-type': 'multipart/form-data' 
+			    },
 			formData: {
-				'file': filePath[0]
+				// 'file': filePath[0]
 			},
 			success: (uploadFileRes) => {
 				console.log(uploadFileRes, 'upload');
