@@ -7,21 +7,23 @@
 			<!-- <block slot="right" v-else>编辑</block> -->
 		</bar-title>
 
-		<scroll-view scroll-x class="bg-white nav text-center">
-			<view class="cu-item" :class="0==TabCur?'text-red cur':''" @tap="tabSelect" data-id="0">
+		<scroll-view scroll-x class="text-929294 nav text-center">
+			<view class="cu-item text-xl" :class="0==TabCur?'text-101010 cur':''" @tap="tabSelect" data-id="0">
 				商城
+				<view class="bottom-ul"></view>
 			</view>
-			<view class="cu-item" :class="1==TabCur?'text-red cur':''" @tap="tabSelect" data-id="1">
+			<view class="cu-item text-xl" :class="1==TabCur?'text-101010 cur':''" @tap="tabSelect" data-id="1">
 				回收
+				<view class="bottom-ul"></view>
 			</view>
 		</scroll-view>
 		<block class="" v-if="TabCur == 0">
-			<view class="margin-lr-sm margin-top-lg radius-4">
+			<view class="padding-lr-sm padding-top-lg" style="background: #F0F0F0;">
 				<goods-mini-list :list_data="querydata[TabCur].dataList" @listTap="goodsSortListTap"></goods-mini-list>
 			</view>
 		</block>
 		<block class="" v-else>
-			<view class="margin-lr-sm margin-top-lg radius-4">
+			<view class="margin-lr-sm margin-top-lg" style="background: #F0F0F0;">
 				<goods-mini-list :list_data="querydata[TabCur].dataList" @listTap="goodsSortListTap"></goods-mini-list>
 			</view>
 		</block>
@@ -231,7 +233,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	/* #ifdef APP-PLUS */
 	@import "@/uni_modules/colorui/main.css";
 	@import "@/uni_modules/colorui/icon.css";
@@ -239,4 +241,9 @@
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/footmark.scss";
 	
+	.nav{
+		.cu-item{
+			
+		}
+	}
 </style>

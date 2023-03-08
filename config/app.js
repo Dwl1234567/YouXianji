@@ -2,13 +2,13 @@
 
 module.exports = {
 	
-	HTTP_REQUEST_URL: `http://www.youxianji.cc/api/v1`,
+	HTTP_REQUEST_URL: `https://www.youxianji.cc/api/v1`,
 	// HTTP_REQUEST_URL: `http://192.168.2.8:8080/api/`,
 	
 	KEFU_POST_URL:`www.youxianji.cc`,
 	// KEFU_POST_URL:`www.youxianji.cc`,
 	//上传图片地址http://192.168.2.8:8080/api//upload
-	UPLOAD_IMG_URL: `http://www.youxianji.cc/api/v1/upload`,
+	UPLOAD_IMG_URL: `https://www.youxianji.cc/api/v1/upload`,
 	// UPLOAD_IMG_URL: `http://192.168.2.8:8080/api//upload`,
 	
 	// 小程序配置

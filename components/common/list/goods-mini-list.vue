@@ -2,7 +2,7 @@
 	<view class="goods-list-box" :class="show?'show':''">
 		<view class="cu-list menu-avatar">
 			<block v-for="(item,index) in list_data" :key="index">
-				<view class="cu-item bg-white margin-bottom-sm radius-4" @tap="listTap(item,index)">
+				<view class="cu-item bg-white margin-bottom-sm radius-6" @tap="listTap(item,index)">
 					<view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ item.image +')'}]"></view>
 					<view class="content">
 						<!--标题-->
@@ -62,20 +62,27 @@
 <style lang="scss" scoped>
 	.goods-list-box {
 		display: none;
+		.cu-list{
+			overflow: hidden;
+		}
 		.cu-list.menu-avatar > .cu-item {
-			height: 180rpx;
+			padding: 20px 12px;
+			height: 119px;
 			&:after {
 				width: 0;
 				height: 0;
 				border-bottom: 0;
 			}
+			.cu-avatar{
+				left: 12px;
+			}
 			.cu-avatar.lg {
-				width: 180rpx;
-				height: 180rpx;
+				width: 79px;
+				height: 79px;
 				font-size: 2em;
 			}
 			.content {
-				left: 220.36rpx;
+				left: 99px;
 				width: calc(100% - 94.54rpx - 59.99rpx - 119.99rpx);
 				line-height: 1.7em;
 				.cu-tag.sm {

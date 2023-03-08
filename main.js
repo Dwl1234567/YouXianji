@@ -208,7 +208,7 @@ const checkLogin = (item) => {
 	});
 }
 // 后端api地址
-Vue.prototype.$unishow = "http://www.youxianji.cc/api/v1/thirdstore";
+Vue.prototype.$unishow = "https://www.youxianji.cc/api/v1/thirdstore";
 // 同步网络请求
 const request = async (url, method = 'GET', data = {}, showMsg = true) => {
 	let header = {

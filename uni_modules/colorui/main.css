@@ -3466,7 +3466,11 @@ scroll-view.cu-steps .cu-item {
 	background-color: #f0f0f0;
 	color: #333333;
 }
-
+	
+.bg-F9F9FB {
+	background-color: #F9F9FB;
+	color: #101010;
+}
 .bg-black {
 	background-color: #333333;
 	color: #ffffff;
@@ -3476,7 +3480,12 @@ scroll-view.cu-steps .cu-item {
 	background-color: #ffffff;
 	color: #333333;
 }
-
+.radius-6{
+	border-radius: 6px;
+}
+.radius-12{
+	border-radius: 12px;
+}
 .bg-shadeTop {
 	background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.01));
 	color: #ffffff;
@@ -3749,7 +3758,7 @@ scroll-view.cu-steps .cu-item {
 }
 
 .text-sm {
-	font-size: 24upx;
+	font-size: 24rpx;
 }
 
 .text-df {
@@ -3787,7 +3796,16 @@ scroll-view.cu-steps .cu-item {
 .text-abc {
 	text-transform: Lowercase;
 }
-
+	
+.text-color-black {
+	color: #101010;
+}
+.text-color-yellow {
+	background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);
+}
+.text-500{
+	font-weight: 500;
+}
 .text-price::before {
 	content: "¥";
 	font-size: 80%;

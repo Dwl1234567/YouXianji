@@ -6,9 +6,9 @@
 			<!-- #ifndef MP -->
 			<bar-title :isBack="false" :fixed="false">
 				<block slot="right">
-					<button class="cu-btn sm bg-deepblue margin-right-lg" @tap="goToErp" v-if="is_company==1">
+					<button class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12" @tap="goToErp" v-if="is_company==1" style="box-shadow: 0px 2px 4px 0px rgba(181,181,181,0.5);">
 						工作模式
-						<text class="iconfont icon-nextpageorange margin-lr-xs"></text>
+						<!-- <text class="iconfont icon-nextpageorange margin-lr-xs"></text> -->
 					</button>
 					<text class="iconfont icon-editblue" @tap="setupTap" />
 				</block>
@@ -20,7 +20,7 @@
 				<!--未登陆-->
 				<view class="login-user-view" v-if="login">
 					<view class="login-user-avatar-view">
-						<view class="cu-avatar round xl" style="background-image:url(/static/img/avatar/1.png);" />
+						<view class="cu-avatar round xl" style="background-image: url(/static/img/avatar/1.png)" />
 					</view>
 					<button class="cu-btn sm bg-red radius" @tap="loginUrlTap">立即登录</button>
 				</view>
@@ -28,19 +28,19 @@
 				<!--已登陆-->
 				<view class="cu-list menu-avatar" v-else>
 					<view class="cu-item">
-						<view class="cu-avatar radius-1-5 lg"
-							:style="{backgroundImage:'url('+ (userInfo.avatar ? userInfo.avatar : '/static/img/avatar/1.jpg') +')'}" />
-						<view class="content text-xl">
+						<view
+							class="cu-avatar radius-1-5 lg"
+							:style="{backgroundImage:'url('+ (userInfo.avatar ? userInfo.avatar : '/static/img/avatar/1.jpg') +')'}"
+						/>
+						<view class="content .text-xxl">
 							<view class="">
 								<text class="margin-right" v-if="userInfo.nickname">{{userInfo.nickname}}</text>
 							</view>
-							<view class="text-sm">
-								账号:{{userInfo.mobile}}
-							</view>
+							<view class="text-sm">账号:{{userInfo.mobile}}</view>
 						</view>
-						<view class="right text-xl" @tap="baseTap('/pages/my/userdata/index')">
+						<!-- <view class="right text-xl" @tap="baseTap('/pages/my/userdata/index')">
 							<text class="margin-right cuIcon-right icon"></text>
-						</view>
+						</view> -->
 					</view>
 
 					<!-- <view class="padding-lr-lg">
@@ -68,26 +68,26 @@
 			<!--用户数据-->
 			<view class="user-info-num-box margin-tb-sm padding-bottom-sm">
 				<view class="box margin-lr-sm">
-					<view class="cu-list grid col-3 no-border">
+					<view class="cu-list col-3 no-border">
 						<view class="cu-item" @tap="cartTap">
-							<view class="text-lg" v-if="login">-</view>
-							<view class="text-lg text-red" v-else>{{userInfo.cartnum}}</view>
-							<text class="text-sm">购物车</text>
+							<view class="text-xxl" v-if="login">-</view>
+							<view class="text-xxl text-color-black" v-else>{{userInfo.cartnum}}</view>
+							<text class="text-sm text-color-black text-500">购物车</text>
 						</view>
 						<view class="cu-item" @tap="footmarkTap">
-							<view class="text-lg" v-if="login">-</view>
-							<view class="text-lg text-red" v-else>{{userInfo.visitnum}}</view>
-							<text class="text-sm">足迹</text>
+							<view class="text-xxl" v-if="login">-</view>
+							<view class="text-xxl text-color-black" v-else>{{userInfo.visitnum}}</view>
+							<text class="text-sm text-color-black text-500">足迹</text>
 						</view>
 						<view class="cu-item" @tap="sponsoredTap">
-							<view class="text-lg" v-if="login">-</view>
-							<view class="text-lg text-red" v-else>{{userInfo.hb_medal}}</view>
-							<text class="text-sm">奖章</text>
+							<view class="text-xxl" v-if="login">-</view>
+							<view class="text-xxl text-color-black" v-else>{{userInfo.hb_medal}}</view>
+							<text class="text-sm text-color-black text-500">奖章</text>
 						</view>
 						<!--
 						<view class="cu-item" @tap="feeTap">
-							<view class="text-lg" v-if="login">-</view>
-							<view class="text-lg text-red" v-else>{{userInfo.fee}}</view>
+							<view class="text-xxl" v-if="login">-</view>
+							<view class="text-xxl text-red" v-else>{{userInfo.fee}}</view>
 							<text class="text-sm">佣金</text>
 						</view>
 						<view class="cu-item" @tap="moneyTap">
@@ -101,16 +101,23 @@
 			</view>
 		</view>
 
-
 		<view class="view-content">
 			<!--用户数据-->
-			<view class="padding-tb-sm bg-white radius-4">
-				<view class="text-black text-sm text-bold padding-sm text-center">我的交易</view>
-				<view class="margin-lr-sm">
+			<view class="padding-tb-sm bg-F9F9FB radius-6">
+				<view class="text-black text-xl text-bold padding-sm">我的交易</view>
+				<view class="margin-lr-sm bg-white nav-item">
 					<scroll-view scroll-x class="nav text-center">
-						<view style="display:inline-flex" class="cu-item flex" :class="index==jiaoyicurrent?'bg-red text-white cur':'bg-deepblue'"  v-for="(item,index) in jiaoyilist" :key="index" @tap="sectionChange" :data-id="index">
-							<view class="flex-sub iconfont" :class="item.icon"></view>
-							<view class="flex-twice label">{{item.label}}</view>
+						<view
+							style="display: inline-flex"
+							class="cu-item flex text-center radius-6"
+							:class="index==jiaoyicurrent?'text-color-yellow text-white cur':'bg-white'"
+							v-for="(item,index) in jiaoyilist"
+							:key="index"
+							@tap="sectionChange"
+							:data-id="index"
+						>
+							<!-- <view class="flex-sub iconfont" :class="item.icon"></view> -->
+							<view class="flex-twice label text-center">{{item.label}}</view>
 							<!--<view class="flex justify-start">
 								<view class="flex-sub "><image class="img" :src="item.icon" mode="heightFix"></image></view>
 								<view class="flex-sub ">{{item.label}}</view>
@@ -121,11 +128,9 @@
 				<!--<u-subsection :list="jiaoyilist" :current="jiaoyicurrent" keyName="label" @change="sectionChange">
 				</u-subsection>-->
 				<!--我的订单-->
-				<view class="margin-top-sm padding-tb-sm bg-white user-info-order-box" v-if="jiaoyicurrent == 1">
-					<view class="text-black text-sm text-bold padding-sm text-center">我买到的订单</view>
-					<view class="allorder-tips text-sm text-darkgrey" @click="goods_orderlist_tap(0)">
-						全部订单
-					</view>
+				<view class="margin-top-sm padding-tb-sm user-info-order-box" v-if="jiaoyicurrent == 1">
+					<view class="text-black text-xl text-bold padding-sm">我买到的订单</view>
+					<view class="allorder-tips text-sm text-929294" @click="goods_orderlist_tap(0)">全部订单</view>
 					<view class="cu-list grid col-4 no-border">
 						<view class="cu-item" @tap="goods_orderlist_tap(1)">
 							<view class="text-xxl text-red" v-if="login">
@@ -135,9 +140,9 @@
 								<view class="iconfont icon-readytopay text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">
 										{{userInfo.recyclenum|| 0}}
-									</view>	
-								</view> 
-								<text>待付款</text>
+									</view>
+								</view>
+								<text class="text-101010">待付款</text>
 							</view>
 						</view>
 						<view class="cu-item" @tap="goods_orderlist_tap(2)">
@@ -148,8 +153,8 @@
 								<view class="iconfont icon-readytodelivery text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">
 										{{userInfo.shopnum|| 0}}
-									</view>	
-								</view> 
+									</view>
+								</view>
 								<text>待发货</text>
 							</view>
 						</view>
@@ -161,8 +166,8 @@
 								<view class="iconfont icon-readytoship text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
-									</view>	
-								</view> 
+									</view>
+								</view>
 								<text>待收货</text>
 							</view>
 						</view>
@@ -174,18 +179,16 @@
 								<view class="iconfont icon-commentgray text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
-									</view>	
-								</view> 
+									</view>
+								</view>
 								<text>待评价</text>
 							</view>
 						</view>
 					</view>
 				</view>
-				<view class="margin-top-sm padding-tb-sm bg-white user-info-order-box" v-if="jiaoyicurrent == 0">
-					<view class="text-black text-sm text-bold padding-sm text-center">我卖出的订单</view>
-					<view class="allorder-tips text-sm text-darkgrey" @click="recycle_orderlist_tap(0)">
-						全部订单
-					</view>
+				<view class="margin-top-sm padding-tb-sm user-info-order-box" v-if="jiaoyicurrent == 0">
+					<view class="text-black text-xl text-bold padding-sm">我卖出的订单</view>
+					<view class="allorder-tips text-sm text-929294" @click="recycle_orderlist_tap(0)">全部订单</view>
 					<view class="cu-list grid col-5 no-border">
 						<view class="cu-item" @tap="recycle_orderlist_tap(1)">
 							<view class="text-xxl text-red" v-if="login">
@@ -195,9 +198,9 @@
 								<view class="iconfont icon-readytopay text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">
 										{{userInfo.recyclenum|| 0}}
-									</view>	
-								</view> 
-								<text>待付款</text>
+									</view>
+								</view>
+								<text class="text-101010">待付款</text>
 							</view>
 						</view>
 						<view class="cu-item" @tap="recycle_orderlist_tap(2)">
@@ -208,9 +211,9 @@
 								<view class="iconfont icon-readytodelivery text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">
 										{{userInfo.shopnum|| 0}}
-									</view>	
-								</view> 
-								<text>待发货</text>
+									</view>
+								</view>
+								<text class="text-101010">待发货</text>
 							</view>
 						</view>
 						<view class="cu-item" @tap="recycle_orderlist_tap(3)">
@@ -221,9 +224,9 @@
 								<view class="iconfont icon-readytoship text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
-									</view>	
-								</view> 
-								<text>待收货</text>
+									</view>
+								</view>
+								<text class="text-101010">待收货</text>
 							</view>
 						</view>
 						<view class="cu-item" @tap="recycle_orderlist_tap(4)">
@@ -234,9 +237,9 @@
 								<view class="iconfont icon-commentgray text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
-									</view>	
-								</view> 
-								<text>待评价</text>
+									</view>
+								</view>
+								<text class="text-101010">待评价</text>
 							</view>
 						</view>
 						<view class="cu-item" @tap="recycle_orderlist_tap(5)">
@@ -247,18 +250,17 @@
 								<view class="iconfont icon-refund text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
-									</view>	
-								</view> 
-								<text>退款/售后</text>
+									</view>
+								</view>
+								<text class="text-101010">退款/售后</text>
 							</view>
 						</view>
 					</view>
 				</view>
-				
 			</view>
-			
+
 			<!--推荐工具-->
-			<view class="padding-xs bg-white margin-top-sm user-info-tools-box radius-4">
+			<view class="padding-xs bg-F9F9FB margin-top-sm user-info-tools-box radius-4">
 				<view class="tools-list-box">
 					<view class="cu-list grid col-4 no-border">
 						<block v-for="(item,index) in toolsList" :key="index">
@@ -269,9 +271,7 @@
 						</block>
 					</view>
 				</view>
-
 			</view>
-
 		</view>
 
 		<!--占位底部距离-->
@@ -287,7 +287,7 @@
 			<drag-button :isDock="true" :existTabBar="true" @btnClick="btnClick" />
 		</view>
 		<!--底部导航-->
-		<footer-tabbar :tabID='4' :msgDot='true' />
+		<footer-tabbar :tabID="4" :msgDot="true" />
 	</view>
 </template>
 
@@ -295,12 +295,8 @@
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
 
-	import {
-		getRecycleUserinfo
-	} from "@/api/user.js";
-	import {
-		erpuserislogin
-	} from "@/api/erpapi.js";
+	import { getRecycleUserinfo } from '@/api/user.js';
+	import { erpuserislogin } from '@/api/erpapi.js';
 	import barTitle from '@/components/common/basics/bar-title';
 
 	import _my_data from '@/static/data/my.js'; //虚拟数据
@@ -309,7 +305,7 @@
 		name: 'my',
 		components: {
 			barTitle,
-			footerTabbar
+			footerTabbar,
 		},
 		data() {
 			return {
@@ -317,19 +313,22 @@
 				login: false,
 				is_company: 0,
 				userInfo: '',
-				index:0,
+				index: 0,
 				scrollLeft: 0,
-				jiaoyilist: [{
-					label: '我卖出的',
-					icon: 'icon-whatisold',
-					value: 1
-				},{
-					label: '我买到的',
-					icon: 'icon-whatibought',
-					value: 0
-				}],
-				jiaoyicurrent: 0
-			}
+				jiaoyilist: [
+					{
+						label: '我卖出的',
+						icon: 'icon-whatisold',
+						value: 1,
+					},
+					{
+						label: '我买到的',
+						icon: 'icon-whatibought',
+						value: 0,
+					},
+				],
+				jiaoyicurrent: 0,
+			};
 		},
 		onLoad() {
 			//加载虚拟数据
@@ -340,35 +339,36 @@
 			// this.erpuserislogin();
 		},
 		onShow() {
-			getRecycleUserinfo().then(res => {
+			getRecycleUserinfo().then((res) => {
 				this.userInfo = res.data;
-			})
+			});
 			this.erpuserislogin();
 		},
 		mounted() {
 			_tool.setBarColor(false);
 			uni.pageScrollTo({
 				scrollTop: 0,
-				duration: 0
+				duration: 0,
 			});
 		},
 		onPullDownRefresh() {
-			getRecycleUserinfo().then(res => {
+			getRecycleUserinfo()
+				.then((res) => {
 					this.userInfo = res.data;
 				})
 				.finally(() => {
 					uni.stopPullDownRefresh();
-				})
+				});
 		},
 		methods: {
 			// erp入口
 			erpuserislogin() {
 				let that = this;
-				erpuserislogin().then(res => {
+				erpuserislogin().then((res) => {
 					if (res.code == 1) {
-						that.is_company = 1
+						that.is_company = 1;
 					}
-				})
+				});
 			},
 			sectionChange(e) {
 				//this.jiaoyicurrent = index;
@@ -377,13 +377,13 @@
 				console.log(this.jiaoyicurrent);
 				uni.pageScrollTo({
 					scrollTop: 0,
-					duration: 0
+					duration: 0,
 				});
 			},
 			//通用跳转
 			baseTap(url) {
 				uni.navigateTo({
-					url: url
+					url: url,
 				});
 			},
 			//购物车
@@ -392,8 +392,8 @@
 				// 	url: "/pages/goods/my_cart"
 				// });
 				uni.switchTab({
-					url:"/pages/tabbar/cart"
-				})
+					url: '/pages/tabbar/cart',
+				});
 				/*
 				uni.navigateTo({
 					url: '/pages/goods/cart'
@@ -402,36 +402,36 @@
 			//足迹
 			footmarkTap() {
 				uni.navigateTo({
-					url: "/pages/my/footmark"
+					url: '/pages/my/footmark',
 				});
 			},
 			//我买到的
 			goods_orderlist_tap(type) {
 				// 0 -全部 1 2 3 4
 				uni.navigateTo({
-					url: "/pages/order/goods/list?type=" + type
+					url: '/pages/order/goods/list?type=' + type,
 				});
 			},
 			//我卖出的
 			recycle_orderlist_tap(type) {
 				// 0 -全部 1 2 3 4
 				uni.navigateTo({
-					url: "/pages/order/recycle/list?type=" + type
+					url: '/pages/order/recycle/list?type=' + type,
 				});
 			},
 			loginUrlTap() {
 				uni.navigateTo({
-					url: "/pages/common/login/login"
+					url: '/pages/common/login/login',
 				});
 			},
 			realNameTap() {
 				uni.navigateTo({
-					url: "/pages/my/userdata/realname/form"
+					url: '/pages/my/userdata/realname/form',
 				});
 			},
 			setupTap() {
 				uni.navigateTo({
-					url: "/pages/my/set/set-up"
+					url: '/pages/my/set/set-up',
 				});
 			},
 			gridTap(item) {
@@ -440,29 +440,29 @@
 					this.setupTap();
 				} else {
 					uni.navigateTo({
-						url: item.page
+						url: item.page,
 					});
 				}
 			},
 			sponsoredTap() {
 				uni.navigateTo({
-					url: "/pages/about/explain?type=1"
+					url: '/pages/about/explain?type=1',
 				});
 			},
 			moneyTap() {
 				uni.navigateTo({
-					url: "/pages/about/explain?type=3"
+					url: '/pages/about/explain?type=3',
 				});
 			},
 			feeTap() {
 				uni.navigateTo({
-					url: "/pages/about/explain?type=4"
+					url: '/pages/about/explain?type=4',
 				});
 			},
 			goToErp() {
 				console.log('去ERP');
 				uni.navigateTo({
-					url: "/pages/tabbarerp/home"
+					url: '/pages/tabbarerp/home',
 				});
 			},
 			// 联系客服
@@ -471,18 +471,27 @@
 				uni.navigateTo({
 					url: '/pages/chat/chat',
 				});
-			}
-		}
-	}
+			},
+		},
+	};
 </script>
 
 <style lang="scss" scoped>
 	.my-box {
 		width: 100%;
-		.cu-list.grid>.cu-item .icon{
+		.nav-item {
+			height: 46px;
+			display: flex;
+			align-items: center;
+			padding: 0 5px;
+		}
+		.cu-list.grid{
+			background-color: #f9f9fb;
+		}
+		.cu-list.grid > .cu-item .icon {
 			position: relative;
-			height:75rpx;
-			height:52rpx;
+			height: 75rpx;
+			height: 52rpx;
 		}
 		// display: none;
 		.head-box {
@@ -504,9 +513,13 @@
 					}
 				}
 
-				.cu-list.menu-avatar>.cu-item {
+				.cu-list.menu-avatar > .cu-item {
 					background-color: inherit;
-
+					padding-left: 17px;
+					.cu-avatar {
+						left: 17px;
+						border-radius: 96upx;
+					}
 					.content {
 						width: calc(100% - 94.54rpx - 59.99rpx - 100rpx);
 
@@ -537,10 +550,15 @@
 					}
 				}
 
-				.cu-list.menu-avatar>.cu-item .content>view:first-child {
-					font-size: 34.54rpx;
+				.cu-list.menu-avatar > .cu-item .content > view:first-child {
+					font-size: 40rpx;
 				}
-
+				.cu-list.menu-avatar > .cu-item .content .text-sm {
+					font-size: 14px;
+					margin-top: 3px;
+					color: #929294;
+					font-weight: 400;
+				}
 				//简介少
 				.cu-list .bio.contents {
 					line-height: 50rpx;
@@ -557,14 +575,27 @@
 
 			.user-info-num-box {
 				.box {
-					border-top: 1px solid #e3e3e3;
-
+					// border-top: 1px solid #e3e3e3;
+					.cu-list {
+						padding-left: 21px;
+						display: flex;
+						align-items: center;
+						justify-content: flex-start;
+						.cu-item {
+							margin-left: 33px;
+							display: flex;
+							align-items: center;
+							flex-direction: column;
+						}
+						.cu-item:first-child {
+							margin-left: 0px;
+						}
+					}
 					.cu-list.grid.no-border {
-
 						padding: 0;
 					}
 
-					.cu-list.grid.no-border>.cu-item {
+					.cu-list.grid.no-border > .cu-item {
 						padding-top: 27.27rpx;
 						padding-bottom: 9.09rpx;
 					}
@@ -573,12 +604,11 @@
 						background-color: inherit;
 					}
 
-					.cu-list.grid>.cu-item text {
+					.cu-list.grid > .cu-item text {
 						font-size: 20rpx;
 						line-height: 27.27rpx;
 					}
 				}
-
 			}
 
 			.user-info-tip-box {
@@ -601,19 +631,23 @@
 
 		.view-content {
 			padding: 0 20rpx 54.54rpx;
-			.nav{
-				.cu-item{
-					margin:0;
-					width:50%;
-					padding:0;
-					.iconfont{
+			.nav {
+				.cu-item {
+					margin: 0;
+					width: 50%;
+					padding: 0;
+					height: 36px;
+					line-height: 36px;
+					.iconfont {
 						//width:60rpx;
-						font-size:70rpx;
+						font-size: 70rpx;
 					}
-					.label{
+					.label {
+						font-size: 18px;
+						color: #101010;
+						font-weight: 500;
 					}
 				}
-				
 			}
 			.user-info-order-box {
 				border-radius: 18.18rpx;
@@ -621,9 +655,10 @@
 
 				.cu-list.grid.no-border {
 					padding: 0;
+					background-color: #f9f9fb;
 				}
 
-				.cu-list.grid.no-border>.cu-item {
+				.cu-list.grid.no-border > .cu-item {
 					padding-bottom: 9.09rpx;
 				}
 
@@ -634,7 +669,7 @@
 				}
 			}
 
-			.cu-list.grid>.cu-item text {
+			.cu-list.grid > .cu-item text {
 				color: inherit;
 			}
 
@@ -684,7 +719,6 @@
 						bottom: 23.63rpx;
 					}
 				}
-
 			}
 		}
 	}
