@@ -4,7 +4,7 @@
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">修改昵称</block>
 			<block slot="right">
-				<text class="text-orange cu-btn bg-deepblue radius-2"  @tap="editname">保存</text>
+				<!-- <text class="text-orange cu-btn bg-deepblue radius-2"  @tap="editname">保存</text> -->
 			</block>
 		</bar-title>
 		
@@ -18,14 +18,19 @@
 			<text class="cuIcon-close"/>
 		</view> -->
 		
-		<view class="cu-form-group margin-sm radius-2">
-			<view class="title">新昵称</view>
+		<view class="cu-form-group input">
+			<!-- <view class="title">新昵称</view> -->
 			<input placeholder="请输入新昵称" maxlength="13" v-model="name" value="二柱"></input>
 		</view>
 		
 		<view class="text-sm text-gray padding-sm">13个字以内，仅支持汉字、字母、数字或下划线</view>
 		
-		
+		<!-- #ifdef APP- -->
+		<view class="text-orange cu-btn bg-deepblue radius-2"  @tap="editname">保存</view>
+		<!-- #endif -->
+		<!-- #ifdef H5 -->
+		<view class="text-color-yellow radius-6 button text-center text-xl text-4F4F50"  @tap="editname">保存</view>
+		<!-- #endif -->
 		<!--小程序端显示-->
 		<!-- #ifdef MP -->
 		<view class="bg-white zaiui-footer-fixed zaiui-foot-padding-bottom">
@@ -80,7 +85,20 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+	page{
+		background: #F0F0F0;
+	}
+	.input{
+		margin-top: 14px;
+	}
+	.button{
+		width: 326px;
+		height: 44px;
+		line-height: 44px;
+		margin: 0 auto;
+		margin-top: 16px;
+	}
 	.cu-form-group {
 		.title {
 			&:before {
@@ -95,6 +113,10 @@
 		}
 		input {
 			color: #333333;
+		}
+		.button{
+			width: 326px;
+			height: 44px;
 		}
 	}
 </style>

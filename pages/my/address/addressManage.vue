@@ -6,28 +6,28 @@
 		</bar-title>
 		<view class="row b-b">
 			<text class="tit">联系人</text>
-			<input class="input" type="text" v-model="addressData.name" placeholder="收货人姓名" placeholder-class="placeholder" />
+			<input class="input text-right" type="text" v-model="addressData.name" placeholder="收货人姓名" placeholder-class="placeholder" />
 		</view>
 		<view class="row b-b">
 			<text class="tit">手机号</text>
-			<input class="input" type="number" v-model="addressData.mobile" placeholder="收货人手机号码" placeholder-class="placeholder" />
+			<input class="input text-right" type="number" v-model="addressData.mobile" placeholder="收货人手机号码" placeholder-class="placeholder" />
 		</view>
 		<view class="row b-b" v-on:click="showCityPicker()">
 			<text class="tit">地区</text>
-			<view class="input">
+			<view class="input text-right">
 				{{cityLebel}}
 			</view>
 		</view>
 		<view class="row b-b">
 			<text class="tit">详细</text>
-			<input class="input" type="text" v-model="addressData.address" placeholder="详细地址,楼号" placeholder-class="placeholder" />
+			<input class="input text-right" type="text" v-model="addressData.address" placeholder="详细地址,楼号" placeholder-class="placeholder" />
 		</view>
 
 		<view class="row default-row">
 			<text class="tit">设为默认</text>
-			<switch :checked="addressData.is_default" color="#fa436a" @change="switchChange" />
+			<switch :checked="addressData.is_default" color="#FFB629" @change="switchChange" class="text-right"/>
 		</view>
-		<button class="add-btn  bg-deepblue radius-4" @click="confirm">提交</button>
+		<button class="add-btn text-color-yellow radius-6" @click="confirm">保存</button>
 		
 		<mpvue-city-picker @onChange="onChange" @onCancel="onCancel"
 		 @onConfirm="onConfirm" ref="mpvueCityPicker" ></mpvue-city-picker>
@@ -211,7 +211,7 @@
 		padding: 0 30upx;
 		height: 110upx;
 		background: #fff;
-
+		border-bottom: 1px #D8D8D8 solid;
 		.tit {
 			flex-shrink: 0;
 			width: 120upx;
@@ -233,7 +233,6 @@
 	}
 
 	.default-row {
-		margin-top: 16upx;
 
 		.tit {
 			color: #111f3a;

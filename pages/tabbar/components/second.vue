@@ -1,12 +1,12 @@
 <template>
 	<view class="home-box">
 		<!--欢迎-->
-		<welcome-tip
+		<!-- <welcome-tip
 			:content="appMode.tips+'，'+userInfo.nickname"
 			:show="true"
 			:c_s="3000"
 			@closeFinish="welcomeClose"
-		></welcome-tip>
+		></welcome-tip> -->
 
 		<!--营销块背景-->
 		<view class="swiper-background-box show">
@@ -16,7 +16,7 @@
 		<!-- <swiper-background :list_data="swiperInfo.list" :indexs="swiperInfo.index" :show="swiperInfo.show"
 			:welcome="swiperInfo.welcome"></swiper-background> -->
 
-		<view class="head-search-box" :class="headInfo.Class" :style="">
+		<view class="head-search-box" :class="" :style="">
 			<!--小程序端的标题-->
 			<!-- #ifdef MP -->
 			<view class="text-center margin-top-sm small-routine-title">首页</view>
@@ -65,7 +65,7 @@
 		</view>
 		
 		<!--中间内容区域-->
-		<view class="view-content" :class="[viewContent.welcome?'welcome':'',headTab.TabCur==0?'show':'']">
+		<view class="view-content" :class="[headTab.TabCur==0?'show':'']">
 			<!--滑动菜单-->
 			<!-- 123 -->
 			<!-- <uni-steps :options="[{title: '事件一'}, {title: '事件二'}, {title: '事件三'}, {title: '事件四'}]" :active="1"></uni-steps> -->
@@ -782,7 +782,7 @@
 		position: absolute;
 		height: 888rpx;
 		width: 100%;
-		top: 0;
+		top: 144px;
 		display: none;
 		transition: 0s;
 		.swiper-background {
@@ -790,7 +790,7 @@
 			height: 888rpx;
 			width: 100%;
 			opacity: 0.1;
-			top: 0;
+			top: 144px;
 			//background-size: cover;
 			//transition: opacity .25s;
 		}
@@ -805,15 +805,15 @@
 		width: 100%;
 
 		/* #ifdef APP-PLUS */
-		margin-top: calc(var(--status-bar-height) + 30rpx + 52px);
+		margin-top: calc(var(--status-bar-height) + 30rpx + 125px);
 		/* #endif */
 
 		/* #ifdef H5 */
-		margin-top: calc(var(--status-bar-height) + 70rpx + 52px);
+		margin-top: calc(var(--status-bar-height) + 70rpx + 102px);
 		/* #endif */
 
 		/* #ifdef MP */
-		margin-top: calc(var(--status-bar-height) + 85rpx + 52px);
+		margin-top: calc(var(--status-bar-height) + 85rpx + 102px);
 		/* #endif */
 
 		.tab-list {
@@ -824,15 +824,15 @@
 
 	.view-content.welcome {
 		/* #ifdef APP-PLUS */
-		margin-top: calc(var(--status-bar-height) + 180rpx + 52px);
+		margin-top: calc(var(--status-bar-height) + 180rpx + 102px);
 		/* #endif */
 
 		/* #ifdef H5 */
-		margin-top: calc(var(--status-bar-height) + 220rpx + 52px);
+		margin-top: calc(var(--status-bar-height) + 220rpx + 102px);
 		/* #endif */
 
 		/* #ifdef MP */
-		margin-top: calc(var(--status-bar-height) + 220rpx + 52px);
+		margin-top: calc(var(--status-bar-height) + 220rpx + 102px);
 		/* #endif */
 
 		transition: all 0.25s;

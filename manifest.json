@@ -144,7 +144,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/api" : {
-                    "target" : "https://www.youxianji.cc/api/v1",
+                    "target" : "https://youxianji.zansuo.com/api/v1",
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

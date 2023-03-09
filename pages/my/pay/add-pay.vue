@@ -9,12 +9,12 @@
 		<!--表单-->
 		<view class="cu-form-group margin-top">
 			<view class="title">收款姓名</view>
-			<input placeholder="您的姓名" @input="nameInput" v-model="bankInfo.bankusername"/>
+			<input placeholder="您的姓名" @input="nameInput" v-model="bankInfo.bankusername" class="text-right"/>
 			<text class='cuIcon-roundclosefill text-grey' v-if="nameClose" />
 		</view>
 		<view class="cu-form-group">
 			<view class="title">手机号码</view>
-			<input placeholder="用于联系通知您的号码" @input="phoneInput" v-model="bankInfo.bankphone" />
+			<input placeholder="用于联系通知您的号码" @input="phoneInput" v-model="bankInfo.bankphone" class="text-right"/>
 			<text class='cuIcon-roundclosefill text-grey' v-if="phoneClose" />
 		</view>
 		<view class="cu-form-group">
@@ -29,17 +29,17 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">收款账号</view>
-			<input placeholder="请输入收款账号" @input="payInput" v-model="bankInfo.bankcard"/>
+			<input placeholder="请输入收款账号" @input="payInput" v-model="bankInfo.bankcard" class="text-right"/>
 			<text class='cuIcon-roundclosefill text-grey' v-if="payClose" />
 		</view>
 		<view class="cu-form-group">
 			<view class="title">开关选择</view>
-			<switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
+			<switch @change="SwitchA"  :checked="switchA?true:false" color="#FFB629"></switch>
 		</view>
 		<!--小程序端显示-->
-		<view class="bg-white wecanui-footer-fixed foot-pb">
+		<view class="bg-white">
 			<view class="flex flex-direction">
-				<button class="cu-btn bg-red" @click="addUserBankFuc">提交保存</button>
+				<button class="cu-btn text-color-yellow text-xl text-4F4F50" @click="addUserBankFuc">保存</button>
 			</view>
 		</view>
 
@@ -183,8 +183,14 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.wecanui-footer-fixed .flex-direction {
 		padding: 18.18rpx;
+	}
+	button{
+		width: 326px;
+		height: 44px;
+		margin: 0 auto;
+		margin-top: 41px;
 	}
 </style>

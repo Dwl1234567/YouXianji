@@ -30,9 +30,9 @@
 		</block>
 
 		<!--按钮-->
-		<view class="bg-white wecanui-footer-fixed foot-pb">
+		<view class="bg-white button">
 			<view class="flex flex-direction">
-				<button class="cu-btn bg-red" @tap="AddPayTap">
+				<button class="cu-btn bg-white" @tap="AddPayTap">
 					添加银行卡
 				</button>
 			</view>
@@ -145,6 +145,17 @@
 </script>
 
 <style lang="scss">
+	page{
+		background: #F0F0F0;
+	}
+		
+	.button{
+		margin-top: 21px;
+	}
+	.cu-btn{
+		height: 54px;
+		line-height: 54px;
+	}
 	.pay-card-view {
 		position: relative;
 		margin: 36.36rpx 27.27rpx;

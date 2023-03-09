@@ -2,19 +2,19 @@
 
 module.exports = {
 	
-	HTTP_REQUEST_URL: `https://www.youxianji.cc/api/v1`,
+	HTTP_REQUEST_URL: `https://youxianji.zansuo.com/api/v1`,
 	// HTTP_REQUEST_URL: `http://192.168.2.8:8080/api/`,
 	
-	KEFU_POST_URL:`www.youxianji.cc`,
-	// KEFU_POST_URL:`www.youxianji.cc`,
+	KEFU_POST_URL:`youxianji.zansuo.com`,
+	// KEFU_POST_URL:`youxianji.zansuo.com`,
 	//上传图片地址http://192.168.2.8:8080/api//upload
-	UPLOAD_IMG_URL: `https://www.youxianji.cc/api/v1/upload`,
+	UPLOAD_IMG_URL: `https://youxianji.zansuo.com/api/v1/upload`,
 	// UPLOAD_IMG_URL: `http://192.168.2.8:8080/api//upload`,
 	
 	// 小程序配置
 	// #ifdef MP || APP-PLUS
 	// 请求域名 格式： https://您的域名
-	// HTTP_REQUEST_URL: `https://www.youxianji.cc/api/v1/login`,
+	// HTTP_REQUEST_URL: `https://youxianji.zansuo.com/api/v1/login`,
 	// 长连接 格式：wss://您的域名 
 	// VUE_APP_WS_URL: `wss://`,
 	// #endif
@@ -22,7 +22,7 @@ module.exports = {
 	// #ifdef H5
 	//H5接口是浏览器地址，非单独部署不用修改
 	//HTTP_REQUEST_URL: window.location.protocol + "//" + window.location.host,
-	// HTTP_REQUEST_URL:`https://www.youxianji.cc`,
+	// HTTP_REQUEST_URL:`https://youxianji.zansuo.com`,
 	// 长连接地址，非单独部署不用修改
 	// VUE_APP_WS_URL: `ws://${window.location.host}`,
 	// #endif

@@ -19,7 +19,7 @@
 					<!--订单主信息-->
 					<view class="shop-title-view">
 						<view class="cu-avatar sm round"
-							:style="[{backgroundImage:'url('+ 'https://www.youxianji.cc/uploads/recying/goods/nopic.jpg' +')'}]" />
+							:style="[{backgroundImage:'url('+ 'https://youxianji.zansuo.com/uploads/recying/goods/nopic.jpg' +')'}]" />
 						<view class="text-black text-cut shop-name">{{item.order_number}}</view>
 						<text v-if="item.order_status == 0" class="text-right text-gray text-sm">等待报价</text>
 						<text v-if="item.order_status == 1" class="text-right text-gray text-sm">等待发货</text>

@@ -118,7 +118,7 @@
 			handleClearCache() {
 				let that = this
 				uni.showModal({
-					title: '清除缓存',
+					title: '提示',
 					content: '您确定要清除缓存吗？',
 					success: function(res) {
 						if (res.confirm) {

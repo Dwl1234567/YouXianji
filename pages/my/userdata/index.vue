@@ -1,8 +1,7 @@
 <template>
 	<view>
-
 		<!--设置列表-->
-		<view class="cu-list menu sm-border  margin-sm bg-white radius-4">
+		<view class="cu-list menu sm-border margin-sm bg-white radius-4">
 			<view class="cu-item arrow" @tap="setaAvatarTap">
 				<view class="content">头像</view>
 				<view class="action">
@@ -19,20 +18,15 @@
 				<view class="content">性别</view>
 				<view class="action">
 					<picker @change="sexPickerChange" :value="sexIndex" :range="sexPicker">
-						<view class="picker text-gray">
-							{{sexIndex>-1?sexPicker[sexIndex]:'男'}}
-						</view>
+						<view class="picker text-gray">{{sexIndex>-1?sexPicker[sexIndex]:'男'}}</view>
 					</picker>
 				</view>
 			</view>
 			<view class="cu-item arrow">
 				<view class="content">出生日期</view>
 				<view class="action">
-					<picker mode="date" :value="dateValue" start="1920-01-01" :end="endtime"
-						@change="datePickerChange">
-						<view class="picker text-gray">
-							{{dateValue}}
-						</view>
+					<picker mode="date" :value="dateValue" start="1920-01-01" :end="endtime" @change="datePickerChange">
+						<view class="picker text-gray">{{dateValue}}</view>
 					</picker>
 				</view>
 			</view>
@@ -62,22 +56,17 @@
 				<view class="content">注销账户</view>
 			</view>
 		</view> -->
-
 	</view>
 </template>
 
 <script>
-	import {
-		getRecycleUserinfo,
-		userset
-	} from "@/api/user.js";
-	import {
-		getNowDay
-	} from "@/utils/pub.js"
+	import { getRecycleUserinfo, userset } from '@/api/user.js';
+	import { UPLOAD_IMG_URL } from '@/config/app.js';
+	import { getNowDay } from '@/utils/pub.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
-			barTitle
+			barTitle,
 		},
 		data() {
 			return {
@@ -86,101 +75,140 @@
 				sexPicker: ['男', '女'],
 				dateValue: '还未设置',
 				userInfo: '',
-				endtime:getNowDay()
-			}
+				endtime: getNowDay(),
+			};
 		},
 		onLoad() {
-			console.log(this.endtime)
+			console.log(this.endtime);
 		},
 		onShow() {
 			let that = this;
-			getRecycleUserinfo().then(res => {
+			getRecycleUserinfo().then((res) => {
 				let data = res.data;
 				this.userInfo = data;
 				this.sexIndex = data.gender;
 				if (data.birthday) {
 					that.dateValue = data.birthday;
 				}
-			})
+			});
 		},
 		onReady() {
 			uni.pageScrollTo({
 				scrollTop: 0,
-				duration: 0
+				duration: 0,
 			});
 		},
 		methods: {
 			setaAvatarTap() {
-				uni.navigateTo({
-					url: "/pages/my/userdata/avatar?avatar="+decodeURI(this.userInfo.avatar)
+				// uni.navigateTo({
+				// 	url: "/pages/my/userdata/avatar?avatar="+decodeURI(this.userInfo.avatar)
+				// });
+				uni.showActionSheet({
+					itemList: ['从相册中选择'],
+					success: function (res) {
+						uni.chooseImage({
+							success: (chooseImageRes) => {
+								const tempFilePaths = chooseImageRes.tempFilePaths;
+								console.log(tempFilePaths);
+								uni.uploadFile({
+									url: UPLOAD_IMG_URL,
+									filePath: tempFilePaths[0],
+									name: 'file',
+									header: {
+										'content-type': 'multipart/form-data',
+									},
+									formData: {
+										// 'file': 'touxiang'
+									},
+									success: (res) => {
+										console.log(JSON.parse(res.data));
+										let data = JSON.parse(res.data);
+										let params = {
+											key: 'avatar',
+											value: data.data.imgurl,
+										};
+										//临时更新用户头像
+										this.avatar = data.data.imgurl;
+										//传参修改用户头像信息
+										userset(params).then((res) => {});
+									},
+								});
+							},
+						});
+					},
+					fail: function (res) {
+						console.log(res.errMsg);
+					},
 				});
 			},
 			editNameTap() {
 				uni.navigateTo({
-					url: "/pages/my/userdata/edit-name?name="+this.userInfo.nickname
+					url: '/pages/my/userdata/edit-name?name=' + this.userInfo.nickname,
 				});
 			},
 			sexPickerChange(e) {
 				this.sexIndex = e.detail.value;
 				let that = this;
 				let params = {
-					"key": "gender",
-					"value": e.detail.value
-				}
-				userset(params).then(res => {
+					key: 'gender',
+					value: e.detail.value,
+				};
+				userset(params)
+					.then((res) => {
 						that.$u.toast('修改成功!');
 					})
-					.catch(err => {
+					.catch((err) => {
 						that.$u.toast(err);
-					})
+					});
 			},
 			datePickerChange(e) {
 				let that = this;
 				this.dateValue = e.detail.value;
 				let params = {
-					"key": "birthday",
-					"value": e.detail.value
-				}
-				userset(params).then(res => {
+					key: 'birthday',
+					value: e.detail.value,
+				};
+				userset(params)
+					.then((res) => {
 						that.$u.toast('修改成功!');
 					})
-					.catch(err => {
+					.catch((err) => {
 						that.$u.toast(err);
-					})
+					});
 			},
 			synopsisTap() {
 				uni.navigateTo({
-					url: "/pages/my/userdata/edit-synopsis?bio="+this.userInfo.bio
+					url: '/pages/my/userdata/edit-synopsis?bio=' + this.userInfo.bio,
 				});
 			},
 			addressTap() {
 				uni.navigateTo({
 					// url: "/pages/my/userdata/address"
-					url: "/pages/my/address/address"
+					url: '/pages/my/address/address',
 				});
 			},
-			bankTap(){
+			bankTap() {
 				uni.navigateTo({
-					url: "/pages/my/pay/paylist"
+					url: '/pages/my/pay/paylist',
 				});
 			},
 			editPhoneTap() {
 				uni.navigateTo({
-					url: "/pages/my/userdata/edit-phone?mobile="+this.userInfo.mobile
+					url: '/pages/my/userdata/edit-phone?mobile=' + this.userInfo.mobile,
 				});
 			},
 			editContactCardsTap() {
 				uni.navigateTo({
-					url: "/pages/my/userdata/contact-cards"
+					url: '/pages/my/userdata/contact-cards',
 				});
 			},
 			regionTap() {
 				uni.navigateTo({
-					url: "/pages/my/userdata/region"
+					url: '/pages/my/userdata/region',
 				});
 			},
-		}
-	}
+		},
+	};
 </script>
 
 <style lang="scss">

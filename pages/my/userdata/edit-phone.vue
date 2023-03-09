@@ -30,9 +30,9 @@
 		
 		<view class="text-sm text-gray padding-sm">验证码将会发送到您的手机号中~</view>
 		
-		<view class="bg-white wecanui-footer-fixed foot-pb">
+		<view class="bg-white foot-pb ">
 			<view class="flex flex-direction padding-sm">
-				<button class="cu-btn bg-red">换绑手机号</button>
+				<button class="cu-btn text-color-yellow">换绑手机号</button>
 			</view>
 		</view>
 		
