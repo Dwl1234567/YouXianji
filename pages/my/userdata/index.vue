@@ -103,41 +103,33 @@
 				// uni.navigateTo({
 				// 	url: "/pages/my/userdata/avatar?avatar="+decodeURI(this.userInfo.avatar)
 				// });
-				uni.showActionSheet({
-					itemList: ['从相册中选择'],
-					success: function (res) {
-						uni.chooseImage({
-							success: (chooseImageRes) => {
-								const tempFilePaths = chooseImageRes.tempFilePaths;
-								console.log(tempFilePaths);
-								uni.uploadFile({
-									url: UPLOAD_IMG_URL,
-									filePath: tempFilePaths[0],
-									name: 'file',
-									header: {
-										'content-type': 'multipart/form-data',
-									},
-									formData: {
-										// 'file': 'touxiang'
-									},
-									success: (res) => {
-										console.log(JSON.parse(res.data));
-										let data = JSON.parse(res.data);
-										let params = {
-											key: 'avatar',
-											value: data.data.imgurl,
-										};
-										//临时更新用户头像
-										this.avatar = data.data.imgurl;
-										//传参修改用户头像信息
-										userset(params).then((res) => {});
-									},
-								});
+				uni.chooseImage({
+					success: (chooseImageRes) => {
+						const tempFilePaths = chooseImageRes.tempFilePaths;
+						console.log(tempFilePaths);
+						uni.uploadFile({
+							url: UPLOAD_IMG_URL,
+							filePath: tempFilePaths[0],
+							name: 'file',
+							header: {
+								'content-type': 'multipart/form-data',
+							},
+							formData: {
+								// 'file': 'touxiang'
+							},
+							success: (res) => {
+								console.log(JSON.parse(res.data));
+								let data = JSON.parse(res.data);
+								let params = {
+									key: 'avatar',
+									value: data.data.imgurl,
+								};
+								//临时更新用户头像
+								this.avatar = data.data.imgurl;
+								//传参修改用户头像信息
+								userset(params).then((res) => {});
 							},
 						});
-					},
-					fail: function (res) {
-						console.log(res.errMsg);
 					},
 				});
 			},

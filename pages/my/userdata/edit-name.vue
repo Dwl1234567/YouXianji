@@ -25,8 +25,8 @@
 		
 		<view class="text-sm text-gray padding-sm">13个字以内，仅支持汉字、字母、数字或下划线</view>
 		
-		<!-- #ifdef APP- -->
-		<view class="text-orange cu-btn bg-deepblue radius-2"  @tap="editname">保存</view>
+		<!-- #ifdef APP-PLUS -->
+		<view class="text-color-yellow radius-6 button text-center text-xl text-4F4F50"  @tap="editname">保存</view>
 		<!-- #endif -->
 		<!-- #ifdef H5 -->
 		<view class="text-color-yellow radius-6 button text-center text-xl text-4F4F50"  @tap="editname">保存</view>
