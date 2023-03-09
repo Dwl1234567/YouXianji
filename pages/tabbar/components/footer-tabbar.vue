@@ -57,6 +57,7 @@
 			},
 		},
 		created() {
+			console.log(123)
 			this.TabID = this.tabID;
 			this.MsgDot = this.msgDot;
 		},

@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="contents">
 		<!--标题栏-->
 		<bar-title bgColor="bg-white" isBack @rightTap="rightTap">
 			<block slot="content">我的足迹</block>
@@ -17,7 +17,7 @@
 				<view class="bottom-ul"></view>
 			</view>
 		</scroll-view>
-		<block class="" v-if="TabCur == 0">
+		<block class="content" v-if="TabCur == 0">
 			<view class="padding-lr-sm padding-top-lg" style="background: #F0F0F0;">
 				<goods-mini-list :list_data="querydata[TabCur].dataList" @listTap="goodsSortListTap"></goods-mini-list>
 			</view>
@@ -240,10 +240,13 @@
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/footmark.scss";
-	
+	.contents{
+		background: #F0F0F0;
+	}
 	.nav{
-		.cu-item{
-			
-		}
+		background: white;
+	}
+	page{
+		background: #F0F0F0;
 	}
 </style>

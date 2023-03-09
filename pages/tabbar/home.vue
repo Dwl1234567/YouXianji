@@ -1,230 +1,28 @@
 <template>
 	<view class="home-box">
 		<!--欢迎-->
-		<welcome-tip
+		<!-- <welcome-tip
 			:content="appMode.tips+'，'+userInfo.nickname"
 			:show="true"
 			:c_s="3000"
 			@closeFinish="welcomeClose"
-		></welcome-tip>
+		></welcome-tip> -->
 
 		<!--营销块背景-->
-		<view class="swiper-background-box show">
+		<!-- <view class="swiper-background-box show">
 			<view class="swiper-background"></view>
+		</view> -->
+
+		<!-- <view class="tab">
+			<view class="second" @tap="checkView(1)">二手</view>
+			<view class="new" @tap="checkView(2)">全新</view>
+		</view> -->
+		<view v-if="newViews">
+			<newView @checkView="checkView"></newView>
 		</view>
-		<!--头部轮播背景-->
-		<!-- <swiper-background :list_data="swiperInfo.list" :indexs="swiperInfo.index" :show="swiperInfo.show"
-			:welcome="swiperInfo.welcome"></swiper-background> -->
-
-		<view class="head-search-box" :class="headInfo.Class" :style="">
-			<!--小程序端的标题-->
-			<!-- #ifdef MP -->
-			<view class="text-center margin-top-sm small-routine-title">首页</view>
-			<!-- #endif -->
-
-			<!--搜索框-->
-			<view class="cu-bar search search-box">
-				<view class="search-form round" @tap="searchTap">
-					<!-- <text class="cuIcon-search"></text> -->
-					<text>iPhone 13 Pro</text>
-					<view class="sbtn cu-btn btn bg-red radius-4">搜索</view>
-				</view>
-				<text class="cuIcon-scan" @tap="snTap" />
-			</view>
-
-			<!--选项卡-->
-			<view class="nav-box flex-tab show">
-				<view class="flex">
-					<view class="basis-xxl">
-						<scroll-view scroll-x class="nav z" scroll-with-animation :scroll-left="headTab.scrollLeft">
-							<block v-for="(item,index) in headTab.list" :key="index">
-								<view
-									class="cu-item"
-									:class="index==headTab.TabCur?'select':''"
-									@tap="tabSelect"
-									:data-index="index"
-									:data-id="item.id"
-								>
-									<view>{{item.name}}</view>
-									<view class="tab-dot bg-white"></view>
-								</view>
-							</block>
-						</scroll-view>
-					</view>
-					<view class="basis-xs flex" @tap="sortVueTap">
-						<view class="sort-icon">
-							<text class="cuIcon-sort"></text>
-						</view>
-						<view style="line-height: 60rpx">分类</view>
-					</view>
-				</view>
-			</view>
+		<view v-if="!newViews">
+			<secondView @checkView="checkView"></secondView>
 		</view>
-		
-		<!--中间内容区域-->
-		<view class="view-content" :class="[viewContent.welcome?'welcome':'',headTab.TabCur==0?'show':'']">
-			<!--滑动菜单-->
-			<!-- 123 -->
-			<!-- <uni-steps :options="[{title: '事件一'}, {title: '事件二'}, {title: '事件三'}, {title: '事件四'}]" :active="1"></uni-steps> -->
-			<view class="padding-sm">
-				<grid-menu-list :list_data="gridMenuData" @listTap="gridMenuTap" />
-			</view>
-
-			<!--轮播、报价条、短视频-->
-			<view class="padding-lr-sm padding-bottom-sm" style="position: relative">
-				<view class="flex block">
-					<view class="flex-sub block-1 radius">
-						<!--轮播-->
-						<view class="swiper-box">
-							<swiper
-								class="screen-swiper square-dot c"
-								autoplay
-								circular
-								indicator-dots
-								:current="swiperInfo.index"
-								@change="swiperChange"
-							>
-								<swiper-item v-for="(item,index) in swiperInfo.list" :key="index">
-									<view class="swiper-padding">
-										<image class="" :src="item.image" mode="widthFix" />
-									</view>
-								</swiper-item>
-							</swiper>
-						</view>
-					</view>
-					<view class="flex-sub block-2">
-						<view class="flex align-start">
-							<view class="text-center video radius" @click="videoTap()">
-								<!--短视频-->
-								<image
-									class=""
-									src="https://storage.youxianji.cc/images/20221012172029634686dd87fb7.png"
-									mode="widthFix"
-								/>
-							</view>
-						</view>
-						<view class="flex align-end">
-							<view class="baojia-bar radius margin-top-xs">
-								<!--回收报价条-->
-								<view v-if="phoneModel" class="process-info">
-									<view>当前机型</view>
-									<view class="">
-										<text class="model">{{phoneModel}}</text>
-									</view>
-									<view style="margin-top: 5rpx">
-										<text class="margin-right-xs text-xs">最高可卖</text>
-										<text class="text-sm text-red">￥</text>
-										<text class="price">{{UserPhoneMoney}}</text>
-									</view>
-									<view class="text-center">
-										<text
-											class="padding-lr-xl btn radius-4"
-											@click="goevaluation()"
-										>
-											立即估价
-										</text>
-									</view>
-								</view>
-								<!--回收报价条 end-->
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
-
-			<!--商品tab-->
-			<!--
-			<view class="goods-tab-box">
-				<scroll-view scroll-x class="nav z margin-tb-sm">
-					<view class="flex text-center">
-						<block v-for="(item,index) in goodsTabData.list" :key="index">
-							<view class="cu-item flex-sub nf" :class="index==goodsTabData.TabCur?'select':''"
-								@tap="goodsTab" :data-id="index">
-								<view class="cu-tag badge z bg-gradual-pink" v-if="item.tag">{{item.tag}}</view>
-								<view :class="index == goodsTabData.TabCur?'text-red':''">{{item.title}}</view>
-								<view class="tab-dot bg-red"></view>
-							</view>
-						</block>
-					</view>
-				</scroll-view>
-			</view>
-			-->
-
-			<view class="padding-lr-sm bg-white products">
-				<view class="products-item">
-					<image src="/static/home/安全保障@1.5x.svg"></image>
-					<text>正品保障</text>
-				</view>
-				<view class="products-item">
-					<image src="/static/home/快速高效@1.5x.svg"></image>
-					<text>极速发货</text>
-				</view>
-				<view class="products-item">
-					<image src="/static/home/售后 (2)@1.5x.svg"></image>
-					<text>售后无忧</text>
-				</view>
-				<!-- <image class="" src="/static/home/baozhang.png" mode="widthFix" style="width: 100%; height: auto" /> -->
-			</view>
-
-			<view class="tab-list">
-				<!--商品列表-->
-				<goods-list
-					:list_data="goodsData"
-					@listTap="goodsListTap"
-					:show="goodsTabData.TabCur!=3 && goodsTabData.TabCur!=4?true:false"
-				></goods-list>
-			</view>
-
-			<!--占位底部距离-->
-			<view class="cu-tabbar-height"></view>
-		</view>
-		<!--中间内容区域-分类-->
-
-		<view class="view-content" :class="headTab.TabCur!=0?'show':''">
-			<!--宫格分类-->
-			<grid-sort-list
-				v-if="headTab.list[0]"
-				:list_data="headTab.list[headTab.TabCur].serieslist"
-				@listTap="gridSortTap"
-			></grid-sort-list>
-
-			<!--广告-->
-			<view class="margin">
-				<image class="ad-img" :src="swiperInfo.list[0].image" mode="widthFix"></image>
-			</view>
-
-			<!--标题-->
-			<view class="margin-bottom-sm tab-list-title">
-				<view class="flex flex-wrap">
-					<view class="basis-sm text-right">
-						<image class="img-aau" src="/static/img/aau.png" lazy-load mode="widthFix"></image>
-					</view>
-					<view class="basis-xs text-center">
-						<text class="text-black text-xl text-bold">为您推荐</text>
-					</view>
-					<view class="basis-sm text-left">
-						<image class="img-aau" src="/static/img/aau.png" lazy-load mode="widthFix"></image>
-					</view>
-				</view>
-			</view>
-
-			<!--商品列表-->
-			<!--<goods-list :list_data="goodsData" @listTap="goodsListTap"></goods-list>-->
-			<goodsList :list_data="goodsData" @listTap="goodsListTap"></goodsList>
-
-			<!-- 下拉加载提示 -->
-			<!--占位底部距离-->
-			<view class="cu-tabbar-height"></view>
-		</view>
-		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
-		<!--弹出框-->
-		<modal-img
-			:show="modalShow"
-			src="/static/delect_images/home/sundry/reward.png"
-			@imgTap="imgTap"
-			@closeTap="closeTap"
-		></modal-img>
-
 		<!--返回顶部-->
 		<view class="add-btn-view-box">
 			<!--返回顶部-->
@@ -242,7 +40,8 @@
 <script>
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
-
+	import newView from './components/new.vue';
+	import secondView from './components/second.vue';
 	//加载组件
 	import welcomeTip from '@/components/common/basics/welcome-tip';
 	import swiperBackground from '@/components/common/basics/swiper-background';
@@ -274,6 +73,8 @@
 	export default {
 		name: 'home',
 		components: {
+			newView,
+			secondView,
 			welcomeTip,
 			swiperBackground,
 			gridMenuList,
@@ -289,6 +90,7 @@
 		},
 		data() {
 			return {
+				newViews: true,
 				tabID: 0,
 				appMode: _tool.mpb_mode('tips'),
 				swiperInfo: {
@@ -397,6 +199,14 @@
 			this.getProduct();
 		},
 		methods: {
+			checkView(e) {
+				console.log(e)
+				if (e === 'new') {
+					this.newViews = true;
+				} else {
+					this.newViews = false;
+				}
+			},
 			snTap() {
 				console.log('扫描二维码获取序列号筛选结果');
 				let that = this;
@@ -663,19 +473,19 @@
 </script>
 
 <style lang="scss" scoped>
-	.products{
+	.products {
 		display: flex;
 		align-items: center;
 		justify-content: space-evenly;
-		.products-item{
+		.products-item {
 			display: flex;
 			align-items: center;
-			image{
+			image {
 				margin-right: 5px;
 				width: 20px;
 				height: 20px;
 			}
-			text{
+			text {
 				font-family: PingFangSC-Regular;
 				font-size: 12px;
 				color: #101010;
@@ -700,12 +510,12 @@
 					line-height: 32px;
 					position: absolute;
 					right: 37px;
-					background-image: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+					background-image: linear-gradient(90deg, #ff6868 0%, #ea1515 100%);
 				}
-				text{
+				text {
 					font-family: PingFangSC-Regular;
 					font-size: 17px;
-					color: #8E8E8E;
+					color: #8e8e8e;
 					font-weight: 400;
 					position: absolute;
 					left: 25px;
@@ -726,7 +536,7 @@
 					flex-basis: 90%;
 					width: 90%;
 					z-index: 1;
-					.nav{
+					.nav {
 						padding-left: 10px;
 					}
 				}
@@ -922,8 +732,8 @@
 			width: 100%;
 			height: 127px;
 			color: #0081ff;
-			background-image: linear-gradient(-44deg, #FDF1FF 0%, #CCDEF8 100%);
-			border: 0.5px solid rgba(213,218,223,1);
+			background-image: linear-gradient(-44deg, #fdf1ff 0%, #ccdef8 100%);
+			border: 0.5px solid rgba(213, 218, 223, 1);
 			border-radius: 6px;
 			padding: 0 10rpx;
 			text-align: center;
@@ -949,9 +759,9 @@
 				}
 
 				.btn {
-					border: 1px solid rgba(30,129,255,1);
+					border: 1px solid rgba(30, 129, 255, 1);
 					border-radius: 4px;
-					color: rgba(30,129,255,1);
+					color: rgba(30, 129, 255, 1);
 					font-size: 10px;
 					height: 23px !important;
 					line-height: 23px;
