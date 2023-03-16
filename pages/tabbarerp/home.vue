@@ -290,6 +290,12 @@
 							badge: 0,
 							name: '聊天记录'
 						},
+						{
+							cuIcon: 'icon-announce',
+							color: 'red',
+							badge: 0,
+							name: '即时通话'
+						},
 					]
 				},
 				{
@@ -512,6 +518,9 @@
 					
 					if (index == 3) {
 						var value = "chat/list";
+					}
+					if (index == 4) {
+						var value = "chat/chatAdmin";
 					}
 				}
 				if (key == 3) {

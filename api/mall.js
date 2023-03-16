@@ -289,7 +289,7 @@ export function AddressArea(data) {
  * 
  */
 export function AddressInfo(data) {
-	return request.get('/thirdstore/address/info',data,{'noLogin':true});
+	return request.get('/get_bank_details',data,{'noLogin':true});
 }
 /**
  * 用户-会员登录

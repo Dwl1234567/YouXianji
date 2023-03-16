@@ -8,12 +8,16 @@
 		</bar-title>
 
 		<scroll-view scroll-x class="text-929294 nav text-center">
+			<view class="cu-item text-xl" :class="2==TabCur?'text-101010 cur':''" @tap="tabSelect" data-id="2">
+				全新商城
+				<view class="bottom-ul"></view>
+			</view>
 			<view class="cu-item text-xl" :class="0==TabCur?'text-101010 cur':''" @tap="tabSelect" data-id="0">
-				商城
+				二手商城
 				<view class="bottom-ul"></view>
 			</view>
 			<view class="cu-item text-xl" :class="1==TabCur?'text-101010 cur':''" @tap="tabSelect" data-id="1">
-				回收
+				旧机回收
 				<view class="bottom-ul"></view>
 			</view>
 		</scroll-view>

@@ -5,22 +5,25 @@
 			<block slot="content">提现记录</block>
 		</bar-title>
 		<view class="record">
-			<view class="head bg-white margin-sm radius-2">
-				<view class="padding-sm">
-					<view class="head_l_1 text-deepblue text-bold text-lg margin-bottom-sm">当前余额</view>
-					<view class="head_l_2 text-red text-bold text-xxl">{{money}}</view>
+			<view class="bg-F0F0F0 padding-sm">
+				<view class="head bg-white radius-6 padding-lg padding-bottom-xs">
+					<view class="">
+						<view class="head_l_1 text-101010 text-400 text-lg margin-bottom-sm">当前余额</view>
+						<view class="head_l_2 text-black text-bold text-xxxl">{{money}}</view>
+					</view>
+					<view class="head_r bg-D8D8D8 text-101010 text-400 text-sm" @click="jump_cash">立即提现</view>
 				</view>
-				<view class="head_r bg-deepblue " @click="jump_cash">立即提现</view>
+				
 			</view>
 			<block v-for="(item,index) of dataList" :key="index">
-				<view class="list bg-white margin-sm padding-sm radius-2">
+				<view class="list bg-white padding-lg border-bottom-xl">
 					<view class="list_01">
 						<view class="list_01_l" v-if="item.type==0">银行卡</view>
 						<view class="list_01_l" v-if="item.type==1">支付宝</view>
 						<view class="list_01_l" v-if="item.type==2">微信</view>
-						<view class="list_01_r text-red">-{{item.money}}</view>
+						<view class="list_01_r text-101010 text-xl text-400">-{{item.money}}</view>
 					</view>
-					<view class="list_02">
+					<view class="list_02 text-929294">
 						<view class="list_01_l">{{item.optime}}</view>
 						<view class="list_01_r" v-if="item.status==0">处理中</view>
 						<view class="" v-if="item.status==1">交易成功</view>
@@ -163,13 +166,13 @@
 				width: 90px;
 				text-align: center;
 				border-radius: 20px;
-				margin-top: 28px;
-				margin-right: 15px;
+				margin-top: 28rpx;
+				margin-right: 30rpx;
 			}
 		}
 
 		.list {
-
+			border-bottom: 1px #D8D8D8 solid;
 			.list_01 {
 				display: flex;
 				justify-content: space-between;

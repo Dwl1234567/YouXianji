@@ -4,19 +4,33 @@
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">推广人排行</block>
 		</bar-title>
-		<view class="sort bg-white margin-sm text-center radius-4">
-			<view class="head">
-				<view class="head_tit">
-					<view>分销排行榜</view>
-				</view>
-				<view class="small_title">
-					<view>已赚佣金</view>
-					<view class="text-red">
-						共<text class="big">{{userfee||0}}</text>元
+		<view class="back">
+			<image src="../../../static/画板@3x.png" class="backImg" mode="aspectFill"></image>
+			<view class="head_tit text-left">
+				<view>收益排行榜</view>
+			</view>
+			<view class="head_tits text-left">
+				<view>赚取佣金等你来</view>
+			</view>
+		</view>
+		
+		<view class="sort  margin-sm text-center radius-6">
+			
+			<view class="head bg-white radius-6">
+				<view class="small_title flex justify-content">
+					<view class="">
+						<view class="text-101010 text-lg">
+							<text class="big">{{userfee||0}}</text>
+						</view>
+						<view>已赚佣金</view>
+						
 					</view>
-					<view>当前排名</view>
-					<view class="text-red">
-						第<text class="big">{{curnum||0}}</text>名
+					<view class="">
+						<view class="text-red">
+							<text class="big">{{curnum||0}}</text>
+						</view>
+						<view>当前排名</view>
+						
 					</view>
 				</view>
 			</view>
@@ -37,33 +51,36 @@
 					</view>
 				</scroll-view>
 			</view> -->
-			<view class="t_tou">
-				<view class="tou_1">排名</view>
-				<view class="tou_2">分销人员</view>
-				<view class="tou_1">佣金</view>
+			<view class="item-people margin-top radius-6 bg-white padding-bottom">
+				<view class="t_tou">
+					<view class="tou_1">排名</view>
+					<view class="tou_2">分销人员</view>
+					<view class="tou_1">佣金</view>
+				</view>
+				<view class="t">
+					<block v-for="(item,index) of dataList" :key="index">
+						<view class="t_01" :class="item.isme?'bg-red light':''">
+							<view class="t_01_1"> 
+								<text>
+									{{item.paiming}} 
+								</text>
+							<!--<image src="@/static/item/win.png">{{index+1}}</image>-->
+							</view>
+							<view class="t_01_2"> 
+								<image :src="item.avatar || '/static/img/avatar/1.png'"></image> 
+								{{item.nickname}} 
+							</view>
+							<view class="t_01_3">
+								{{item.total_money}}
+							</view>
+						</view>
+					</block>
+				</view>
 			</view>
-			<view class="t">
-				<block v-for="(item,index) of dataList" :key="index">
-					<view class="t_01" :class="item.isme?'bg-red light':''">
-						<view class="t_01_1"> 
-							<text>
-								{{item.paiming}} 
-							</text>
-						<!--<image src="@/static/item/win.png">{{index+1}}</image>-->
-						</view>
-						<view class="t_01_2"> 
-							<image :src="item.avatar || '/static/img/avatar/1.png'"></image> 
-							{{item.nickname}} 
-						</view>
-						<view class="t_01_3">
-							{{item.total_money}}
-						</view>
-					</view>
-				</block>
-			</view>
+			
 		</view>
 		<!-- 下拉加载提示 -->
-		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
+		<!-- <uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more> -->
 	</view>
 </template>
 
@@ -160,11 +177,43 @@
 </script>
 
 <style lang="scss">
+	page{
+		background-color: #F0F0F0;
+	}
+	.back{
+		position: relative;
+		.backImg{
+			width: 100vw;
+		}
+		.head_tit{
+			position: absolute;
+			top: 102rpx;
+			left: 30rpx;
+			font-family: PingFangSC-Semibold;
+			font-size: 32px;
+			color: #101010;
+			font-weight: 600;
+		}
+		.head_tits{
+			position: absolute;
+			top: 192rpx;
+			left: 30rpx;
+			font-family: PingFangSC-Regular;
+			font-size: 16px;
+			color: #101010;
+			font-weight: 400;
+		}
+	}
+	
 	.sort {
+		position: relative;
+		top: -160rpx;
+		background-color: #F0F0F0;
+		// width: 90vw;
 		.head {
 			//background-color: #E0451D;
 			//color: #fff;
-			padding: 40px 10px 30px;
+			padding: 37px 15px 10px;
 			line-height: 50rpx;
 
 			.head_tit {
@@ -172,10 +221,12 @@
 				padding-bottom: 20px;
 			}
 			.small_title{
+				justify-content: space-around;
 				font-size:30rpx;
 				line-height:60rpx;
 				.big{
-					font-size:70rpx;
+					font-size:46rpx;
+					font-weight: 700;
 				}
 			}
 		}

@@ -1,12 +1,18 @@
 <template>
 	<view class="my-box">
+		<view class="background" style="width:100vw;290px; background-image:radial-gradient(circle at 50% -26%, rgba(37,209,249,0.66) 0%, rgba(255,255,255,0.66) 90%);"></view>
 		<view class="head-box">
 			<!--标题栏-->
 			<!--小程序端不显示-->
 			<!-- #ifndef MP -->
 			<bar-title :isBack="false" :fixed="false">
 				<block slot="right">
-					<button class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12" @tap="goToErp" v-if="is_company==1" style="box-shadow: 0px 2px 4px 0px rgba(181,181,181,0.5);">
+					<button
+						class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12"
+						@tap="goToErp"
+						v-if="is_company==1"
+						style="box-shadow: 0px 2px 4px 0px rgba(181, 181, 181, 0.5)"
+					>
 						工作模式
 						<!-- <text class="iconfont icon-nextpageorange margin-lr-xs"></text> -->
 					</button>
@@ -342,6 +348,9 @@
 			getRecycleUserinfo().then((res) => {
 				this.userInfo = res.data;
 			});
+			 // #ifdef APP-PLUS 
+			// plus.navigator.setStatusBarStyle('dark'); 
+			 // #endif 
 			this.erpuserislogin();
 		},
 		mounted() {
@@ -350,6 +359,11 @@
 				scrollTop: 0,
 				duration: 0,
 			});
+		},
+		onReady() {
+			// #ifdef APP-PLUS  
+			console.log(plus.navigator.getStatusBarStyle()+ '123123123');
+			// #endif 
 		},
 		onPullDownRefresh() {
 			getRecycleUserinfo()
@@ -395,9 +409,9 @@
 					url: '/pages/tabbar/cart',
 				});
 				/*
-				uni.navigateTo({
-					url: '/pages/goods/cart'
-				})*/
+					uni.navigateTo({
+						url: '/pages/goods/cart'
+					})*/
 			},
 			//足迹
 			footmarkTap() {
@@ -485,7 +499,7 @@
 			align-items: center;
 			padding: 0 5px;
 		}
-		.cu-list.grid{
+		.cu-list.grid {
 			background-color: #f9f9fb;
 		}
 		.cu-list.grid > .cu-item .icon {

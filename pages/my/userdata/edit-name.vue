@@ -76,6 +76,9 @@
 				}
 				userset(params).then(res=>{
 					that.$u.toast('修改成功!');
+					setTimeout(()=>{
+						uni.navigateBack()
+					}, 1000)
 				})
 				.catch(err=>{
 					that.$u.toast(err);

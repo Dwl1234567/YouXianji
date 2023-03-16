@@ -28,6 +28,7 @@
 					<picker mode="date" :value="dateValue" start="1920-01-01" :end="endtime" @change="datePickerChange">
 						<view class="picker text-gray">{{dateValue}}</view>
 					</picker>
+					
 				</view>
 			</view>
 			<!-- <view class="cu-item arrow" @tap="synopsisTap">
@@ -37,7 +38,7 @@
 				</view>
 			</view> -->
 			<!-- @tap="editPhoneTap" -->
-			<view class="cu-item">
+			<view class="cu-item arrow" @tap="editPhoneTap">
 				<view class="content">手机号</view>
 				<view class="action">
 					<text class="text-gray">{{userInfo.mobile}}</text>
@@ -154,6 +155,7 @@
 					});
 			},
 			datePickerChange(e) {
+				console.log(123);
 				let that = this;
 				this.dateValue = e.detail.value;
 				let params = {

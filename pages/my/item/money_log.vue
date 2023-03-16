@@ -4,17 +4,20 @@
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">佣金记录</block>
 		</bar-title>
-		<view class="mingxi bg-white margin-sm radius-3">
-			
-			<view class="ticheng">
+		<view class="mingxi bg-white margin-sm radius-3 padding-top-xl">
+			<view class="tab flex text-xl text-400 text-929294" style="    justify-content: center;">
+				<view class="tab-item margin-right-sm" @tap="checkTab(1)" :class="tabId === 1 ? 'text-500 text-101010': ''">收入统计</view>
+				<view class="tab-item margin-left-sm" @tap="checkTab(2)" :class="tabId === 2 ? 'text-500 text-101010': ''">支出统计</view>
+			</view>
+			<view class="ticheng bg-white">
 				<view class="totalfee padding-lg text-center text-red">
 					共
 					<text class="fee">{{totalfee}}</text>
 					元
 				</view>
 				<view class="t_tou">
-					<view class="tou_1"><view class="bg-gray">来源/时间</view></view>
-					<view class="tou_2"><view class="bg-gray">金额</view></view>
+					<view class="tou_1"><view class="bg-white">来源/时间</view></view>
+					<view class="tou_2"><view class="bg-white">金额</view></view>
 				</view>
 				<block v-for="(item,index) of dataList" :key="index">
 					<view class="tc" @click="jump(item.id)">
@@ -27,12 +30,13 @@
 						</view>
 					</view>
 				</block>
+				<!-- 下拉加载提示 -->
+				<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 			</view>
 		</view>
 		
-		<button class="cash-btn bg-deepblue radius-4" @click="jump_cash">去提现</button>
-		<!-- 下拉加载提示 -->
-		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
+		<!-- <button class="cash-btn bg-deepblue radius-4" @click="jump_cash">去提现</button> -->
+		
 	</view>
 </template>
 
@@ -49,6 +53,7 @@
 		},
 		data() {
 			return {
+				tabId: 1,
 				num:0,
 				dataList: [],
 				totalfee: 0,
@@ -90,6 +95,9 @@
 			this.getDataList();
 		},
 		methods: {
+			checkTab(item) {
+				this.tabId = item
+			},
 			jump_cash(){
 				uni.navigateTo({
 					url:'/pages/my/item/tixian_add1'
@@ -130,6 +138,9 @@
 </script>
 
 <style lang="scss">
+	page{
+		background-color: #F0F0F0;
+	}
 	.mingxi{
 		.head{display: flex;margin: 10px 0;}
 		.head_l{display: flex;width: 85%;justify-content: space-around;}

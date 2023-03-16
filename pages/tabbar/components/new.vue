@@ -234,9 +234,9 @@
 			<button v-if="gotopstatus" class="cu-btn cuIcon-top bg-red" @tap="goToTap"></button>
 		</view>
 		<!--客服悬浮球-->
-		<view class="kefu">
+		<!-- <view class="kefu">
 			<drag-button :isDock="true" :existTabBar="true" @btnClick="btnClick" />
-		</view>
+		</view> -->
 		<!--底部导航-->
 		<!-- <footer-tabbar :tabID="0" :msgDot="true" /> -->
 	</view>

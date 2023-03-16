@@ -7,15 +7,15 @@
 
 		<!--列表-->
 		<block v-for="(item,index) in bankList" :key="index">
-			<view class="bg-red pay-card-view padding shadow margin-top">
+			<view class="bg-red pay-card-view padding shadow margin-top" :class="item.bank_type === 0 ? 'bank' : item.bank_type === 1 ? 'weixin' : 'zhifubao'" @tap="editPayTap(item.id)">
 				<view class="flex text-black text-lg" > 
 				<!-- @tap="editPayTap(item.id)" -->
-					<view class="cu-avatar  margin-right round lg" :style="[{backgroundImage:'url('+ tempico +')'}]" />
+					<view class="cu-avatar  margin-right round lg"  />
 					<view class="flex-sub text-left">
 						<view class="text-white">
 							{{item.bank_name}}
 						</view>
-						<view class="margin-tb text-xxl text-white" @tap="editPayTap(item.id)">
+						<view class="margin-tb text-xxl text-white">
 							{{item.bank_card}}
 						</view>
 					</view>
@@ -155,6 +155,18 @@
 	.cu-btn{
 		height: 54px;
 		line-height: 54px;
+	}
+	.bank{
+		background-image: url('https://storage.youxianji.cc/images/20230313150224640eca800ccfb.png');
+		background-size: 100%;
+	}
+	.weixin{
+		background: url('https://storage.youxianji.cc/images/20230313150156640eca6461120.png');
+		background-size: 100%;
+	}
+	.zhifubao{
+		background: url('https://storage.youxianji.cc/images/20230313150013640ec9fd3db7c.png');
+		background-size: 100%;
 	}
 	.pay-card-view {
 		position: relative;

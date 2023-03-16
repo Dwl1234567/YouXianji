@@ -10,14 +10,14 @@
 				<view class="margin-bottom-sm title-view">
 					<view class="cu-avatar sm round"
 						style="background-image:url(https://storage.youxianji.cc/images/20220412213814625580c6915e7.png)" />
-					<view class="title-box">
+<!-- 					<view class="title-box">
 						<text class="text-black margin-right-xs">升级到</text>
 						<text class="bg-red cu-tag sm radius">{{dataInfo.name}}</text>
-					</view>
+					</view> -->
 				</view>
 
-				<view class="margin-tb text-sm text-gray">特权</view>
-				<view class="text-black gift-list" v-for="(item,index) in dataInfo.tequan">
+				<view class="margin-tb text-xl text-500 text-101010">我的特权</view>
+				<view class="text-black gift-list text-lg" v-for="(item,index) in dataInfo.tequan">
 					<view class="text-cut title">{{item.name}}</view>
 					<text class="text-right">{{(item.money * 100).toFixed(0)}}%</text>
 				</view>
@@ -25,7 +25,7 @@
 		</view>
 
 		<!--支付方式-->
-		<view class="bg-white pay-view">
+		<view class="bg-white pay-view margin-lr radius-6">
 			<radio-group class="block" @change="RadioChange">
 				<view class="pay-bar" @tap="payTap('wxpay')">
 					<view class="cu-avatar sm" style="background-image:url(/static/zaiui/img/wechat.png)" />
@@ -64,7 +64,7 @@
 			<checkbox class="round red sm checked" :checked="servercheck" />
 			<view class="text-black-view">
 				<text class="text-black">我已阅读并同意</text>
-				<text class="text-blue">《优闲集平台放心买用户服务协议》</text>
+				<text class="text-yellow">《优闲集平台放心买用户服务协议》</text>
 			</view>
 		</view>
 
@@ -76,10 +76,10 @@
 		<view class="bg-white footer-fixed foot-padding-bottom">
 			<view class="cu-bar padding-lr">
 				<view class="text-black text-bold price-view">
-					<text>金额：￥{{dataInfo.money}}元</text>
+					<text>金额：<span class="text-yellow text-xxl text-400">{{dataInfo.money}}</span></text>
 				</view>
-				<view class="btn-view">
-					<button class="cu-btn radius bg-red" @tap="submit">确认升级</button>
+				<view class="btn-view ">
+					<button class="cu-btns radius-4 text-color-yellow text-white padding-lr-xl" @tap="submit">确认升级</button>
 				</view>
 			</view>
 		</view>
@@ -172,4 +172,7 @@
 <style lang="scss">
 	@import "@/uni_modules/mpb-ui/shop/pay.scss";
 	@import "@/uni_modules/mpb-ui/shop/settlement.scss";
+	page{
+		background: #F0F0F0;
+	}
 </style>

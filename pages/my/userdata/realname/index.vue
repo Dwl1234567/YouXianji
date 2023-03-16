@@ -14,11 +14,11 @@
 		<!--状态信息-->
 		<view class="text-black text-xl text-center margin-bottom-sm" v-if="!status">您尚未实名认证</view>
 		
-		<view class="text-black text-lg text-center margin-bottom-sm" v-if="status">
-			<text class="margin-right">{{userInfo.realname}}</text>
-			<text>{{userInfo.realcard}}</text>
+		<view class="text-black text-xxl text-center margin-bottom-sm text-center text-400" v-if="status">
+			<view class="">{{userInfo.realname}}</view>
+			<view class="margin-top-sm">{{userInfo.realcard}}</view>
 		</view>
-		<view class="text-black text-xl text-center margin-bottom-sm" v-if="status">您已完成实名认证</view>
+		<view class="text-xl text-center margin-bottom-sm text-yellow" v-if="status">您已完成实名认证</view>
 		
 		<!--文字说明-->
 		<view class="text-gray text-left zaiui-content-view" v-if="!status">

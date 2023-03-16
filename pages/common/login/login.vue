@@ -2,36 +2,39 @@
 <template>
 	<view class="t-login">
 		<!-- 页面装饰图片 -->
-		<image class="img-a" src="https://zhoukaiwen.com/img/loginImg/2.png"></image>
-		<image class="img-b" src="https://zhoukaiwen.com/img/loginImg/3.png"></image>
+		<image class="img-a" src="/static/背景.png"></image>
+		<!-- <image class="img-b" src="https://zhoukaiwen.com/img/loginImg/3.png"></image> -->
 		<!-- 标题 -->
-		<view class="t-b">{{ title }}</view>
-		<view class="t-b2">{{ tdesc }}</view>
-		<form class="cl">
-			<view class="t-a">
-				<image src="https://zhoukaiwen.com/img/loginImg/sj.png"></image>
-				<view class="line"></view>
-				<input type="text" name="phone" placeholder="请输入手机号" maxlength="11" v-model="phone" />
-			</view>
-			<view class="t-a">
-				<image src="https://zhoukaiwen.com/img/loginImg/yz.png"></image>
-				<view class="line"></view>
-				<input type="number" name="code" maxlength="6" placeholder="请输入验证码" v-model="yzm" />
-				<view class="t-c" @tap="getCode()">{{tips}}</view>
-				<!-- <view v-else class="t-c" style="background-color: #A7A7A7;">重新发送({{ second }})</view> -->
-			</view>
-			<button @tap="login()">登 录</button>
-			<view class="reg" @tap="reg()">注 册</view>
-		</form>
-		<view class="t-f"><text>————— 第三方账号登录 —————</text></view>
-		<view class="t-e cl">
-			<view class="t-g" @tap="toLogin()">
-				<image src="https://zhoukaiwen.com/img/loginImg/wx.png"></image>
-			</view>
-			<view class="t-g" @tap="zfbLogin()">
-				<image src="https://zhoukaiwen.com/img/loginImg/qq.png"></image>
+		<view class="login-content" style="z-index: 100; position: relative;">
+			<view class="t-b">{{ title }}</view>
+			<view class="t-b2">{{ tdesc }}</view>
+			<form class="cl">
+				<view class="t-a">
+					<!-- <image src="https://zhoukaiwen.com/img/loginImg/sj.png"></image>
+					<view class="line"></view> -->
+					<input type="text" name="phone" placeholder="请输入手机号" maxlength="11" v-model="phone" />
+				</view>
+				<view class="t-a">
+					<!-- <image src="https://zhoukaiwen.com/img/loginImg/yz.png"></image>
+					<view class="line"></view> -->
+					<input type="number" name="code" maxlength="6" placeholder="请输入验证码" v-model="yzm" />
+					<view class="t-c" @tap="getCode()">{{tips}}</view>
+					<!-- <view v-else class="t-c" style="background-color: #A7A7A7;">重新发送({{ second }})</view> -->
+				</view>
+				<button @tap="login()" class="loginBtn">登 录</button>
+				<view class="reg" @tap="reg()">注 册</view>
+			</form>
+			<view class="t-f"><text>————— 第三方账号登录 —————</text></view>
+			<view class="t-e cl">
+				<view class="t-g" @tap="toLogin()">
+					<image src="https://zhoukaiwen.com/img/loginImg/wx.png"></image>
+				</view>
+				<view class="t-g" @tap="zfbLogin()">
+					<image src="https://zhoukaiwen.com/img/loginImg/qq.png"></image>
+				</view>
 			</view>
 		</view>
+		
 
 		<!-- 验证码倒计时 -->
 		<u-code :seconds="second" @end="end" @start="start" ref="uCode" @change="codeChange"></u-code>
@@ -44,7 +47,7 @@
 	export default {
 		data() {
 			return {
-				title: '欢迎回来！', //填写logo或者app名称，也可以用：欢迎回来，看您需求
+				title: '欢迎来到优闲集', //填写logo或者app名称，也可以用：欢迎回来，看您需求
 				tdesc: '',
 				second: 60, //默认60秒
 				tips: '',
@@ -232,9 +235,11 @@
 </script>
 <style>
 	.img-a {
+		z-index: 1;
 		position: absolute;
 		width: 100%;
-		top: -150rpx;
+		height: 100%;
+		top: 0rpx;
 		right: 0;
 	}
 
@@ -248,10 +253,10 @@
 
 	.reg {
 		font-size: 28rpx;
-		color: #fff;
-		height: 90rpx;
-		line-height: 90rpx;
-		border-radius: 50rpx;
+		color: #4F4F50;
+		height: 88rpx;
+		line-height: 88rpx;
+		border-radius: 14rpx;
 		font-weight: bold;
 		background: #f5f6fa;
 		color: #000000;

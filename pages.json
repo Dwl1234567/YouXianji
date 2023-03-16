@@ -160,6 +160,7 @@
                 "navigationStyle" : "custom"
             }
         }, //聊天
+		
 
         //{"path": "pages/chat/chat-1"},//聊天2 //废弃
         //{"path": "pages/chat/hand/hand"},//红包 //废弃
@@ -693,6 +694,12 @@
                 "navigationBarTitleText" : "聊天记录"
             }
         },
+		{
+		    "path" : "pages/erp/chat/chatAdmin",
+		    "style" : {
+		        "navigationStyle" : "custom"
+		    }
+		}, 
         //聊天详情
         {
             "path" : "pages/erp/chat/view",
@@ -757,7 +764,8 @@
             "path" : "pages/my/item/money_log",
             "style" : {
                 "enablePullDownRefresh" : true,
-                "navigationStyle" : "custom"
+                "navigationStyle" : "custom",
+				"backgroundColor": "#F0F0F0"
             }
         }, //佣金记录
         {
@@ -776,8 +784,8 @@
         {
             "path" : "pages/my/item/level_list",
             "style" : {
-                // "navigationStyle": "custom"
-                "navigationBarTitleText" : "等级列表"
+                "navigationStyle": "custom"
+                // "navigationBarTitleText" : "等级列表"
             }
         }, //等级列表
         {

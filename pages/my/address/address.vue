@@ -1,32 +1,46 @@
 <template>
 	<view class="content b-t">
 		<view class="address-box" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
-			<view class="margin-sm bg-white padding-sm radius-2 flex justify-between">
-				<view class="">
+			<view class="padding-tb-sm bg-white margin-top-sm">
+				<!-- <view class="">
 					<view class="text-sl" v-if="item.is_default">
 						<text class="text-red cuIcon-roundcheckfill"></text>
 					</view>
 					<view class="text-sl" v-else>
 						<text class="text-grey cuIcon-roundcheckfill"></text>
 					</view>
-				</view>
+				</view> -->
 				
 				<!-- <text class="address">{{item.province.name+item.city.name+item.area.name+' '+item.address}}</text> -->
-				<view class="cont-box text-sm">
+				<view class="cont-box text-lg title padding-lr-sm">
 					<view class="margin-top-xs" style="padding-top:8rpx;">
-						<text class="name">{{item.name}}</text>
-						<text class="mobile margin-left-sm">{{item.mobile}}</text>
+						<text class="name ">{{item.name}}</text>
+						<text class="mobile margin-left-sm ">{{item.mobile}}</text>
 					</view>
-					<view class="address">{{item.address}}</view>
+					<view class="address text-929294 text-sm">{{item.address}}</view>
 				</view>
-				<view class="action">
+				<view class="bottom flex justify-between padding-lr-sm">
+					<view class="">
+						<view class="text-xxl" v-if="item.is_default">
+							<text class="text-yellow cuIcon-roundcheckfill"></text>
+						</view>
+						<view class="" v-else style="border: 1px gray solid; border-radius: 20px; width: 20px; height: 20px;">
+							<text class="text-white cuIcon-roundcheckfill"></text>
+						</view>
+					</view>
+					<view class="action">
+						<view class="yticon margin-right-lg" @click.stop="addAddress('edit', item.id)">编辑</view>
+						<view class="yticon " @click.stop="deleteAddress(item.id,index)">删除</view>
+					</view>
+				</view>
+				<!-- <view class="action">
 					<text class="yticon icon-bianji margin-right-lg" @click.stop="addAddress('edit', item.id)"></text>
 					<text class="yticon icon-lajitong" @click.stop="deleteAddress(item.id,index)"></text>
-				</view>
+				</view> -->
 			</view>
 		</view>
 
-		<button class="add-btn bg-deepblue radius-4" @click="addAddress('add')">新增地址</button>
+		<button class="add-btn text-color-yellow radius-6 text-xl text-4F4F50" @click="addAddress('add')">新增地址</button>
 	</view>
 </template>
 
@@ -128,20 +142,42 @@
 <style lang='scss'>
 	page {
 		padding-bottom: 120upx;
+		background: #F0F0F0;
 	}
-
+    page{
+		background: #F0F0F0;
+	}
 	.content {
 		position: relative;
 	}
-
+	.title{
+		border-bottom: 1px #D8D8D8 solid;
+		padding-bottom: 24px;
+		.address{
+			margin-top: 7px;
+		}
+	}
+	.bottom{
+		padding-top: 20px;
+	}
 	.address-box {
 		.cont-box{
-			width:70%;
+			width:100%;
 		}
 		.action{
+			display: flex;
+			justify-content: space-between;
 			line-height: 100rpx;
 			.yticon{
-				font-size: 40rpx;
+				line-height: 24px;
+				text-align: center;
+				width: 63px;
+				height: 24px;
+				border: 1px solid rgba(216,216,216,1);
+				border-radius: 12px;
+				font-size: 14px;
+				color: #232323;
+				font-weight: 400;
 			}
 		}
 	}
@@ -149,7 +185,7 @@
 		position: fixed;
 		left: 30upx;
 		right: 30upx;
-		bottom: 16upx;
+		bottom: 25upx;
 		z-index: 95;
 		display: flex;
 		align-items: center;

@@ -760,6 +760,7 @@
 			// 上传分享图片
 			upShareimg(){
 				let that = this;
+				console.log(that.TabCur)
 				if(that.TabCur == 0){
 					if(!that.customerInfo.id){
 						return that.$u.toast('请选择客户');

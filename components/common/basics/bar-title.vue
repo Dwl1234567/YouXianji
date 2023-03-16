@@ -1,5 +1,5 @@
 <template>
-	<view class="bar-title-box">
+	<view class="bar-title-box bg-black">
 		<view class="cu-bar" :class="[fixed?'fixed':'', shadow?'':'no-shadow', bgColor]">
 			<view class="action" @tap="BackPage" v-if="isBack">
 				<text class="cuIcon-back" />
@@ -29,7 +29,7 @@
 		props: {
 			bgColor: {
 				type: String,
-				default: ''
+				default: 'bg-white'
 			},
 			datas: {
 				type: String,

@@ -9,12 +9,12 @@
 		<!--表单-->
 		<view class="cu-form-group margin-top">
 			<view class="title">收款姓名</view>
-			<input placeholder="您的姓名" @input="nameInput" v-model="bankInfo.bankusername"/>
+			<input placeholder="您的姓名" @input="nameInput" v-model="bankInfo.bank_username" class="text-right"/>
 			<text class='cuIcon-roundclosefill text-grey' v-if="nameClose" />
 		</view>
 		<view class="cu-form-group">
 			<view class="title">手机号码</view>
-			<input placeholder="用于联系通知您的号码" @input="phoneInput" v-model="bankInfo.bankphone" />
+			<input placeholder="用于联系通知您的号码" @input="phoneInput" v-model="bankInfo.bank_phone" class="text-right"/>
 			<text class='cuIcon-roundclosefill text-grey' v-if="phoneClose" />
 		</view>
 		<view class="cu-form-group">
@@ -29,7 +29,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">收款账号</view>
-			<input placeholder="请输入收款账号" @input="payInput" v-model="bankInfo.bankcard"/>
+			<input placeholder="请输入收款账号" @input="payInput" v-model="bankInfo.bank_card" class="text-right"/>
 			<text class='cuIcon-roundclosefill text-grey' v-if="payClose" />
 		</view>
 		<view class="cu-form-group">
@@ -38,11 +38,11 @@
 		</view>
 		<!--小程序端显示-->
 		<!-- #ifdef MP -->
-		<view class="bg-white wecanui-footer-fixed foot-pb">
+		<!-- <view class="bg-white">
 			<view class="flex flex-direction">
-				<button class="cu-btn bg-red" @click="addUserBankFuc">提交保存</button>
+				<button class="cu-btn text-color-yellow text-xl text-4F4F50" @click="addUserBankFuc">保存</button>
 			</view>
-		</view>
+		</view> -->
 		<!-- #endif -->
 
 	</view>
@@ -94,6 +94,11 @@
 					id:this.bankid
 				}).then(res=>{
 					this.bankInfo = res.data;
+					this.multiArray[1].map((item, itemIndex) => {
+						if (item === res.data.bank_name){
+							this.multiIndex = [res.data.bank_type, itemIndex]
+						}
+					})
 				})
 			},
 			nameInput(event) {
@@ -166,19 +171,19 @@
 				// this.multiIndex = data.multiIndex;
 				that.$set(that.multiArray, data.multiArray);
 				that.$set(that.multiIndex, data.multiIndex);
-				that.bankInfo.banktype = that.multiIndex[0]
-				that.bankInfo.bankname = that.multiArray[0][that.multiIndex[0]] + that.multiArray[1][that.multiIndex[1]];
+				that.bankInfo.bank_type = that.multiIndex[0]
+				that.bankInfo.bank_name = that.multiArray[1][that.multiIndex[1]];
 				this.$forceUpdate()
 			},
 			// 添加银行卡
 			addUserBankFuc() {
 				let that = this;
 				let params = {
-					'bank_card':that.bankInfo.bankcard,
-					'bank_type':that.bankInfo.banktype,
-					'bank_name':that.bankInfo.bankname,
-					'bank_username':that.bankInfo.bankusername,
-					'bank_phone':that.bankInfo.bankphone,
+					'bank_card':that.bankInfo.bank_card,
+					'bank_type':that.bankInfo.bank_type,
+					'bank_name':that.bankInfo.bank_name,
+					'bank_username':that.bankInfo.bank_username,
+					'bank_phone':that.bankInfo.bank_phone,
 					'isdefault': that.switchA?'1':'0'
 				}
 				AddressEdit(params).then(res=>{
@@ -201,5 +206,11 @@
 <style lang="scss">
 	.wecanui-footer-fixed .flex-direction {
 		padding: 18.18rpx;
+	}
+	button{
+		width: 326px;
+		height: 44px;
+		margin: 0 auto;
+		margin-top: 41px;
 	}
 </style>

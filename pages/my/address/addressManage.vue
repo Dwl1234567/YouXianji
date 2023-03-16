@@ -216,8 +216,8 @@
 			flex-shrink: 0;
 			width: 120upx;
 			font-size: 30upx;
-			color: #111f3a;
-			font-weight: bold;
+			color: #232323;
+			font-weight: 400;
 		}
 
 		.input {
@@ -235,8 +235,8 @@
 	.default-row {
 
 		.tit {
-			color: #111f3a;
-			font-weight: bold;
+			color: #232323;
+			font-weight: 400;
 			flex: 1;
 		}
 

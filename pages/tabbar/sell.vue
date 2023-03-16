@@ -8,37 +8,31 @@
 		<u-swiper :indicator="true" keyName="image" :list="bannerList" @change="change" @click="click"></u-swiper>
 		<!-- 回收流程 -->
 		<view class="process-box margin-top-sm">
-			<image src="../../static/home/liucheng.png" class="img radius-2" mode="aspectFill"></image>
+			<view class="tabble margin-top-xl text-lg text-500">
+				回收流程
+			</view>
+			<image src="../../static/home/liucheng.png" class="img radius-2 margin-top-xl" mode="aspectFill" ></image>
 			<view v-if="phoneModel" class="process-info margin-top-xs bg-white radius-2">
-				<u-row>
-					<u-col span="6">
-						<view class="">
-							当前机型：<text class="model">{{phoneModel}}</text>
+				<image src="/static/位图.png" mode="aspectFill" class="backImgs"></image>
+				<view class="proces-content padding-lr-xl">
+					<view class="flex justify-between" style="align-items: center;">
+						<view class="text-xl text-101010 text-500">
+							当前机型：<span class="text-lg">{{phoneModel}}</span>
 						</view>
-					</u-col>
-					<u-col span="6">
-						<u-row align="center">
-							<u-col span="6">
-								<view class="">
-									最高 <text class="price">￥{{UserPhoneMoney}}</text>
-								</view>
-							</u-col>
-							<view class="line">
-							</view>
-							<u-col span="6">
-								<view class="btn" @click="goevaluation()">
-									立即估价
-								</view>
-							</u-col>
-						</u-row>
-					</u-col>
-				</u-row>
+						<view class="text-sm text-101010 text-400">
+							可卖 <span class="text-xxl text-red">￥{{UserPhoneMoney}}</span>
+						</view>
+					</view>
+					<view class="btn margin-top" @click="goevaluation()">
+						立即估价
+					</view>
+				</view>
 			</view>
 		</view>
-		<view class="margin-tb-sm stores-box">
+		<view class="stores-box">
 				<view class="bg-white cu-card article radius-2" @click="gostoreInfo(latelystoreInfo.id)">
 					<!-- 同城到店回收-块1 -->
-					<view class="margin-sm cu-item radius-4 bg-white"  v-if="latelystoreInfo.name">
+					<view class=" cu-item radius-4 bg-white"  v-if="latelystoreInfo.name">
 						<view class="content" @click="gostoreInfo(item.id)"  v-if="latelystoreInfo.km < '10'">
 							<image :src="latelystoreInfo.image" mode="aspectFill"></image>
 							<view class="desc">
@@ -70,83 +64,107 @@
 								</view>
 							</view>
 						</view>
-						<view class="margin-lr-sm margin-top-sm cate-box">
-							<view class="action margin-bottom-sm text-bold">
-								品类回收
+						<view class="tabble text-lg text-500">
+							同城上门
+						</view>
+						<view class="margin-top-sm cate-box flex">
+							<image></image>
+							<view class="margin-left-sm">
+								<view class="text-500 text-101010 text-lg">当面质检，当面秒款，放心看得见</view>
+								<view class="text-400 text-929294 text-m">同城半小时极速上⻔，就是快!</view>
+								<view class="btc margin-top-sm text-color-yellow" @click.stop="gocateFuc(0)">立刻下单</view>
 							</view>
-							<scroll-view class="scroll-view_H" :scroll-x="true">
+							<!-- <scroll-view class="scroll-view_H" :scroll-x="true">
 								<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/cate-1.png" mode="scaleToFill"></image>
 								<image class="img" @click.stop="gocateFuc(1)" src="../../static/img/push/cate-2.png" mode="scaleToFill"></image>
 								<image class="img" @click.stop="gocateFuc(2)" src="../../static/img/push/cate-3.png" mode="scaleToFill"></image>
 								<image class="img" @click.stop="gocateFuc(3)" src="../../static/img/push/cate-3.png" mode="scaleToFill"></image>
-							</scroll-view>
+							</scroll-view> -->
 						</view>
 					</view>
 				</view>
 				<view class="">
-					<view class="shangmen flex justify-center margin-top-sm bg-white padding-lg radius-2" @click="gocClassfy(2)">
+					<!-- <view class="shangmen flex justify-center margin-top-sm bg-white padding-lg radius-2" @click="gocClassfy(2)">
 						<view class="text-center">
 							<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/kd-2.png" mode="widthFix"></image>
 							<view class="text-red text-bold text-lg">同城上门</view>
 						</view>
 						<view class="text text-sm text-darkgrey padding-top-lg">
-							<!--<view class="text-red text-bold text-lg">同城上门</view>-->
 							<view>当面质检，当面秒款，放心看得见</view>
 							<view>同城半小时极速上门，就是快！</view>
 						</view>
 						<view class="right">
 							<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
 						</view>
-					</view>
-					<view class="kuaidi margin-top-sm bg-white padding-sm radius-2">
-						<view class="title padding-sm">
-							<view class="big text-lg text-red text-bold text-center">邮寄回收</view>
-							<view class="small text-sm text-center text-darkgrey">
-								<view class="">当天收货,当日秒款</view>
-								<view class="">拒绝到手刀,简单回收不套路</view>
-							</view>
-						</view>
-						<view class="youji flex flex-wrap">
-							<view class="basis-df" @click="gocClassfy(1)">
-								<view class="a text-center radius-2 shadow shadow-lg bg-white">
-									<view class="ziji">
-										<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/kd-3.png" mode="widthFix"></image>
-									</view>
-									<view class="text">
-										<view class="text-red text-bold text-lg">自行寄件</view>
-										<view class="text-darkgrey text-sm">更自由，时间随性</view>
-									</view>
-									<view class="right">
-										<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
-									</view>
+					</view> -->
+					<view class="kuaidi margin-top-sm bg-white  radius-2">
+						<image src="../../static/youji.png" mode="" class="kuaidi-img"></image>
+						<view class="kuaidi-content">
+							<view class="title padding-sm">
+								<view class="big text-xl text-101010 text-500 text-center">邮寄回收</view>
+								<view class="small text-m text-center text-929294 text-400 margin-top-sm">
+									<view class="">当天收货,当日秒款</view>
+									<view class="">拒绝到手刀,简单回收不套路</view>
 								</view>
 							</view>
-							<view class="basis-df" @click="gocClassfy(0)">
-								<view class="b text-center radius-2 shadow shadow-lg bg-white">
-									<view class="shunfeng">
-										<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/kd-1.png" mode="widthFix"></image>
-									</view>
-									<view class="text">
-										<view class="text-red text-bold text-lg">顺丰上门</view>
-										<view class="text-darkgrey text-sm">免邮费，一键下单</view>
-									</view>
-									<view class="right">
-										<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
+							<view class="youji flex flex-wrap">
+								<view class="basis-df" @click="gocClassfy(1)">
+									<view class="a text-center radius-2 bg-white">
+										<view class="text text-left">
+											<view class="text-101010 text-bold text-lg">自行寄件</view>
+											<view class="text-929294 text-sm margin-top-sm">更自由，时间随性</view>
+										</view>
+										<view class="ziji">
+											<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/kd-3.png" mode="widthFix"></image>
+										</view>
+										<view class="right">
+											<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
+										</view>
 									</view>
 								</view>
+								<view class="basis-df" @click="gocClassfy(0)">
+									<view class="a text-center radius-2 bg-white">
+										<view class="text text-left">
+											<view class="text-101010 text-bold text-lg">顺丰上门</view>
+											<view class="text-929294 text-sm margin-top-sm">免邮费，一键下单</view>
+										</view>
+										<view class="ziji">
+											<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/kd-1.png" mode="widthFix"></image>
+										</view>
+										<view class="right">
+											<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
+										</view>
+									</view>
+								</view>
+								<!-- <view class="basis-df" @click="gocClassfy()">
+									<view class="b text-center radius-2  bg-white">
+										<view class="shunfeng">
+											<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/kd-1.png" mode="widthFix"></image>
+										</view>
+										<view class="text">
+											<view class="text-red text-bold text-lg">顺丰上门</view>
+											<view class="text-darkgrey text-sm">免邮费，一键下单</view>
+										</view>
+										<view class="right">
+											<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
+										</view>
+									</view>
+								</view> -->
 							</view>
 						</view>
+						
+						
 					</view>
 				</view>
 		</view>
 		<view class="bg-white radius-2">
-			<view class="action padding-top-lg text-bold text-center">
+			<view class="action text-500 text-left text-xl">
 				回收流程和指南
 			</view>
 			<view class="cu-list grid col-5 no-border">
 				<view class="cu-item" v-for="(item,index) in newslist" :key="index" @tap="tabSelect" :data-id="index">
 					<view class="iconfont" :class="[item.icon,index==TabCur?'text-red cur':'text-darkgrey']"></view>
-					<text :class="index==TabCur?'text-red':'text-darkgrey'">{{item.name}}</text>
+					<text :class="index==TabCur?'text-red':'text-darkgrey'" class="margin-top" style="margin-top: 24rpx;">{{item.name}}</text>
 				</view>
 			</view>
 			<view class="">
@@ -193,9 +211,9 @@
 			</view>
 		</view>
 		
-		<view class="duibi margin-top-sm">
+		<!-- <view class="duibi margin-top-sm">
 			<img class="img radius-2" src="../../static/img/push/duibi.jpg"></img>
-		</view>
+		</view> -->
 
 		<!--占位底部距离-->
 		<view class="cu-tabbar-height" />
@@ -650,8 +668,19 @@
 		}
 
 		.process-info {
+			position: relative;
 			color: #929292;
-			padding: 20rpx 10rpx;
+			// padding: 20rpx 10rpx;
+			align-items: center;
+			.proces-content {
+				width: 97%;
+				position: absolute;
+				top: 30rpx;
+			}
+			.backImgs{
+				width: 726rpx;
+				height: 188rpx;
+			}
 			.model {
 				font-size: 28rpx;
 				color: #323232;
@@ -665,12 +694,18 @@
 			}
 
 			.btn {
+				margin-top: 14px !important;
+				margin: auto;
 				text-align: center;
-				color: #D0D7E2;
-				box-shadow: 0px 0px 10rpx 0px rgba(136, 136, 136, 1);
-				background-color: #0F366F;
-				padding: 2rpx 6rpx;
-				border-radius: 20rpx;
+				font-family: PingFangSC-Regular;
+				font-size: 12px;
+				color: #101010;
+				font-weight: 400;
+				background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);
+				border-radius: 4px;
+				height: 56rpx;
+				line-height: 56rpx;
+				width: 538rpx;
 			}
 
 			.line {
@@ -689,7 +724,20 @@
 			padding-bottom: 20rpx;
 			.cate-box {
 				width: 100%;
-			
+				align-items: center;
+				image{
+					width: 188rpx;
+					height: 188rpx;
+					border-radius: 20px;
+					background-color: #929292
+				}
+				.btc{
+					width: 188rpx;
+					height: 60rpx;
+					line-height: 60rpx;
+					border-radius: 15px;
+					text-align: center;
+				}
 				.scroll-view_H {
 					width: 100%;
 					height: 160rpx;
@@ -881,6 +929,16 @@
 		}
 	}
 	.kuaidi{
+		position: relative;
+		.kuaidi-img{
+			width: 724rpx;
+			height: 466rpx;
+		}
+		.kuaidi-content{
+			width: 95%;
+			position: absolute;
+			top: 30rpx;
+		}
 		.title{
 			.big{
 				
@@ -891,16 +949,25 @@
 		}
 		.youji{
 			padding-top: 8rpx;
+			margin-left: 7rpx;
+			margin-right: 7rpx;
+			flex-wrap: nowrap;
+			.basis-df{
+				
+			}
 			.a, .b{
-				padding:10rpx 0;
-				margin-left:20rpx;
-				margin-right:20rpx;
-				border: 1px solid #D0D7E2;
+				margin-left: 7rpx;
+				margin-right: 7rpx;
+				padding:20rpx 20rpx;
+				width: 340rpx;
+				height: 188rpx;
 				position: relative;
+				box-shadow: 0px 0px 4px 0px rgba(221,221,221,0.5);
+				border-radius: 6px;
 				.right{
 					position: absolute;
-					right:5rpx;
-					bottom:46rpx;
+					left:28rpx;
+					bottom:22rpx;
 				}
 			}
 			.shunfeng{
@@ -910,6 +977,9 @@
 				}
 			}
 			.ziji{
+				position: absolute;
+				right: 12rpx;
+				bottom: 16rpx;
 				.img{
 					width:90rpx;
 					height:90rpx;
@@ -925,18 +995,23 @@
 		height:40rpx;
 		line-height:40rpx;
 	}
+
 	/deep/ .u-collapse-item {
 		.u-cell__title {
 			.u-cell__title-text {
-				font-size:13px;
+				font-size:15px;
 			}
 		}
 		&__content {
 			&__text {
-				padding: 8px 10px;
-				font-size: 12px;
+				color: #8E8E8E;
+				padding: 10px 5px;
+				font-size: 13px;
 			}
 		}
+	}
+	/deep/ .u-cell__body {
+		padding: 10px 5px;
 	}
 	.duibi{
 		.img{

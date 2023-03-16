@@ -3,13 +3,26 @@
 		<!--标题栏-->
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">申请提现</block>
-			<block slot="right">
+			<!-- <block slot="right">
 				<view @click="jump_card()" class="bg-deepblue cu-btn radius-4 text-sm">添加银行卡</view>
-			</block>
+			</block> -->
 		</bar-title>
 		<view class="tixian">
+			<view class="margin-sm padding-tb-sm bg-white radius-6">
+				<view class="text-black text-lg text-bold padding-lr-sm">提现金额</view>
+				<view class="hsuru">
+					<view class="hu_l flex align-center text-lg">
+						¥   <input v-model="num" placeholder="0" placeholder-style="color:#000;font-size: 24px;font-weight: bold;height:35px;" class="margin-left-xs"/>
+					</view>
+				</view>
+				<view class="yue">
+					<view class="yue_l text-red">可提现佣金<span>{{yu}}</span>元</view>
+				</view>
+				
+				
+			</view>
 			<!--账户列表-->
-			<view class="bg-white pay-view margin-sm padding-tb-sm bg-white radius-4">
+			<view class="bg-white pay-view margin-sm padding-tb-sm bg-white radius-6">
 				<view class="text-black text-lg text-bold padding-sm">提现到</view>
 				<radio-group class="block cu-list">
 					<view class="pay-bar cu-item"  v-for="(item,index) of bankList" :key="index" >
@@ -28,34 +41,8 @@
 					</view>
 				</radio-group>
 			</view>
-			<!-- <view class='swip-box'>
-				<swiper @change="changeindex" class="swiper">
-					<swiper-item v-for="(item,index) of bankList" :key="index" style="height: 150px;" >
-						<view class="card" @click="jump_card(index)" :style="{backgroundColor:item.bank_bg}">
-							<view v-if="item.bank_icon" class="card_l"><image  class="img1" :src="item.bank_icon" /></view>
-							<view class="card_r">
-								<view class="card_r_1">{{item.bank_name}}</view>
-								<view class="card_r_2">{{item.bank_card}}</view>
-							</view>
-						</view>
-					</swiper-item>
-				</swiper>
-			</view> -->
-			<view class="margin-sm padding-tb-sm bg-white radius-4">
-				<view class="text-black text-lg text-bold padding-sm">提现金额</view>
-				<view class="hsuru">
-					<view class="hu_l">
-						<input v-model="num" placeholder="0" placeholder-style="color:#000;font-size: 24px;font-weight: bold;height:35px;" />
-					</view>
-				</view>
-				<view class="yue">
-					<view class="yue_l">可提现佣金<span>{{yu}}</span>元</view>
-					<view class="yue_r" @click="whole"><span>全部提现</span></view>
-				</view>
-				
-				<view class="margin-top-lg text-center">
-					<view class="cu-btn bg-red radius-4 text-sm padding-lr-xl text-bold" @click="qdtx">确定提现</view>
-				</view>
+			<view class="margin-top-lg text-center">
+				<view class="cu-btn text-color-yellow radius-6 text-sm padding-lr-xl" @click="qdtx">确定提现</view>
 			</view>
 		</view>
 	</view>
@@ -177,6 +164,9 @@
 
 <style lang="scss">
 	@import "@/uni_modules/mpb-ui/shop/pay.scss";
+	page{
+		background: #F0F0F0;
+	}
 	.pay-view .pay-bar .cu-avatar{
 		width:100rpx;
 		height:100rpx;
@@ -191,21 +181,24 @@
 	
 			.hsuru {
 				display: flex;
-				border-bottom: 1px solid #F0F0F0;
 				margin: 10px 10px 12px;
 				padding: 10px 10px 10px 0;
 				justify-content: space-between;
 			}
 	
 			.hu_l input {
-				font-size: 24px;
+				font-size: 64rpx;
 				font-weight: bold;
 			}
 	
 			.yue {
-				margin: 0px 10px 20px;
+				margin: 0px 10px;
 				display: flex;
 				justify-content: space-between;
+				font-family: PingFangSC-Regular;
+				font-size: 15px;
+				color: #FF1F1F;
+				font-weight: 400;
 			}
 	
 			.yue span {

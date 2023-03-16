@@ -149,10 +149,11 @@
 				}
 				// this.multiArray = data.multiArray;
 				// this.multiIndex = data.multiIndex;
+				console.log(that.multiArray[0][that.multiIndex[0]] + that.multiArray[1][that.multiIndex[1]]);
 				that.$set(that.multiArray, data.multiArray);
 				that.$set(that.multiIndex, data.multiIndex);
 				that.bankInfo.banktype = that.multiIndex[0]
-				that.bankInfo.bankname = that.multiArray[0][that.multiIndex[0]] + that.multiArray[1][that.multiIndex[1]];
+				that.bankInfo.bankname = that.multiArray[1][that.multiIndex[1]];
 				this.$forceUpdate()
 			},
 			// 添加银行卡

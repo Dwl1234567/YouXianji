@@ -627,8 +627,10 @@ radio.white.checked .uni-radio-input {
 	box-sizing: border-box;
 	padding: 0 30upx;
 	font-size: 28upx;
-	height: 64upx;
+	height: 88upx;
 	line-height: 1;
+	/* width: 80%; */
+	font-weight: 400;
 	text-align: center;
 	text-decoration: none;
 	overflow: visible;
@@ -936,7 +938,7 @@ button.cuIcon.lg {
 
 .cu-progress {
 	overflow: hidden;
-	height: 28upx;
+	height: 12upx;
 	background-color: #ebeef5;
 	display: inline-flex;
 	align-items: center;
@@ -2970,7 +2972,9 @@ scroll-view.cu-steps .cu-item {
 .grid.col-5.grid-square>view:nth-child(5n) {
 	margin-right: 0;
 }
-
+view{
+	display: block
+}
 .grid.col-1>view {
 	width: 100%;
 }
@@ -3017,6 +3021,9 @@ scroll-view.cu-steps .cu-item {
 
 .margin-xl {
 	margin: 50upx;
+}
+.margin-top-xxs {
+	margin-top: 8upx;
 }
 
 .margin-top-xs {
@@ -3471,11 +3478,24 @@ scroll-view.cu-steps .cu-item {
 	background-color: #F9F9FB;
 	color: #101010;
 }
+
+.bg-F0F0F0 {
+	background-color: #F0F0F0;
+}
+
+.bg-D8D8D8 {
+	background-color: #D8D8D8;
+}
+
 .bg-black {
 	background-color: #333333;
 	color: #ffffff;
 }
 
+.bg-242730{
+	background-color: #242730;
+	color: white
+}
 .bg-white {
 	background-color: #ffffff;
 	color: #333333;
@@ -3777,6 +3797,9 @@ scroll-view.cu-steps .cu-item {
 	font-size: 44upx;
 }
 
+.text-xxxl {
+	font-size: 64upx;
+}
 .text-sl {
 	font-size: 80upx;
 }
@@ -3800,11 +3823,17 @@ scroll-view.cu-steps .cu-item {
 .text-color-black {
 	color: #101010;
 }
+.text-yellow{
+	
+}
 .text-color-yellow {
 	background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);
 }
 .text-500{
 	font-weight: 500;
+}
+.text-400{
+	font-weight: 400;
 }
 .text-price::before {
 	content: "¥";
@@ -3853,7 +3882,7 @@ scroll-view.cu-steps .cu-item {
 .text-yellow,
 .line-yellow,
 .lines-yellow {
-	color: #fbbd08;
+	color: #FFBB4C;
 }
 
 .text-olive,

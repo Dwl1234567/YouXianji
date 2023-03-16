@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<view class="margin">
+		<view class="padding bg-F0F0F0">
 			<view class="cu-list solids-top">
-				<view class="cu-item bg-white padding margin-bottom-sm" v-for="(item,index) in dataList">
+				<view class="cu-item bg-white padding margin-bottom-sm radius-6" v-for="(item,index) in dataList">
 					<view class="content">
 						<view class="flex justify-between">
 							<view>订单号:{{item.order_id}}</view>

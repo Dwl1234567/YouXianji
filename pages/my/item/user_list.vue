@@ -4,14 +4,18 @@
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">推广人统计</block>
 		</bar-title>
-		<view class="agent bg-white margin-sm radius-4">
+		<view class="agent bg-white margin-sm radius-6 padding-top-xl">
+			<view class="tab flex text-xl text-400 text-929294" style="    justify-content: center;">
+				<view class="tab-item margin-right-sm" @tap="checkTab(1)" :class="tabId === 1 ? 'text-500 text-101010': ''">产品统计</view>
+				<view class="tab-item margin-left-sm" @tap="checkTab(2)" :class="tabId === 2 ? 'text-500 text-101010': ''">关系统计</view>
+			</view>
 			<view class="head text-red">
 				共 <text class="big">{{total}}</text> 人
 			</view>
 			<view class="t_tou">
-				<view class="tou_1"><view class="bg-gray">头像</view></view>
-				<view class="tou_1"><view class="bg-gray">昵称</view></view>
-				<view class="tou_1"><view class="bg-gray">等级</view></view>
+				<view class="tou_1"><view class="bg-white">头像</view></view>
+				<view class="tou_1"><view class="bg-white">昵称</view></view>
+				<view class="tou_1"><view class="bg-white">等级</view></view>
 			</view>
 			<view class="t">
 			  <block v-for="(item,index) of dataList" :key="index">
@@ -24,9 +28,11 @@
 				</li>
 			  </block>
 			</view>
+			<!-- 下拉加载提示 -->
+			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 		</view>
-		<!-- 下拉加载提示 -->
-		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
+		
+		
 	</view>
 </template>
 
@@ -43,6 +49,7 @@
 		},
 		data() {
 			return {
+				tabId: 1,
 				list:[1,2,3,4,5],
 				dataList: [],
 				queryInfo: {
@@ -83,6 +90,9 @@
 			this.getDataList();
 		},
 		methods: {
+			checkTab(item) {
+				this.tabId = item
+			},
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
@@ -112,6 +122,9 @@
 </script>
 
 <style lang="scss">
+	page{
+		background: #F0F0F0;
+	}
 	.agent{
 		.head{text-align: center;padding: 80rpx 20rpx 60rpx; font-weight: bold;}
 		.head .big{font-size: 80rpx;padding: 0 10rpx;}
