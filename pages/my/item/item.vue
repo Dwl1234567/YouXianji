@@ -95,7 +95,7 @@
 			</view>
 			<view class="icon">
 				<view class="ico" v-for="(item,index) of list" :key="index">
-					<navigator :url="item.url">
+					<navigator :url="item.url" style="height: 100%;">
 						<view class="tubiao">
 							<!-- <img class="img" :src="item.img"></img> -->
 							<image class="img":src="item.img" mode="widthFix"></image>

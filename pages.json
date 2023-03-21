@@ -39,6 +39,7 @@
                 "navigationBarTitleText" : "购物车",
                 "navigationStyle" : "custom",
                 "enablePullDownRefresh" : true //开启下拉刷新
+				
             }
         },
         {
@@ -46,7 +47,8 @@
             "style" : {
                 "navigationBarTitleText" : "我的",
                 "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true //开启下拉刷新
+                "enablePullDownRefresh" : true, //开启下拉刷新
+				"navigationBarTextStyle": "black"
             }
         }, // --tabbar-----end-------
 

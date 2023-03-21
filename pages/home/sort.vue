@@ -62,7 +62,10 @@
 	import _tool from '@/utils/tools.js';	//工具函数
 	import{
 		CategoryAll
-	} from "@/api/mall.js"
+	} from "@/api/mall.js";
+	import{
+		CategoryAlls
+	} from "@/api/shop.js";
 	export default {
 		data() {
 			return {
@@ -82,14 +85,29 @@
 		methods: {
 			loadData(){
 				let that = this;
-				CategoryAll({}).then(res=>{
-					that.list = res.data;
-					that.cid = that.list[0].id;
-					that.list.map(mmp=>{
-						if(mmp.pid !=0);
-						that.sortList.push(mmp);
+				const isNew = uni.getStorageSync('isNew')
+				console.log(isNew)
+				if (isNew === 1) {
+					CategoryAlls({}).then(res=>{
+						that.list = res.data;
+						that.cid = that.list[0].id;
+						that.list.map(mmp=>{
+							if(mmp.pid !=0);
+							that.sortList.push(mmp);
+						})
 					})
-				})
+				} else {
+					CategoryAll({}).then(res=>{
+						that.list = res.data;
+						that.cid = that.list[0].id;
+						that.list.map(mmp=>{
+							if(mmp.pid !=0);
+							that.sortList.push(mmp);
+						})
+					})
+				}
+				
+				
 			},
 			BackPage() {
 				const canNavBack = getCurrentPages()

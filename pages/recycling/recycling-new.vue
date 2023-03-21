@@ -41,8 +41,8 @@
 					<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
 						<view class="cu-item" :class="tabindex == tab_cur?'select':''" @tap="tabSelect"
 							:data-id="tabindex">
-							<view :class="tabindex == tab_cur?'text-black':''">{{tabitem}}</view>
-							<view class="tab-dot bg-red" />
+							<view :class="tabindex == tab_cur?'text-101010':''">{{tabitem}}</view>
+							<view class="tab-dot text-color-yellow" />
 						</view>
 					</block>
 				</scroll-view>
@@ -64,7 +64,7 @@
 		<view class="hight-view" />
 		<view class="bg-white orderview-footer-fixed">
 			<view class="flex flex-direction">
-				<button class="cu-btn bg-red margin-tb-sm lg radius-4" @click="deliveryTap">提交订单</button>
+				<button class="cu-btn text-color-yellow margin-tb-sm lg radius-4" @click="deliveryTap">提交订单</button>
 			</view>
 		</view>
 		<!--

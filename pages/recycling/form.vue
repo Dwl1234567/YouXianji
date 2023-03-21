@@ -1,11 +1,11 @@
 <template>
-	<view style="padding-bottom: 160rpx;">
+	<view style="padding-bottom: 160rpx; padding-left: 20rpx; padding-right: 20rpx;">
 		<!--标题栏-->
 		<!-- <bar-title bgColor="bg-white" isBack>
 			<block slot="content">提交订单</block>
 		</bar-title> -->
 		<view class="cu-list grid col-3 no-border padding-lr-sm">
-			<view class="cu-item radius-2" :class="index==TabCur?'bg-red cur':''" v-for="(item,index) in cuIconList" :key="index"
+			<view class="cu-item radius-2" :class="index==TabCur?'text-color-yellow cur':''" v-for="(item,index) in cuIconList" :key="index"
 				@tap="tabSelect" :data-id="index">
 				<text class='text-bold' :class="index==TabCur?'text-white':'text-' + item.color">{{item.name}}</text>
 			</view>
@@ -252,7 +252,7 @@
 		</view>
 		<view class="bg-white orderview-footer-fixed" @tap="addTap">
 			<view class="flex flex-direction">
-				<button class="cu-btn bg-deepblue margin-tb-sm lg radius-4">提交订单</button>
+				<button class="cu-btn text-color-yellow margin-tb-sm lg radius-4">提交订单</button>
 			</view>
 		</view>
 		<!-- 相机相册选择 -->
@@ -710,7 +710,7 @@
 	}
 
 	.orderview-card-box {
-		padding: 27.27rpx 27.27rpx 0;
+		padding: 27.27rpx 0rpx 0;
 	}
 
 	.orderview-card-view {

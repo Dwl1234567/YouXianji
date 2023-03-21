@@ -1,5 +1,5 @@
 <template>
-	<view class="bar-title-box bg-black">
+	<view class="bar-title-box">
 		<view class="cu-bar" :class="[fixed?'fixed':'', shadow?'':'no-shadow', bgColor]">
 			<view class="action" @tap="BackPage" v-if="isBack">
 				<text class="cuIcon-back" />
@@ -53,7 +53,7 @@
 			}
 		},
 		created() {
-				console.log(this.datas, this.bgColor)
+			
 		},
 		methods: {
 			BackPage() {
@@ -98,7 +98,7 @@
 		.cu-bar {
 			padding-top: var(--status-bar-height);
 			min-height: calc(var(--status-bar-height) + 101rpx);
-
+			z-index: 100;
 			.content {
 				top: var(--status-bar-height);
 

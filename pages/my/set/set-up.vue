@@ -48,6 +48,7 @@
 			// #ifdef APP-PLUS
 			this.formatSize();
 			// #endif
+			
 		},
 		onReady() {
 			uni.pageScrollTo({

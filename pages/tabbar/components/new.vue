@@ -347,6 +347,8 @@
 			};
 		},
 		created(){
+			// 储存isNew值 1为全新0为二手
+			uni.setStorageSync('isNew', 1)
 			let that = this;
 			let userInfo = uni.getStorageSync('userInfo');
 			if (userInfo) {
@@ -405,6 +407,11 @@
 		},
 		methods: {
 			checkView(e){
+				if (e === 'new') {
+					uni.setStorageSync('isNew', 1)
+				} else{
+					uni.setStorageSync('isNew', 0)
+				}
 				this.$emit('checkView', e)
 			},
 			snTap() {

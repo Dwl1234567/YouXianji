@@ -1,11 +1,24 @@
 <template>
+	
 	<view class="my-box">
+		<!-- #ifdef APP-PLUS -->
+		   <!-- <view class="status_bar">  
+		        <view class="top_view">123</view>  
+		    </view>  -->
+		<!-- #endif --> 
 		<view class="background" style="width:100vw;290px; background-image:radial-gradient(circle at 50% -26%, rgba(37,209,249,0.66) 0%, rgba(255,255,255,0.66) 90%);"></view>
 		<view class="head-box">
+			<!-- #ifdef MP -->
+				<!-- <image src="../../static/myBackground.png"></image> -->
+				
+			<!-- #endif --> 
 			<!--标题栏-->
 			<!--小程序端不显示-->
 			<!-- #ifndef MP -->
-			<bar-title :isBack="false" :fixed="false">
+			<view class="status_bar">
+				<image src="../../static/myBackground.png"></image>
+			</view>
+			<bar-title :isBack="false" :fixed="false" :bgColor="bgColor">
 				<block slot="right">
 					<button
 						class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12"
@@ -16,95 +29,97 @@
 						工作模式
 						<!-- <text class="iconfont icon-nextpageorange margin-lr-xs"></text> -->
 					</button>
-					<text class="iconfont icon-editblue" @tap="setupTap" />
+					<text class="iconfont icon-shezhi" @tap="setupTap" />
 				</block>
 			</bar-title>
 			<!-- #endif -->
-
-			<!--用户信息-->
-			<view class="user-info-box">
-				<!--未登陆-->
-				<view class="login-user-view" v-if="login">
-					<view class="login-user-avatar-view">
-						<view class="cu-avatar round xl" style="background-image: url(/static/img/avatar/1.png)" />
-					</view>
-					<button class="cu-btn sm bg-red radius" @tap="loginUrlTap">立即登录</button>
-				</view>
-
-				<!--已登陆-->
-				<view class="cu-list menu-avatar" v-else>
-					<view class="cu-item">
-						<view
-							class="cu-avatar radius-1-5 lg"
-							:style="{backgroundImage:'url('+ (userInfo.avatar ? userInfo.avatar : '/static/img/avatar/1.jpg') +')'}"
-						/>
-						<view class="content .text-xxl">
-							<view class="">
-								<text class="margin-right" v-if="userInfo.nickname">{{userInfo.nickname}}</text>
-							</view>
-							<view class="text-sm">账号:{{userInfo.mobile}}</view>
+			<view class="my-content">
+				<!--用户信息-->
+				<view class="user-info-box">
+					<!--未登陆-->
+					<view class="login-user-view" v-if="login">
+						<view class="login-user-avatar-view">
+							<view class="cu-avatar round xl" style="background-image: url(/static/img/avatar/1.png)" />
 						</view>
-						<!-- <view class="right text-xl" @tap="baseTap('/pages/my/userdata/index')">
-							<text class="margin-right cuIcon-right icon"></text>
-						</view> -->
+						<button class="cu-btn sm bg-red radius" @tap="loginUrlTap">立即登录</button>
 					</view>
-
-					<!-- <view class="padding-lr-lg">
-						<view class="text-sm flex justify-between"
-							@tap="baseTap('/pages/my/userdata/edit-synopsis?bio='+userInfo.bio)">
-							<view v-if="userInfo.bio" class="bio text-border-x text-gray"
-								style="width: 80%;overflow: hidden;"
-								:class="userInfo.bio.length<21 ? 'contents':'inline-grid'">简介：{{userInfo.bio}}</view>
-							<view v-else class="bio text-border-x text-gray contents"
-								style="width: 80%;overflow: hidden;">您还未填写个性签名！</view>
-							<view class="">
-								<view class="cu-tag line-red round">
-									编辑
+				
+					<!--已登陆-->
+					<view class="cu-list menu-avatar" v-else>
+						<view class="cu-item">
+							<view
+								class="cu-avatar radius-1-5 lg"
+								:style="{backgroundImage:'url('+ (userInfo.avatar ? userInfo.avatar : '/static/img/avatar/1.jpg') +')'}"
+							/>
+							<view class="content .text-xxl">
+								<view class="">
+									<text class="margin-right" v-if="userInfo.nickname">{{userInfo.nickname}}</text>
+								</view>
+								<view class="text-sm">账号:{{userInfo.mobile}}</view>
+							</view>
+							<!-- <view class="right text-xl" @tap="baseTap('/pages/my/userdata/index')">
+								<text class="margin-right cuIcon-right icon"></text>
+							</view> -->
+						</view>
+				
+						<!-- <view class="padding-lr-lg">
+							<view class="text-sm flex justify-between"
+								@tap="baseTap('/pages/my/userdata/edit-synopsis?bio='+userInfo.bio)">
+								<view v-if="userInfo.bio" class="bio text-border-x text-gray"
+									style="width: 80%;overflow: hidden;"
+									:class="userInfo.bio.length<21 ? 'contents':'inline-grid'">简介：{{userInfo.bio}}</view>
+								<view v-else class="bio text-border-x text-gray contents"
+									style="width: 80%;overflow: hidden;">您还未填写个性签名！</view>
+								<view class="">
+									<view class="cu-tag line-red round">
+										编辑
+									</view>
 								</view>
 							</view>
-						</view>
-					</view> -->
+						</view> -->
+					</view>
 				</view>
-			</view>
-			<!--用户提示-->
-			<view class="text-sm user-info-tip-box" v-if="userInfo && userInfo.verification != 1" @tap="realNameTap">
-				<view class="text-cut text-gray">偷偷告诉你，实名认证后才能回收下单哦~</view>
-				<text class="cuIcon-right icon" />
-			</view>
-			<!--用户数据-->
-			<view class="user-info-num-box margin-tb-sm padding-bottom-sm">
-				<view class="box margin-lr-sm">
-					<view class="cu-list col-3 no-border">
-						<view class="cu-item" @tap="cartTap">
-							<view class="text-xxl" v-if="login">-</view>
-							<view class="text-xxl text-color-black" v-else>{{userInfo.cartnum}}</view>
-							<text class="text-sm text-color-black text-500">购物车</text>
+				<!--用户提示-->
+				<view class="text-sm user-info-tip-box" v-if="userInfo && userInfo.verification != 1" @tap="realNameTap">
+					<view class="text-cut text-gray">偷偷告诉你，实名认证后才能回收下单哦~</view>
+					<text class="cuIcon-right icon" />
+				</view>
+				<!--用户数据-->
+				<view class="user-info-num-box margin-tb-sm padding-bottom-sm">
+					<view class="box margin-lr-sm">
+						<view class="cu-list col-3 no-border">
+							<view class="cu-item" @tap="cartTap">
+								<view class="text-xxl" v-if="login">-</view>
+								<view class="text-xxl text-color-black" v-else>{{userInfo.cartnum}}</view>
+								<text class="text-sm text-color-black text-500">购物车</text>
+							</view>
+							<view class="cu-item" @tap="footmarkTap">
+								<view class="text-xxl" v-if="login">-</view>
+								<view class="text-xxl text-color-black" v-else>{{userInfo.visitnum}}</view>
+								<text class="text-sm text-color-black text-500">足迹</text>
+							</view>
+							<view class="cu-item" @tap="sponsoredTap">
+								<view class="text-xxl" v-if="login">-</view>
+								<view class="text-xxl text-color-black" v-else>{{userInfo.hb_medal}}</view>
+								<text class="text-sm text-color-black text-500">奖章</text>
+							</view>
+							<!--
+							<view class="cu-item" @tap="feeTap">
+								<view class="text-xxl" v-if="login">-</view>
+								<view class="text-xxl text-red" v-else>{{userInfo.fee}}</view>
+								<text class="text-sm">佣金</text>
+							</view>
+							<view class="cu-item" @tap="moneyTap">
+								<view class="text-lg" v-if="login">-</view>
+								<view class="text-lg text-red" v-else>{{userInfo.money}}</view>
+								<text class="text-sm">余额</text>
+							</view>
+							-->
 						</view>
-						<view class="cu-item" @tap="footmarkTap">
-							<view class="text-xxl" v-if="login">-</view>
-							<view class="text-xxl text-color-black" v-else>{{userInfo.visitnum}}</view>
-							<text class="text-sm text-color-black text-500">足迹</text>
-						</view>
-						<view class="cu-item" @tap="sponsoredTap">
-							<view class="text-xxl" v-if="login">-</view>
-							<view class="text-xxl text-color-black" v-else>{{userInfo.hb_medal}}</view>
-							<text class="text-sm text-color-black text-500">奖章</text>
-						</view>
-						<!--
-						<view class="cu-item" @tap="feeTap">
-							<view class="text-xxl" v-if="login">-</view>
-							<view class="text-xxl text-red" v-else>{{userInfo.fee}}</view>
-							<text class="text-sm">佣金</text>
-						</view>
-						<view class="cu-item" @tap="moneyTap">
-							<view class="text-lg" v-if="login">-</view>
-							<view class="text-lg text-red" v-else>{{userInfo.money}}</view>
-							<text class="text-sm">余额</text>
-						</view>
-						-->
 					</view>
 				</view>
 			</view>
+			
 		</view>
 
 		<view class="view-content">
@@ -143,7 +158,7 @@
 								<text class="cuIcon-qr_code"></text>
 							</view>
 							<view class="text-xxl text-black" v-else>
-								<view class="iconfont icon-readytopay text-darkgrey">
+								<view class="iconfont icon-daifukuan text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">
 										{{userInfo.recyclenum|| 0}}
 									</view>
@@ -156,7 +171,7 @@
 								<text class="cuIcon-cartfill"></text>
 							</view>
 							<view class="text-xxl text-black" v-else>
-								<view class="iconfont icon-readytodelivery text-darkgrey">
+								<view class="iconfont icon-daifahuo text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">
 										{{userInfo.shopnum|| 0}}
 									</view>
@@ -169,7 +184,7 @@
 								<text class="cuIcon-favorfill"></text>
 							</view>
 							<view class="text-xxl text-black" v-else>
-								<view class="iconfont icon-readytoship text-darkgrey">
+								<view class="iconfont icon-daishouhuo text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
 									</view>
@@ -182,7 +197,7 @@
 								<text class="cuIcon-favorfill"></text>
 							</view>
 							<view class="text-xxl text-black" v-else>
-								<view class="iconfont icon-commentgray text-darkgrey">
+								<view class="iconfont icon-daipingjia text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
 									</view>
@@ -201,7 +216,7 @@
 								<text class="cuIcon-sponsorfill"></text>
 							</view>
 							<view class="text-xxl text-black" v-else>
-								<view class="iconfont icon-readytopay text-darkgrey">
+								<view class="iconfont icon-daifukuan text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">
 										{{userInfo.recyclenum|| 0}}
 									</view>
@@ -214,7 +229,7 @@
 								<text class="cuIcon-cartfill"></text>
 							</view>
 							<view class="text-xxl text-black" v-else>
-								<view class="iconfont icon-readytodelivery text-darkgrey">
+								<view class="iconfont icon-daifahuo text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">
 										{{userInfo.shopnum|| 0}}
 									</view>
@@ -227,7 +242,7 @@
 								<text class="cuIcon-favorfill"></text>
 							</view>
 							<view class="text-xxl text-black" v-else>
-								<view class="iconfont icon-readytoship text-darkgrey">
+								<view class="iconfont icon-daishouhuo text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
 									</view>
@@ -240,7 +255,7 @@
 								<text class="cuIcon-favorfill"></text>
 							</view>
 							<view class="text-xxl text-black" v-else>
-								<view class="iconfont icon-commentgray text-darkgrey">
+								<view class="iconfont icon-daipingjia text-darkgrey">
 									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
 										{{userInfo.favoritenum|| 0}}
 									</view>
@@ -301,7 +316,7 @@
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
 
-	import { getRecycleUserinfo } from '@/api/user.js';
+	import { getRecycleUserinfo, kefuInitUser } from '@/api/user.js';
 	import { erpuserislogin } from '@/api/erpapi.js';
 	import barTitle from '@/components/common/basics/bar-title';
 
@@ -316,6 +331,7 @@
 		data() {
 			return {
 				toolsList: [],
+				bgColor: '',
 				login: false,
 				is_company: 0,
 				userInfo: '',
@@ -339,19 +355,16 @@
 		onLoad() {
 			//加载虚拟数据
 			this.toolsList = _my_data.toolsListData();
-			// getRecycleUserinfo().then(res=>{
-			// 	this.userInfo = res.data;
-			// })
-			// this.erpuserislogin();
 		},
 		onShow() {
 			getRecycleUserinfo().then((res) => {
 				this.userInfo = res.data;
 			});
-			 // #ifdef APP-PLUS 
-			// plus.navigator.setStatusBarStyle('dark'); 
-			 // #endif 
 			this.erpuserislogin();
+			this.$nextTick(() => {
+				plus.navigator.setStatusBarStyle('dark')
+				var ss = plus.navigator.getStatusBarStyle();
+			});
 		},
 		mounted() {
 			_tool.setBarColor(false);
@@ -359,11 +372,12 @@
 				scrollTop: 0,
 				duration: 0,
 			});
+			this.$nextTick(() => {
+				plus.navigator.setStatusBarStyle('dark')
+				var ss = plus.navigator.getStatusBarStyle();
+			});
 		},
 		onReady() {
-			// #ifdef APP-PLUS  
-			console.log(plus.navigator.getStatusBarStyle()+ '123123123');
-			// #endif 
 		},
 		onPullDownRefresh() {
 			getRecycleUserinfo()
@@ -479,18 +493,52 @@
 					url: '/pages/tabbarerp/home',
 				});
 			},
+			async kefuInitUser () {
+				console.log(this.userInfo, '222222');
+				const isNew  = uni.getStorageSync('isNew')
+				console.log(isNew)
+				const res = await kefuInitUser({
+					userId: this.userInfo.userId,
+					isNew,
+					isHome: 1
+				})
+			},
 			// 联系客服
 			btnClick() {
+				this.kefuInitUser();
 				console.log('球被点击');
-				uni.navigateTo({
-					url: '/pages/chat/chat',
-				});
+				
 			},
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
+	.my-content{
+		position: relative;
+		z-index: 100;
+	}
+	.status_bar {  
+	    // height: var(--status-bar-height);  
+		width: 100vw;
+		position: fixed;  
+		top: var(--status-bar-height) + -50rpx;
+		z-index: 100;
+		pointer-events: none;
+	    // background-color: black;  
+		image{
+			width: 100vw;
+			height: 633px;
+		}
+	}  
+	.top_view {  
+	    height: var(--status-bar-height);  
+	    width: 100%;  
+	    position: fixed;  
+	    background-color: black;  
+	    top: 0;  
+	    z-index: 999;  
+	} 
 	.my-box {
 		width: 100%;
 		.nav-item {
@@ -644,6 +692,8 @@
 		}
 
 		.view-content {
+			position: relative;
+			z-index: 100;
 			padding: 0 20rpx 54.54rpx;
 			.nav {
 				.cu-item {

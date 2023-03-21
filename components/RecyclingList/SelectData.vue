@@ -146,8 +146,8 @@
 			padding-left: 20%;
 
 			.active {
-				color: #FFFFFF !important;
-				background-color: #ec6e57!important;
+				color: #4F4F50 !important;
+				background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);
 			}
 
 			.item {

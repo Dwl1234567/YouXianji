@@ -212,11 +212,17 @@
 				kefu_scroll_top: 0,
 				kefu_scroll_with_animation: true,
 				record_scroll_height: 0,
-				navigation_bar_title: ''
+				navigation_bar_title: '',
+				user_id: 1,
+				csr_id: 1,
+				user_token: ''
 			}
 		},
 		onLoad(opt) {
-
+			console.log(opt)
+			this.csr_id = opt.csr_id;
+			this.user_id = opt.user_id;
+			this.user_token = opt.token
 			// token = opt.token ? opt.token : token
 			let usertoken = Vue.prototype.$store.state.userInfo.token;
 			token = usertoken;
@@ -257,28 +263,31 @@
 
 				// 初始化请求
 				try {
-					var kefu_tourists_token = uni.getStorageSync('kefu_tourists_token');
+					var kefu_tourists_token = uni.getStorageSync('kefu_tourists_tokens');
 					if (!kefu_tourists_token) {
 						kefu_tourists_token = ''
 					}
 				} catch (e) {
 					console.error(e)
 				}
-
+				console.log(token,'token')
 				uni.request({
 					url: that.build_url('initialize'),
 					data: {
-						token: token,
+						referrer: '',
+						// token: token,
+						admin_id: uni.getStorageSync('userInfo').user_id,
 						kefu_tourists_token: kefu_tourists_token,
 						fixed_csr: fixedCsr
 					},
 					success: (res) => {
+						console.log(res)
 						if (res.data.code == 1) {
 
 							// 保存游客token
 							if (res.data.data.token_list.kefu_tourists_token) {
 								try {
-									uni.setStorageSync('kefu_tourists_token', res.data.data.token_list.kefu_tourists_token);
+									uni.setStorageSync('kefu_tourists_tokens', res.data.data.token_list.kefu_tourists_token);
 								} catch (e) {
 									console.error(e)
 								}
@@ -669,7 +678,7 @@
 						message: message,
 						message_type: message_type,
 						session_id: that.sessionId,
-						modulename: 'admin',
+						modulename: 'index',
 						message_id: message_id
 					}
 				};
@@ -1000,6 +1009,7 @@
 				return states[parseInt(status_id)] || states['default'];
 			},
 			build_url: function(type = 'ws', res_path) {
+				console.log(res_path, type)
 				var that = this
 				var protocol = Config.https_switch ? 'https://' : 'http://';
 				var token = that.tokenList.kefu_token ? '&token=' + that.tokenList.kefu_token : '';
@@ -1011,7 +1021,7 @@
 						protocol = parseInt(that.config.wss_switch) == 1 ? 'wss://' : 'ws://';
 						return (protocol + Config.baseURL + ':' + that.config.websocket_port + '/?modulename=admin' + token +
 							kefu_tourists_token).replace(
-							/\|/g, '~');
+							/\|/g, '｜');
 					},
 					initialize: () => {
 						return protocol + Config.baseURL + '/addons/kefu/index/initialize?modulename=admin';
@@ -1039,8 +1049,9 @@
 						return protocol + Config.baseURL;
 					}
 				};
-
+				
 				let action = buildObj[type] || buildObj['default']
+				console.log(action.call(this), '123')
 				return action.call(this)
 			},
 			new_message_prompt: function() {

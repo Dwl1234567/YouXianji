@@ -273,6 +273,7 @@
 						fixed_csr: fixedCsr
 					},
 					success: (res) => {
+						console.log(res)
 						if (res.data.code == 1) {
 
 							// 保存游客token

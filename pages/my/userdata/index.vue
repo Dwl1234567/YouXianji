@@ -57,6 +57,7 @@
 				<view class="content">注销账户</view>
 			</view>
 		</view> -->
+		
 	</view>
 </template>
 

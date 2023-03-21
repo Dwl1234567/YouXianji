@@ -274,6 +274,7 @@
 		ProductFulists,
 	} from '@/api/mall.js';
 	import { getIndexPrice } from '@/api/common.js';
+	import { kefuInitUser } from '@/api/user.js';
 	export default {
 		name: 'home',
 		components: {
@@ -347,6 +348,8 @@
 			};
 		},
 		created(){
+			// 储存isNew值 1为全新0为二手
+			uni.setStorageSync('isNew', 1)
 			let that = this;
 			let userInfo = uni.getStorageSync('userInfo');
 			if (userInfo) {
@@ -405,6 +408,11 @@
 		},
 		methods: {
 			checkView(e){
+				if (e === 'new') {
+					uni.setStorageSync('isNew', 1)
+				} else{
+					uni.setStorageSync('isNew', 2)
+				}
 				this.$emit('checkView', e)
 			},
 			snTap() {
@@ -661,8 +669,15 @@
 					});
 				}
 			},
+			async kefuInitUser () {
+				console.log(this.userInfo, '222222');
+				const res = await kefuInitUser({
+					
+				})
+			},
 			// 联系客服
 			btnClick() {
+				this.kefuInitUser();
 				console.log('球被点击');
 				uni.navigateTo({
 					url: '/pages/chat/chat',

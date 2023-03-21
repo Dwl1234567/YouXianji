@@ -17,7 +17,7 @@ export function CategoryAll(data) {
 	return request.get('/shop/category/all',data,{'noLogin':true});
 }
 */
-export function CategoryAll(data) {
+export function CategoryAlls(data) {
 	return request.get('/shop/category/index',data,{'noLogin':true});
 }
 /**

@@ -285,3 +285,29 @@ export function userVisitlist(data) {
 export function setuservisit(data) {
 	return request.post('/setuservisit',data);
 }
+
+/**
+ * 客服初始化
+ * 
+ */
+export function kefuInitUser(data) {
+	return request.post('/kefu_init_user',data);
+}
+
+
+/**
+ * 获取客服内客户列表
+ * 
+ */
+export function getKefuUserList(data) {
+	return request.post('/kefu_user_list',data);
+}
+
+/**
+ * 获取客服内客户列表
+ * 
+ */
+export function kefuQiangdan(data) {
+	return request.post('/kefu_qiangdan',data);
+}
+

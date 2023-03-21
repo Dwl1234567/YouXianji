@@ -135,6 +135,10 @@
 			this.agentusermyleveltaskyesFuc(this.next_level);
 		},
 		onReady() {
+			this.$nextTick(() => {
+				plus.navigator.setStatusBarStyle('light')
+				var ss = plus.navigator.getStatusBarStyle();
+			});
 			_tool.setBarColor(true);
 			uni.pageScrollTo({
 			    scrollTop: 0,

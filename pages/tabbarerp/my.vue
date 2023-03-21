@@ -159,6 +159,9 @@
 	import {
 		erpuserbacklog
 	} from "@/api/erpapi.js";
+	import {
+		getKefuUserList
+	} from "@/api/user.js";
 	import _my_data from '@/static/data/my.js';	//虚拟数据
 	import _tool from '@/utils/tools.js';	//工具函数
 	export default {
@@ -183,6 +186,7 @@
 			this.erpuserbacklogFuc();
 		},
 		methods: {
+			
 			// 获取待办数据
 			erpuserbacklogFuc(){
 				erpuserbacklog({}).then(res=>{

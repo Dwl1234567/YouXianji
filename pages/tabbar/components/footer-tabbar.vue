@@ -9,11 +9,11 @@
 		<!--底部菜单-->
 		<view class="cu-bar tabbar bg-white footer-fixed">
 			<view class="action" :class="TabID == 0?'text-red':'text-black'" @tap="tabTap(0)">
-				<view class="iconfont" :class="TabID == 0?'icon-home':'icon-homegray'"></view>
+				<view class="iconfont" :class="TabID == 0?'icon-dianjishouye':'icon-weidianjishouye'"></view>
 				<text>首页</text>
 			</view>
 			<view class="action" :class="TabID == 1?'text-red':'text-black'" @tap="tabTap(1)">
-				<view class="iconfont" :class="TabID == 1?'icon-storeorange':'icon-storegray'"></view>
+				<view class="iconfont" :class="TabID == 1?'icon-dianjimendian':'icon-weidianjimendian'"></view>
 				<text>门店</text>
 			</view>
 			<view class="action text-red" :class="TabID == 2?'text-red':'text-red'" @tap="tabTap(2)">
@@ -25,13 +25,13 @@
 				<text>卖闲置</text>
 			</view>
 			<view class="action" :class="TabID == 3?'text-red':'text-black'" @tap="tabTap(3)">
-				<view class="iconfont" :class="TabID == 3?'icon-shoppingcartorange':'icon-shoppingcart'">
+				<view class="iconfont" :class="TabID == 3?'icon-dianjigouwuche':'icon-weidianjigouwuche'">
 					<!--<view class="cu-tag badge" v-if="MsgDot"></view>-->
 				</view>
 				<text>购物车</text>
 			</view>
 			<view class="action" :class="TabID == 4?'text-red':'text-black'" @tap="tabTap(4)">
-				<view class="iconfont" :class="TabID == 4?'icon-meorange':'icon-megray'"></view>
+				<view class="iconfont" :class="TabID == 4?'icon-dianjiwode':'icon-weidianjiwode'"></view>
 				<text>我的</text>
 			</view>
 		</view>
@@ -57,7 +57,6 @@
 			},
 		},
 		created() {
-			console.log(123)
 			this.TabID = this.tabID;
 			this.MsgDot = this.msgDot;
 		},

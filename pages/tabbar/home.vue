@@ -70,6 +70,7 @@
 		ProductFulists,
 	} from '@/api/mall.js';
 	import { getIndexPrice } from '@/api/common.js';
+	import { kefuInitUser } from '@/api/user.js';
 	export default {
 		name: 'home',
 		components: {
@@ -461,12 +462,26 @@
 					});
 				}
 			},
+			async kefuInitUser () {
+				const res = await this.$api.checkLogin()
+				if (res) {
+					console.log(this.userInfo)
+					const isNew  = uni.getStorageSync('isNew')
+					const res = await kefuInitUser({
+						userId: this.userInfo.user_id,
+						isNew,
+						isHome: 1
+					})
+					if (res.code === 1) {
+						uni.navigateTo({
+							url: '/pages/chat/chat',
+						});
+					}
+				}
+			},
 			// 联系客服
 			btnClick() {
-				console.log('球被点击');
-				uni.navigateTo({
-					url: '/pages/chat/chat',
-				});
+				this.kefuInitUser();
 			},
 		},
 	};
