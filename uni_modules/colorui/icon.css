@@ -31,9 +31,9 @@
 @font-face {
   font-family: 'cuIcon';  /* Project id 3963243 */
   src: 
-       url('//at.alicdn.com/t/c/font_3963243_gorl3j95xo.woff2?t=1679361256125') format('woff2'),
-       url('//at.alicdn.com/t/c/font_3963243_gorl3j95xo.woff?t=1679361256125') format('woff'),
-       url('//at.alicdn.com/t/c/font_3963243_gorl3j95xo.ttf?t=1679361256125') format('truetype');
+       url('https://at.alicdn.com/t/c/font_3963243_gorl3j95xo.woff2?t=1679361256125') format('woff2'),
+       url('https://at.alicdn.com/t/c/font_3963243_gorl3j95xo.woff?t=1679361256125') format('woff'),
+       url('https://at.alicdn.com/t/c/font_3963243_gorl3j95xo.ttf?t=1679361256125') format('truetype');
 }
 
 .cuIcon-appreciate:before {

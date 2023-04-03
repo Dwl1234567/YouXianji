@@ -108,6 +108,12 @@
 						limit:10,
 						loadmore: 'more', //more 还有数据   noMore 无数据
 						dataList:[]
+					},
+					{
+						page:1,
+						limit:10,
+						loadmore: 'more', //more 还有数据   noMore 无数据
+						dataList:[]
 					}
 				],
 				contentText: {

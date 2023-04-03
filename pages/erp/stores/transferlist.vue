@@ -5,15 +5,18 @@
 			<block slot="content">调拨列表</block>
 		</bar-title>
 		
-		<scroll-view scroll-x class="bg-white nav text-center">
-			<view class="cu-item" :class="1==TabCur?'text-red cur':''" @tap="tabSelect" data-id="1">
+		<scroll-view scroll-x class="bg-white nav text-center text-xl">
+			<view class="cu-item padding-lr-sm " :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect" data-id="1" style="position:relative">
 				待处理
+				<view class="tab-dot bg-white"></view>
 			</view>
-			<view class="cu-item" :class="2==TabCur?'text-red cur':''" @tap="tabSelect" data-id="2">
+			<view class="cu-item padding-lr-sm" :class="2==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect" data-id="2" style="position:relative">
 				已接受
+				<view class="tab-dot bg-white"></view>
 			</view>
-			<view class="cu-item" :class="3==TabCur?'text-red cur':''" @tap="tabSelect" data-id="3">
+			<view class="cu-item padding-lr-sm" :class="3==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect" data-id="3" style="position:relative">
 				已拒绝
+				<view class="tab-dot bg-white"></view>
 			</view>
 		</scroll-view>
 		<view class="cu-card article" v-if="1==TabCur">
@@ -374,6 +377,22 @@
 </script>
 
 <style lang="scss">
+	page{
+		background: #F0F0F0;
+	}
+	.cur{
+		.tab-dot {
+			position: absolute;
+			height: 3px !important;
+			border-radius: 20rpx;
+			bottom: 13px;
+			left: 0;
+			right: 0;
+			width: 25px !important;
+			margin: auto;
+			background-image: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+		}
+	}
 	.cu-card.article>.cu-item {
 		padding-bottom:0;
 		.title{

@@ -2,7 +2,7 @@
 	<view class="bar-title-box">
 		<view class="cu-bar" :class="[fixed?'fixed':'', shadow?'':'no-shadow', bgColor]">
 			<view class="action" @tap="BackPage" v-if="isBack">
-				<text class="cuIcon-back" />
+				<text class=" iconfont icon-fanhui"/>
 				<text>{{backText}}</text>
 			</view>
 			<view class="action" @tap="leftTap" v-if="!isBack">

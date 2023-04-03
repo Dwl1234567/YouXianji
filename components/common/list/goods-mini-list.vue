@@ -19,7 +19,7 @@
 						</view>
 						<!--价格-->
 						<view class="text-gray text-cut text-sm tag-view">
-							<text class="text-red text-bold text-price text-xl" v-if="item.sales_price">{{item.sales_price}}</text>
+							<text class="text-red text-bold text-price text-xl" v-if="item.sales_price">{{item.sales_price}}2222</text>
 							<!-- <text class="text-gray through" v-if="item.cost_price">￥{{item.cost_price}}</text> -->
 							<block v-for="(items,indexs) in item.discount" :key="indexs">
 								<text class="cu-tag line-orange radius sm">{{items}}</text>

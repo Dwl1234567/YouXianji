@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<!--标题栏-->
-		<bar-title bgColor="bg-white" :datas="datas">
-			<block slot="content">商品详情</block>
+		<bar-title bgColor="bg-22222" :datas="datas">
+			<!-- <block slot="content">商品详情</block> -->
 			<!-- 分享 操作
 			<block slot="right">
 				<text class="cuIcon-forward" />
@@ -11,7 +11,7 @@
 			-->
 		</bar-title>
 
-		<view class="goods-tab-box" :class="show?'show':'hide'" :style="'opacity:' + tabBarOpacity">
+		<!-- <view class="goods-tab-box" :class="show?'show':'hide'" :style="'opacity:' + tabBarOpacity">
 			<scroll-view scroll-x class="nav text-center">
 				<view class="cu-item" :class="0==TabCur?'text-deepblue text-bold cur':''" @tap="tabSelect" data-id="0">
 					商品
@@ -26,7 +26,7 @@
 					详情
 				</view>
 			</scroll-view>
-		</view>
+		</view> -->
 		<!--提示-->
 		<!--<view class="bg-grey text-sm text-center padding-tb-xs text-white">真机实拍部分为真机样张，您购买的机型大致符合图中成色效果</view>-->
 
@@ -50,22 +50,31 @@
 							</text>
 						</view>
 
-						<!--商品价格-->
-						<view class="limited-seckill-box bg-deepblue radius-2 margin-sm">
-							<text class="text-price text-xxl">{{product.sales_price}}</text>
-							<view class="text-xs cost-price-num">
-								<!--<view class="text-through">原价￥{{product.market_price}}</view>
-								<view>剩余{{product.stock}}件</view>-->
-							</view>
-
-							<view class="text-right time-right">
-								<view class="text-through">原价￥{{product.market_price}}</view>
-								<view class="text-xs">剩余{{product.stock}}件</view>
-							</view>
-						</view>
+						
 
 						<!--标题-->
 						<view class="bg-white view-box title-view-box radius-2 margin-sm">
+							<!--分销按钮-->
+							<view class="btn-group flex flex-wrap align-center">
+								<button class="cu-btns bg-FFEBEB radius-3 text-red" @click="renderScript.emitData">
+									一键保存图片
+								</button>
+								<!-- <button class="cu-btn bg-deepblue radius-4" @click="settingQrImgBase64">一键保存图片</button> -->
+								<button class="cu-btns bg-F0F0F0 radius-3 margin-left-sm text-101010" @click="copydesc">一键复制文案</button>
+							</view>
+							<!--商品价格-->
+							<view class="margin-top-sm">
+								<text class="text-price text-xxl text-red text-sl" style="font-family: DINCondensed-Bold;">{{product.sales_price}}</text>
+								<view class="text-xs cost-price-num text-red flex text-929294">
+									<view class="text-through">原价￥{{product.market_price}}</view>
+									<view class="margin-left-sm">剩余{{product.stock}}件</view>
+								</view>
+							
+								<!-- <view class="text-right time-right ">
+									<view class="text-through">原价￥{{product.market_price}}</view>
+									<view class="text-xs">剩余{{product.stock}}件</view>
+								</view> -->
+							</view>
 							<view class="title-view">
 								<text class="cu-tag bg-red radius sm">{{product.colourname}}</text>
 								<text class="text-black text-bold">{{product.title}}</text>
@@ -73,14 +82,7 @@
 							<view class="text-lg margin-bottom-sm">
 								<text class="sm text-gray">{{product.tags}}</text>
 							</view>
-							<!--分销按钮-->
-							<view class="btn-group flex flex-wrap justify-between align-center">
-								<button class="cu-btn bg-deepblue radius-4" @click="renderScript.emitData">
-									一键保存图片
-								</button>
-								<!-- <button class="cu-btn bg-deepblue radius-4" @click="settingQrImgBase64">一键保存图片</button> -->
-								<button class="cu-btn bg-deepblue radius-4" @click="copydesc">一键复制文案</button>
-							</view>
+							
 						</view>
 
 						<view class="bg-white margin-sm radius-2">
@@ -90,7 +92,7 @@
 									<view class="basis-1">
 										<text class="text-gray">已选</text>
 									</view>
-									<view class="basis-8">
+									<view class="basis-8 text-500">
 										<text class="text-sm">{{specSelectedName}}</text>
 									</view>
 									<view class="basis-1">
@@ -108,7 +110,7 @@
 									<view class="basis-1">
 										<text class="text-gray">发货</text>
 									</view>
-									<view class="basis-9">
+									<view class="basis-9 text-500">
 										<text class="text-sm">16:00前下单，当日发货，顺丰包邮</text>
 									</view>
 								</view>
@@ -120,10 +122,10 @@
 									<view class="basis-1">
 										<text class="text-gray">保障</text>
 									</view>
-									<view class="basis-7">
+									<view class="basis-7 text-500">
 										<view>
 											<text class="tag-view" v-for="(item,index) in product.server" :key="index">
-												<text class="cuIcon-title text-red" />
+												<text class="text-red" />
 												<text>{{item}}</text>
 											</text>
 										</view>
@@ -194,22 +196,24 @@
 					<view class=""></view>
 				</view>
 				<!--包含评论end-->
-				<!--参数-->
-				<view id="canshuBlock" class="bg-white margin-sm padding-sm radius-2">
-					<view class="margin-bottom-xs text-bold text-xl">服务</view>
+				<view id="" class="bg-white margin-sm padding-sm radius-2">
+					<view class="margin-bottom-xs text-bold text-lg margin-bottom-sm">我们的服务</view>
 					<view class="text-lightgrey">
-						<view class="margin-bottom-xs text-bold text-lg margin-top-xs">官方验机</view>
-						<view class="text-sm">平台验机并提供评估报告。</view>
-						<view class="margin-bottom-xs text-bold text-lg margin-top-xs">
+						<view class="margin-bottom-xs text-bold text-df margin-top-xs text-101010">官方验机</view>
+						<view class="text-sm margin-bottom">平台验机并提供评估报告。</view>
+						<view class="margin-bottom-xs text-bold text-df margin-top-xs text-101010">
 							此商品支持
 							<text v-for="(items,index) in product.server" :key="index">{{items}}</text>
 						</view>
-						<view class="text-sm">质检并未发现机器存在异常，满足质检条件。</view>
-						<view class="margin-bottom-xs text-bold text-lg margin-top-xs">关于附件</view>
+						<view class="text-sm margin-bottom">质检并未发现机器存在异常，满足质检条件。</view>
+						<view class="margin-bottom-xs text-bold text-df margin-top-xs text-101010">关于附件</view>
 						<view class="text-sm">
 							附件名称显示为橘色表示包含该配件，显示灰色表示不包 含该配件，附件不在质保范围内。
 						</view>
 					</view>
+				</view>
+				<!--参数-->
+				<view id="canshuBlock" class="bg-white margin-sm padding-sm radius-2">
 
 					<view class="margin-tb-xs text-bold text-xl">温馨提示</view>
 					<image src="/static/img/shili.jpg"></image>
@@ -221,11 +225,11 @@
 			</view>
 			<!--包含参数end-->
 			<!--详情-->
-			<view id="xiangqingBlock" class="goods-details-box margin-sm bg-white radius-2 padding-sm">
-				<rich-text :nodes="product.desc|formatRichText"></rich-text>
+			<!-- <view id="xiangqingBlock" class="goods-details-box margin-sm bg-white radius-2 padding-sm"> -->
+				<!-- <rich-text :nodes="product.desc|formatRichText"></rich-text> -->
 				<!-- <image src="/static/delect_images/home/goods/goods-1.png" mode="widthFix" />
 				<image src="/static/delect_images/home/goods/goods-2.png" mode="widthFix" /> -->
-			</view>
+			<!-- </view> -->
 
 			<!--占位底部距离-->
 			<view class="cu-tabbar-height"></view>
@@ -257,7 +261,7 @@
 		<!-- </view> -->
 		<view class="background-q" :class="imageModal?'show':''">
 			<view id="qrcodes">
-				<canvas id="img1" canvas-id="img1" style="width: 324px; height: 268px" />
+				<canvas id="img1" canvas-id="img1" style="width: 324px; height: 324px" />
 				<view class="text">{{product.title}}</view>
 				<view class="price">￥{{product.sales_price}}</view>
 				<view class="head">
@@ -269,13 +273,13 @@
 			</view>
 		</view>
 		<!--弹出框-->
-		<view class="cu-modal bottom-modal bottom-modal-box" :class="bottomModal?'show':''">
-			<view class="cu-dialog bg-white">
+		<view class="cu-modal bottom-modal bottom-modal-box" :class="bottomModal?'show':''" @click="bottomDisplay">
+			<view class="cu-dialog bg-white" ref="btn" id="btn">
 				<!--标题-->
-				<view class="text-black text-center margin-tb text-lg title-bar">
+				<!-- <view class="text-black text-center margin-tb text-lg title-bar">
 					<text>{{modalTitle}}</text>
 					<text class="cuIcon-close close-icon" @tap="hideModal"></text>
-				</view>
+				</view> -->
 
 				<!--内容区域-->
 				<view class="modal-content">
@@ -390,14 +394,14 @@
 					<view class="view-box select" v-if="modalType=='select'">
 						<!--商品信息-->
 						<view class="cu-list menu-avatar">
-							<view class="cu-item">
+				 			<view class="cu-item">
 								<view
 									class="cu-avatar radius lg"
 									style="background-image: url(/static/delect_images/home/goods/1.png)"
 								/>
 								<view class="content">
 									<view class="text-price-view">
-										<text class="text-price text-red margin-right-xs">{{product.sales_price}}</text>
+										<text class="text-price text-FF3A31 margin-right-xs text-sl" style="font-family: DINCondensed-Bold;">{{product.sales_price}}</text>
 										<text class="text-sm text-gray text-through">￥{{product.market_price}}</text>
 										<text class="cu-tag bg-gradual-red radius sm">
 											<text class="cuIcon-hotfill" />
@@ -414,7 +418,7 @@
 						<!--规格数据-->
 						<view class="select-btn-list-boox">
 							<view class="select-item" v-for="(item,index) in specList" :key="index">
-								<view class="text-black">{{item.name}}</view>
+								<view class="text-black text-500">{{item.name}}</view>
 								<view class="select-btn">
 									<text
 										v-for="(childItem, childIndex) in specChildList"
@@ -435,7 +439,7 @@
 					<!--公共按钮-->
 					<view class="footer-fixed">
 						<view class="flex flex-direction">
-							<button class="cu-btn bg-red lg" @click="confirmFuc">确定</button>
+							<button class="cu-btn text-color-yellows lg radius-4" @click="confirmFuc">确定</button>
 						</view>
 					</view>
 				</view>
@@ -544,7 +548,6 @@
 			};
 		},
 		onLoad(options) {
-			console.log(options, '详情信息参数');
 			// 获取当前页面信息
 			const pages = getCurrentPages();
 			const currentPage = pages[pages.length - 1];
@@ -654,9 +657,22 @@
 			}
 		},
 		methods: {
+			bottomDisplay(e) {
+				const query = uni.createSelectorQuery().in(this);
+				query.selectAll('#btn').boundingClientRect((data) =>{
+					console.log(data[0].top, e.target.y)
+					if (e.target.y < data[0].top) {
+						this.bottomModal = false;
+					}
+				}).exec();
+				// console.log(this.$refs.btn.$el.getBoundingClientRect(), ' 123123123')
+				// const height = this.$refs.btn.$el.getBoundingClientRect().top
+				// if (e.target.y < height) {
+				// 	this.bottomModal = false;
+				// }
+			},
 			async bindingUser(item) {
 				const res = await bindingUser({userId: item, downId: this.userInfo.user_id, type: 'lowernum'});
-				console.log(res, '绑定成功')
 			},
 			async onCanvas() {
 				qrcode
@@ -677,8 +693,9 @@
 					const userInfo = Vue.prototype.$store.state.userInfo;
 					const ctx = uni.createCanvasContext('img1', this);
 					const ctx2 = uni.createCanvasContext('img2', this);
-					ctx.fillRect(0, 0, 324, 268);
-					ctx.drawImage(this.product.images_text[0], 0, 0, 324, 268);
+					ctx.fillRect(0, 0, 324, 324);
+					ctx2.fillRect(0, 0, 40, 40);
+					ctx.drawImage(this.product.images_text[0], 0, 0, 324, 324);
 					ctx2.drawImage(this.userInfo.avatar, 0, 0, 40, 40);
 					let pic = await this.setTime(ctx);
 					let pic2 = await this.setTime(ctx2);
@@ -847,7 +864,6 @@
 				query
 					.select(css)
 					.boundingClientRect((data) => {
-						console.log(data, 'data');
 						this.jumpTop = data.height - 95;
 					})
 					.exec();
@@ -880,7 +896,6 @@
 			},
 			loadData() {
 				let that = this;
-				console.log(that.scrollTop);
 				this.getProductEvaluate();
 			},
 			// 获取商品详情
@@ -1142,6 +1157,41 @@
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
 	@import '@/uni_modules/mpb-ui/shop/goods.scss';
+	page{
+		background: #F0F0F0;
+	}
+	.xiangqingH{
+		position: relative;
+		top: calc(0px - var(--status-bar-height) - 104rpx) !important;
+	}
+	.text-color-yellows{
+		background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%) !important;
+		border-radius: 22px !important;
+	}
+	.cu-avatar.lg{
+		width: 136rpx;
+		height: 136rpx;
+	}
+	.menu-avatar{
+		height: 136rpx;
+		margin-top: 19px;
+		
+	}
+	.select-item{
+		border: none !important;
+	}
+	.modal-content{
+		.cu-btn{
+			background: #F0F0F0;
+			border-radius: 6px;
+			border: none !important;
+		}
+		.selected{
+			background: #FFEBEB !important;
+			border: 1px solid rgba(255,58,49,1) !important;
+			border-radius: 6px !important;
+		}
+	}
 	.background-q {
 		width: 100%;
 		height: 100%;
@@ -1158,7 +1208,7 @@
 	}
 	#qrcodes {
 		width: 324px;
-		height: 412px;
+		height: 468px;
 		background-color: #fff;
 		position: relative;
 		position: fixed;
@@ -1173,7 +1223,7 @@
 			width: 159px;
 			position: absolute;
 			left: 30px;
-			top: 289px;
+			top: 345px;
 			font-family: PingFangSC-Medium;
 			font-size: 18px;
 			color: #101010;
@@ -1182,7 +1232,7 @@
 		.price {
 			position: absolute;
 			right: 19px;
-			top: 289px;
+			top: 345px;
 			font-family: PingFangSC-Medium;
 			font-size: 24px;
 			color: #ff2f0f;

@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="cu-list menu">
-			<view class="margin-sm bg-white radius-4" v-for="(item,index) in dataList" :key="index">
-				<view class="padding-xs flex justify-between text-xs">
+			<view class="margin-sm bg-white radius-6 padding-lr-sm padding-tb-lg" v-for="(item,index) in dataList" :key="index">
+				<view class=" flex justify-between text-xs">
 					<view>单号:{{item.code}}</view>
 					<view>
 						时间:{{item.createtime}}
@@ -73,36 +73,36 @@
 						</view>
 					</view>
 				</view>
-				<view class="grid margin-bottom text-center col-2">
-					<view class="padding-xs">
-						<view class="cu-tag line-blue round sm">科目：{{item.subjectsname}}</view>
+				<view class="grid text-center col-2">
+					<view class="padding-xs item">
+						<view class="cu-tag sm" style="background: #E5FCF1; color: #00C082;">科目：{{item.subjectsname}}</view>
 					</view>
-					<view class="padding-xs">
-						<view class="cu-tag round line-red sm">
+					<view class="padding-xs item">
+						<view class="cu-tag sm" style="background: #ECEEFE; color: #224491;">
 							账单类型:
 							<text v-if="item.type == 'income'">收入</text>
 							<text v-else-if="item.type == 'spending'">支出</text>
 							<text v-else>类型错误</text>
 						</view>
 					</view>
-					<view class="padding-xs">
-						<view class="cu-tag line-red round sm">
+					<view class="padding-xs item">
+						<view class="cu-tag sm" style="background: #FFF7EB; color: #E5B15A;">
 							财务类别：{{item.typename}}
 						</view>
 					</view>
-					<view class="padding-xs">
-						<view class="cu-tag line-green round sm">
+					<view class="padding-xs item">
+						<view class="cu-tag sm"style="background: #FFEFEB; color: #EA7566;">
 							<text v-if="item.type == 'income'">收入</text>
 							<text v-if="item.type == 'spending'">支出</text>
 							时间：{{item.datatime}}
 						</view>
 					</view>
-					<view class="padding-xs">
-						<view class="cu-tag line-red round sm">
+					<view class="padding-xs item">
+						<view class="cu-tag sm" style="background: #EBF6FF; color: #1190D6;">
 							发起人：{{item.createname}}
 						</view>
 					</view>
-					<view class="padding-xs">
+					<view class="padding-xs item">
 						<view class="cu-btn bg-red round sm" @tap="fukuanTap(item.id,'Modal')">
 							付款/审批
 						</view>
@@ -447,6 +447,19 @@
 </script>
 
 <style lang="scss">
+	page{
+		background-color: #F0F0F0;
+	}
+	.grid{
+		.item{
+			view{
+				width: 222rpx;
+				height: 62rpx;
+				border-radius: 10px !important;
+				
+			}
+		}
+	}
 	.cu-list.menu .goodsimg{
 		width:150rpx;
 		height:150rpx;

@@ -3,7 +3,7 @@
 		<view class="bar-search-title-box">
 			<view class="cu-bar fixed no-shadow bg-white">
 				<view class="action" @tap="BackPage">
-					<text class="cuIcon-back"/>
+					<text class=" iconfont icon-xiangyou"/>
 				</view>
 				<view class="content search" @tap="searchTap">
 					<view class="search-form round">

@@ -1,6 +1,6 @@
 <template>
 	<view class="cu-bar tabbar bg-white footer-fixed">
-		<view class="cu-bar tabbar bg-white footer-fixed">
+		<view class="cu-bar tabbar bg-white footer-fixed" style="height: 224rpx;">
 			<view class="action" :class="TabID == 0?'text-red':'text-black'" @tap="tabTap(0)">
 				<view :class="TabID == 0?'cuIcon-homefill':'cuIcon-home'"></view>
 				<text>首页</text>

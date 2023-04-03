@@ -213,7 +213,7 @@
 	}
 	.view-box {
 		position: relative;
-		padding: 18.18rpx 27.27rpx;
+		padding: 34rpx 27.27rpx;
 		.flex {
 			.basis-1 {
 				flex-basis: 10%;

@@ -617,7 +617,18 @@ radio.white.checked .uni-radio-input {
 /* ==================
           按钮
  ==================== */
-
+.cu-btns{
+	background: #FFEBEB;
+	height: 54rpx;
+	padding: 0px 10px;
+	font-family: PingFangSC-Regular;
+	font-size: 13px;
+	color: #FF3A31;
+	font-weight: 400;
+	line-height: 54rpx;
+	margin-left: initial;
+	margin-right: initial;
+}
 .cu-btn {
 	position: relative;
 	border: 0upx;
@@ -3408,6 +3419,14 @@ view{
 .lines-white::after {
 	border-color: #ffffff;
 }
+.bg-reds {
+	background-image:  linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+	color: white;
+}
+.bg-FFEBEB {
+	background-color: #FFEBEB;
+	color: #ffffff;
+}
 
 .bg-red {
 	background-color: #ec6e57;
@@ -3827,7 +3846,7 @@ view{
 	
 }
 .text-color-yellow {
-	background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);
+	background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%) !important;
 }
 .text-500{
 	font-weight: 500;

@@ -68,7 +68,7 @@
 		<view class="view-content" :class="[headTab.TabCur==0?'show':'']">
 			<!--滑动菜单-->
 			<!-- 123 -->
-			<!-- <uni-steps :options="[{title: '事件一'}, {title: '事件二'}, {title: '事件三'}, {title: '事件四'}]" :active="1"></uni-steps> -->
+			<uni-steps :options="[{title: '事件一'}, {title: '事件二'}, {title: '事件三'}, {title: '事件四'}]" :active="1"></uni-steps>
 			<view class="padding-sm">
 				<grid-menu-list :list_data="gridMenuData" @listTap="gridMenuTap" />
 			</view>

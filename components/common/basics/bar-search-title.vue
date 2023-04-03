@@ -2,7 +2,7 @@
 	<view class="bar-search-title-box">
 		<view class="cu-bar" :class="[fixed?'fixed':'', shadow?'':'no-shadow', bgColor]">
 			<view class="action" @tap="BackPage" v-if="isBack">
-				<text class="cuIcon-back" />
+				<text class="iconfont icon-fanhui" />
 			</view>
 			<view class="search" style="width: 100%;">
 				<view class="search-form round">

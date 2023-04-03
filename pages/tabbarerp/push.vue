@@ -1,5 +1,5 @@
 <template>
-	<view class="push-box">
+	<view class="push-box bg-F0F0F0">
 
 		<view class="zaiui-bar-view-box">
 			<!--小程序端的标题-->
@@ -8,7 +8,7 @@
 			<!-- #endif -->
 
 			<!--标题栏-->
-			<view class="text-gray zaiui-bar-box">
+			<view class="text-gray zaiui-bar-box bg-F0F0F0">
 				<text class="text-black text-lg">快速开单</text>
 				<text class="margin-left-sm">选择开单类型</text>
 				<text class="cuIcon-close text-right close" @tap="closeTap"></text>
@@ -20,16 +20,17 @@
 
 		<!--中间内容区域-->
 		<view class="zaiui-view-content">
-			<scroll-view scroll-x class="nav">
-				<view class="flex text-center">
-					<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''"
-						v-for="(item,index) in typeListData" :key="index" @tap="tabSelect" :data-id="index">
-						{{item.name}}
-					</view>
-				</view>
-			</scroll-view>
-			<view class="margin-lr-sm" v-if="TabCur == 0">
-				<view class="bg-white radius-4">
+			<view class="" v-if="TabCur == 0">
+				
+				<view class="bg-white radius-6" style="padding-top: 58rpx;">
+					<scroll-view scroll-x class="nav bg-F0F0F0">
+						<view class="flex text-center">
+							<view class="cu-item flex-sub radius-6" style="height: 72rpx;line-height:72rpx;" :class="index==TabCur?'bg-reds cur':''"
+								v-for="(item,index) in typeListData" :key="index" @tap="tabSelect" :data-id="index">
+								{{item.name}}
+							</view>
+						</view>
+					</scroll-view>
 					<view class="cu-form-group">
 						<view class="title">客户</view>
 						<view class="cu-capsule radius" @tap="customerTap">
@@ -136,14 +137,22 @@
 				</view>
 				<view class="orderview-footer-fixed">
 					<view class="flex flex-direction">
-						<button class="cu-btn bg-red radius-4 margin-tb-sm lg" @click="upShareimg">确定</button>
+						<button class="cu-btn bg-reds radius-4 margin-tb-sm lg" @click="upShareimg">确定</button>
 					</view>
 				</view>
 			</view>
 			
 			
-			<view class="margin-lr-sm" v-if="TabCur == 1">
-				<view class="bg-white radius-4">
+			<view class="" v-if="TabCur == 1">
+				<view class="bg-white radius-6"style="padding-top: 58rpx;">
+					<scroll-view scroll-x class="nav bg-F0F0F0">
+						<view class="flex text-center">
+							<view class="cu-item flex-sub radius-6" style="height: 72rpx;line-height:72rpx;" :class="index==TabCur?'bg-reds cur':''"
+								v-for="(item,index) in typeListData" :key="index" @tap="tabSelect" :data-id="index">
+								{{item.name}}
+							</view>
+						</view>
+					</scroll-view>
 					<view class="cu-form-group client">
 						<view class="title">客户</view>
 						<view class="cu-capsule radius" @tap="customerTap">
@@ -209,9 +218,9 @@
 				</view>
 				
 				<view class="orderview-footer-fixed">
-					<view class="flex flex-direction">
-						<button class="cu-btn bg-green radius-4 margin-tb-xs lg" @click="upbiaojiTap">预制开单</button>
-						<button class="cu-btn bg-red radius-4 margin-tb-xs lg" @click="upShareimg">确定开单</button>
+					<view class="flex">
+						<button class="cu-btn radius-4 margin-tb-xs lg text-400" @click="upbiaojiTap" style="flex: 1; border: 1px solid rgba(235,25,25,1); color: #EB1919;">预制开单</button>
+						<button class="cu-btn bg-reds radius-4 margin-tb-xs lg text-400 margin-left-sm" @click="upShareimg" style="flex: 1;">确定开单</button>
 					</view>
 				</view>
 			</view>
@@ -887,6 +896,9 @@
 </script>
 
 <style lang="scss" scoped>
+	page{
+		background: #F0F0F0;
+	}
 	.push-box {
 		position: relative;
 		min-height: 50vh;
@@ -900,7 +912,7 @@
 			top: 0;
 			width: 100%;
 			z-index: 999999;
-			background: #FAFAFA;
+			background: #F0F0F0;
 
 			/* #ifndef MP */
 			height: calc(var(--status-bar-height) + 99.99rpx);
@@ -912,7 +924,7 @@
 
 			padding: var(--status-bar-height) 27.27rpx 0 27.27rpx;
 			align-items: center;
-
+			
 			.zaiui-bar-box {
 				position: relative;
 				width: 100%;
@@ -950,7 +962,7 @@
 		}
 
 		.zaiui-view-content {
-			padding: 0 27.27rpx 27.27rpx;
+			padding: 0 27.27rpx 160rpx;
 			.cu-form-group{
 				background-color: unset;
 			}
@@ -975,7 +987,13 @@
 			}
 		}
 	}
-
+	.nav{
+		width: 90%;
+	    margin: 0 auto;
+		background: #F9F9FB;
+		border-radius: 6px;
+		padding: 5px;
+	}
 	.guadan {
 		display: none;
 	}

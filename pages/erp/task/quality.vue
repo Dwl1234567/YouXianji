@@ -196,7 +196,7 @@
 		},
 		data() {
 			return {
-				filtertopnum:'90',//筛选条高度
+				filtertopnum:'83',//筛选条高度
 				defaultSelected: [],
 				filterData: [{
 					"name": '是否直售',

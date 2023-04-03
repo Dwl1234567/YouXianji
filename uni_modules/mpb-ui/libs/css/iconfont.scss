@@ -1,12 +1,10 @@
 /* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
-/* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
-/* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
 @font-face {
   font-family: 'iconfont';  /* Project id 3963243 */
   src: 
-       url('https://at.alicdn.com/t/c/font_3963243_gorl3j95xo.woff2?t=1679361256125') format('woff2'),
-       url('https://at.alicdn.com/t/c/font_3963243_gorl3j95xo.woff?t=1679361256125') format('woff'),
-       url('https://at.alicdn.com/t/c/font_3963243_gorl3j95xo.ttf?t=1679361256125') format('truetype');
+       url('https://at.alicdn.com/t/c/font_3963243_e9xea9dywg8.woff2?t=1679643115464') format('woff2'),
+       url('https://at.alicdn.com/t/c/font_3963243_e9xea9dywg8.woff?t=1679643115464') format('woff'),
+       url('https://at.alicdn.com/t/c/font_3963243_e9xea9dywg8.ttf?t=1679643115464') format('truetype');
 }
 
 .iconfont {
@@ -16,7 +14,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.icon-fanhui:before {
+  content: "\e678";
+}
 .icon-verification:before {
   content: "\e625";
 }
@@ -135,6 +135,10 @@
 
 .icon-xiangyou:before {
   content: "\e65e";
+}
+
+.icon-xiangzuo:before {
+  content: "\e675";
 }
 
 .icon-xiangxia:before {

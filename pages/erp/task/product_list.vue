@@ -15,42 +15,42 @@
 
 		<view class="margin-sm">
 			<view class="cu-card article">
-				<view class="bg-white cu-item radius-3" v-for="(item,index) in dataList">
-					
-					<view class="content margin-top-sm">
-						<image :src="item.image" mode="aspectFill">
-						</image>
+				<view class="flex bg-white radius-6 " v-for="(item,index) in dataList" style="overflow: hidden;">
+					<image :src="item.image" mode="aspectFill" style="width: 280rpx; height: 280rpx;">
+					</image>
+					<view class="" style="padding: 34rpx 26rpx 20rpx 26rpx; display: flex; flex-direction: column;justify-content: space-between; flex: 1 1 auto;">		
 						<view class="desc">
-							<view class="text-content">
+							<view class="">
 								<view class="title">
-									<view class="text-cut">{{item.name}}</view>
+									<view class="text-cut text-lg text-500">{{item.name}}</view>
 								</view>
-								<view class="">
-									<view class="text-sm">
+								<view class="margin-top-sm">
+									<view class="text-sm text-929294">
 										销售价:<text class="text-red">{{item.sales_price}}</text>元
-										库存:{{item.stock}}
+										<span class="margin-left-sm">库存:<text class="text-red">{{item.stock}}</text></span>
 										<!--<text class="margin-left-sm cuIcon-edit text-orange" @tap="showModal(item)" data-target="Modal">调价</text>-->
 									</view>
-									<view class="text-sm">序列号：{{item.sn}} <text
-											class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)">复制</text>
+									<view class="text-sm text-929294 margin-top-sm">序列号：{{item.sn}} 
+									<!-- <text class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)"></text> -->
 									</view>
-									<view class="text-sm">
+									<!-- <view class="text-sm">
 										<text class="margin-right-sm">成本价：{{item.cost_price}}元</text>
 										<text>调拨价：{{item.peer_price}}元</text>
 									</view>
-									<view class="text-sm">入库时间：{{item.updatetime}}</view>
+									<view class="text-sm">入库时间：{{item.updatetime}}</view> -->
 								</view>
 							</view>
 						</view>
-					</view>
-					<view class="flex padding-lr-sm justify-end margin-bottom-sm">
-						<view class="cu-btn round margin-xs bg-deepblue text-bold sm" @tap="copy(item.sn)">
-							<text>一键复制序列号</text>
+						<view class="flex justify-end" style="">
+							<view class="cu-btn round text-bold sm" @tap="copy(item.sn)">
+								<text>复制序列号</text>
+							</view>
+							<view class="cu-btn round margin-left-sm text-bold sm" @tap="showModal(item)" data-target="Modal">
+								<text>调价</text>
+							</view>
 						</view>
-						<view class="cu-btn round margin-xs bg-red text-bold sm" @tap="showModal(item)" data-target="Modal">
-							<text>调价</text>
-						</view>
 					</view>
+					
 				</view>
 
 			</view>
@@ -401,6 +401,9 @@
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
+	page{
+		background: #F0F0F0;
+	}
 	.cu-card.article>.cu-item{
 		padding-bottom: 0;
 	}
@@ -416,7 +419,7 @@
 		}
 
 		.text-content {
-			//height: 5.4em;
+			// line-height: 1;
 		}
 	}
 
