@@ -16,12 +16,12 @@
 				<view class="iconfont" :class="TabID == 1?'icon-dianjimendian':'icon-weidianjimendian'"></view>
 				<text>门店</text>
 			</view>
-			<view class="action text-red" :class="TabID == 2?'text-red':'text-red'" @tap="tabTap(2)">
+			<view class="action text-yellow" :class="TabID == 2?'text-yellow':'text-black'" @tap="tabTap(2)">
 				<!--<view class="push">
 					<image class="img" src="/static/images/push.png" mode="widthFix"></image>
 				</view>-->
 				<!--<button class="cu-btn cuIcon-add bg-red shadow"></button>-->
-				<view class="iconfont icon-xian"></view>
+				<view class="iconfont icon-maixianzhi text-yellow"></view>
 				<text>卖闲置</text>
 			</view>
 			<view class="action" :class="TabID == 3?'text-red':'text-black'" @tap="tabTap(3)">

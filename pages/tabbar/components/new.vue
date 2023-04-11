@@ -28,11 +28,11 @@
 			<!--搜索框-->
 			<view class="cu-bar search search-box">
 				<view class="search-form round" @tap="searchTap">
-					<!-- <text class="cuIcon-search"></text> -->
+					<text class="iconfont icon-saomiao" @tap="snTap"></text>
 					<text>iPhone 13 Pro</text>
 					<view class="sbtn cu-btn btn bg-red radius-4">搜索</view>
 				</view>
-				<text class="cuIcon-scan" @tap="snTap" />
+				<!-- <text class="cuIcon-scan" @tap="snTap" /> -->
 			</view>
 
 			<!--选项卡-->
@@ -68,7 +68,7 @@
 		<view class="view-content" :class="[headTab.TabCur==0?'show':'']">
 			<!--滑动菜单-->
 			<!-- 123 -->
-			<uni-steps :options="[{title: '事件一'}, {title: '事件二'}, {title: '事件三'}, {title: '事件四'}]" :active="1"></uni-steps>
+			<!-- <uni-steps :options="[{title: '事件一'}, {title: '事件二'}, {title: '事件三'}, {title: '事件四'}]" :active="1"></uni-steps> -->
 			<view class="padding-sm">
 				<grid-menu-list :list_data="gridMenuData" @listTap="gridMenuTap" />
 			</view>
@@ -76,8 +76,7 @@
 			<!--轮播、报价条、短视频-->
 			<view class="padding-lr-sm padding-bottom-sm" style="position: relative">
 				<view class="flex block">
-					<view class="flex-sub block-1 radius">
-						<!--轮播-->
+					<!-- <view class="flex-sub block-1 radius">
 						<view class="swiper-box">
 							<swiper
 								class="screen-swiper square-dot c"
@@ -94,9 +93,9 @@
 								</swiper-item>
 							</swiper>
 						</view>
-					</view>
-					<view class="flex-sub block-2">
-						<view class="flex align-start">
+					</view> -->
+					<view class="flex-sub block-2 flex" style="align-items: center;">
+						<view class="align-start" style="width: 50vw">
 							<view class="text-center video radius" @click="videoTap()">
 								<!--短视频-->
 								<image
@@ -106,7 +105,7 @@
 								/>
 							</view>
 						</view>
-						<view class="flex align-end">
+						<view class="align-end" style="width: 50vw">
 							<view class="baojia-bar radius margin-top-xs">
 								<!--回收报价条-->
 								<view v-if="phoneModel" class="process-info">
@@ -606,7 +605,7 @@
 			},
 			goodsListTap(e) {
 				uni.navigateTo({
-					url: '/pages/goods/goods?id=' + e.data.product_id,
+					url: '/pages/goods/goodsNew?id=' + e.data.product_id + '&isNew=true',
 				});
 			},
 			liveListTap(e) {},
@@ -731,7 +730,7 @@
 					height: 32px;
 					line-height: 32px;
 					position: absolute;
-					right: 37px;
+					right: 14px;
 					background-image: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
 				}
 				text{
@@ -740,7 +739,12 @@
 					color: #8E8E8E;
 					font-weight: 400;
 					position: absolute;
-					left: 25px;
+					left: 55px;
+				}
+				.icon-saomiao{
+					position: absolute;
+					left: 15px !important;
+					color: red;
 				}
 			}
 			.cuIcon-scan {
@@ -941,7 +945,7 @@
 	}
 
 	.block {
-		height: 260px;
+		// height: 260px;
 		.video {
 			width: 100%;
 			height: 127px;

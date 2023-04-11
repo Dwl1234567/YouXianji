@@ -194,6 +194,13 @@
                 "navigationStyle" : "custom"
             }
         },
+		/* 商城 */
+		{
+		    "path" : "pages/goods/goodsNew",
+		    "style" : {
+		        "navigationStyle" : "custom"
+		    }
+		},
         {
             "path" : "pages/goods/coupon",
             "style" : {

@@ -1,10 +1,11 @@
 <template>
 	<view class="my-box">
-		<view class="bg-gradual-red head-box">
+		<image src="../../static/我的备份@1x.png" mode="" class="background"></image>
+		<view class="head-box">
 			<!--标题栏-->
 			<!--小程序端不显示-->
 			<!-- #ifndef MP -->
-			<bar-title :isBack="false" :fixed="false">
+			<bar-title :isBack="false" :fixed="false" bgColor="bg-2222">
 				<!-- <block slot="right">
 					<text class="cuIcon-settings" @tap="setupTap"/>
 				</block> -->
@@ -294,7 +295,15 @@
 </script>
 
 <style lang="scss" scoped>
+	.background{
+		width: 100vw;
+		height: 100vh;
+		position: absolute;
+		top: 0px;
+		left:0px;
+	}
 	.my-box {
+		
 		width: 100%;
 		// display: none;
 		.head-box {
@@ -381,7 +390,10 @@
 			padding: 0 27.27rpx 54.54rpx;
 			margin-top: -63.63rpx;
 			.user-info-order-box {
+				position: relative;
+				background-color: white;
 				border-radius: 18.18rpx;
+				box-shadow: 0px 0px 4px 0px rgba(159,159,159,0.5);
 				.cu-list.grid.no-border {
 				    padding: 0;
 				}

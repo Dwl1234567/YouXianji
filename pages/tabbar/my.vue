@@ -1,17 +1,19 @@
 <template>
-	
 	<view class="my-box">
 		<!-- #ifdef APP-PLUS -->
-		   <!-- <view class="status_bar">  
+		<!-- <view class="status_bar">  
 		        <view class="top_view">123</view>  
 		    </view>  -->
-		<!-- #endif --> 
-		<view class="background" style="width:100vw;290px; background-image:radial-gradient(circle at 50% -26%, rgba(37,209,249,0.66) 0%, rgba(255,255,255,0.66) 90%);"></view>
+		<!-- #endif -->
+		<view
+			class="background"
+			style="width:100vw;290px; background-image:radial-gradient(circle at 50% -26%, rgba(37,209,249,0.66) 0%, rgba(255,255,255,0.66) 90%);"
+		></view>
 		<view class="head-box">
 			<!-- #ifdef MP -->
-				<!-- <image src="../../static/myBackground.png"></image> -->
-				
-			<!-- #endif --> 
+			<!-- <image src="../../static/myBackground.png"></image> -->
+
+			<!-- #endif -->
 			<!--标题栏-->
 			<!--小程序端不显示-->
 			<!-- #ifndef MP -->
@@ -43,7 +45,7 @@
 						</view>
 						<button class="cu-btn sm bg-red radius" @tap="loginUrlTap">立即登录</button>
 					</view>
-				
+
 					<!--已登陆-->
 					<view class="cu-list menu-avatar" v-else>
 						<view class="cu-item">
@@ -61,7 +63,7 @@
 								<text class="margin-right cuIcon-right icon"></text>
 							</view> -->
 						</view>
-				
+
 						<!-- <view class="padding-lr-lg">
 							<view class="text-sm flex justify-between"
 								@tap="baseTap('/pages/my/userdata/edit-synopsis?bio='+userInfo.bio)">
@@ -80,7 +82,11 @@
 					</view>
 				</view>
 				<!--用户提示-->
-				<view class="text-sm user-info-tip-box" v-if="userInfo && userInfo.verification != 1" @tap="realNameTap">
+				<view
+					class="text-sm user-info-tip-box"
+					v-if="userInfo && userInfo.verification != 1"
+					@tap="realNameTap"
+				>
 					<view class="text-cut text-gray">偷偷告诉你，实名认证后才能回收下单哦~</view>
 					<text class="cuIcon-right icon" />
 				</view>
@@ -119,7 +125,6 @@
 					</view>
 				</view>
 			</view>
-			
 		</view>
 
 		<view class="view-content">
@@ -331,7 +336,7 @@
 		data() {
 			return {
 				toolsList: [],
-				bgColor: '',
+				bgColor: 'bg-111',
 				login: false,
 				is_company: 0,
 				userInfo: '',
@@ -362,23 +367,23 @@
 			});
 			this.erpuserislogin();
 			this.$nextTick(() => {
-				plus.navigator.setStatusBarStyle('dark')
+				plus.navigator.setStatusBarStyle('dark');
 				var ss = plus.navigator.getStatusBarStyle();
 			});
 		},
 		mounted() {
+			this.getIMEI();
 			_tool.setBarColor(false);
 			uni.pageScrollTo({
 				scrollTop: 0,
 				duration: 0,
 			});
 			this.$nextTick(() => {
-				plus.navigator.setStatusBarStyle('dark')
+				plus.navigator.setStatusBarStyle('dark');
 				var ss = plus.navigator.getStatusBarStyle();
 			});
 		},
-		onReady() {
-		},
+		onReady() {},
 		onPullDownRefresh() {
 			getRecycleUserinfo()
 				.then((res) => {
@@ -389,6 +394,18 @@
 				});
 		},
 		methods: {
+			// 获取手机序列号
+			getIMEI() {
+				console.log("IMEI:" + plus.device.imei)
+				console.log("IMSI:" + plus.device.imsi)
+				console.log("设备型号:" + plus.device.model)
+				console.log("UUID:" + plus.device.uuid)
+				plus.device.getInfo({
+					success: function (e) {
+						console.log(JSON.stringify(e), 'IMEI');
+					},
+				});
+			},
 			// erp入口
 			erpuserislogin() {
 				let that = this;
@@ -493,52 +510,51 @@
 					url: '/pages/tabbarerp/home',
 				});
 			},
-			async kefuInitUser () {
+			async kefuInitUser() {
 				console.log(this.userInfo, '222222');
-				const isNew  = uni.getStorageSync('isNew')
-				console.log(isNew)
+				const isNew = uni.getStorageSync('isNew');
+				console.log(isNew);
 				const res = await kefuInitUser({
 					userId: this.userInfo.userId,
 					isNew,
-					isHome: 1
-				})
+					isHome: 1,
+				});
 			},
 			// 联系客服
 			btnClick() {
 				this.kefuInitUser();
 				console.log('球被点击');
-				
 			},
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	.my-content{
+	.my-content {
 		position: relative;
 		z-index: 100;
 	}
-	.status_bar {  
-	    // height: var(--status-bar-height);  
+	.status_bar {
+		// height: var(--status-bar-height);
 		width: 100vw;
-		position: fixed;  
+		position: fixed;
 		top: var(--status-bar-height) + -50rpx;
 		z-index: 100;
 		pointer-events: none;
-	    // background-color: black;  
-		image{
+		// background-color: black;
+		image {
 			width: 100vw;
 			height: 633px;
 		}
-	}  
-	.top_view {  
-	    height: var(--status-bar-height);  
-	    width: 100%;  
-	    position: fixed;  
-	    background-color: black;  
-	    top: 0;  
-	    z-index: 999;  
-	} 
+	}
+	.top_view {
+		height: var(--status-bar-height);
+		width: 100%;
+		position: fixed;
+		background-color: black;
+		top: 0;
+		z-index: 999;
+	}
 	.my-box {
 		width: 100%;
 		.nav-item {

@@ -41,6 +41,7 @@
 	</view>
 </template>
 <script>
+	import { sendCaptcha } from '@/api/login.js';
 	import { mapMutations } from 'vuex';
 	import { login, smslogin, loginCode, kefulogin } from '@/api/common.js';
 	import { UserLogin } from '@/api/mall.js';
@@ -168,9 +169,9 @@
 				});
 				//这里请求后台获取短信验证码
 				let params = {
-					mobile: that.phone,
+					phonenumber: that.phone,
 				};
-				loginCode(params)
+				sendCaptcha(params)
 					.then((res) => {
 						if (res.code == 1) {
 							// 这里此提示会被this.start()方法中的提示覆盖

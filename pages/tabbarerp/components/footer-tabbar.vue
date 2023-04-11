@@ -2,7 +2,7 @@
 	<view class="cu-bar tabbar bg-white footer-fixed">
 		<view class="cu-bar tabbar bg-white footer-fixed" style="height: 224rpx;">
 			<view class="action" :class="TabID == 0?'text-red':'text-black'" @tap="tabTap(0)">
-				<view :class="TabID == 0?'cuIcon-homefill':'cuIcon-home'"></view>
+				<view :class="TabID == 0?'icon-gongzuowodeweidianji':'icon-gongzuowodedianji'" class="iconfont"></view>
 				<text>首页</text>
 			</view>
 			<view class="action add-action" @tap="tabTap(2)">
@@ -10,7 +10,7 @@
 				<text>开单</text>
 			</view>
 			<view class="action" :class="TabID == 4?'text-red':'text-black'" @tap="tabTap(4)">
-				<view :class="TabID == 4?'cuIcon-peoplefill':'cuIcon-people'"></view>
+				<view :class="TabID == 4?'icon-gongzuoshouyeweidianji':'icon-gongzuoshouyedianji'" class="iconfont"></view>
 				<text>设置</text>
 			</view>
 		</view>

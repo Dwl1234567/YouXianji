@@ -144,11 +144,11 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/api" : {
-                    "target" : "https://youxianji.zansuo.com/api/v1",
+                    "target" : "http://192.168.2.36:8080",
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
-                        "^/api" : "/"
+                        "^/api" : ""
                     }
                 }
             },

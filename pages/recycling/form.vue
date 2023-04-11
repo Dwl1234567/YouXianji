@@ -157,7 +157,7 @@
 					</view>
 					<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[0] ? '#111f3a':'#dd514c'}"  @tap="uploadImg(0)">
 						<view :class="phoneImgArr[0] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(0)"></u-icon>
+							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -513,7 +513,7 @@
 				}
 			},
 			uploadImg(type) {
-				console.log(this.phoneImgArr[type]);
+				console.log(this.phoneImgArr[type], '123123123');
 				if (!this.phoneImgArr[type]) {
 					let that = this;
 					that.uploadImgtype = type;
@@ -521,6 +521,7 @@
 						url:'/pages/idphoto/idphoto'
 					})
 				} else {
+					console.log(222);
 					this.deleteImg(type)
 				}
 				

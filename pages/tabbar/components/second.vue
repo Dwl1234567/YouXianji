@@ -607,7 +607,7 @@
 			},
 			goodsListTap(e) {
 				uni.navigateTo({
-					url: '/pages/goods/goods?id=' + e.data.product_id,
+					url: '/pages/goods/goods?id=' + e.data.product_id + '&isNew=false',
 				});
 			},
 			liveListTap(e) {},

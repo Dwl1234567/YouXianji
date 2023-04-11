@@ -159,7 +159,9 @@
 			this.getdataList();
 		},
 		onReachBottom() {
-			if(that.querydata[this.TabCur].loadmore == 'noMore'){
+			console.log(123)
+			// this.querydata[this.TabCur].page = this.querydata[this.TabCur].page + 1;
+			if(this.querydata[this.TabCur].loadmore == 'noMore'){
 				return;
 			}
 			this.getdataList();
@@ -182,7 +184,8 @@
 						} else {
 							that.querydata[this.TabCur].dataList.push(...data);
 						}
-						if(res.data.total_count == that.querydata[this.TabCur].dataList.length){
+						console.log(res.data.total_count, that.querydata[this.TabCur].dataList.length)
+						if(res.data.total_count !== that.querydata[this.TabCur].dataList.length){
 							that.querydata[this.TabCur].page += 1;
 						}
 						that.querydata[this.TabCur].loadmore = res.data.total_count == that.querydata[this.TabCur].dataList.length ? 'noMore' : 'more'
@@ -235,9 +238,16 @@
 				}
 			},
 			goodsSortListTap(e) {
-				uni.navigateTo({
-					url: '/pages/goods/goods?id=' + e.data.id
-				});
+				if (this.TabCur === 2) {
+					uni.navigateTo({
+						url: '/pages/goods/goodsNew?id=' + e.data.id
+					});
+				} else {
+					uni.navigateTo({
+						url: '/pages/goods/goods?id=' + e.data.id
+					});
+				}
+				
 			}
 		}
 	}

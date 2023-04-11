@@ -56,11 +56,11 @@
 						<view class="bg-white view-box title-view-box radius-2 margin-sm">
 							<!--分销按钮-->
 							<view class="btn-group flex flex-wrap align-center">
-								<button class="cu-btns bg-FFEBEB radius-3 text-red" @click="renderScript.emitData">
+								<view class="cu-btns bg-FFEBEB radius-3 text-red" @click="renderScript.emitData">
 									一键保存图片
-								</button>
-								<!-- <button class="cu-btn bg-deepblue radius-4" @click="settingQrImgBase64">一键保存图片</button> -->
-								<button class="cu-btns bg-F0F0F0 radius-3 margin-left-sm text-101010" @click="copydesc">一键复制文案</button>
+								</view>
+								<!-- <view class="cu-btn bg-deepblue radius-4" @click="settingQrImgBase64">一键保存图片</view> -->
+								<view class="cu-btns bg-F0F0F0 radius-3 margin-left-sm text-101010" @click="copydesc">一键复制文案</view>
 							</view>
 							<!--商品价格-->
 							<view class="margin-top-sm">
@@ -545,9 +545,11 @@
 				pageIndex: 1,
 				pageLimit: 10,
 				evalueteList: [],
+				isNew: false
 			};
 		},
 		onLoad(options) {
+		    this.isNew = options.isNew
 			// 获取当前页面信息
 			const pages = getCurrentPages();
 			const currentPage = pages[pages.length - 1];

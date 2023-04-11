@@ -77,11 +77,11 @@ function baseRequest(url, method, data, {
 	// console.log(header);
 	return new Promise((reslove, reject) => {
 		uni.request({
-			// #ifndef H5
-			url: Url + url,
-			// #endif
+			// // #ifndef H5
+			// url: Url + url,
+			// // #endif
 			// #ifdef H5
-			url: '/api/' + url,
+			url: '/api' + url,
 			// #endif
 			method: method || 'GET',
 			header: header,
