@@ -27,7 +27,6 @@
 						<view class="item-active" @tap="goodsclick(item)">
 							<text>{{item.name}}</text>
 						</view>
-						<!-- <u-icon name="checkbox-mark" color="primary" size="24"></u-icon> -->
 					</view>
 				</scroll-view>
 			</view>
@@ -35,8 +34,8 @@
 			<!-- 根类 -->
 			<view class="rootcate-box">
 				<scroll-view scroll-x class="bg-white nav" scroll-with-animation :scroll-left="scrollLeft">
-					<view class="cu-item text-bold text-lg" :class="index==topCur?'text-red cur':''" v-for="(item,index) in dataListArr" :key="index" @tap="rootcateclick(item.id,index)" :data-id="item.id,index">
-						{{item.name}} 
+					<view class="cu-item text-bold text-lg" :class="index==topCur?'text-red cur':''" v-for="(item,index) in dataListArr" :key="index" @tap="rootcateclick(item.classificationId,index)" :data-id="item.classificationId,index">
+						{{item.classificationName}} 
 						<view class="put"></view>
 					</view>
 				</scroll-view>
@@ -46,13 +45,13 @@
 		<!--占位的-->
 		<!--<view class="seat-height"/>-->
 		
-		<view class="VerticalBox" v-if="dataListArr[topCur]">
+		<view class="VerticalBox" v-if="goodsDataArr">
 			<scroll-view class="VerticalNav nav" scroll-y scroll-with-animation :scroll-top="verticalNavTop"
 				style="height:calc(100vh - 120rpx)">
 				<view class="cu-item" :class="index==tabCur?'text-red cur':''"
-					v-for="(item,index) in dataListArr[topCur].children" :key="index" @tap="TabSelect(item.id,index)"
+					v-for="(item,index) in goodsDataArr" :key="index" @tap="TabSelect(item.id,index)"
 					:data-id="index">
-					{{item.name}}
+					{{item.brandName}}
 				</view>
 				<view style="height: 300rpx;"></view>
 			</scroll-view>
@@ -62,11 +61,12 @@
 				<view class="categoods-box">
 					<u-grid :border="false">
 						<u-grid-item bgColor="#ffffff" :customStyle="{padding:20+'rpx'}"
-							v-for="(baseListItem,baseListIndex) in goodsDataArr"
-							:key="baseListIndex" v-if="twoId == 0 || baseListItem.cate_id == twoId" @click="goodsclick(baseListItem)">
+							v-for="(baseListItem,baseListIndex) in itemArr"
+							:key="baseListIndex"  @click="goodsclick(baseListItem)" v-if="goodsDataArr[tabCur]">
 							<view class="categoods-main">
-								<image class="img" :src="baseListItem.image" mode="aspectFill"></image>
-								<view class="text" :style="{height:baseListItem.name.length > 20 ? '80rpx':'50rpx'}">{{baseListItem.name}}</view>
+								<image class="img" :src=" http + baseListItem.photo" mode="aspectFill"></image>
+								<view class="text" >{{baseListItem.seriesName}}</view>
+								<!-- :style="{height:baseListItem.name.length > 20 ? '80rpx':'50rpx'}" -->
 							</view>
 						</u-grid-item>
 					</u-grid>
@@ -82,10 +82,17 @@
 
 <script>
 	import {
+		HTTP_REQUEST_IMAGEURL
+	} from '@/config/app';
+	import {
 		Godscategory,
 		GodsgoodsList,
 		searchRecycleData
 	} from "@/api/common.js";
+	import {
+		getSeries,
+		getAllClassification
+	} from "@/api/retrieve.js";
 	import _tool from '@/utils/tools.js';	//工具函数
 	
 	export default {
@@ -93,6 +100,7 @@
 		},
 		data() {
 			return {
+				http: '',
 				topCur: 0, //顶部选择下标
 				scrollLeft: 0,
 				tabCur: 0, //左边选择下标
@@ -105,12 +113,13 @@
 				twoId:0,
 				dataListArr:[],
 				goodsDataArr:[],
-				seachList:[]
+				seachList:[],
+				itemArr:[]
 			}
 		},
 		onLoad(option) {
+			this.http = HTTP_REQUEST_IMAGEURL
 			this.type = option.type;
-			this.getGodscategory();
 		},
 		onReady() {
 			
@@ -119,6 +128,7 @@
 			
 		},
 		mounted() {
+			this.getAllClassification()
 			_tool.setBarColor(true);
 			uni.pageScrollTo({
 			    scrollTop: 0,
@@ -126,6 +136,13 @@
 			});
 		},
 		methods: {
+			// 获取分类
+			getAllClassification(){
+			    getAllClassification().then(res => {
+					this.dataListArr = res.data
+					this.getSeries(res.data[0].classificationId);
+				})
+			},
 			BackPage() {
 				this.$api.navigateBack();
 			},
@@ -184,63 +201,36 @@
 			imageError(index){
 				this.goodsDataArr[index]['imgUrl'] = 'https://mpb.shousifang.com/uploads/recying/goods/nopic.jpg'; //默认图片路径  
 			},
-			//获取分类
-			getGodscategory(){
+			getSeries(id){
 				let that = this;
-				Godscategory().then(res=>{
+				getSeries(id).then(res=>{
 					let data  = res.data;
-					if(res.code  == 1){
-						that.dataListArr = data;
-						this.getGodsgoodsList(data[0].id);
-					}
-				})
-				
-			},
-			getGodsgoodsList(id){
-				let that = this;
-				let param = {
-					'cate_id':id
-				}
-				GodsgoodsList(param).then(res=>{
-					let data  = res.data;
-					if(res.code  == 1){
+					if(res.code  == 200){
+						// console.log(data[0].series)
+						this.itemArr = data[0].series
 						that.goodsDataArr =  data;
 					}
 					
 				})
 			},
-			/*
-			rootcateclick(e) {
-				//console.log(e);
-				this.topCur = e.index;
-				this.tabCur = 0;
-				this.twoId = 0;
-				this.getGodsgoodsList(e.id);
-			},
-			*/
 			rootcateclick(id,index) {
 				this.topCur = index;
 				this.tabCur = 0;
 				this.twoId = 0;
-				this.getGodsgoodsList(id);
+				this.getSeries(id);
 				this.scrollLeft = index * 60;
-				//console.log(index);
 			},
 			goodsclick(value) {
 				// console.log(value);
 				let type = this.type;
 				uni.navigateTo({
-					// url: '../recycling/recycling?id=' + value.id +'&cateid='+value.cate_id +'&isnew='+value.is_new 
-					// url: '../recycling/select/old?id=' + value.id +'&cateid='+value.cate_id +'&isnew='+value.is_new 
 					url: '/pages/recycling/recycling-new?id=' + value.id +'&cate_id='+value.cate_id +'&type='+type
 				})
 			},
 			TabSelect(id,index) {
 				this.tabCur = index;
 				this.twoId = id;
-				console.log(this.twoId);
-				// this.mainCur = e.currentTarget.dataset.id;
-				// this.verticalNavTop = (e.currentTarget.dataset.id - 1) * 50
+				this.itemArr = this.goodsDataArr[index].series;
 			},
 			VerticalMain(e) {
 				return false;
@@ -267,7 +257,6 @@
 					if (scrollTop > this.list[i].top && scrollTop < this.list[i].bottom) {
 						this.verticalNavTop = (this.list[i].id - 1) * 50
 						this.tabCur = this.list[i].id
-						// console.log(scrollTop)
 						return false
 					}
 				}

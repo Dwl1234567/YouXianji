@@ -3,9 +3,25 @@
 import request from "@/utils/request.js";
 
 /**
- * 等级列表
+ * 发送验证码
  * 
  */
 export function sendCaptcha(data) {
 	return request.get('/sendCaptcha',data,{'noLogin':true});
+}
+
+/**
+ * 登录
+ * 
+ */
+export function login(data) {
+	return request.post('/yxj/app/user/login',data,{'noLogin':true});
+}
+
+/**
+ * 获取用户信息
+ * 
+ */
+export function userInfo(data) {
+	return request.get('/yxj/app/user/getUserInfo',data,{'noLogin':true});
 }

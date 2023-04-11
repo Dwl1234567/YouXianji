@@ -54,7 +54,7 @@ function baseRequest(url, method, data, {
 	// 		});
 	// 	}
 	// }
-	let token = Vue.prototype.$store.state.userInfo.token;
+	let token = Vue.prototype.$store.state.token;
 	let cookie = Vue.prototype.$store.state.cookie;
 	let storeInfo = uni.getStorageSync('store_info');
 	
@@ -64,17 +64,15 @@ function baseRequest(url, method, data, {
 			data['store_id'] = storeInfo.store_id;
 		}
 	}
-	// console.log(token);
 	if(token){
-		data['token'] = token;
-		data['company_id'] = 1;
+		header['Authorization'] = token;
+		// data['company_id'] = 1;
 		// data['token'] = 'ee868c42fb67e981cbcc2fdc0d7ca877';
 	}
 	
 	if(cookie){
 		header['cookie'] = cookie;
 	}
-	// console.log(header);
 	return new Promise((reslove, reject) => {
 		uni.request({
 			// // #ifndef H5
@@ -93,10 +91,10 @@ function baseRequest(url, method, data, {
 				console.log("成功返回->",res);
 				// #endif
 				
-				let code = res.data.code; //code 1 成功 0 失败
+				let code = res.data.code; //code 200 成功 0 失败
 				if (noVerify)
 					reslove(res.data, res);
-				else if (code == 1)
+				else if (code == 200)
 					reslove(res.data, res);
 				else if (code == 4001){
 					reslove(res.data, res);
@@ -105,6 +103,11 @@ function baseRequest(url, method, data, {
 						title: res.data.msg
 					});
 					toLogin();
+				} else if (code == 401){
+					reslove(res.data, res);
+					// uni.navigateTo({
+					// 	url: '/pages/common/login/login',
+					// });
 				} else
 					uni.showToast({
 						icon:'none',

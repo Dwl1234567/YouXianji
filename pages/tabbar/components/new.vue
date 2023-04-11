@@ -244,7 +244,7 @@
 <script>
 	// 底部tabbar
 	// import footerTabbar from './components/footer-tabbar.vue';
-
+	import Vue from 'vue'
 	//加载组件
 	import welcomeTip from '@/components/common/basics/welcome-tip';
 	import swiperBackground from '@/components/common/basics/swiper-background';
@@ -346,6 +346,7 @@
 			};
 		},
 		created(){
+			console.log(Vue.prototype.$store.state.roles);
 			// 储存isNew值 1为全新0为二手
 			uni.setStorageSync('isNew', 1)
 			let that = this;

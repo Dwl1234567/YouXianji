@@ -5,7 +5,7 @@
 		<image class="img-a" src="/static/背景.png"></image>
 		<!-- <image class="img-b" src="https://zhoukaiwen.com/img/loginImg/3.png"></image> -->
 		<!-- 标题 -->
-		<view class="login-content" style="z-index: 100; position: relative;">
+		<view class="login-content" style="z-index: 100; position: relative">
 			<view class="t-b">{{ title }}</view>
 			<view class="t-b2">{{ tdesc }}</view>
 			<form class="cl">
@@ -34,16 +34,15 @@
 				</view>
 			</view>
 		</view>
-		
 
 		<!-- 验证码倒计时 -->
 		<u-code :seconds="second" @end="end" @start="start" ref="uCode" @change="codeChange"></u-code>
 	</view>
 </template>
 <script>
-	import { sendCaptcha } from '@/api/login.js';
+	import { sendCaptcha, login, userInfo } from '@/api/login.js';
 	import { mapMutations } from 'vuex';
-	import { login, smslogin, loginCode, kefulogin } from '@/api/common.js';
+	import { smslogin, loginCode, kefulogin } from '@/api/common.js';
 	import { UserLogin } from '@/api/mall.js';
 	export default {
 		data() {
@@ -117,17 +116,14 @@
 				// 	icon: 'none'
 				// });
 				let params = {
-					mobile: that.phone,
+					phonenumber: that.phone,
 					code: that.yzm,
 				};
-				smslogin(params)
+				login(params)
 					.then((res) => {
-						if (res.code == 1) {
-							// that.$store.commit("LOGIN", {
-							// 	'token': res.data.token
-							// });
-
-							this.$store.commit('login', res.data.userinfo);
+						if (res.code == 200) {
+							this.$store.commit('setToken', res.token);
+							this.getUserInfo();
 							console.log(uni.getStorageSync('url'), 'uni.getStorageSync();');
 							if (uni.getStorageSync('url')) {
 								uni.navigateTo({
@@ -146,6 +142,18 @@
 			},
 			codeChange(text) {
 				this.tips = text;
+			},
+			// 获取用户信息
+			getUserInfo() {
+				userInfo().then((res) => {
+					const roles = res.data.roles;
+					roles.map((item) => {
+						if (item.roleKey === 'consumer') {
+							this.$store.commit('setRoles', 'consumer');
+						}
+					});
+					this.$store.commit('userinfo', res.data);
+				});
 			},
 			//获取短信验证码
 			getCode() {
@@ -171,9 +179,10 @@
 				let params = {
 					phonenumber: that.phone,
 				};
+				console.log(123);
 				sendCaptcha(params)
 					.then((res) => {
-						if (res.code == 1) {
+						if (res.code == 200) {
 							// 这里此提示会被this.start()方法中的提示覆盖
 							uni.$u.toast('验证码已发送');
 							// 通知验证码组件内部开始倒计时
@@ -254,7 +263,7 @@
 
 	.reg {
 		font-size: 28rpx;
-		color: #4F4F50;
+		color: #4f4f50;
 		height: 88rpx;
 		line-height: 88rpx;
 		border-radius: 14rpx;

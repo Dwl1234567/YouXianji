@@ -5,7 +5,7 @@ module.exports = {
 	// HTTP_REQUEST_URL: `https://youxianji.zansuo.com/api/v1`,
 	// HTTP_REQUEST_URL: `http://192.168.2.8:8080/api/`,
 	HTTP_REQUEST_URL: `http://192.168.2.36:8080`,
-	
+	HTTP_REQUEST_IMAGEURL: `http://192.168.2.36:8080`,
 	KEFU_POST_URL:`youxianji.zansuo.com`,
 	// KEFU_POST_URL:`youxianji.zansuo.com`,
 	//上传图片地址http://192.168.2.8:8080/api//upload
@@ -31,8 +31,8 @@ module.exports = {
 
 	// 以下配置在不做二开的前提下,不需要做任何的修改
 	HEADER: {
-		//'content-type': 'application/json',
-		'content-type': 'application/x-www-form-urlencoded',
+		'content-type': 'application/json',
+		// 'content-type': 'application/x-www-form-urlencoded',
 		//#ifdef H5
 		'Form-type': navigator.userAgent.toLowerCase().indexOf("micromessenger") !== -1 ? 'wechat' : 'h5',
 		'platform': 'H5'
