@@ -9,13 +9,13 @@
 			<picker-view indicator-style="height: 40px;" class="mpvue-picker-view" :value="pickerValue" @change="pickerChange">
 				<block>
 					<picker-view-column>
-						<div class="picker-item" v-for="(item,index) in provinceDataList" :key="index">{{item.label}}</div>
+						<div class="picker-item" v-for="(item,index) in provinceDataList" :key="index">{{item.name}}</div>
 					</picker-view-column>
 					<picker-view-column>
-						<div class="picker-item" v-for="(item,index) in cityDataList" :key="index">{{item.label}}</div>
+						<div class="picker-item" v-for="(item,index) in cityDataList" :key="index">{{item.name}}</div>
 					</picker-view-column>
 					<picker-view-column>
-						<div class="picker-item" v-for="(item,index) in areaDataList" :key="index">{{item.label}}</div>
+						<div class="picker-item" v-for="(item,index) in areaDataList" :key="index">{{item.name}}</div>
 					</picker-view-column>
 				</block>
 			</picker-view>
@@ -28,8 +28,9 @@
 		AddressArea
 	} from "@/api/mall.js";
 	import{
-		getaddressArea
-	}from "@/api/common.js"
+		getProvinceList,
+		getAreaByPid
+	}from "@/api/commons.js"
 	export default {
 		data() {
 			return {
@@ -90,13 +91,13 @@
 			async handPickValueDefault() {
 				let tempPickerValue = this.pickerValueDefault;
 				// console.log(tempPickerValue);
-				await getaddressArea({'pid':0}).then(res=>{
+				await getProvinceList({'pid':0}).then(res=>{
 					this.provinceDataList = res.data;
 				})
-				await getaddressArea({'pid':tempPickerValue[0] != 0 ? tempPickerValue[0] : this.provinceDataList[0].id}).then(res=>{
+				await getAreaByPid(tempPickerValue[0] != 0 ? tempPickerValue[0] : this.provinceDataList[0].id).then(res=>{
 					this.cityDataList = res.data;
 				})
-				await getaddressArea({'pid':(tempPickerValue[1] != 0 ? tempPickerValue[1] : this.cityDataList[0].id)}).then(res=>{
+				await getAreaByPid(tempPickerValue[1] != 0 ? tempPickerValue[1] : this.cityDataList[0].id).then(res=>{
 					this.areaDataList = res.data;
 				})
 		// 		this.provinceDataList = await this.$api.request('/address/area?pid=0');
@@ -132,10 +133,10 @@
 					// this.areaDataList = areaData[changePickerValue[0]][0];
 
 					let provinceId = this.provinceDataList[changePickerValue[0]].id;
-					await getaddressArea({'pid':provinceId}).then(res=>{
+					await getAreaByPid(provinceId).then(res=>{
 						this.cityDataList = res.data;
 					})
-					await getaddressArea({'pid':this.cityDataList[0].id}).then(res=>{
+					await getAreaByPid(this.cityDataList[0].id).then(res=>{
 						this.areaDataList = res.data;
 					})
 					// this.cityDataList = await this.$api.request('/address/area?pid=' + provinceId);
@@ -150,7 +151,7 @@
 
 					let cityId = this.cityDataList[changePickerValue[1]].id;
 					// this.areaDataList = await this.$api.request('/address/area?pid=' + cityId);
-					await getaddressArea({'pid':cityId}).then(res=>{
+					await getAreaByPid(cityId).then(res=>{
 						this.areaDataList = res.data;
 					})
 					changePickerValue[2] = 0;
@@ -168,15 +169,15 @@
 			},
 			_getLabel() {
 				let pcikerLabel =
-					this.provinceDataList[this.pickerValue[0]].label +
+					this.provinceDataList[this.pickerValue[0]].name +
 					'-' +
-					this.cityDataList[this.pickerValue[1]].label +
+					this.cityDataList[this.pickerValue[1]].name +
 					'-' +
-					this.areaDataList[this.pickerValue[2]].label;
+					this.areaDataList[this.pickerValue[2]].name;
 				return pcikerLabel;
 			},
 			_getCityCode() {
-				return this.areaDataList[this.pickerValue[2]].value;
+				return this.areaDataList[this.pickerValue[2]].code;
 			},
 			_getAreaId() {
 				let areaId = [

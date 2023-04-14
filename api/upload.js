@@ -1,8 +1,8 @@
 import {
 	UPLOAD_IMG_URL
 } from '@/config/app';
+import Vue from 'vue'
 export function upload(filePath) {
-	console.log(filePath[0],111111111111);
 	return new Promise((resolve, reject) => {
 		// console.log(filePath);
 		uni.showLoading({
@@ -14,14 +14,14 @@ export function upload(filePath) {
 			filePath: filePath[0],
 			name: 'file',
 			header: {
-			        'content-type': 'multipart/form-data' 
-			    },
+			    'content-type': 'multipart/form-data',
+				'Authorization':Vue.prototype.$store.state.token
+			},
 			formData: {
 				// 'file': filePath[0]
 			},
 			success: (uploadFileRes) => {
-				console.log(uploadFileRes, 'upload');
-				// console.log(uploadFileRes.data);
+				console.log(uploadFileRes)
 				let data = JSON.parse(uploadFileRes.data);
 				return resolve(data);
 			},

@@ -38,7 +38,7 @@
 						{{item.classificationName}} 
 						<view class="put"></view>
 					</view>
-				</scroll-view>
+			</scroll-view>
 			</view>
 		</view>
 		
@@ -65,7 +65,7 @@
 							:key="baseListIndex"  @click="goodsclick(baseListItem)" v-if="goodsDataArr[tabCur]">
 							<view class="categoods-main">
 								<image class="img" :src=" http + baseListItem.photo" mode="aspectFill"></image>
-								<view class="text" >{{baseListItem.seriesName}}</view>
+								<view class="text" >{{baseListItem.modelName}}</view>
 								<!-- :style="{height:baseListItem.name.length > 20 ? '80rpx':'50rpx'}" -->
 							</view>
 						</u-grid-item>
@@ -136,6 +136,7 @@
 			});
 		},
 		methods: {
+			
 			// 获取分类
 			getAllClassification(){
 			    getAllClassification().then(res => {
@@ -207,7 +208,9 @@
 					let data  = res.data;
 					if(res.code  == 200){
 						// console.log(data[0].series)
-						this.itemArr = data[0].series
+						if (data.length !== 0){
+							this.itemArr = data[0].modelList
+						}
 						that.goodsDataArr =  data;
 					}
 					
@@ -224,13 +227,13 @@
 				// console.log(value);
 				let type = this.type;
 				uni.navigateTo({
-					url: '/pages/recycling/recycling-new?id=' + value.id +'&cate_id='+value.cate_id +'&type='+type
+					url: '/pages/recycling/recycling-new?id=' + value.modelId +'&cate_id='+value.cate_id +'&type='+type
 				})
 			},
 			TabSelect(id,index) {
 				this.tabCur = index;
 				this.twoId = id;
-				this.itemArr = this.goodsDataArr[index].series;
+				this.itemArr = this.goodsDataArr[index].modelList;
 			},
 			VerticalMain(e) {
 				return false;

@@ -17,7 +17,7 @@
 				<u-scroll-list :indicator="false">
 					<view class="item" v-for="(checkitem,checkindex) in Tchecklist" :key="checkindex"
 						@click="itemclick(checkindex)" :class="checkitem.checked ? 'active':''">
-						{{checkitem.name}}
+						{{checkitem.value}}
 					</view>
 				</u-scroll-list>
 			</view>

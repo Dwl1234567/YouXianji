@@ -311,3 +311,12 @@ export function kefuQiangdan(data) {
 	return request.post('/kefu_qiangdan',data);
 }
 
+
+
+/**
+ * 获取用户信息 -- uxj
+ * 
+ */
+export function getUserInfo() {
+	return request.get('/yxj/app/user/getUserInfo');
+}

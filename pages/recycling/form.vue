@@ -151,7 +151,7 @@
 				</view>
 			</view>
 			<view class="pic padding flex justify-between align-center">
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[0] ?  addpicicon : 'url('+phoneImgArr[0]+')' }">
+				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[0] ?  addpicicon : 'url('+ http + phoneImgArr[0]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,0)">
 						<text class="text">正面</text>7
 					</view>
@@ -161,7 +161,7 @@
 						</view>
 					</view>
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[1] ?  addpicicon : 'url('+phoneImgArr[1]+')' }">
+				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[1] ?  addpicicon : 'url('+ http +phoneImgArr[1]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,1)">
 						<text class="text">
 							背面
@@ -173,7 +173,7 @@
 						</view>
 					</view>
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[2] ?  addpicicon : 'url('+phoneImgArr[2]+')' }">
+				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[2] ?  addpicicon : 'url('+ http +phoneImgArr[2]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,2)">
 						<text class="text">
 							顶面
@@ -185,7 +185,7 @@
 						</view>
 					</view>
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[3] ?  addpicicon : 'url('+phoneImgArr[3]+')' }">
+				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[3] ?  addpicicon : 'url('+ http +phoneImgArr[3]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,3)">
 						<text class="text">
 							底面
@@ -199,7 +199,7 @@
 				</view>
 			</view>
 			<view class="pic padding flex justify-between align-center">
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[4] ?  addpicicon : 'url('+phoneImgArr[4]+')' }">
+				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[4] ?  addpicicon : 'url('+ http +phoneImgArr[4]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,4)">
 						<text class="text">
 							左侧
@@ -211,7 +211,7 @@
 						</view>
 					</view>
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[5] ?  addpicicon : 'url('+phoneImgArr[5]+')' }">
+				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[5] ?  addpicicon : 'url('+ http +phoneImgArr[5]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,5)">
 						<text class="text">
 							右侧
@@ -223,7 +223,7 @@
 						</view>
 					</view>
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[6] ?  addpicicon : 'url('+phoneImgArr[6]+')' }">
+				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[6] ?  addpicicon : 'url('+ http +phoneImgArr[6]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,6)">
 						<text class="text">
 							摄像头
@@ -235,7 +235,7 @@
 						</view>
 					</view>
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[7] ?  addpicicon : 'url('+phoneImgArr[7]+')' }">
+				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[7] ?  addpicicon : 'url('+ http +phoneImgArr[7]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,7)">
 						<text class="text">
 							其他
@@ -279,6 +279,9 @@
 		gethoursInfo
 	} from "@/utils/pub.js"
 	import {
+		HTTP_REQUEST_IMAGEURL
+	} from '@/config/app';
+	import {
 		getUserAddress,
 		getBankList,
 		insertBasicOrder,
@@ -292,6 +295,7 @@
 		},
 		data() {
 			return {
+				http: '',
 				index: {
 					address: -1,
 					time: -1,
@@ -342,6 +346,7 @@
 			}
 		},
 		onLoad(option) {
+			this.http = HTTP_REQUEST_IMAGEURL
 			this.initPickupTime();
 			this.getGlobalInfoFuc();
 			this.detailId = option.detailId;
@@ -463,6 +468,7 @@
 							// console.log(res);
 							// that.phoneImgArr[type] = 'https://mpb.waidu.cn'+res.data.imgurl;
 							// that.$set(that.phoneImgArr, type, 'https://mpb.waidu.cn' + res.data.imgurl);
+							console.log(res.data, '22222222222222222222222')
 							that.$set(that.phoneImgArr, that.uploadImgtype, res.data.imgurl);
 							that.imgParams.push(res.data.imgurl);
 							// console.log(that.phoneImgArr[type]);
@@ -484,6 +490,7 @@
 						let Imgdata = JSON.stringify(res.tempFilePaths);
 						upload(res.tempFilePaths).then(res => {
 							// console.log(res);
+							console.log(res.data, '22222222222222222222222')
 							// that.phoneImgArr[type] = 'https://mpb.waidu.cn'+res.data.imgurl;
 							// that.$set(that.phoneImgArr, type, 'https://mpb.waidu.cn' + res.data.imgurl);
 							that.$set(that.phoneImgArr, that.uploadImgtype, res.data.imgurl);
@@ -537,9 +544,9 @@
 				Imgdata.push(e.path);
 				// console.log(Imgdata);
 				upload(Imgdata).then(res => {
-					console.log(res.data.imgurl);
-					that.$set(that.phoneImgArr, that.uploadImgtype, res.data.imgurl);
-					that.imgParams.push(res.data.imgurl);
+					console.log(res, '22222222222222222222222')
+					that.$set(that.phoneImgArr, that.uploadImgtype, res.fileName);
+					that.imgParams.push(res.fileName);
 				})
 			},
 			// 提交图片

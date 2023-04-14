@@ -14,14 +14,14 @@
 				<!-- <text class="address">{{item.province.name+item.city.name+item.area.name+' '+item.address}}</text> -->
 				<view class="cont-box text-lg title padding-lr-sm">
 					<view class="margin-top-xs" style="padding-top:8rpx;">
-						<text class="name ">{{item.name}}</text>
-						<text class="mobile margin-left-sm ">{{item.mobile}}</text>
+						<text class="name ">{{item.linkman}}</text>
+						<text class="mobile margin-left-sm ">{{item.phonenumber}}</text>
 					</view>
-					<view class="address text-929294 text-sm">{{item.address}}</view>
+					<view class="address text-929294 text-sm">{{item.detailAddress}}</view>
 				</view>
 				<view class="bottom flex justify-between padding-lr-sm">
 					<view class="">
-						<view class="text-xxl" v-if="item.is_default">
+						<view class="text-xxl" v-if="item.defaultAble === '1'">
 							<text class="text-yellow cuIcon-roundcheckfill"></text>
 						</view>
 						<view class="" v-else style="border: 1px gray solid; border-radius: 20px; width: 20px; height: 20px;">
@@ -29,8 +29,8 @@
 						</view>
 					</view>
 					<view class="action">
-						<view class="yticon margin-right-lg" @click.stop="addAddress('edit', item.id)">编辑</view>
-						<view class="yticon " @click.stop="deleteAddress(item.id,index)">删除</view>
+						<view class="yticon margin-right-lg" @click.stop="addAddress('edit', item)">编辑</view>
+						<view class="yticon " @click.stop="deleteAddress(item.addressId,index)">删除</view>
 					</view>
 				</view>
 				<!-- <view class="action">
@@ -46,9 +46,9 @@
 
 <script>
 	import{
-		getUserAddress,
+		selectUserAddressList,
 		deleteUserAddress
-	} from "@/api/common.js"
+	} from "@/api/commons.js"
 	import {
 		AddressAll,
 		AddressDelete
@@ -74,15 +74,7 @@
 		methods: {
 			//获取我的收货地址
 			async getList() {
-				// let list = await this.$api.request('/address/all', 'POST', {
-				// 	page: 1,
-				// 	pagesize: 50
-				// });
-				let params = {
-					'page':1,
-					'pagesize':50
-				}
-				getUserAddress(params).then(res=>{
+				selectUserAddressList().then(res=>{
 					if (res) {
 						this.addressList = res.data;
 					}
@@ -97,10 +89,17 @@
 					uni.navigateBack()
 				}
 			},
-			addAddress(type, id = 0) {
-				uni.navigateTo({
-					url: `/pages/my/address/addressManage?type=${type}&id=${id}`
-				})
+			addAddress(type, item) {
+				if (type === 'edit') {
+					uni.navigateTo({
+						url: `/pages/my/address/addressManage?type=${type}&id=${item.id}&query=${JSON.stringify(item)}`
+					})
+				} else {
+					uni.navigateTo({
+						url: `/pages/my/address/addressManage?type=${type}`
+					})
+				}
+				
 			},
 			//添加或修改成功之后回调
 			refreshList(data, type) {
@@ -116,18 +115,8 @@
 				})
 
 				if (res.confirm) {
-					let params = {
-						"id":id
-					}
-					deleteUserAddress(params).then(res=>{
-						// let data = await this.$api.request('/address/delete?id=' + id);
-						if (res) {
-							// if (this.$api.prePage().addressData && this.$api.prePage().addressData.id) {
-							// 	if (this.$api.prePage().addressData.id == this.addressList[index].id) {
-							// 		this.$api.prePage().addressData = {};
-							// 	}
-							// }
-							
+					deleteUserAddress(id).then(res=>{
+						if (res) {			
 							this.addressList.splice(index, 1);
 						}
 					})
@@ -149,6 +138,8 @@
 	}
 	.content {
 		position: relative;
+		height: 85vh;
+		overflow: auto;
 	}
 	.title{
 		border-bottom: 1px #D8D8D8 solid;

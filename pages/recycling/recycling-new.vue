@@ -55,7 +55,8 @@
 			<view class="process-box" v-show="tab_cur == index">
 				<scroll-view v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex" scroll-y="true"
 					class="scroll-Y">
-					<SelectData :title="recyitem.name" :checklist="recyitem.child" @itemclick="moneyFuc">
+					<!-- {{recyitem}} -->
+					<SelectData :title="recyitem.name" :checklist="recyitem.value" @itemclick="moneyFuc">
 					</SelectData>
 
 				</scroll-view>
@@ -86,6 +87,9 @@
 		GodsgoodsPrice,
 		getUserMobile
 	} from "@/api/common.js";
+	import {
+		getPriceTemplateByModel
+	} from "@/api/retrieve.js";
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
 	import {
 		openQyKefu
@@ -154,15 +158,12 @@
 		methods: {
 			moneyFuc(e) {
 				let that = this;
-				// console.log(e);
 				let ckindex = e.ckid.split('-');
-				// console.log(ckindex);
 			
 				if (e.status == 1) {
 					that.capacity20Money = Number(e.money) * 0.2;
 				}
-			
-				this.retrieveList[Number(ckindex[0])][Number(ckindex[1])].child.forEach((item, index) => {
+				this.retrieveList[Number(ckindex[0])][Number(ckindex[1])].value.forEach((item, index) => {
 					if (index == Number(ckindex[2])) {
 						item.checked = true;
 					} else {
@@ -180,18 +181,16 @@
 				//that.forecastMoney = that.baseMoney;
 				that.forecastMoney = 0;
 				that.goodsdesc = '';
-				console.log('that.retrieveList',that.retrieveList);
 
 				that.retrieveList.forEach((item, index) => {
 					item.forEach((iitem, indexx) => {
-						iitem.child.forEach((iiitem, indexxx) => {
+						iitem.value.forEach((iiitem, indexxx) => {
 							if (iiitem.checked) {
 								that.forecastMoney += Number(iiitem.price);
-								console.log('that.forecastMoney',that.forecastMoney);
 								// paramsdata.push({iitem.key:iiitem.id});
-								that.Priceprams[iitem.key] = indexxx;
+								that.Priceprams[iitem.keyId] = indexxx;
 								if (index == 0 && iitem.key != 'small') {
-									that.goodsdesc = that.goodsdesc + iiitem.name + ' | ';
+									that.goodsdesc = that.goodsdesc + iiitem.value + ' | ';
 								}
 							}
 						})
@@ -201,29 +200,17 @@
 				console.log('总价：');
 				console.log(that.forecastMoney);
 				console.log('that.Priceprams',that.Priceprams);
-				// console.log(paramsdata);
 			},
 			getGodsgoodsDetail() {
 				let that = this;
-				let params = {
-					'goods_id': that.goodsInfo.id,
-					'cate_id': that.goodsInfo.cate_id,
-					// 'goods_id': '1',
-					// 'cate_id': '6'
-				}
-				GodsgoodsDetail(params).then(res => {
-						if (res.code == 1) {
+				getPriceTemplateByModel(that.goodsInfo.id).then(res => {
+						if (res.code == 200) {
 							// that.retrieveList = res.data.goods_list;
-							that.retrieveList[0] = res.data.goods_info.base_json;
-
-							that.goods_info = res.data.goods_info;
-							that.baseMoney = res.data.goods_info.basemoney;
-							// that.forecastMoney = res.data.goods_info.basemoney;
-							// console.log(that.forecastMoney);
+							that.retrieveList[0] = res.data.propPrice[0];
+							that.retrieveList = res.data.propPrice
+							that.goods_info = res.data.model;
 							that.addcheckattr();
 							setTimeout(() => {
-								that.retrieveList[1] = res.data.goods_info.colour_json;
-								that.retrieveList[2] = res.data.goods_info.function_json;
 								that.addcheckattr();
 								this.calcYuguMoney();
 							}, 500)
@@ -253,7 +240,7 @@
 				let that = this;
 				that.retrieveList.map((item, index) => {
 					item.forEach((iitem, indexx) => {
-						iitem.child.map((iiitem, indexxx) => {
+						iitem.value.map((iiitem, indexxx) => {
 							if (indexxx == 0) {
 								iiitem['checked'] = true;
 							} else {
@@ -276,30 +263,27 @@
 			},
 			// 获取报价
 			getGodsgoodsPrice() {
-				let that = this;
-				that.Priceprams['goods_id'] = that.goodsInfo.id;
-				// console.log(that.goodsInfo);
-				that.Priceprams['cate_id'] = that.goodsInfo.cate_id;
-				GodsgoodsPrice(that.Priceprams).then(res => {
-					let data = res.data;
-					if (res.code == 1) {
-						that.detailId = data.detail_id;
-						uni.navigateTo({
-							url: 'form?type=' + that.type + '&detailId=' + that.detailId + '&goodsId=' +
-								that.goodsId
-						})
-					}
+				// let that = this;
+				// that.Priceprams['goods_id'] = that.goodsInfo.id;
+				// // console.log(that.goodsInfo);
+				// that.Priceprams['cate_id'] = that.goodsInfo.cate_id;
+				// GodsgoodsPrice(that.Priceprams).then(res => {
+				// 	let data = res.data;
+				// 	if (res.code == 1) {
+				// 		that.detailId = data.detail_id;
+				// 		uni.navigateTo({
+				// 			url: 'form?type=' + that.type + '&detailId=' + that.detailId + '&goodsId=' +
+				// 				that.goodsId
+				// 		})
+				// 	}
+				// })
+				uni.navigateTo({
+					url: 'form?type=' + this.type
 				})
 			},
 			//去发货
 			async deliveryTap() {
-				let login = await this.$api.checkLogin();
-				if(login){
-					this.getGodsgoodsPrice();
-				}
-				//this.getGodsgoodsPrice();
-
-				
+				this.getGodsgoodsPrice();
 			},
 			upper: function(e) {
 				console.log(e)

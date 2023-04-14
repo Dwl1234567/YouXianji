@@ -58,12 +58,12 @@ function baseRequest(url, method, data, {
 	let cookie = Vue.prototype.$store.state.cookie;
 	let storeInfo = uni.getStorageSync('store_info');
 	
-	if(storeInfo){
-		storeInfo = JSON.parse(storeInfo);
-		if(!noStore){
-			data['store_id'] = storeInfo.store_id;
-		}
-	}
+	// if(storeInfo){
+	// 	storeInfo = JSON.parse(storeInfo);
+	// 	if(!noStore){
+	// 		data['store_id'] = storeInfo.store_id;
+	// 	}
+	// }
 	if(token){
 		header['Authorization'] = token;
 		// data['company_id'] = 1;
@@ -75,9 +75,9 @@ function baseRequest(url, method, data, {
 	}
 	return new Promise((reslove, reject) => {
 		uni.request({
-			// // #ifndef H5
-			// url: Url + url,
-			// // #endif
+			// #ifndef H5
+			url: Url + url,
+			// #endif
 			// #ifdef H5
 			url: '/api' + url,
 			// #endif
@@ -103,11 +103,11 @@ function baseRequest(url, method, data, {
 						title: res.data.msg
 					});
 					toLogin();
-				} else if (code == 401){
+				} else if (code == 402){
 					reslove(res.data, res);
-					// uni.navigateTo({
-					// 	url: '/pages/common/login/login',
-					// });
+					uni.navigateTo({
+						url: '/pages/common/login/login',
+					});
 				} else
 					uni.showToast({
 						icon:'none',

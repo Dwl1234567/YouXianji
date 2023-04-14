@@ -6,11 +6,11 @@
 		</bar-title>
 		<view class="row b-b">
 			<text class="tit">联系人</text>
-			<input class="input text-right" type="text" v-model="addressData.name" placeholder="收货人姓名" placeholder-class="placeholder" />
+			<input class="input text-right" type="text" v-model="addressData.linkman" placeholder="收货人姓名" placeholder-class="placeholder" />
 		</view>
 		<view class="row b-b">
 			<text class="tit">手机号</text>
-			<input class="input text-right" type="number" v-model="addressData.mobile" placeholder="收货人手机号码" placeholder-class="placeholder" />
+			<input class="input text-right" type="number" v-model="addressData.phonenumber" placeholder="收货人手机号码" placeholder-class="placeholder" />
 		</view>
 		<view class="row b-b" v-on:click="showCityPicker()">
 			<text class="tit">地区</text>
@@ -20,7 +20,7 @@
 		</view>
 		<view class="row b-b">
 			<text class="tit">详细</text>
-			<input class="input text-right" type="text" v-model="addressData.address" placeholder="详细地址,楼号" placeholder-class="placeholder" />
+			<input class="input text-right" type="text" v-model="addressData.detailAddress" placeholder="详细地址,楼号" placeholder-class="placeholder" />
 		</view>
 
 		<view class="row default-row">
@@ -37,10 +37,9 @@
 <script>
 	import mpvueCityPicker from '@/components/mpvueCityPicker.vue';
 	import {
-		getUserAddressData,
-		addUserAddress,
-		editUserAddress
-	} from "@/api/common.js"
+		saveUserAddress
+	} from "@/api/commons.js"
+	
 	import {
 		AddressInfo,
 		AddressEdit,
@@ -56,12 +55,12 @@
 		data() {
 			return {
 				addressData: {
-					name: '',
-					mobile: '',
-					address: '',
-					province_id: 0,
-					city_id: 0,
-					area_id: 0,
+					linkman: '',
+					phonenumber: '',
+					detailAddress: '',
+					provinceId: 0,
+					cityId: 0,
+					regionId: 0,
 					is_default: false
 				},
 				pickerValueDefault: [0, 0, 0] ,//城市选择器默认值 省市区id
@@ -76,52 +75,45 @@
 			}
 			if (option.type === 'edit') {
 				
-				this.getInfo(option.id);
+				this.getInfo(option);
 				
 				title = '编辑收货地址'
 			} else {
 
 				// this.$refs.mpvueCityPicker.creat(this.pickerValueDefault);
-			}
+			};
 			this.manageType = option.type;
 			uni.setNavigationBarTitle({ 
 				title
 			})
+			
 		},
 		onReady() {
 			if (this.pagetype === 'edit') {
-				
+				this.$refs.mpvueCityPicker.creat(this.pickerValueDefault);
 			} else {
 				this.$refs.mpvueCityPicker.creat(this.pickerValueDefault);
 			}
 		},
 		methods: {
 			// 获取地址详情
-			async getInfo(id){
-				// let addressData = await this.$api.request(`/address/info?id=${id}`);
-				let that = this;
-				let params = {
-					'id':id
+			async getInfo(option){
+				this.addressData = {
+					addressId: JSON.parse(option.query).addressId,
+					linkman: JSON.parse(option.query).linkman,
+					phonenumber: JSON.parse(option.query).phonenumber,
+					detailAddress: JSON.parse(option.query).detailAddress,
+					provinceId: JSON.parse(option.query).provinceId,
+					cityId: JSON.parse(option.query).cityId,
+					regionId: JSON.parse(option.query).regionId,
+					is_default: JSON.parse(option.query).defaultAble === '1' ? true : false	
 				}
-				await getUserAddressData(params).then(res=>{
-					if (res) {
-						let isDefault = res.data.is_default == 1 ? true : false;
-						that.addressData = res.data;
-						that.addressData.is_default = isDefault;
-						let pickerValueDefault = [];
-						pickerValueDefault.push(Number(that.addressData.province_id));
-						pickerValueDefault.push(Number(that.addressData.city_id));
-						pickerValueDefault.push(Number(that.addressData.area_id));
-						this.pickerValueDefault = pickerValueDefault;
-						console.log(typeof this.pickerValueDefault[0])
-						console.log(typeof this.pickerValueDefault[1])
-						console.log(typeof this.pickerValueDefault[2])
-						this.$refs.mpvueCityPicker.creat(pickerValueDefault);
-					}
-				})
-				.catch(err=>{
-					that.$u.toast(err);
-				})
+				var pickerValueDefault = [];
+				pickerValueDefault.push(JSON.parse(option.query).provinceId);
+				pickerValueDefault.push(JSON.parse(option.query).cityId);
+				pickerValueDefault.push(JSON.parse(option.query).regionId);
+				this.pickerValueDefault = pickerValueDefault;
+				// this.$refs.mpvueCityPicker.creat(pickerValueDefault);
 				
 			},
 			// 城市选择器
@@ -139,13 +131,11 @@
 			},
 			// 城市选择器确定
 			onConfirm(e) {
-				// console.log(e);
 				this.cityLebel = e.label;
 				this.pickerValueDefault = e.value;
-				
-				this.addressData.province_id = this.pickerValueDefault[0];
-				this.addressData.city_id = this.pickerValueDefault[1];
-				this.addressData.area_id = this.pickerValueDefault[2];
+				this.addressData.provinceId = this.pickerValueDefault[0];
+				this.addressData.cityId = this.pickerValueDefault[1];
+				this.addressData.regionId = this.pickerValueDefault[2];
 			},
 			//默认地址
 			switchChange(e) {
@@ -155,23 +145,21 @@
 			async confirm() {
 				//Deep Clone
 				let data = JSON.parse(JSON.stringify(this.addressData));
-				if (!data.name) {
+				if (!data.linkman) {
 					this.$api.msg('请填写收货人姓名');
 					return;
 				}
-				if (!/(^1[3|4|5|7|8|9][0-9]{9}$)/.test(data.mobile)) {
-					this.$api.msg('请输入正确的手机号码');
+				if (!data.phonenumber) {
+					this.$api.msg('请输入手机号码');
 					return;
 				}
-				if (!data.address) {
+				if (!data.detailAddress) {
 					this.$api.msg('请填详细地址信息');
 					return;
 				}
-				console.log(data.is_default);
-				data.is_default = data.is_default == true ? 1 : 0;
+				data.defaultAble = data.is_default == true ? '1' : '0';
 				let action = this.manageType == 'edit' ? 'edit' : 'add';
-				if(this.manageType == 'edit'){
-					await editUserAddress(data).then(res=>{
+					await saveUserAddress(data).then(res=>{
 						// let result = await this.$api.request('/address/' + action, 'POST', data);
 						if (res) {
 							// this.$api.prePage().refreshList(data, this.manageType);
@@ -180,17 +168,6 @@
 							}, 800)
 						}
 					})
-				}else{
-					await addUserAddress(data).then(res=>{
-						// let result = await this.$api.request('/address/' + action, 'POST', data);
-						if (res) {
-							// this.$api.prePage().refreshList(data, this.manageType);
-							setTimeout(() => {
-								uni.navigateBack()
-							}, 800)
-						}
-					})
-				}
 				
 				
 			},

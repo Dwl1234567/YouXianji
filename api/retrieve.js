@@ -7,7 +7,7 @@ import request from "@/utils/request.js";
  * 
  */
 export function getAllClassification(data) {
-	return request.get('/yxj/app/common/getAllClassification',data,{'noLogin':true});
+	return request.get('/yxj/app/common/getAllClassification' , data ,{'noLogin':true});
 }
 
 /**
@@ -15,5 +15,13 @@ export function getAllClassification(data) {
  * 
  */
 export function getSeries(data) {
-	return request.get('/yxj/app/common/getSeries/'+ data ,{'noLogin':true});
+	return request.get('/yxj/app/common/getModel/'+ data ,{'noLogin':true});
+}
+
+/**
+ * 获取机型价格模版
+ * 
+ */
+export function getPriceTemplateByModel(data) {
+	return request.get('/yxj/app/common/getPriceTemplateByModel/'+ data ,{'noLogin':true});
 }

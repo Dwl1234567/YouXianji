@@ -55,9 +55,9 @@
 							/>
 							<view class="content .text-xxl">
 								<view class="">
-									<text class="margin-right" v-if="userInfo.nickname">{{userInfo.nickname}}</text>
+									<text class="margin-right" v-if="userInfo.nickName">{{userInfo.nickName}}</text>
 								</view>
-								<view class="text-sm">账号:{{userInfo.mobile}}</view>
+								<view class="text-sm">账号:{{userInfo.userName}}</view>
 							</view>
 							<!-- <view class="right text-xl" @tap="baseTap('/pages/my/userdata/index')">
 								<text class="margin-right cuIcon-right icon"></text>
@@ -320,8 +320,7 @@
 <script>
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
-
-	import { getRecycleUserinfo, kefuInitUser } from '@/api/user.js';
+	import { getUserInfo, kefuInitUser } from '@/api/user.js';
 	import { erpuserislogin } from '@/api/erpapi.js';
 	import barTitle from '@/components/common/basics/bar-title';
 
@@ -362,7 +361,7 @@
 			this.toolsList = _my_data.toolsListData();
 		},
 		onShow() {
-			getRecycleUserinfo().then((res) => {
+			getUserInfo().then((res) => {
 				this.userInfo = res.data;
 			});
 			this.erpuserislogin();
@@ -385,7 +384,7 @@
 		},
 		onReady() {},
 		onPullDownRefresh() {
-			getRecycleUserinfo()
+			getUserInfo()
 				.then((res) => {
 					this.userInfo = res.data;
 				})
@@ -396,10 +395,10 @@
 		methods: {
 			// 获取手机序列号
 			getIMEI() {
-				console.log("IMEI:" + plus.device.imei)
-				console.log("IMSI:" + plus.device.imsi)
-				console.log("设备型号:" + plus.device.model)
-				console.log("UUID:" + plus.device.uuid)
+				console.log('IMEI:' + plus.device.imei);
+				console.log('IMSI:' + plus.device.imsi);
+				console.log('设备型号:' + plus.device.model);
+				console.log('UUID:' + plus.device.uuid);
 				plus.device.getInfo({
 					success: function (e) {
 						console.log(JSON.stringify(e), 'IMEI');

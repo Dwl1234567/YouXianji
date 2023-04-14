@@ -11,7 +11,7 @@
 			<view class="cu-item arrow" @tap="editNameTap">
 				<view class="content">昵称</view>
 				<view class="action">
-					<text class="text-gray">{{userInfo.nickname}}</text>
+					<text class="text-gray">{{userInfo.nickName}}</text>
 				</view>
 			</view>
 			<view class="cu-item arrow">
@@ -41,7 +41,7 @@
 			<view class="cu-item arrow" @tap="editPhoneTap">
 				<view class="content">手机号</view>
 				<view class="action">
-					<text class="text-gray">{{userInfo.mobile}}</text>
+					<text class="text-gray">{{userInfo.phonenumber}}</text>
 				</view>
 			</view>
 			<view class="cu-item arrow" @tap="bankTap">
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-	import { getRecycleUserinfo, userset } from '@/api/user.js';
+	import { getUserInfo, userset } from '@/api/user.js';
 	import { UPLOAD_IMG_URL } from '@/config/app.js';
 	import { getNowDay } from '@/utils/pub.js';
 	import barTitle from '@/components/common/basics/bar-title';
@@ -85,10 +85,10 @@
 		},
 		onShow() {
 			let that = this;
-			getRecycleUserinfo().then((res) => {
+			getUserInfo().then((res) => {
 				let data = res.data;
 				this.userInfo = data;
-				this.sexIndex = data.gender;
+				this.sexIndex = data.sex;
 				if (data.birthday) {
 					that.dateValue = data.birthday;
 				}
@@ -137,7 +137,7 @@
 			},
 			editNameTap() {
 				uni.navigateTo({
-					url: '/pages/my/userdata/edit-name?name=' + this.userInfo.nickname,
+					url: '/pages/my/userdata/edit-name?name=' + this.userInfo.nickName,
 				});
 			},
 			sexPickerChange(e) {
@@ -189,7 +189,7 @@
 			},
 			editPhoneTap() {
 				uni.navigateTo({
-					url: '/pages/my/userdata/edit-phone?mobile=' + this.userInfo.mobile,
+					url: '/pages/my/userdata/edit-phone?mobile=' + this.userInfo.phonenumber,
 				});
 			},
 			editContactCardsTap() {
