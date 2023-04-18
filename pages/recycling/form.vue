@@ -17,9 +17,9 @@
 				<view class="picker" v-if="takeAddress.length == 0" @click="$u.route('/pages/my/address/addressManage?type=add')">
 					还未设置收货地址，点击去设置~
 				</view>
-				<picker v-else @change="AddressChange" :value="index.address" range-key="address" :range="takeAddress">
+				<picker v-else @change="AddressChange" :value="index.address" range-key="detailAddress" :range="takeAddress">
 					<view class="picker">
-						{{index.address>-1?takeAddress[index.address].address:'请选择取件地址'}}
+						{{index.address>-1?takeAddress[index.address].detailAddress:'请选择取件地址'}}
 					</view>
 				</picker>
 			</view>
@@ -56,9 +56,9 @@
 				<view class="picker" v-if="paylist.length == 0" @click="$u.route('/pages/mycenter/pay/add-pay')">
 					还未设置收款账户，点击去设置~
 				</view>
-				<picker v-else @change="PickerChange" range-key="bankinfo" :value="index.pay" :range="paylist">
+				<picker v-else @change="PickerChange" range-key="accountNo" :value="index.pay" :range="paylist">
 					<view class="picker">
-						{{index.pay>-1?paylist[index.pay].bank_name + paylist[index.pay].bank_card :'请选择打款账户'}}
+						{{index.pay>-1?paylist[index.pay].accountNo :'请选择打款账户'}}
 					</view>
 				</picker>
 			</view>
@@ -137,7 +137,7 @@
 					<text class='cuIcon-title text-red'></text>
 					<text class="title">序列号/IMEI</text>
 					<text class="margin-left-xs text-sm">
-						<input placeholder="请输入设备序列号/IMEI" name="input"></input>
+						<input placeholder="请输入设备序列号/IMEI" name="input" v-model="deviceNo"></input>
 					</text>
 				</view>
 			</view>
@@ -288,6 +288,13 @@
 		addBasicOrder,
 		getGlobalInfo
 	} from "@/api/common.js";
+	import {
+		userAccountList,
+		selectUserAddressList
+	} from "@/api/commons.js";
+	import {
+		createRecycleOrder
+	} from "@/api/retrieve.js";
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -295,6 +302,8 @@
 		},
 		data() {
 			return {
+				forecastMoney: '',
+				deviceNo: '',
 				http: '',
 				index: {
 					address: -1,
@@ -339,6 +348,8 @@
 				checkimgshow:false,
 				imgParams:[],
 				uploadImgtype:'',
+				Pricepramitems: [],
+				Priceprams: [],
 				textareaAValue:'' ,//用户备注
 				jjname:'',//寄件名
 				jjphone:'',//寄件手机
@@ -346,12 +357,15 @@
 			}
 		},
 		onLoad(option) {
+			this.Priceprams = uni.getStorageSync('Priceprams')
+			this.Pricepramitems = uni.getStorageSync('Pricepramitems')
 			this.http = HTTP_REQUEST_IMAGEURL
 			this.initPickupTime();
 			this.getGlobalInfoFuc();
 			this.detailId = option.detailId;
 			this.goodsId = option.goodsId;
-			this.TabCur = option.type;
+			this.modelName = option.modelName;
+			this.forecastMoney = option.forecastMoney
 			this.addBasicOrderFuc();
 		},
 		onShow() {
@@ -423,7 +437,6 @@
 				console.log(that.takeTime);
 			},
 			TimeChange(e) {
-				console.log(e);
 				let that = this;
 				this.timeIndex = e.detail.value
 				
@@ -438,7 +451,6 @@
 				let myDate = new Date();
 				let index = e.detail.value
 				let hourlist = [];
-				console.log(index);
 				if (index == 0) {
 					hourlist = gethoursInfo(0);
 					// that.$set(that.takeTime[1], hourlist);
@@ -606,11 +618,13 @@
 			// 获取用户收货地址
 			getUserAddressFuc() {
 				let that = this;
-				getUserAddress().then(res => {
-					if (res.code == 1) {
+				selectUserAddressList().then(res => {
+					if (res.code == 200) {
 						that.takeAddress = res.data;
+						console.log(res.data)
 						if (that.takeAddress.length > 0) {
 							that.$set(that.index, 'address', 0);
+							console.log(this.index);
 						}
 						// that.takeAddress.forEach((item, index) => {
 						// 	item['all_detail'] = item.all_detail + '-' + item.detail;
@@ -621,9 +635,9 @@
 			// 获取银行列表
 			getBankListFuc(){
 				let that = this;
-				getBankList().then(res=>{
-					if (res.code == 1) {
-						that.paylist = res.data;
+				userAccountList().then(res=>{
+					if (res.code == 200) {
+						that.paylist = res.rows;
 						if (that.paylist.length > 0) {
 							that.$set(that.index, 'pay', 0);
 						}
@@ -644,18 +658,22 @@
 			creatinsertBasicOrder() {
 				let that = this;
 				let puttakeTime = '';
+				let storeId = uni.getStorageSync('storeId')
 				//console.log(that.timeIndex);
-				//console.log(that.takeTime[1][0]);
+				// console.log(that.takeTime);
 				if((that.TabCur == 0 || that.TabCur == 2) && that.timeIndex[0] == -1 && that.timeIndex[1] == -1){
 					return that.$u.toast('请选择上门取件时间');
 				}else if((that.TabCur == 0 || that.TabCur == 2) && that.takeTime[1][0].value == '请预约明天的时间吧～'){
 					return that.$u.toast('请选择明天的时间吧~');
 				}else{
-					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy+' '+that.takeTime[1][0].value.split('~')[0];
+					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy+' '+that.takeTime[1][0].value.split('~')[0] + ':00';
 					console.log(puttakeTime);
 				}
 				if((that.TabCur == 0 || that.TabCur == 2) && that.index.address == -1){
 					return that.$u.toast('请选择一个地址！');
+				}
+				if (that.TabCur == 2) {
+					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy+' '+that.takeTime[1][0].value.split('~')[0] + ':00' + '~' + that.takeTime[1][0].value.split('~')[1] + ':00';
 				}
 				console.log(that.TabCur)
 				if(that.TabCur == 1){
@@ -685,22 +703,47 @@
 					var express_name = '同城上门';
 				}
 				let params = {
-					'detail_id': that.detailId,
-					'type': '0',
-					'goods_id': that.goodsId,
-					'user_note': that.textareaAValue,
-					'bank_id': that.paylist[that.index.pay].id,
-					'transport': Number(that.TabCur) + 1,
-					'address_id': that.TabCur == 1 ? null : that.takeAddress[that.index.address].id,
-					'express_sn': that.jjdanhao,
-					'express_name': express_name,
-					'take_time': puttakeTime,
-					'user_name': that.jjname,
-					'user_phone': that.jjphone,
-					'img_params': that.imgParams
+					// 'detail_id': that.detailId,
+					// 'type': '0',
+					// 'goods_id': that.goodsId,
+					// 'user_note': that.textareaAValue,
+					// 'bank_id': that.paylist[that.index.pay].id,
+					// 'transport': Number(that.TabCur) + 1,
+					// 'address_id': that.TabCur == 1 ? null : that.takeAddress[that.index.address].id,
+					// 'express_sn': that.jjdanhao,
+					// 'express_name': express_name,
+					// 'take_time': puttakeTime,
+					// 'user_name': that.jjname,
+					// 'user_phone': that.jjphone,
+					// 'img_params': that.imgParams,
+					'modelName': that.modelName,
+					'qualityInfo':JSON.stringify(that.Priceprams),
+					'qualityInfoList': JSON.stringify(that.Pricepramitems),
+					'orderPostType': that.TabCur,
+					'pickUpAddress': that.takeAddress[that.index.address].addressId,
+					'pickUpTime': puttakeTime,
+					'postLinkName': that.jjname,
+					'postLinkPhone': that.jjphone,
+					'postOrderNo': that.jjdanhao,
+					'remark': that.textareaAValue,
+					'userAccount': that.paylist[that.index.pay].accountId,
+					'modelId': Number(that.goodsId),
+					'deviceNo': that.deviceNo,
+					'frontPhoto': that.phoneImgArr[0],
+					"backPhoto": that.phoneImgArr[1],
+					"topPhoto": that.phoneImgArr[2],
+					"bottomPhoto": that.phoneImgArr[3],
+					"leftPhoto": that.phoneImgArr[4],
+				    "rightPhoto": that.phoneImgArr[5],
+					"cameraPhoto": that.phoneImgArr[6],
+					"otherPhoto": that.phoneImgArr[7],
+					'storeId': storeId,
+					'firstPrice': that.forecastMoney
+					
+					
 				}
-				insertBasicOrder(params).then(res => {
-					if(res.code == 1){
+				createRecycleOrder(params).then(res => {
+					if(res.code == 200){
 						that.$u.toast('提交订单成功');
 						uni.navigateTo({
 							url: "/pages/order/recycle/list"

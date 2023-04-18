@@ -160,9 +160,6 @@
 				<view @click="show = false">取消</view>
 				<view @click="kefuQiangdan">完成</view>
 			</view>
-			<!-- <view v-for="(item,index) in kefuList" :key="index">
-				{{item.nickname}}
-			</view> -->
 			<picker-view indicator-style="height: 40px;line-height: 40px;" style="height:200px; text-align: center;" class="mpvue-picker-view" :value="pickerValue" @change="pickerChange" indicator-class="itemadd">
 				<block>
 					<picker-view-column>
@@ -170,16 +167,6 @@
 					</picker-view-column>
 				</block>
 			</picker-view>
-			<!-- <picker-view
-				:value= [0]
-				@change="bindChange"
-				class="picker-view"
-			>
-			
-				<picker-view-column>
-					<view class="item" v-for="(item,index) in kefuList" :key="index">{{item.nickname}}</view>
-				</picker-view-column>
-			</picker-view> -->
 		</u-popup>
 		<!--占位底部距离-->
 		<view class="cu-tabbar-height" />

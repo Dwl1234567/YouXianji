@@ -3,48 +3,50 @@
 		<!--标题栏-->
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">编辑收款账号</block>
-			
 		</bar-title>
 
 		<!--表单-->
 		<view class="cu-form-group margin-top">
 			<view class="title">收款姓名</view>
-			<input placeholder="您的姓名" @input="nameInput" v-model="bankInfo.bank_username" class="text-right"/>
-			<text class='cuIcon-roundclosefill text-grey' v-if="nameClose" />
+			<input placeholder="您的姓名" @input="nameInput" v-model="bankInfo.bank_username" class="text-right" />
+			<text class="cuIcon-roundclosefill text-grey" v-if="nameClose" />
 		</view>
 		<view class="cu-form-group">
 			<view class="title">手机号码</view>
-			<input placeholder="用于联系通知您的号码" @input="phoneInput" v-model="bankInfo.bank_phone" class="text-right"/>
-			<text class='cuIcon-roundclosefill text-grey' v-if="phoneClose" />
+			<input
+				placeholder="用于联系通知您的号码"
+				@input="phoneInput"
+				v-model="bankInfo.bank_phone"
+				class="text-right"
+			/>
+			<text class="cuIcon-roundclosefill text-grey" v-if="phoneClose" />
 		</view>
 		<view class="cu-form-group">
 			<view class="title">账户类型</view>
-			<picker mode="multiSelector" @change="MultiChange" @columnchange="MultiColumnChange" :value="multiIndex"
-				:range="multiArray">
-				<view class="picker">
-					{{multiArray[0][multiIndex[0]]}}，
-					{{multiArray[1][multiIndex[1]]}}
-				</view>
+			<picker
+				mode="multiSelector"
+				@change="MultiChange"
+				@columnchange="MultiColumnChange"
+				:value="multiIndex"
+				:range="multiArray"
+			>
+				<view class="picker">{{multiArray[0][multiIndex[0]]}}， {{multiArray[1][multiIndex[1]]}}</view>
 			</picker>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">收款账号</view>
-			<input placeholder="请输入收款账号" @input="payInput" v-model="bankInfo.bank_card" class="text-right"/>
-			<text class='cuIcon-roundclosefill text-grey' v-if="payClose" />
+			<input placeholder="请输入收款账号" @input="payInput" v-model="bankInfo.bank_card" class="text-right" />
+			<text class="cuIcon-roundclosefill text-grey" v-if="payClose" />
 		</view>
 		<view class="cu-form-group">
 			<view class="title">开关选择</view>
 			<switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
 		</view>
-		<!--小程序端显示-->
-		<!-- #ifdef MP -->
-		<!-- <view class="bg-white">
+		<view class="bg-white">
 			<view class="flex flex-direction">
 				<button class="cu-btn text-color-yellow text-xl text-4F4F50" @click="addUserBankFuc">保存</button>
 			</view>
-		</view> -->
-		<!-- #endif -->
-
+		</view>
 	</view>
 </template>
 
@@ -53,6 +55,10 @@
 		AddressEdit,
 		AddressInfo
 	} from "@/api/mall.js";
+	import {
+		editUserAccount,
+		userAccountDetail
+	} from "@/api/commons.js";
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -66,9 +72,10 @@
 				phoneClose: false,
 				payClose: false,
 				multiArray: [
-					['银行卡', '支付宝', '微信'],
-					['工商银行', '建设银行', '农业银行', '邮储银行', '招商银行', '兴业银行', '浦发银行', '中信银行', '广发银行', '平安银行'],
+					['微信','支付宝','银行卡' ],
+					['账号']
 				],
+				data: ['工商银行', '建设银行', '农业银行', '邮储银行', '招商银行', '兴业银行', '浦发银行', '中信银行','广发银行', '平安银行'],
 				bankInfo:{},
 				bankid:''
 			}
@@ -90,13 +97,20 @@
 		methods: {
 			// 获取地址信息
 			AddressInfoFuc(){
-				AddressInfo({
-					id:this.bankid
-				}).then(res=>{
-					this.bankInfo = res.data;
-					this.multiArray[1].map((item, itemIndex) => {
-						if (item === res.data.bank_name){
-							this.multiIndex = [res.data.bank_type, itemIndex]
+				userAccountDetail(this.bankid).then(res=>{
+					this.bankInfo = {
+						'bank_username': res.data.username,
+						'bank_phone': res.data.phonenumber,
+						'bank_card': res.data.accountNo,
+						'bankname': res.data.bankName,
+						'banktype': res.data.accountType
+					};
+					this.switchA = res.switchAble == 1 ? true : false
+					this.data.map((item, itemIndex) => {
+						if (item == res.data.bankName) {
+							this.multiIndex = [res.data.accountType, itemIndex]
+						} else {
+							this.multiIndex = [res.data.accountType, 0]
 						}
 					})
 				})
@@ -139,20 +153,20 @@
 					multiIndex: this.multiIndex
 				};
 				data.multiIndex[e.detail.column] = e.detail.value;
-			
+
 				switch (e.detail.column) {
 					case 0:
 						switch (data.multiIndex[0]) {
 							case 0:
-								data.multiArray[1] = ['工商银行', '建设银行', '农业银行', '邮储银行', '招商银行', '兴业银行', '浦发银行', '中信银行',
-									'广发银行', '平安银行'
-								];
+								data.multiArray[1] = ['账号'];
 								break;
 							case 1:
 								data.multiArray[1] = ['个人', '企业'];
 								break;
 							case 2:
-								data.multiArray[1] = ['账号'];
+								data.multiArray[1] = ['工商银行', '建设银行', '农业银行', '邮储银行', '招商银行', '兴业银行', '浦发银行', '中信银行',
+									'广发银行', '平安银行'
+								];
 								break;
 						}
 						data.multiIndex[1] = 0;
@@ -171,22 +185,25 @@
 				// this.multiIndex = data.multiIndex;
 				that.$set(that.multiArray, data.multiArray);
 				that.$set(that.multiIndex, data.multiIndex);
-				that.bankInfo.bank_type = that.multiIndex[0]
-				that.bankInfo.bank_name = that.multiArray[1][that.multiIndex[1]];
+				that.bankInfo.banktype = that.multiIndex[0]
+				if (that.bankInfo.banktype == 2) {
+					that.bankInfo.bankname = that.multiArray[1][that.multiIndex[1]]
+				}
 				this.$forceUpdate()
 			},
 			// 添加银行卡
 			addUserBankFuc() {
 				let that = this;
 				let params = {
-					'bank_card':that.bankInfo.bank_card,
-					'bank_type':that.bankInfo.bank_type,
-					'bank_name':that.bankInfo.bank_name,
-					'bank_username':that.bankInfo.bank_username,
-					'bank_phone':that.bankInfo.bank_phone,
-					'isdefault': that.switchA?'1':'0'
+					'accountNo':that.bankInfo.bank_card,
+					'accountType':that.bankInfo.banktype,
+					'bankName':that.bankInfo.bankname,
+					'username':that.bankInfo.bank_username,
+					'phonenumber':that.bankInfo.bank_phone,
+					'switchAble': that.switchA?'1':'0',
+					'accountId': this.bankid
 				}
-				AddressEdit(params).then(res=>{
+				editUserAccount(params).then(res=>{
 					uni.showToast({
 						icon:'success',
 						title:'添加成功!',
@@ -207,7 +224,7 @@
 	.wecanui-footer-fixed .flex-direction {
 		padding: 18.18rpx;
 	}
-	button{
+	button {
 		width: 326px;
 		height: 44px;
 		margin: 0 auto;

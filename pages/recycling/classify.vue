@@ -227,7 +227,7 @@
 				// console.log(value);
 				let type = this.type;
 				uni.navigateTo({
-					url: '/pages/recycling/recycling-new?id=' + value.modelId +'&cate_id='+value.cate_id +'&type='+type
+					url: '/pages/recycling/recycling-new?id=' + value.modelId +'&cate_id='+value.cate_id +'&type='+type + '&modelName=' + value.modelName
 				})
 			},
 			TabSelect(id,index) {

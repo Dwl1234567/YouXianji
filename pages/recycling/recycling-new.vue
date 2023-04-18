@@ -127,6 +127,7 @@
 					scrollTop: 0
 				},
 				Priceprams: {},
+				Pricepramitems: [],
 				detailId: ''
 			}
 		},
@@ -135,6 +136,7 @@
 
 			this.goodsInfo = option;
 			this.goodsId = option.id;
+			this.modelName = option.modelName
 			this.type = option.type;
 			this.getGodsgoodsDetail();
 		},
@@ -181,7 +183,7 @@
 				//that.forecastMoney = that.baseMoney;
 				that.forecastMoney = 0;
 				that.goodsdesc = '';
-
+				that.Pricepramitems = []
 				that.retrieveList.forEach((item, index) => {
 					item.forEach((iitem, indexx) => {
 						iitem.value.forEach((iiitem, indexxx) => {
@@ -189,6 +191,10 @@
 								that.forecastMoney += Number(iiitem.price);
 								// paramsdata.push({iitem.key:iiitem.id});
 								that.Priceprams[iitem.keyId] = indexxx;
+								that.Pricepramitems.push({
+									key: iitem.name,
+									value: iiitem.value
+								})
 								if (index == 0 && iitem.key != 'small') {
 									that.goodsdesc = that.goodsdesc + iiitem.value + ' | ';
 								}
@@ -196,10 +202,12 @@
 						})
 					})
 				})
-
+				uni.setStorageSync('Priceprams', that.Priceprams)
+				uni.setStorageSync('Pricepramitems', that.Pricepramitems)
 				console.log('总价：');
 				console.log(that.forecastMoney);
 				console.log('that.Priceprams',that.Priceprams);
+				console.log('that.Pricepramitems', that.Pricepramitems);
 			},
 			getGodsgoodsDetail() {
 				let that = this;
@@ -263,22 +271,8 @@
 			},
 			// 获取报价
 			getGodsgoodsPrice() {
-				// let that = this;
-				// that.Priceprams['goods_id'] = that.goodsInfo.id;
-				// // console.log(that.goodsInfo);
-				// that.Priceprams['cate_id'] = that.goodsInfo.cate_id;
-				// GodsgoodsPrice(that.Priceprams).then(res => {
-				// 	let data = res.data;
-				// 	if (res.code == 1) {
-				// 		that.detailId = data.detail_id;
-				// 		uni.navigateTo({
-				// 			url: 'form?type=' + that.type + '&detailId=' + that.detailId + '&goodsId=' +
-				// 				that.goodsId
-				// 		})
-				// 	}
-				// })
 				uni.navigateTo({
-					url: 'form?type=' + this.type
+					url: 'form?type=' + this.type + '&goodsId=' + this.goodsId + '&modelName=' + this.modelName + '&forecastMoney=' + this.forecastMoney
 				})
 			},
 			//去发货

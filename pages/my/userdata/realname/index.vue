@@ -38,8 +38,8 @@
 
 <script>
 	import{
-		getRecycleUserinfo
-	} from "@/api/user.js"
+		userInfo
+	} from "@/api/login.js"
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -63,10 +63,10 @@
 		methods: {
 			// 获取用户信息
 			async getRecycleUserinfoFuc(){
-				const res = await getRecycleUserinfo();
-				if (res.code === 1) {
+				const res = await userInfo();
+				if (res.code === 200) {
 					this.userInfo = res.data;
-					this.status = res.data.verification == 1?true:false;
+					this.status = res.data.userRealInfo.realName ?true:false;
 				}
 				
 				// getRecycleUserinfo().then(res=>{
@@ -83,7 +83,7 @@
 			},
 			btnTap() {
 				uni.navigateTo({
-					url: "/pages/my/userdata/realname/form"
+					url: '/pages/my/userdata/realname/form'
 				});
 			}
 		}

@@ -6,21 +6,23 @@
 		</bar-title>
 		
 		<!--选项卡-->
-		<view class="bg-white nav text-center">
+		<!-- <view class="bg-white nav text-center">
 			<view class="cu-item" :class="index==TabCur?'text-blue cur':''" v-for="(item,index) in tabdata" :key="index" @tap="tabSelect" :data-id="index">
 				{{item}}
 			</view>
-		</view>
+		</view> -->
 		<!--图片认证-->
 		<view class="discern-box" v-if="TabCur == 0">
-			<view class="cu-bar bg-white margin-top-xs">
+			<input type="text" v-model="name">
+			<input type="text" v-model="idCrad">
+			<!-- <view class="cu-bar bg-white margin-top-xs">
 				<view class="action sub-title">
 					<text class="text-xl text-bold text-blue text-shadow">请拍摄并上传您的身份证照片</text>
 					<text class="text-ABC text-blue">Driving license</text>
 				</view>
-			</view>
+			</view> -->
 			
-			<view class="uploadBox">
+			<!-- <view class="uploadBox">
 				<view style="width: 47%;">
 					<view class="uploadItem">
 						<view v-if="!imgUrl[0]" class="imgBox imgEx1">
@@ -54,7 +56,7 @@
 					</view>
 					<view @click="uploadImg1(1)" class="leftBtn text-white text-lg text-center">拍摄反面</view>
 				</view>
-			</view>
+			</view> -->
 		
 			<!-- <view class="cu-bar bg-white margin-top">
 				<view class="action sub-title">
@@ -82,14 +84,14 @@
 				</view>
 			</view> -->
 		
-			<view class="cu-bar bg-white margin-top">
+			<!-- <view class="cu-bar bg-white margin-top">
 				<view class="action sub-title">
 					<text class="text-xl text-bold text-blue text-shadow">拍摄要求须知</text>
 					<text class="text-ABC text-blue">requirement</text>
 				</view>
-			</view>
+			</view> -->
 		
-			<view class="requirement">
+			<!-- <view class="requirement">
 				<view>
 					<text class="text-gray">请上传大陆公民持有的本人有效身份证；</text>
 				</view>
@@ -114,7 +116,7 @@
 						<image class="iconImg" src="/static/discern/no.png" mode="widthFix"></image>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		
 			<!--按钮-->
 			<view class="bg-white zaiui-btn-view zaiui-foot-padding-bottom">
@@ -169,11 +171,12 @@
 	import {
 		upload
 	} from "@/api/upload.js";
-	import barTitle from '@/components/common/bar-title';
+	import barTitle from '@/components/common/basics/bar-title';
+	// import barTitle from '@/components/common/bar-title';
 	import {
-		checkUserIdcard
-	} from "@/api/common.js";
-	import { pathToBase64, base64ToPath } from '../../../libs/image-tools/index.js';
+		idCardVerification
+	} from "@/api/commons.js";
+	// import { pathToBase64, base64ToPath } from '@/libs/image-tools/index.js';
 	export default {
 		components: {
 			barTitle
@@ -183,7 +186,7 @@
 				checkimgshow: false,
 				upimgtype:'',
 				pImgDeleteStatus: false,
-				TabCur: 0,
+				TabCur: 1,
 				tabdata:[
 					'图片认证',
 					'文字认证'
@@ -243,18 +246,20 @@
 					}
 				}else{
 					params = {
-						"type":1,
-						"username":that.username,
-						"idcard":that.idcard,
+						"name":that.username,
+						"idCard":that.idcard,
 					}
 				}
 				 
-				checkUserIdcard(params).then(res => {
-					that.$u.toast("提交成功!");
-					uni.setStorageSync('realstatus', '1');
-					uni.navigateBack({
-						delta:1
-					})
+				idCardVerification(params).then(res => {
+					if (res.code == 200 && res.data.result == 0) {
+						that.$u.toast("提交成功!");
+						uni.setStorageSync('realstatus', '1');
+						uni.navigateBack({
+							delta:1
+						})
+					}
+					
 				})
 				.catch(err => {
 					// console.log(err);

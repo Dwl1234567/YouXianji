@@ -25,3 +25,11 @@ export function getSeries(data) {
 export function getPriceTemplateByModel(data) {
 	return request.get('/yxj/app/common/getPriceTemplateByModel/'+ data ,{'noLogin':true});
 }
+
+/**
+ * 提交回收订单
+ * 
+ */
+export function createRecycleOrder(data) {
+	return request.post('/yxj/app/recycle/createRecycleOrder', data ,{'noLogin':true});
+}

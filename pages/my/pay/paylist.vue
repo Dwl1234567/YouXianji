@@ -7,24 +7,24 @@
 
 		<!--列表-->
 		<block v-for="(item,index) in bankList" :key="index">
-			<view class="bg-red pay-card-view padding shadow margin-top" :class="item.bank_type === 0 ? 'bank' : item.bank_type === 1 ? 'weixin' : 'zhifubao'" @tap="editPayTap(item.id)">
+			<view class="bg-red pay-card-view padding shadow margin-top" :class="item.accountType === 0 ? 'weixin' : item.bank_type === 1 ? 'zhifubao' : 'bank'" @tap="editPayTap(item.accountId)">
 				<view class="flex text-black text-lg" > 
 				<!-- @tap="editPayTap(item.id)" -->
 					<view class="cu-avatar  margin-right round lg"  />
 					<view class="flex-sub text-left">
 						<view class="text-white">
-							{{item.bank_name}}
+							{{item.bankName}}
 						</view>
 						<view class="margin-tb text-xxl text-white">
-							{{item.bank_card}}
+							{{item.accountNo}}
 						</view>
 					</view>
 				</view>
 				<view class="right-view">
-					<text v-if="item.isdefault == 0" class="cuIcon-write"
-						@tap="handleDefaultBankFuc(item.id)">设为默认</text>
+					<text v-if="item.defaultAble == 0" class="cuIcon-write"
+						@tap.stop="handleDefaultBankFuc(item.accountId)">设为默认</text>
 					<!-- <text class="cuIcon-write" @tap="editPayTap(item.id)">编辑</text> -->
-					<text class="cuIcon-delete" @tap="deleteBankFuc(item.id)">删除</text>
+					<text class="cuIcon-delete" @tap.stop="deleteBankFuc(item.accountId)">删除</text>
 				</view>
 			</view>
 		</block>
@@ -48,6 +48,11 @@
 		getBankList,
 		deleteBank
 	} from "@/api/common.js";
+	import {
+		defaltUserAccount,
+		delectUserAccount,
+		userAccountList
+	} from "@/api/commons.js";
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -93,22 +98,18 @@
 			// 获取银行卡列表
 			getBankListInfo() {
 				let that = this;
-				let params = {}
-				getBankList(params).then(res => {
+				userAccountList().then(res => {
 					// console.log(res);
-					if (res.code == 1){
-						that.bankList = res.data;
+					if (res.code == 200){
+						that.bankList = res.rows;
 					}
 				})
 			},
 			// 设为默认
 			handleDefaultBankFuc(id) {
 				let that = this;
-				let params = {
-					'id': id
-				}
 
-				handleDefaultBank(params).then(res => {
+				defaltUserAccount(id).then(res => {
 					if (res.code) {
 						this.getBankListInfo();
 						uni.showToast({
@@ -126,10 +127,8 @@
 			},
 			confirmFuc() {
 				let that = this;
-				deleteBank({
-					id: this.deleteBankId
-				}).then(res => {
-					if (res.code == 1){
+				delectUserAccount(this.deleteBankId).then(res => {
+					if (res.code == 200){
 						that.showConfirm = false;
 						that.getBankListInfo();
 						uni.showToast({

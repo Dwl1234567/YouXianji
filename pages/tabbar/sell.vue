@@ -304,6 +304,8 @@
 		},
 		data() {
 			return {
+				// 门店id,
+				storeId: 0,
 				// 全部附近门店
 				latelystoreInfoAll: [],
 				// 门店弹框默认值
@@ -402,6 +404,7 @@
 			// 门店切换
 			pickerChange(e) {
 				console.log(e.detail.value[0])
+				uni.setStorageSync('storeId', this.latelystoreInfoAll[e.detail.value[0]].storeId);
 				this.latelystoreInfo = this.latelystoreInfoAll[e.detail.value[0]]
 			},
 			// 关闭选择门店弹框
@@ -416,6 +419,8 @@
 				}).then((res) => {
 					this.latelystoreInfoAll = res.data
 					this.latelystoreInfo = res.data[0];
+					this.storeId = res.data[0].storeId;
+					uni.setStorageSync('storeId', res.data[0].storeId);
 					uni.setStorageSync('nearbyStores', res.data);
 					// this.shop_latitide = res.data.latitude;
 					// this.shop_longtude = res.data.longitude;

@@ -39,7 +39,7 @@
 		<!--小程序端显示-->
 		<view class="bg-white">
 			<view class="flex flex-direction">
-				<button class="cu-btn text-color-yellow text-xl text-4F4F50" @click="addUserBankFuc">保存</button>
+				<button class="cu-btn text-color-yellow text-xl text-4F4F50" @click="addUserAccountFuc">保存</button>
 			</view>
 		</view>
 
@@ -48,8 +48,8 @@
 
 <script>
 	import {
-		addUserBank
-	} from "@/api/common.js";
+		addUserAccount
+	} from "@/api/commons.js";
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -63,8 +63,8 @@
 				phoneClose: false,
 				payClose: false,
 				multiArray: [
-					['银行卡', '支付宝', '微信'],
-					['工商银行', '建设银行', '农业银行', '邮储银行', '招商银行', '兴业银行', '浦发银行', '中信银行', '广发银行', '平安银行'],
+					['微信','支付宝','银行卡' ],
+					['账号']
 				],
 				bankInfo:{}
 			}
@@ -124,15 +124,15 @@
 					case 0:
 						switch (data.multiIndex[0]) {
 							case 0:
-								data.multiArray[1] = ['工商银行', '建设银行', '农业银行', '邮储银行', '招商银行', '兴业银行', '浦发银行', '中信银行',
-									'广发银行', '平安银行'
-								];
+								data.multiArray[1] = ['账号'];
 								break;
 							case 1:
 								data.multiArray[1] = ['个人', '企业'];
 								break;
 							case 2:
-								data.multiArray[1] = ['账号'];
+								data.multiArray[1] = ['工商银行', '建设银行', '农业银行', '邮储银行', '招商银行', '兴业银行', '浦发银行', '中信银行',
+									'广发银行', '平安银行'
+								];
 								break;
 						}
 						data.multiIndex[1] = 0;
@@ -147,27 +147,28 @@
 						break;
 						*/
 				}
-				// this.multiArray = data.multiArray;
-				// this.multiIndex = data.multiIndex;
-				console.log(that.multiArray[0][that.multiIndex[0]] + that.multiArray[1][that.multiIndex[1]]);
 				that.$set(that.multiArray, data.multiArray);
 				that.$set(that.multiIndex, data.multiIndex);
 				that.bankInfo.banktype = that.multiIndex[0]
-				that.bankInfo.bankname = that.multiArray[1][that.multiIndex[1]];
+				console.log(that.bankInfo.banktype)
+				if (that.bankInfo.banktype == 2) {
+					that.bankInfo.bankname = that.multiArray[1][that.multiIndex[1]]
+				}
 				this.$forceUpdate()
 			},
 			// 添加银行卡
-			addUserBankFuc() {
+			addUserAccountFuc() {
 				let that = this;
+				console.log(that.bankInfo.bankname)
 				let params = {
-					'bank_card':that.bankInfo.bankcard,
-					'bank_type':that.bankInfo.banktype,
-					'bank_name':that.bankInfo.bankname,
-					'bank_username':that.bankInfo.bankusername,
-					'bank_phone':that.bankInfo.bankphone,
-					'isdefault': that.switchA?'1':'0'
+					'accountNo':that.bankInfo.bankcard,
+					'accountType':that.bankInfo.banktype,
+					'bankName':that.bankInfo.bankname,
+					'username':that.bankInfo.bankusername,
+					'phonenumber':that.bankInfo.bankphone,
+					'switchAble': that.switchA?'1':'0'
 				}
-				addUserBank(params).then(res=>{
+				addUserAccount(params).then(res=>{
 					uni.showToast({
 						icon:'success',
 						title:'添加成功!',

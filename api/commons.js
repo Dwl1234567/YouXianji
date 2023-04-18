@@ -49,3 +49,59 @@ export function deleteUserAddress(data) {
 export function getNearestStoreList(data) {
 	return request.get('/yxj/app/common/getNearestStoreList' , data ,{'noLogin':true});
 }
+
+/**
+ * 获取银行卡list
+ * 
+ */
+export function userAccountList(data) {
+	return request.get('/yxj/app/userAccount/list' ,{'noLogin':true});
+}
+
+/**
+ * 添加银行卡
+ * 
+ */
+export function addUserAccount(data) {
+	return request.post('/yxj/app/userAccount' ,data, {'noLogin':true});
+}
+
+/**
+ * 获取银行卡详情
+ * 
+ */
+export function userAccountDetail(data) {
+	return request.get('/yxj/app/userAccount/' + data, {'noLogin':true});
+}
+
+/**
+ * 获取银行卡详情
+ * 
+ */
+export function editUserAccount(data) {
+	return request.put('/yxj/app/userAccount' , data, {'noLogin':true});
+}
+
+/**
+ * 删除银行卡
+ * 
+ */
+export function delectUserAccount(data) {
+	return request.delete('/yxj/app/userAccount/' + data, {'noLogin':true});
+}
+
+/**
+ * 设置默认银行卡
+ * 
+ */
+export function defaltUserAccount(data) {
+	return request.get('/yxj/app/userAccount/setDefault?accountId=' + data, {'noLogin':true});
+}
+
+/**
+ * 身份证绑定
+ * 
+ */
+export function idCardVerification(data) {
+	return request.post('/yxj/app/common/idCardVerification' , data, {'noLogin':true});
+}

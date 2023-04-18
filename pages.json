@@ -886,7 +886,7 @@
             }
         }, //实名认证
         {
-            "path" : "pages/my/userdata/realname/index",
+            "path" : "pages/my/userdata/realname/form",
             "style" : {
                 "navigationStyle" : "custom"
             }
