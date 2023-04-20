@@ -567,9 +567,9 @@
 						var value = 'chat/list';
 					}
 					if (index == 4) {
-						// var value = "chat/chatAdmin";
-						this.getKefuUserList();
-						this.show = true;
+						var value = "chat/chatAdmin";
+						// this.getKefuUserList();
+						// this.show = true;
 					}
 				}
 				if (key == 3) {

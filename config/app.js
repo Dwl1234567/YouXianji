@@ -6,7 +6,7 @@ module.exports = {
 	// HTTP_REQUEST_URL: `http://192.168.2.8:8080/api/`,
 	HTTP_REQUEST_URL: `http://192.168.2.36:8080`,
 	HTTP_REQUEST_IMAGEURL: `http://192.168.2.36:8080`,
-	KEFU_POST_URL:`youxianji.zansuo.com`,
+	KEFU_POST_URL:`http://192.168.2.36:8080`,
 	// KEFU_POST_URL:`youxianji.zansuo.com`,
 	//上传图片地址http://192.168.2.8:8080/api//upload
 	// UPLOAD_IMG_URL: `https://youxianji.zansuo.com/api/v1/upload`,

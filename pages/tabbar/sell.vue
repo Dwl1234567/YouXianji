@@ -28,6 +28,13 @@
 			</view>
 		</view>
 		<view class="stores-box">
+			<view
+				id="echarts"
+				class="echarts"
+				@click="echarts.onClick"
+				:prop="optionData"
+				:change:prop="echarts.updateEcharts"
+			></view>
 			<view class="bg-white cu-card article radius-2" @click="gostoreInfo(latelystoreInfo.id)">
 				<!-- 同城到店回收-块1 -->
 				<view class="cu-item radius-4 bg-white" v-if="latelystoreInfo.storeName">
@@ -259,10 +266,19 @@
 				<view @click="show = false">取消</view>
 				<view @click="show = false">完成</view>
 			</view>
-			<picker-view indicator-style="height: 40px;line-height: 40px;" style="height:200px; text-align: center;" class="mpvue-picker-view" :value="pickerValue" @change="pickerChange" indicator-class="itemadd">
+			<picker-view
+				indicator-style="height: 40px;line-height: 40px;"
+				style="height: 200px; text-align: center"
+				class="mpvue-picker-view"
+				:value="pickerValue"
+				@change="pickerChange"
+				indicator-class="itemadd"
+			>
 				<block>
 					<picker-view-column>
-						<div class="picker-item" v-for="(item,index) in latelystoreInfoAll" :key="index">{{item.storeName}}</div>
+						<div class="picker-item" v-for="(item,index) in latelystoreInfoAll" :key="index">
+							{{item.storeName}}
+						</div>
 					</picker-view-column>
 				</block>
 			</picker-view>
@@ -282,6 +298,7 @@
 </template>
 
 <script>
+	import * as echarts from 'echarts';
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
 	import {
@@ -304,6 +321,34 @@
 		},
 		data() {
 			return {
+				optionData: {
+									title: {
+									    text: ''
+									  },
+									  legend: {
+									    data: ['Allocated Budget', 'Actual Spending']
+									  },
+									  radar: {
+									    // shape: 'circle',
+									    indicator: [
+									      { name: 'Sales', max: 6500 },
+									      { name: 'Administration', max: 16000 },
+									      { name: 'Information Technology', max: 30000 }
+									    ]
+									  },
+									  series: [
+									    {
+									      name: 'Budget vs spending',
+									      type: 'radar',
+									      data: [
+									        {
+									          value: [6500, 16000, 30000],
+									          // name: 'Allocated Budget'
+									        }
+									      ]
+									    }
+									  ]
+						},
 				// 门店id,
 				storeId: 0,
 				// 全部附近门店
@@ -721,21 +766,79 @@
 		},
 	};
 </script>
+<script module="echarts" lang="renderjs">
+	import * as echarts from 'echarts';
+	let myChart;
+	export default {
+		mounted() {
+			this.initEcharts()
+			// if (typeof window.echarts === 'function') {
+			// 	this.initEcharts()
+			// } else {
+			// 	// 动态引入较大类库避免影响页面展示
+			// 	const script = document.createElement('script')
+			// 	// // #ifdef APP-PLUS
+			// 	// script.src = 'static/echarts.js'
+			// 	// // #endif
+			// 	// // #ifdef H5
+			// 	// script.src = '/static/echarts.js'
+			// 	// // #endif
+			// 	script.onload = this.initEcharts.bind(this)
+			// 	document.head.appendChild(script)
+			// }
+		},
+		methods: {
+			//初始化
+			initEcharts() {
+				myChart = echarts.init(document.getElementById('echarts'))
+				myChart && myChart.setOption && myChart.setOption(this.optionData)
+			},
+			// 监听逻辑层配置变化
+			updateEcharts(newValue, oldValue, ownerInstance, instance) {
+				//修复app端yAxis或者xAxis ,axisLabel.formatter无效问题
+				// if ( newValue?.yAxis?.axisLabel) {
+				// 	newValue.yAxis.axisLabel.formatter = function formatter(value) {
+				// 		return `${value}°C`
+				// 	}
+				// }
+				myChart && myChart.setOption && myChart.setOption(newValue)
 
+			},
+			onClick(event, ownerInstance) {
+				//修复H5端tooltip不显示,app端tooltip不好点击显示问题
+				const touche = event.changedTouches[0];
+				const x = touche.pageX;
+				const y = touche.pageY - event.target.offsetTop;
+				var xIndex = myChart.convertFromPixel({
+					seriesIndex: 0
+				}, [x, y])[0];
+				myChart.dispatchAction({
+					type: 'showTip',
+					seriesIndex: 0,
+					dataIndex: xIndex
+				});
+			}
+		}
+	}
+</script>
 <style lang="scss" scoped>
-	/deep/ .picker-item{
+	/deep/ .picker-item {
 		line-height: 40px;
 	}
-	.popup-item-label{
+	.echarts {
+			width: 100%;
+			height: 600rpx;
+		}
+	.popup-item-label {
 		padding-left: 10px;
 		padding-right: 10px;
 		height: 45px;
 		line-height: 45px;
-		view:nth-child(1){
+		view:nth-child(1) {
 			color: #888;
 			font-size: 17px;
 		}
-		view:nth-child(2){
+		view:nth-child(2) {
 			color: #007aff;
 			font-size: 17px;
 		}

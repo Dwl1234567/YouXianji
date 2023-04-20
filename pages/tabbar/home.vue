@@ -463,21 +463,24 @@
 				}
 			},
 			async kefuInitUser () {
+				uni.navigateTo({
+					url: '/pages/chat/chat',
+				});
 				const res = await this.$api.checkLogin()
-				if (res) {
-					console.log(this.userInfo)
-					const isNew  = uni.getStorageSync('isNew')
-					const res = await kefuInitUser({
-						userId: this.userInfo.user_id,
-						isNew,
-						isHome: 1
-					})
-					if (res.code === 1) {
-						uni.navigateTo({
-							url: '/pages/chat/chat',
-						});
-					}
-				}
+				// if (res) {
+				// 	console.log(this.userInfo)
+				// 	const isNew  = uni.getStorageSync('isNew')
+				// 	const res = await kefuInitUser({
+				// 		userId: this.userInfo.user_id,
+				// 		isNew,
+				// 		isHome: 1
+				// 	})
+				// 	if (res.code === 1) {
+				// 		uni.navigateTo({
+				// 			url: '/pages/chat/chat',
+				// 		});
+				// 	}
+				// }
 			},
 			// 联系客服
 			btnClick() {

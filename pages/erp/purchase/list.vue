@@ -146,6 +146,9 @@
 	import {
 		erppurchasegetlist
 	} from "@/api/erpapi.js";
+	import {
+		selectRecycleOrderList
+	} from "@/api/erp.js";
 	//import barTitle from '@/components/common/basics/bar-title';
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -212,14 +215,14 @@
 				}],
 				dataList: [],
 				queryInfo: {
-					page: 1,
-					pagesize: 20,
-					company_id: '',
-					store_id: '',
-					warehouse_id: '',
-					partition_id: '',
-					paystatus: '',
-					status: '',
+					pageNum: 1,
+					pageSize: 20,
+					// company_id: '',
+					// store_id: '',
+					// warehouse_id: '',
+					// partition_id: '',
+					// paystatus: '',
+					// status: '',
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
@@ -273,12 +276,12 @@
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
-			this.queryInfo.page = 1; //重置分页页码
+			this.queryInfo.pageNum = 1; //重置分页页码
 			this.getDataList();
 		},
 		onReachBottom() {
 			if (this.loadmore == 'noMore') return
-			this.queryInfo.page += 1;
+			this.queryInfo.pageNum += 1;
 			this.ifBottomRefresh = true
 			this.getDataList();
 		},
@@ -297,11 +300,12 @@
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
-				paramsData['paystatus'] = that.checkfilterData.value[0][0];
-				paramsData['status'] = that.checkfilterData.value[1][0];
-				paramsData['type'] = that.checkfilterData.value[2][0];
-				erppurchasegetlist(paramsData).then(res => {
-						let data = res.data.data;
+				// paramsData['paystatus'] = that.checkfilterData.value[0][0];
+				// paramsData['status'] = that.checkfilterData.value[1][0];
+				// paramsData['type'] = that.checkfilterData.value[2][0];
+				selectRecycleOrderList(paramsData).then(res => {
+					console.log(res.rows)
+						let data = res.rows;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
 							if (that.ifBottomRefresh) {
@@ -310,7 +314,7 @@
 								that.dataList = data
 							}
 							that.ifBottomRefresh = false
-							that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 						}
 					})
 					.finally(() => {

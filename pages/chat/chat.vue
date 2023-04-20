@@ -50,45 +50,55 @@
 				<!-- #ifndef H5 -->
 				<view class="content_wrapper" v-if="!showLeaveMessage" :style="{height:'calc(100vh - ' + writeBottom + 'px)'}">
 					<!-- #endif -->
-
 					<view :style="{height:'calc(100% - ' + wrapperHeight + 'px)'}" class="chat_wrapper">
 						<scroll-view @scrolltoupper="wrapper_scrolltoupper" id="kefu_scroll" @tap="tap_scroll_view" :scroll-y="true"
-						 :scroll-with-animation="kefu_scroll_with_animation" :scroll-top="kefu_scroll_top">
-
+						 :scroll-with-animation="kefu_scroll_with_animation" :scroll-top="scrollTop">
+						 
+						 
+						<view id="scroll-view-content">
+						    <view class="status" @tap="showHistory" v-if="isHistory"><text>点击查看历史记录</text></view>
 							<block v-for="(item, index) in messageList" :key="index">
-								<view class="status"><text>{{item.datetime}}</text></view>
+								<!-- <view class="status"><text>{{item.datetime}}</text></view> -->
 								<block v-for="message in item.data" :key="message.id">
-
-									<view v-if="message.message_type == 3" class="status"><text>{{message.message}}</text></view>
-
-									<view v-if="message.message_type != 3" class="bubble" :class="message.sender == 'me' ? 'me':'you'">
-
-										<!-- 除了商品/订单卡片和图片，其他的都使用富文本 -->
-										<jyf-parser @imgtap="message_img_preview" :tag-style="{img:'width:60px;height:60px;'}" v-if="message.message_type == 0"
-										 :html="message.message"></jyf-parser>
-
-										<jyf-parser v-if="message.message_type == 2" :html="'<a target=_blank href=' + message.message + '>' + message.message + '</a>'"></jyf-parser>
-
-										<image @tap="preview_img(message.message)" v-if="message.message_type == 1" :src="message.message" mode="widthFix"></image>
-
-										<view v-if="message.message_type == 4 || message.message_type == 5" class="project_item">
-											<image :src="message.message.logo"></image>
-											<view class="project_item_body">
-												<view class="project_item_title">{{message.message.subject}}</view>
-												<view v-if="message.message.note" class="project_item_note">{{message.message.note}}</view>
-												<view class="project_item_price">
-													<text v-if="message.message.price">￥{{message.message.price}}</text>
-													<text v-if="message.message.number">x{{message.message.number}}</text>
+									
+									<!-- <view v-if="message.contextType == 3" class="status">{{message.contextType == 3}} {{message.message}}</view> -->
+									
+									<view class="view">
+										<view :class="message.sender == 'me' ? 'mes':'yous'">{{message.senderName}}</view>
+										<view v-if="message.contextType != 1" class="bubble" :class="message.sender == 'me' ? 'me':'you'">
+										
+											<!-- 除了商品/订单卡片和图片，其他的都使用富文本 -->
+											<!-- <jyf-parser @imgtap="message_img_preview" :tag-style="{img:'width:60px;height:60px;'}" v-if="message.message_type == 0"
+											 :html="message.message"></jyf-parser> -->
+											 <!-- {{message}} -->
+											 <view v-if="message.contextType == 3">{{message.message}}</view>
+										
+											<jyf-parser v-if="message.message_type == 2" :html="'<a target=_blank href=' + message.message + '>' + message.message + '</a>'"></jyf-parser>
+											<image @tap="preview_img(message.message)" v-if="message.message_type == 1" :src="message.message" mode="widthFix"></image>
+										
+											<view v-if="message.message_type == 4 || message.message_type == 5" class="project_item">
+												<image :src="message.message.logo"></image>
+												<view class="project_item_body">
+													<view class="project_item_title">{{message.message.subject}}22</view>
+													<view v-if="message.message.note" class="project_item_note">{{message.message.note}}</view>
+													<view class="project_item_price">
+														<text v-if="message.message.price">￥{{message.message.price}}</text>
+														<text v-if="message.message.number">x{{message.message.number}}</text>
+													</view>
 												</view>
 											</view>
+										
+											<view v-if="message.sender == 'me' && message.status <= 1" class="kefu_message_status" :class="(message.status == 0 ? '':' kf-text-grey')">{{message.status == 0 ? '未读':'已读'}}</view>
+											<view v-if="message.sender == 'me' && message.status == 3" class="kefu_message_status kf-text-red">失败</view>
+										
 										</view>
-
-										<view v-if="message.sender == 'me' && message.status <= 1" class="kefu_message_status" :class="(message.status == 0 ? '':' kf-text-grey')">{{message.status == 0 ? '未读':'已读'}}</view>
-										<view v-if="message.sender == 'me' && message.status == 3" class="kefu_message_status kf-text-red">失败</view>
-
 									</view>
+									
 								</block>
 							</block>
+						</view>
+						
+							
 
 						</scroll-view>
 					</view>
@@ -103,7 +113,7 @@
 						<view class="write_right" :style="{flex:showSendButton ? 3:2}">
 							<i v-if="config.toolbar && config.toolbar.expression" :style="{background: 'url(' + config.toolbar.expression.icon_image + ') no-repeat','background-size':'100% 100%'}"
 							 class="toolbar_icon smiley" @tap="show_tool('smiley')"></i>
-							<button class="send_btn" @tap="send_message(kefuMessage, 0)" hover-class="send_btn_hover" v-if="showSendButton">发送</button>
+							<button class="send_btn" @tap="send_message(kefuMessage, 0, receiverId)" hover-class="send_btn_hover" v-if="showSendButton">发送</button>
 							<i class="toolbar_icon attach" :style="{background: 'url(' + attachBackground + ') no-repeat','background-size':'100% 100%'}"
 							 @tap="show_tool('more')" v-if="!showSendButton && attachBackground"></i>
 						</view>
@@ -175,6 +185,8 @@
 		},
 		data() {
 			return {
+				isHistory: true,
+				receiverId: null,
 				leaveMessage: {
 					name: '',
 					contact: '',
@@ -212,7 +224,9 @@
 				kefu_scroll_top: 0,
 				kefu_scroll_with_animation: true,
 				record_scroll_height: 0,
-				navigation_bar_title: ''
+				navigation_bar_title: '',
+				scrollTop: 0,
+				scrollViewHeight: 300
 			}
 		},
 		onLoad(opt) {
@@ -251,10 +265,32 @@
 			}
 		},
 		methods: {
+			scrollToBottom(){
+				this.$nextTick(()=>{
+					uni.createSelectorQuery().in(this).select('#scroll-view-content').boundingClientRect((res)=>{
+						let top = res.height-this.scrollViewHeight;
+						if(top>0){
+							this.scrollTop=top;
+						}
+					}).exec()
+				})
+			},
+			showHistory() {
+				var senderId = uni.getStorageSync('userinfo').userId
+				const data = {
+					isHistory: '1',
+					storeId: 5,
+					senderId
+				}
+				this.ws_send(data);
+				this.isHistory = false
+				this.scrollToBottom()
+			},
 			load: function() {
 				var that = this
 				var kefu_tourists_token = '';
-
+				// 链接ws
+				that.connect_socket();
 				// 初始化请求
 				try {
 					var kefu_tourists_token = uni.getStorageSync('kefu_tourists_token');
@@ -266,87 +302,87 @@
 				}
 
 				uni.request({
-					url: that.build_url('initialize'),
-					data: {
-						token: token,
-						kefu_tourists_token: kefu_tourists_token,
-						fixed_csr: fixedCsr
-					},
-					success: (res) => {
-						console.log(res)
-						if (res.data.code == 1) {
+					
+					url: that.build_url('ws'),
+					// data: {
+					// 	token: token,
+					// 	kefu_tourists_token: kefu_tourists_token,
+					// 	fixed_csr: fixedCsr
+					// },
+					// success: (res) => {
+					// 	if (res.data.code == 1) {
 
-							// 保存游客token
-							if (res.data.data.token_list.kefu_tourists_token) {
-								try {
-									uni.setStorageSync('kefu_tourists_token', res.data.data.token_list.kefu_tourists_token);
-								} catch (e) {
-									console.error(e)
-								}
-							}
+					// 		// 保存游客token
+					// 		if (res.data.data.token_list.kefu_tourists_token) {
+					// 			try {
+					// 				uni.setStorageSync('kefu_tourists_token', res.data.data.token_list.kefu_tourists_token);
+					// 			} catch (e) {
+					// 				console.error(e)
+					// 			}
+					// 		}
 
-							// 公告
-							var kefu_notice = ''
-							try {
-								kefu_notice = uni.getStorageSync('kefu_notice');
-							} catch (e) {
-								console.log(e)
-							}
-							if (kefu_notice == res.data.data.config.announcement) {
-								res.data.data.config.announcement = '';
-							}
+					// 		// 公告
+					// 		var kefu_notice = ''
+					// 		try {
+					// 			kefu_notice = uni.getStorageSync('kefu_notice');
+					// 		} catch (e) {
+					// 			console.log(e)
+					// 		}
+					// 		if (kefu_notice == res.data.data.config.announcement) {
+					// 			res.data.data.config.announcement = '';
+					// 		}
 
-							// 配置
-							that.config = res.data.data.config;
-							that.tokenList = res.data.data.token_list;
+					// 		// 配置
+					// 		that.config = res.data.data.config;
+					// 		that.tokenList = res.data.data.token_list;
 
-							// 来信提示音初始化
-							innerAudioContext = uni.createInnerAudioContext();
-							innerAudioContext.src = that.build_url('message_prompt');
+					// 		// 来信提示音初始化
+					// 		innerAudioContext = uni.createInnerAudioContext();
+					// 		innerAudioContext.src = that.build_url('message_prompt');
 
-							// 新消息提示
-							if (res.data.data.new_msg) {
-								that.new_message_prompt()
-							}
+					// 		// 新消息提示
+					// 		if (res.data.data.new_msg) {
+					// 			that.new_message_prompt()
+					// 		}
 
-							// 初始化表情
-							var protocol = Config.https_switch ? 'https://' : 'http://';
-							var expression = {};
-							for (let i in Config.expression) {
-								expression[i] = {
-									'src': protocol + Config.baseURL + '/assets/addons/kefu/img' + Config.expression[i].src,
-									'title': Config.expression[i].title
-								};
-							}
-							that.expressionData = expression;
+					// 		// 初始化表情
+					// 		var protocol = Config.https_switch ? 'https://' : 'http://';
+					// 		var expression = {};
+					// 		for (let i in Config.expression) {
+					// 			expression[i] = {
+					// 				'src': protocol + Config.baseURL + '/assets/addons/kefu/img' + Config.expression[i].src,
+					// 				'title': Config.expression[i].title
+					// 			};
+					// 		}
+					// 		that.expressionData = expression;
 
-							// 杂项资源
-							that.attachBackground = that.build_url('res', '/img/more.png');
+					// 		// 杂项资源
+					// 		that.attachBackground = that.build_url('res', '/img/more.png');
 
-							// 链接ws
-							that.connect_socket();
-						} else {
-							uni.showModal({
-								content: res.data.msg,
-								showCancel: false,
-								success: res => {
-									if (res.confirm) {
-										uni.navigateBack({
-											delta: 1
-										});
-									}
-								}
-							})
-						}
-					},
-					fail: res => {
-						uni.showModal({
-							title: '温馨提示',
-							content: '在线客服初始化失败,请重试~',
-							showCancel: false
-						})
-						that.errorTips = '初始化失败';
-					}
+					// 		// 链接ws
+					// 		that.connect_socket();
+					// 	} else {
+					// 		uni.showModal({
+					// 			content: res.data.msg,
+					// 			showCancel: false,
+					// 			success: res => {
+					// 				if (res.confirm) {
+					// 					uni.navigateBack({
+					// 						delta: 1
+					// 					});
+					// 				}
+					// 			}
+					// 		})
+					// 	}
+					// },
+					// fail: res => {
+					// 	uni.showModal({
+					// 		title: '温馨提示',
+					// 		content: '在线客服初始化失败,请重试~',
+					// 		showCancel: false
+					// 	})
+					// 	that.errorTips = '初始化失败';
+					// }
 				});
 			},
 			switch_show_tool: function(value) {
@@ -511,12 +547,14 @@
 					console.log('无需链接')
 					return;
 				}
-
+				
+				// console.log(encryptionStr, '123123');
 				// 开始链接
 				that.ws.SocketTask = uni.connectSocket({
 					url: this.build_url('ws'),
 					header: {
-						'content-type': 'application/json'
+						'content-type': 'application/json',
+						'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjlmZTE1MWI5LTA0MDctNGQwOS05YTk1LTlkYmI3ODlmOGMzMyJ9.mAGKWkPNl1et1XXgUxKiSx8y8NvnS7XYiCCzihYIGt1Y0miwTLIP7OdxOvgC_pvreGiYTG0EyGDj1BW7Y_RM_Q'
 					},
 					complete: res => {}
 				});
@@ -524,6 +562,7 @@
 				// 链接打开
 				uni.onSocketOpen(function(res) {
 					console.log('链接已打开')
+					uni.setStorageSync('receiverId', null)
 					that.ws.socketOpen = true
 					that.ws.CurrentRetryCount = 0;
 					// 重新发送所有出错的消息
@@ -543,9 +582,48 @@
 				// 收到消息
 				uni.onSocketMessage(function(res) {
 					let msg = JSON.parse(res.data)
-					let actions = that.domsg()
-					let action = actions[msg.msgtype] || actions['default']
-					action.call(this, msg)
+					console.log(msg.code === 200)
+					if (msg.code === 200) {
+						if (msg.data && msg.data.messageType == 1) {
+							uni.setStorageSync('receiverId', msg.data.senderId)
+							const datas = {
+								datetime: '刚刚',
+								data: [
+									{
+										contextType: msg.data.contextType,
+										message: msg.data.context,
+										sender: 'you',
+										senderName: msg.data.senderName
+									}
+								]
+							}
+							that.setMessageList(datas)
+							that.messageList.push(datas)
+							that.scrollToBottom()
+						}
+						if (msg.data && msg.data.messageType == 3) { 
+							// that.messageList.push(msg.data.pageHideCloseWs)
+							let datas = {
+								datetime: '',
+								data: []
+							}
+							msg.data.historyList.map(item => {
+								let items = {
+									contextType: item.contextType,
+									message : item.context,
+									sender: uni.getStorageSync('userinfo').userId === item.senderId ? 'me' : 'you',
+									senderName: item.senderName
+								}
+								datas.data.push(items);
+							})
+							that.messageList.push(datas);
+							that.scrollToBottom()
+						}
+					}
+					
+					// let actions = that.domsg()
+					// let action = actions[msg.msgtype] || actions['default']
+					// action.call(this, msg)
 				})
 
 				// 出错
@@ -578,6 +656,9 @@
 					}
 				});
 			},
+			setMessageList(data) {
+				// console.log(data, this.messageList)
+			},
 			// 重连ws
 			retry_websocket: function() {
 				var that = this
@@ -597,13 +678,12 @@
 			// 发送ws消息
 			ws_send: function(message) {
 				var that = this
-				if (!message) {
-					message = {
-						c: 'Message',
-						a: 'ping'
-					};
-				}
-
+				// if (!message) {
+				// 	message = {
+				// 		c: 'Message',
+				// 		a: 'ping'
+				// 	};
+				// }
 				if (that.ws.SocketTask && that.ws.socketOpen) {
 					uni.sendSocketMessage({
 						data: JSON.stringify(message)
@@ -615,7 +695,6 @@
 			},
 			send_message: function(message, message_type) {
 				var that = this
-				
 				console.log(that.sessionId);
 				if (message == '') {
 					uni.showToast({
@@ -633,13 +712,13 @@
 					return;
 				}
 
-				if (!that.sessionId) {
-					uni.showToast({
-						title: '初始化未完成(会话获取失败)~',
-						icon: 'none'
-					})
-					return;
-				}
+				// if (!that.sessionId) {
+				// 	uni.showToast({
+				// 		title: '初始化未完成(会话获取失败)~',
+				// 		icon: 'none'
+				// 	})
+				// 	return;
+				// }
 
 				if (message_type == 0) {
 
@@ -659,47 +738,67 @@
 					}
 
 				}
-
-				let message_data = that.messageList[that.messageList.length - 1].data;
-				var message_id = parseInt(message_data[message_data.length - 1].id) + 1;
+				
+				var senderId = uni.getStorageSync('userinfo').userId
+				var nickName = uni.getStorageSync('userinfo').nickName
+				var receiverId = uni.getStorageSync('receiverId')
+				// console.log(that.messageList[that.messageList.length - 1])
+				// let message_data = that.messageList[that.messageList.length - 1].data;
+				// var message_id = parseInt(message_data[message_data.length - 1].id) + 1;
 				// var message_id = new Date().getTime() + that.sessionId + Math.floor(Math.random() * 10000);
-				var load_message = {
-					c: 'Message',
-					a: 'sendMessage',
-					data: {
-						message: message,
-						message_type: message_type,
-						session_id: that.sessionId,
-						modulename: 'index',
-						message_id: message_id
-					}
-				};
-
+				// var load_message = {
+				// 	c: 'Message',
+				// 	a: 'sendMessage',
+				// 	data: {
+				// 		message: message,
+				// 		message_type: message_type,
+				// 		// session_id: that.sessionId,
+				// 		// modulename: 'index',
+				// 		// message_id: message_id
+				// 	}
+				// };
+				let load_message = {
+					senderId,
+					storeId: 5,
+					receiverId,
+					context: message,
+					contextType: '3',
+				}
 				that.ws_send(load_message);
-
-				var data = {
-					id: message_id,
-					status: 2, // 标记待发送状态
-					sender: 'me',
-					message: (message_type == 1 || message_type == 2) ? that.config.upload.cdnurl + message : message,
-					message_type: message_type
+				const data = {
+					datetime: '刚刚',
+					data: [{
+						contextType: 3,
+						message: message,
+						sender: 'me',
+						senderName: nickName
+					}]
 				}
+				this.messageList.push(data);
+				this.scrollToBottom()
+				// var data = {
+				// 	id: message_id,
+				// 	status: 2, // 标记待发送状态
+				// 	sender: 'me',
+				// 	message: (message_type == 1 || message_type == 2) ? that.config.upload.cdnurl + message : message,
+				// 	message_type: message_type
+				// }
 
-				var messageListIndex = that.messageList.length - 1
-				if (that.messageList[messageListIndex] && that.messageList[messageListIndex].datetime == '刚刚') {
-					that.messageList[messageListIndex].data = that.messageList[messageListIndex].data.concat(that.format_message([
-						data
-					]))
-				} else {
-					that.messageList = that.messageList.concat({
-						datetime: '刚刚',
-						data: that.format_message([data])
-					});
-				}
+				// var messageListIndex = that.messageList.length - 1
+				// if (that.messageList[messageListIndex] && that.messageList[messageListIndex].datetime == '刚刚') {
+				// 	that.messageList[messageListIndex].data = that.messageList[messageListIndex].data.concat(that.format_message([
+				// 		data
+				// 	]))
+				// } else {
+				// 	that.messageList = that.messageList.concat({
+				// 		datetime: '刚刚',
+				// 		data: that.format_message([data])
+				// 	});
+				// }
 
-				that.kefuMessage = ''
-				that.kefu_message_change();
-				that.scroll_into_footer(200, 99992)
+				// that.kefuMessage = ''
+				// that.kefu_message_change();
+				// that.scroll_into_footer(200, 99992)
 			},
 			find_emoji: function(emoji_title) {
 				for (let i in this.expressionData) {
@@ -1003,16 +1102,19 @@
 			build_url: function(type = 'ws', res_path) {
 				var that = this
 				var protocol = Config.https_switch ? 'https://' : 'http://';
-				var token = that.tokenList.kefu_token ? '&token=' + that.tokenList.kefu_token : '';
+				// var token = that.tokenList.kefu_token ? '&token=' + that.tokenList.kefu_token : '';
 				var kefu_tourists_token = that.tokenList.kefu_tourists_token ? '&kefu_tourists_token=' + that.tokenList.kefu_tourists_token :
 					'';
-
+				var token = uni.getStorageSync('token')
+				var encryptionStr = new Buffer(token).toString('base64');
 				var buildObj = {
+					// + '/?modulename=index' + token +
+					// 	kefu_tourists_token).replace(
+					// 	/\|/g, '~');
 					ws: () => {
 						protocol = parseInt(that.config.wss_switch) == 1 ? 'wss://' : 'ws://';
-						return (protocol + Config.baseURL + ':' + that.config.websocket_port + '/?modulename=index' + token +
-							kefu_tourists_token).replace(
-							/\|/g, '~');
+						// console.log(protocol + '192.168.2.36:8080' + '/websocket/118');
+						return (protocol + '192.168.2.36:8080' + '/websocket/' + encryptionStr)
 					},
 					initialize: () => {
 						return protocol + Config.baseURL + '/addons/kefu/index/initialize?modulename=index';
@@ -1121,20 +1223,20 @@
 				that.kefuMessage = e.detail.value
 				that.kefu_message_change()
 
-				if (parseInt(that.config.input_status_display) == 0) {
-					return;
-				}
+				// if (parseInt(that.config.input_status_display) == 0) {
+				// 	return;
+				// }
 
-				var kefu_message_input = {
-					c: 'Message',
-					a: 'messageInput',
-					data: {
-						session_id: that.sessionId,
-						session_user: that.csr || that.sessionUser,
-						type: 'input'
-					}
-				};
-				that.ws_send(kefu_message_input);
+				// var kefu_message_input = {
+				// 	c: 'Message',
+				// 	a: 'messageInput',
+				// 	data: {
+				// 		session_id: that.sessionId,
+				// 		session_user: that.csr || that.sessionUser,
+				// 		type: 'input'
+				// 	}
+				// };
+				// // that.ws_send(kefu_message_input);
 			},
 			// 显示/隐藏发送按钮-调整消息记录框高度
 			kefu_message_change: function() {
@@ -1169,7 +1271,7 @@
 						type: 'blur'
 					}
 				};
-				that.ws_send(kefu_message_input);
+				// that.ws_send(kefu_message_input);
 			},
 			select_expression: function(title) {
 				this.kefuMessage = this.kefuMessage + title;
@@ -1413,7 +1515,19 @@
 		word-wrap: break-word;
 		word-break: break-all;
 	}
-
+	.chat_wrapper .view {
+		overflow: hidden
+	}
+	.chat_wrapper .mes{
+		float: right;
+		margin-right: 28rpx;
+		color: gray
+	}
+	.chat_wrapper .yous{
+		float: left;
+		margin-left: 28rpx;
+		color: gray
+	}
 	.chat_wrapper .bubble.you {
 		float: left;
 		margin-right: 20rpx;

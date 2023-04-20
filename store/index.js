@@ -73,6 +73,10 @@ const store = new Vuex.Store({
 		setRoles(state, provider) {
 			if (provider === 'consumer'){
 				state.roles.consumer = true;
+			} else if (provider === 'store_admin'){
+				state.roles.store_admin = true;
+			} else if (provider === 'store_employee'){
+				state.roles.store_employee = true;
 			}
 			
 		}

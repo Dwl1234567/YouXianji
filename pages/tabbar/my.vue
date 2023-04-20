@@ -25,7 +25,7 @@
 					<button
 						class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12"
 						@tap="goToErp"
-						v-if="is_company==1"
+						v-if="roles.store_admin || roles.store_employee"
 						style="box-shadow: 0px 2px 4px 0px rgba(181, 181, 181, 0.5)"
 					>
 						工作模式
@@ -326,6 +326,8 @@
 
 	import _my_data from '@/static/data/my.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
+	
+	import Vue from "vue"
 	export default {
 		name: 'my',
 		components: {
@@ -353,10 +355,12 @@
 						value: 0,
 					},
 				],
+				roles: {},
 				jiaoyicurrent: 0,
 			};
 		},
 		onLoad() {
+			this.roles = Vue.prototype.$store.state.roles
 			//加载虚拟数据
 			this.toolsList = _my_data.toolsListData();
 		},
