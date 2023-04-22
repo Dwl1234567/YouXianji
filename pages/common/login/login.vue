@@ -149,8 +149,9 @@
 			getUserInfo() {
 				userInfo().then((res) => {
 					console.log(res)
-					const roles = res.data.roles;
+					var roles = res.data.roles;
 					roles.map((item) => {
+						console.log(item, '44444')
 						if (item.roleKey === 'consumer') {
 							this.$store.commit('setRoles', 'consumer');
 						} else if (item.roleKey === 'store_admin') {
@@ -159,9 +160,8 @@
 							this.$store.commit('setRoles', 'store_employee');
 						}
 					});
-					console.log(2222)
 					uni.setStorageSync('userinfo', res.data)
-					this.$store.commit('userinfo', res.data);
+					this.$store.commit('setUserInfo', res.data);
 				});
 			},
 			//获取短信验证码

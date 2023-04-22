@@ -674,6 +674,48 @@
                 "navigationBarTitleText" : "同城上门"
             }
         },
+		//回收列表
+		{
+		    "path" : "pages/erp/recycleList/index",
+		    "style" : {
+		        "enablePullDownRefresh" : true, //开启下拉刷新
+		
+		        //"navigationStyle": "custom",
+		        "navigationBarTitleText" : "回收列表"
+		    }
+		},
+		{
+		    "path" : "pages/erp/recycleList/recycleListDetail/recycleListDetail",
+		    "style" :                                                                                    
+		    {
+		        "enablePullDownRefresh" : true, //开启下拉刷新
+		        		
+		        //"navigationStyle": "custom",
+		        "navigationBarTitleText" : "订单详情"
+		    }
+		    
+		},
+		//回收点点
+		{
+		    "path" : "pages/erp/recycleList/recycling-new",
+		    "style" : {
+		        "enablePullDownRefresh" : true, //开启下拉刷新
+		
+		        //"navigationStyle": "custom",
+		        "navigationBarTitleText" : "回收"
+		    }
+		},
+		{
+		    "path" : "pages/erp/recycleList/comparisonChart/comparisonChart",
+		    "style" :                                                                                    
+		    {
+		        "enablePullDownRefresh" : true, //开启下拉刷新
+		        		
+		        //"navigationStyle": "custom",
+		        "navigationBarTitleText" : "对比图"
+		    }
+		    
+		},
         //收价提交
         {
             "path" : "pages/erp/user/attrprice",
@@ -1076,6 +1118,7 @@
             "path" : "App",
             "style" : {}
         }
+        
     ],
     "tabBar" : {
         "color" : "#646464",

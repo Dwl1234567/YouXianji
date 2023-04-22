@@ -10,7 +10,7 @@
 			@click.stop.prevent="click"
 			:class="{ transition: isDock && !isMove }"
 		>
-			<text  class="iconfont icon-bigcus text-sl text-red">
+			<text  class="iconfont icon-guanfangkefu text-sl text-red">
 				<!--{{ text }}-->
 			</text>
 		</view>

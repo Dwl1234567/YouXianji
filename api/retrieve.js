@@ -33,3 +33,19 @@ export function getPriceTemplateByModel(data) {
 export function createRecycleOrder(data) {
 	return request.post('/yxj/app/recycle/createRecycleOrder', data ,{'noLogin':true});
 }
+
+/**
+ * 获取门店收货地址
+ * 
+ */
+export function selectStoreAddress(data) {
+	return request.get('/yxj/app/common/selectStoreAddress/' + data ,{'noLogin':true});
+}
+
+/**
+ * 获取门店收货地址
+ * 
+ */
+export function empCreateReceipt(data) {
+	return request.post('/yxj/app/recycle/empCreateReceipt' , data ,{'noLogin':true});
+}

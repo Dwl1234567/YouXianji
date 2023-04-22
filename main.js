@@ -1,5 +1,7 @@
 import App from './App'
-
+import {
+	HTTP_REQUEST_IMAGEURL
+} from '@/config/app';
 import uView from '@/uni_modules/uview-ui';
 Vue.use(uView);
 
@@ -12,7 +14,7 @@ App.mpType = 'app'
 // 引入全局方法
 import $mGraceChecker from '@/utils/graceChecker';
 Vue.prototype.$mGraceChecker = $mGraceChecker;
-
+Vue.prototype.$httpImage = HTTP_REQUEST_IMAGEURL;
 //全局引入悬浮球
 import dragButton from '@/components/drag-button';
 Vue.component('drag-button',dragButton)

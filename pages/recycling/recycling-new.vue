@@ -186,14 +186,26 @@
 				that.Pricepramitems = []
 				that.retrieveList.forEach((item, index) => {
 					item.forEach((iitem, indexx) => {
+						// var indexs = 0
+						// // console.log(that.retrieveList[0].length, indexx)
+						// if (indexx < that.retrieveList[0].length) {
+						// 	indexs = 1
+						// } else if (indexx <that.retrieveList[1].length) {
+						// 	indexs = 2
+						// } else {
+						// 	indexs = 3
+						// }
 						iitem.value.forEach((iiitem, indexxx) => {
 							if (iiitem.checked) {
 								that.forecastMoney += Number(iiitem.price);
-								// paramsdata.push({iitem.key:iiitem.id});
+								// console.log(that.retrieveList[0].length, indexx, indexs)
 								that.Priceprams[iitem.keyId] = indexxx;
 								that.Pricepramitems.push({
+									keyId:iitem.keyId,
+									valueId:iiitem.valueId,
 									key: iitem.name,
-									value: iiitem.value
+									value: iiitem.value,
+									indexs: iitem.indexs
 								})
 								if (index == 0 && iitem.key != 'small') {
 									that.goodsdesc = that.goodsdesc + iiitem.value + ' | ';
@@ -202,6 +214,7 @@
 						})
 					})
 				})
+				uni.setStorageSync('goodsdesc', that.goodsdesc)
 				uni.setStorageSync('Priceprams', that.Priceprams)
 				uni.setStorageSync('Pricepramitems', that.Pricepramitems)
 				console.log('总价：');
@@ -215,6 +228,18 @@
 						if (res.code == 200) {
 							// that.retrieveList = res.data.goods_list;
 							that.retrieveList[0] = res.data.propPrice[0];
+							res.data.propPrice[0].map(item => {
+								item.indexs = 1
+								return item
+							})
+							res.data.propPrice[1].map(item => {
+								item.indexs = 2
+								return item
+							})
+							res.data.propPrice[2].map(item => {
+								item.indexs = 3
+								return item
+							})
 							that.retrieveList = res.data.propPrice
 							that.goods_info = res.data.model;
 							that.addcheckattr();

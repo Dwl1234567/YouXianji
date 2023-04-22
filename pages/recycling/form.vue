@@ -46,7 +46,7 @@
 				<input placeholder="请输入顺丰单号,如还无快递单可先提交" v-model="jjdanhao" name="input"></input>
 			</view>
 			<view class="bg-white padding" v-if="TabCur==1">
-				<view>收货信息：{{platformInfo}}</view>
+				<view>收货信息：{{storeAddress}}</view>
 				<view class="padding-sm flex flex-wrap justify-center">
 					<view class="cu-btn bg-red round sm" @click="copyfuc">点击复制</view>
 				</view>
@@ -293,7 +293,8 @@
 		selectUserAddressList
 	} from "@/api/commons.js";
 	import {
-		createRecycleOrder
+		createRecycleOrder,
+		selectStoreAddress
 	} from "@/api/retrieve.js";
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
@@ -302,6 +303,7 @@
 		},
 		data() {
 			return {
+				storeAddress: '',
 				forecastMoney: '',
 				deviceNo: '',
 				http: '',
@@ -362,6 +364,7 @@
 			this.http = HTTP_REQUEST_IMAGEURL
 			this.initPickupTime();
 			this.getGlobalInfoFuc();
+			this.selectStoreAddress()
 			this.detailId = option.detailId;
 			this.goodsId = option.goodsId;
 			this.modelName = option.modelName;
@@ -373,6 +376,14 @@
 			this.getBankListFuc();
 		},
 		methods: {
+			// 获取门店收获地址
+			selectStoreAddress() {
+				selectStoreAddress(uni.getStorageSync('storeId')).then(res =>{
+					if (res.code == 200) {
+						this.storeAddress = res.data;
+					}
+				})
+			},
 			// 获取全局信息
 			getGlobalInfoFuc(){
 				let that = this;
@@ -389,7 +400,7 @@
 			copyfuc(){
 				let that = this;
 				uni.setClipboardData({
-				    data: that.platformInfo,
+				    data: that.storeAddress,
 				    success: function () {
 				        console.log('success');
 				    }
@@ -658,6 +669,7 @@
 			creatinsertBasicOrder() {
 				let that = this;
 				let puttakeTime = '';
+				let deviceLabel = uni.getStorageSync('goodsdesc')
 				let storeId = uni.getStorageSync('storeId')
 				//console.log(that.timeIndex);
 				// console.log(that.takeTime);
@@ -703,23 +715,12 @@
 					var express_name = '同城上门';
 				}
 				let params = {
-					// 'detail_id': that.detailId,
-					// 'type': '0',
-					// 'goods_id': that.goodsId,
-					// 'user_note': that.textareaAValue,
-					// 'bank_id': that.paylist[that.index.pay].id,
-					// 'transport': Number(that.TabCur) + 1,
-					// 'address_id': that.TabCur == 1 ? null : that.takeAddress[that.index.address].id,
-					// 'express_sn': that.jjdanhao,
-					// 'express_name': express_name,
-					// 'take_time': puttakeTime,
-					// 'user_name': that.jjname,
-					// 'user_phone': that.jjphone,
-					// 'img_params': that.imgParams,
+					'deviceLabel': deviceLabel,
 					'modelName': that.modelName,
 					'qualityInfo':JSON.stringify(that.Priceprams),
 					'qualityInfoList': JSON.stringify(that.Pricepramitems),
 					'orderPostType': that.TabCur,
+					'consigneeAddress': that.TabCur !== 2 ? that.storeAddress : '',
 					'pickUpAddress': that.takeAddress[that.index.address].addressId,
 					'pickUpTime': puttakeTime,
 					'postLinkName': that.jjname,

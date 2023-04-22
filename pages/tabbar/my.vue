@@ -361,6 +361,7 @@
 		},
 		onLoad() {
 			this.roles = Vue.prototype.$store.state.roles
+			console.log(this.roles, '222222')
 			//加载虚拟数据
 			this.toolsList = _my_data.toolsListData();
 		},

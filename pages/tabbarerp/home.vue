@@ -96,6 +96,12 @@
 					</view>
 					<text>待上门</text>
 				</view>
+				<view class="cu-item" @tap="localTaps">
+					<view class="iconfont icon-tubiao-64 text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>回收列表</text>
+				</view>
 			</view>
 		</view>
 
@@ -517,6 +523,12 @@
 			localTap() {
 				uni.navigateTo({
 					url: '/pages/erp/purchase/tasklocal',
+				});
+			},
+			//待上门
+			localTaps() {
+				uni.navigateTo({
+					url: '/pages/erp/recycleList/index',
 				});
 			},
 			goTap(key, index) {

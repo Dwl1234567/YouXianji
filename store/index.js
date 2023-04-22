@@ -52,7 +52,7 @@ const store = new Vuex.Store({
 		setUserInfo(state, provider) {
 			state.userInfo = provider;
 			uni.setStorage({ //缓存用户信息
-				key: 'userInfo',
+				key: 'userinfo',
 				data: provider
 			});
 		},
@@ -72,13 +72,19 @@ const store = new Vuex.Store({
 		},
 		setRoles(state, provider) {
 			if (provider === 'consumer'){
+				console.log(111)
 				state.roles.consumer = true;
 			} else if (provider === 'store_admin'){
+				console.log(111)
 				state.roles.store_admin = true;
 			} else if (provider === 'store_employee'){
+				console.log(111)
 				state.roles.store_employee = true;
 			}
-			
+			uni.setStorage({
+				key: 'roles',
+				data: state.roles
+			});
 		}
 	},
 	actions: {

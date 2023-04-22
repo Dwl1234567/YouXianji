@@ -25,7 +25,6 @@ import {
 
 // 缓存
 import store from '../store';
-
 import md5 from "./md5.js";
 
 
@@ -98,10 +97,10 @@ function baseRequest(url, method, data, {
 					reslove(res.data, res);
 				else if (code == 4001){
 					reslove(res.data, res);
-					uni.showToast({
-						icon:'none',
-						title: res.data.msg
-					});
+					// uni.showToast({
+					// 	icon:'none',
+					// 	title: res.data.msg
+					// });
 					toLogin();
 				} else if (code == 402){
 					reslove(res.data, res);
@@ -109,10 +108,10 @@ function baseRequest(url, method, data, {
 						url: '/pages/common/login/login',
 					});
 				} else
-					uni.showToast({
-						icon:'none',
-						title: res.data.msg
-					});
+					// uni.showToast({
+					// 	icon:'none',
+					// 	title: res.data.msg
+					// });
 					reject(res.data.msg || '系统错误');
 			},
 			fail: (err) => {

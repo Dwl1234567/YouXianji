@@ -86,11 +86,11 @@
 		},
 		mounted() {
 			this.Tchecklist = this.Tchecklist.filter((item, index) => {
-				if(index == 0){
-					item.checked = true
-				}else{
-					item.checked = false
-				}
+				// if(index == 0){
+				// 	item.checked = true
+				// }else{
+				// 	item.checked = false
+				// }
 				return item;
 			})
 		},
