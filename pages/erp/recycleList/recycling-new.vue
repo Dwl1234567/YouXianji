@@ -53,12 +53,19 @@
 		<!--选项列表-->
 		<block v-for="(item,index) in nav_list" :key="index">
 			<view class="process-box" v-show="tab_cur == index">
+				<scroll-view scroll-y="true"
+					class="scroll-Y" v-for="item in basicPrice">
+					<!-- {{recyitem}} -->
+					<SelectDataFirst title="机器SKU" :checklist="item" @itemclick="moneyFucs">
+					</SelectDataFirst>
+					<!-- {{basicPrice}} -->
+				</scroll-view>
 				<scroll-view v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex" scroll-y="true"
 					class="scroll-Y">
 					<!-- {{recyitem}} -->
 					<SelectData :title="recyitem.name" :checklist="recyitem.value" @itemclick="moneyFuc">
 					</SelectData>
-
+					<!-- {{recyitem}} -->
 				</scroll-view>
 			</view>
 		</block>
@@ -91,6 +98,7 @@
 		getPriceTemplateByModel
 	} from "@/api/retrieve.js";
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
+	import SelectDataFirst from '@/components/RecyclingList/SelectDataFirst.vue';
 	import {
 		openQyKefu
 	} from "@/utils/util.js"
@@ -99,11 +107,15 @@
 	} from 'vuex';
 	export default {
 		components: {
+			SelectDataFirst,
 			SelectData,
 			barTitle
 		},
 		data() {
 			return {
+				priceId: 0,
+				allPrice:0,
+				basicPrice: [],
 				tokenstatus: false,
 				wxcode: '',
 				goodsInfo: '',
@@ -115,7 +127,8 @@
 				nav_list: [
 					'物品信息',
 					'成色情况',
-					'功能情况'
+					'功能情况',
+					'维修情况'
 				],
 				retrieveList: [],
 				forecastMoney: 0, //报价金额
@@ -159,8 +172,11 @@
 			...mapState(['hasLogin'])
 		},
 		methods: {
+			moneyFucs(e) {
+				this.allPrice = e.basicPrice;
+				this.calcYuguMoney();
+			},
 			moneyFuc(e) {
-				console.log(222)
 				let that = this;
 				let ckindex = e.ckid.split('-');
 			
@@ -184,22 +200,21 @@
 				// let paramsdata = [];
 				//that.forecastMoney = that.baseMoney;
 				that.forecastMoney = 0;
+				that.allPrice = 0;
+				that.itemPrice = 0
 				that.goodsdesc = '';
 				that.Pricepramitems = []
+				that.basicPrice[0].map(item => {
+					if (item.checked) {
+						that.allPrice = item.basicPrice;
+						that.priceId = item.priceId;
+					}
+				})
 				that.retrieveList.forEach((item, index) => {
 					item.forEach((iitem, indexx) => {
-						// var indexs = 0
-						// // console.log(that.retrieveList[0].length, indexx)
-						// if (indexx < that.retrieveList[0].length) {
-						// 	indexs = 1
-						// } else if (indexx <that.retrieveList[1].length) {
-						// 	indexs = 2
-						// } else {
-						// 	indexs = 3
-						// }
 						iitem.value.forEach((iiitem, indexxx) => {
 							if (iiitem.checked) {
-								that.forecastMoney += Number(iiitem.price);
+								that.itemPrice += Number(iiitem.price);
 								// console.log(that.retrieveList[0].length, indexx, indexs)
 								that.Priceprams[iitem.keyId] = indexxx;
 								that.Pricepramitems.push({
@@ -216,13 +231,14 @@
 						})
 					})
 				})
+				that.forecastMoney = that.allPrice - that.itemPrice
 				uni.setStorageSync('goodsdesc', that.goodsdesc)
 				uni.setStorageSync('Priceprams', that.Priceprams)
 				uni.setStorageSync('Pricepramitems', that.Pricepramitems)
-				console.log('总价：');
-				console.log(that.forecastMoney);
-				console.log('that.Priceprams',that.Priceprams);
-				console.log('that.Pricepramitems', that.Pricepramitems);
+				// console.log('总价：');
+				// console.log(that.forecastMoney);
+				// console.log('that.Priceprams',that.Priceprams);
+				// console.log('that.Pricepramitems', that.Pricepramitems);
 			},
 			getGodsgoodsDetail() {
 				let that = this;
@@ -232,7 +248,8 @@
 							const dataListNum = [
 								res.data.propPrice[0].length,
 								res.data.propPrice[1].length,
-								res.data.propPrice[2].length
+								res.data.propPrice[2].length,
+								res.data.propPrice[3].length
 							]
 							uni.setStorageSync('dataListNum', dataListNum)
 							that.retrieveList[0] = res.data.propPrice[0];
@@ -248,6 +265,11 @@
 								item.indexs = 3
 								return item
 							})
+							res.data.propPrice[3].map(item => {
+								item.indexs = 4
+								return item
+							})
+							that.basicPrice = [res.data.basicPrice]	
 							that.retrieveList = res.data.propPrice
 							that.goods_info = res.data.model;
 							if (that.qualityInfo) {
@@ -274,12 +296,10 @@
 							showCancel: false,
 							success: function(res) {
 								if (res.confirm) {
-									console.log('用户点击确定');
 									uni.navigateBack({
 										delta: -1
 									})
 								} else if (res.cancel) {
-									console.log('用户点击取消');
 								}
 							}
 						});
@@ -300,6 +320,8 @@
 						})
 					})
 				})
+				that.basicPrice.map((item,index) => {
+				})
 			},
 			// 修改
 			editcheckatter () {
@@ -311,7 +333,6 @@
 						item.forEach((iitem, iindex) =>{
 							// 循环分类下每一个小选择项目 
 							iitem.value.forEach((iiitem,iiindex) => {
-								// console.log(iiitem, iiindex, that.qualityInfo[key], iiindex == that.qualityInfo[key])
 								if (iitem.keyId == key) {
 									if (iiindex == that.qualityInfo[key]) {
 										iiitem.checked = true;
@@ -324,12 +345,19 @@
 						})
 					})
 				}
+				const basicPriceId = uni.getStorageSync('basicPriceId')
+				that.basicPrice[0].map((item,index) => {
+					if (item.priceId == basicPriceId) {
+						item.checked = true
+					} else {
+						item.checked = false
+					}
+				})
 				
 			},
 			tabSelect(e) {
 				let index = e.currentTarget.dataset.id;
 				this.tab_cur = index;
-				// console.log(this.tab_cur);
 				uni.pageScrollTo({
 					scrollTop: 0,
 					duration: 0
@@ -344,17 +372,14 @@
 			//去发货
 			async deliveryTap() {
 				uni.navigateTo({
-					url: '/pages/erp/recycleList/comparisonChart/comparisonChart?forecastMoney=' + this.forecastMoney,
+					url: '/pages/erp/recycleList/comparisonChart/comparisonChart?forecastMoney=' + this.forecastMoney + '&priceId=' + this.priceId,
 				});
 			},
 			upper: function(e) {
-				console.log(e)
 			},
 			lower: function(e) {
-				console.log(e)
 			},
 			scroll: function(e) {
-				console.log(e)
 				this.old.scrollTop = e.detail.scrollTop
 			},
 			goTop: function(e) {
@@ -374,7 +399,6 @@
 				//   extInfo: {url: 'https://work.weixin.qq.com/kfid/kfccb4648b9af3bc58e'},
 				//   corpId: 'ww373df77bd799d02f',
 				//   success(res) {
-				// 	  console.log(res);
 				//   }
 				// })
 				openQyKefu();
@@ -407,7 +431,6 @@
 							})
 						},
 						fail: function(err) {
-							console.log(err + '检查code错误');
 							uni.login({
 								success(res) {
 									let usertoken = uni.getStorageSync('UID');

@@ -91,7 +91,8 @@
 				nav_list: [
 					'物品信息',
 					'成色情况',
-					'功能情况'
+					'功能情况',
+					'维修情况'
 				],
 				retrieveList: [],
 				forecastMoney: 0, //报价金额

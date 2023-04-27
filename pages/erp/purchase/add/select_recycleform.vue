@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="cu-form-group">
 			<view class="title">标题</view>
-			<input placeholder="请输入产品标题" v-model="goodstitle" name="input"></input>
+			<input placeholder="请输入产品标题" v-model="formList.title" name="input"></input>
 		</view>
 		
 		<view class="cu-bar bg-white">
@@ -223,6 +223,7 @@
 		erpProductGetBasicData,
 		erpclickattredit
 	} from "@/api/erpapi.js"
+	import { getInfoByRecycleOrderId } from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
 	//import SelectData from '@/components/RecyclingList/SelectData.vue';
@@ -235,6 +236,8 @@
 		},
 		data() {
 			return {
+				formList: [],
+				recycleOrderId: 0,
 				attrRemark:{},
 				phoneImgArr: [],
 				addpicicon: "none",
@@ -293,15 +296,18 @@
 				nav_list: [
 					'物品信息',
 					'成色情况',
-					'功能情况'
+					'功能情况',
+					'维修情况'
 				],
 				retrieveList: [],
 			}
 		},
 		onLoad(options) {
-			this.editid = options.id;
-			this.erppurchaseclickattrviewFuc(options.id)
-			this.erpProductGetBasicDataFuc();
+			this.recycleOrderId = options.recycleOrderId
+			// this.editid = options.id;
+			// this.erppurchaseclickattrviewFuc(options.id)
+			// this.erpProductGetBasicDataFuc();
+			this.getInfoByRecycleOrderId();
 			
 		},
 		onShow() {
@@ -315,6 +321,12 @@
 			});
 		},
 		methods: {
+			// 查看详情
+			getInfoByRecycleOrderId() {
+			    getInfoByRecycleOrderId(this.recycleOrderId).then(res => {
+					this.formList = res.data;
+				});
+			},
 			// 提交
 			erpclickattreditFuc(){
 				if(!this.goodssn){

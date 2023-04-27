@@ -1,14 +1,14 @@
 <template>
 	<view>
 		<uni-forms ref="customForm" :rules="customRules" labelWidth="80px" :modelValue="customFormData">
-			<uni-forms-item label="姓名" required name="username" class="cu-form-group">
-				<uni-easyinput v-model="customFormData.username" placeholder="请输入姓名" />
+			<uni-forms-item label="姓名" required name="clientName" class="cu-form-group">
+				<uni-easyinput v-model="customFormData.clientName" placeholder="请输入姓名" />
 			</uni-forms-item>
-			<uni-forms-item label="手机" required name="tel" class="cu-form-group">
-				<uni-easyinput v-model="customFormData.tel" placeholder="请输入手机" />
+			<uni-forms-item label="手机" required name="phonenumber" class="cu-form-group">
+				<uni-easyinput v-model="customFormData.phonenumber" placeholder="请输入手机" />
 			</uni-forms-item>
-			<uni-forms-item label="身份证" name="idcard" class="cu-form-group">
-				<uni-easyinput v-model="customFormData.idcard" placeholder="请输入身份证" />
+			<uni-forms-item label="身份证" name="idCard" class="cu-form-group">
+				<uni-easyinput v-model="customFormData.idCard" placeholder="请输入身份证" />
 			</uni-forms-item>
 			<uni-forms-item label="性别" class="cu-form-group">
 				<uni-data-checkbox v-model="customFormData.sex" :localdata="sexs" />
@@ -25,8 +25,8 @@
 
 <script>
 	import {
-		erpclientadd
-	} from "@/api/erpapi.js"
+		employeeClient
+	} from "@/api/erp.js"
 	export default {
 		components: {
 
@@ -39,30 +39,30 @@
 				// 单选数据源
 				sexs: [{
 					text: '男',
-					value: 0
+					value: '1'
 				}, {
 					text: '女',
-					value: 1
+					value: '0'
 				}, {
 					text: '保密',
-					value: 2
+					value: '2'
 				}],
 				customFormData: {
-					username: '',
-					tel: '',
-					idcard: '',
+					clientName: '',
+					phonenumber: '',
+					idCard: '',
 					sex: '',
 					remark: '',
 				},
 				// 自定义表单校验规则
 				customRules: {
-					username: {
+					clientName: {
 						rules: [{
 							required: true,
 							errorMessage: '姓名不能为空'
 						}]
 					},
-					tel: {
+					phonenumber: {
 						rules: [{
 							required: true,
 							errorMessage: '手机不能为空'
@@ -94,15 +94,16 @@
 			submit(ref) {
 				console.log(this.customFormData);
 				this.$refs[ref].validate().then(res => {
-					console.log('success', res);
-					erpclientadd({
+					employeeClient({
 						...this.customFormData
 					}).then(res => {
 						uni.showToast({
 							title:'添加成功！',
 							icon:"none"
 						})
-						uni.navigateBack({})
+						uni.navigateTo({
+							url:'/pages/erp/customer/customer'
+						})
 					})
 				}).catch(err => {
 					console.log('err', err);

@@ -117,7 +117,7 @@
 					</view>
 					<view class="" v-show="isps == 1">
 						<view class="cu-form-group">
-							<view class="title">抛售状态</view>
+							<view class="title">抛售状态1</view>
 							<view class="cu-capsule radius">
 								<u-radio-group placement="row" v-model="radiovalue1" @change="groupChange">
 									<u-radio :customStyle="{marginBottom: '8px'}" v-for="(item, index) in radiolist1"

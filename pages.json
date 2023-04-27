@@ -611,6 +611,26 @@
                 "navigationBarTitleText" : "待分拣"
             }
         },
+		//待分拣
+		{
+		    "path" : "pages/erp/warehouse/quality",
+		    "style" : {
+		        "enablePullDownRefresh" : true, //开启下拉刷新
+		
+		        "navigationStyle": "custom",
+		        "navigationBarTitleText" : "仓库管理"
+		    }
+		},
+		//添加仓库
+		{
+		    "path" : "pages/erp/warehouse/add",
+		    "style" : {
+		        "enablePullDownRefresh" : true, //开启下拉刷新
+		
+		        // "navigationStyle": "custom",
+		        "navigationBarTitleText" : "添加仓库"
+		    }
+		},
         //分拣记录
         {
             "path" : "pages/erp/quality/list",
@@ -958,7 +978,19 @@
             "style" : {
                 "navigationBarTitleText" : "订单详情"
             }
-        }, //我买到的
+        },
+		 {
+		     "path" : "pages/order/comparisonChart/comparisonChart",
+		     "style" :                                                                                    
+		     {
+		         "enablePullDownRefresh" : true, //开启下拉刷新
+		         		
+		         //"navigationStyle": "custom",
+		         "navigationBarTitleText" : "回执单"
+		     }
+		     
+		 },
+		 //我买到的
         {
             "path" : "pages/order/goods/list",
             "style" : {

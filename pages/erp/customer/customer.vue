@@ -31,11 +31,11 @@
 			<block v-for="(item,index) in dataList" :key="index">
 				<view class="cu-item bg-white  radius-4 margin-sm" @click="choosecust(item)">
 					<view class="content">
-						<view class="text-grey">{{item.username}}</view>
+						<view class="text-grey">{{item.clientName}}</view>
 					</view>
 					<view class="action">
 						<view class="text-gray text-sm">
-							{{item.mobile}}
+							{{item.phonenumber}}
 						</view>
 					</view>
 				</view>
@@ -48,8 +48,8 @@
 
 <script>
 	import {
-		erpclientgetlist
-	}from "@/api/erpapi.js"
+		employeeClientList
+	}from "@/api/erp.js"
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -58,16 +58,14 @@
 		data() {
 			return {
 				CustomBar: this.CustomBar,
-				page:1,
-				pagelist:100,
+				pageNum:1,
+				pageSize:100,
 				seachtext:'',
 				dataList: [],
 				queryInfo: {
-					page: 1,
-					pagelist: 10,
-					company_id:'',
-					username:'',
-					tel:'',
+					pageNum: 1,
+					pageSize: 10,
+					clientName:'',
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
@@ -86,12 +84,12 @@
 			this.getDataList();
 		},
 		onPullDownRefresh() {
-			this.queryInfo.page = 1; //重置分页页码
+			this.queryInfo.pageNum = 1; //重置分页页码
 			this.getDataList();
 		},
 		onReachBottom() {
 			if (this.loadmore == 'noMore') return
-			this.queryInfo.page += 1;
+			this.queryInfo.pageNum += 1;
 			this.ifBottomRefresh = true
 			this.getDataList();
 		},
@@ -120,17 +118,11 @@
 			},
 			getDataList() {
 				let that = this;
-				if(this.isMobile(that.seachtext)){
-					that.queryInfo.tel  = that.seachtext;
-					that.queryInfo.username = '';
-				}else{
-					that.queryInfo.username  = that.seachtext;
-					that.queryInfo.tel = '';
-				}
+				that.queryInfo.clientName  = that.seachtext;
 				// that.queryInfo.username  = that.seachtext;
 				let paramsData = that.queryInfo;
-				erpclientgetlist(paramsData).then(res => {
-						let data = res.data.data;
+				employeeClientList(paramsData).then(res => {
+						let data = res.rows;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
 			
@@ -140,7 +132,7 @@
 								that.dataList = data
 							}
 							that.ifBottomRefresh = false
-							that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 			
 						}
 					})

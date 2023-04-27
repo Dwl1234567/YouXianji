@@ -53,6 +53,12 @@
 		<!--选项列表-->
 		<block v-for="(item,index) in nav_list" :key="index">
 			<view class="process-box" v-show="tab_cur == index">
+				<scroll-view v-for="(recyitem,recyindex) in basicPrice" scroll-y="true"
+					class="scroll-Y" v-if="tab_cur == 0">
+					<!-- {{recyitem}} -->
+					<SelectDataFirst title="机器SKU" :checklist="recyitem" @itemclick="moneyFucs">
+					</SelectDataFirst>
+				</scroll-view>
 				<scroll-view v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex" scroll-y="true"
 					class="scroll-Y">
 					<!-- {{recyitem}} -->
@@ -91,6 +97,7 @@
 		getPriceTemplateByModel
 	} from "@/api/retrieve.js";
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
+	import SelectDataFirst from '@/components/RecyclingList/SelectDataFirst.vue';
 	import {
 		openQyKefu
 	} from "@/utils/util.js"
@@ -99,11 +106,16 @@
 	} from 'vuex';
 	export default {
 		components: {
+			SelectDataFirst,
 			SelectData,
 			barTitle
 		},
 		data() {
 			return {
+				priceId: 0,
+				allPrice: 0,
+				itemPriceL: 0,
+				basicPrice: [],
 				tokenstatus: false,
 				wxcode: '',
 				goodsInfo: '',
@@ -115,7 +127,8 @@
 				nav_list: [
 					'物品信息',
 					'成色情况',
-					'功能情况'
+					'功能情况',
+					'维修情况'
 				],
 				retrieveList: [],
 				forecastMoney: 0, //报价金额
@@ -158,6 +171,10 @@
 			...mapState(['hasLogin'])
 		},
 		methods: {
+			moneyFucs(e) {
+				this.allPrice = e.basicPrice;
+				this.calcYuguMoney();
+			},
 			moneyFuc(e) {
 				let that = this;
 				let ckindex = e.ckid.split('-');
@@ -179,25 +196,22 @@
 			// 计算价格
 			calcYuguMoney() {
 				let that = this;
-				// let paramsdata = [];
-				//that.forecastMoney = that.baseMoney;
 				that.forecastMoney = 0;
+				that.allPrice = 0;
+				that.itemPrice = 0
 				that.goodsdesc = '';
 				that.Pricepramitems = []
+				that.basicPrice[0].map(item => {
+					if (item.checked) {
+						that.allPrice = item.basicPrice;
+						that.priceId = item.priceId;
+					}
+				})
 				that.retrieveList.forEach((item, index) => {
 					item.forEach((iitem, indexx) => {
-						// var indexs = 0
-						// // console.log(that.retrieveList[0].length, indexx)
-						// if (indexx < that.retrieveList[0].length) {
-						// 	indexs = 1
-						// } else if (indexx <that.retrieveList[1].length) {
-						// 	indexs = 2
-						// } else {
-						// 	indexs = 3
-						// }
 						iitem.value.forEach((iiitem, indexxx) => {
 							if (iiitem.checked) {
-								that.forecastMoney += Number(iiitem.price);
+								that.itemPrice += Number(iiitem.price);
 								// console.log(that.retrieveList[0].length, indexx, indexs)
 								that.Priceprams[iitem.keyId] = indexxx;
 								that.Pricepramitems.push({
@@ -214,6 +228,7 @@
 						})
 					})
 				})
+				that.forecastMoney = that.allPrice - that.itemPrice
 				uni.setStorageSync('goodsdesc', that.goodsdesc)
 				uni.setStorageSync('Priceprams', that.Priceprams)
 				uni.setStorageSync('Pricepramitems', that.Pricepramitems)
@@ -240,6 +255,11 @@
 								item.indexs = 3
 								return item
 							})
+							res.data.propPrice[3].map(item => {
+								item.indexs = 4
+								return item
+							})
+							that.basicPrice = [res.data.basicPrice]	
 							that.retrieveList = res.data.propPrice
 							that.goods_info = res.data.model;
 							that.addcheckattr();
@@ -283,6 +303,15 @@
 						})
 					})
 				})
+				that.basicPrice[0].map((item,index) => {
+					if (index == 0) {
+						item.checked = true;
+					} else {
+						item.checked = false;
+					}
+					return item
+				})
+				// console.log(that.basicPrice)
 				// console.log(that.retrieveList);
 			},
 			tabSelect(e) {
@@ -297,7 +326,7 @@
 			// 获取报价
 			getGodsgoodsPrice() {
 				uni.navigateTo({
-					url: 'form?type=' + this.type + '&goodsId=' + this.goodsId + '&modelName=' + this.modelName + '&forecastMoney=' + this.forecastMoney
+					url: 'form?type=' + this.type + '&goodsId=' + this.goodsId + '&modelName=' + this.modelName + '&forecastMoney=' + this.forecastMoney + '&priceId=' + this.priceId
 				})
 			},
 			//去发货
@@ -327,13 +356,6 @@
 			// 联系客服
 			callKefu() {
 				// #ifdef MP-WEIXIN
-				// wx.openCustomerServiceChat({
-				//   extInfo: {url: 'https://work.weixin.qq.com/kfid/kfccb4648b9af3bc58e'},
-				//   corpId: 'ww373df77bd799d02f',
-				//   success(res) {
-				// 	  console.log(res);
-				//   }
-				// })
 				openQyKefu();
 				// #endif
 			},

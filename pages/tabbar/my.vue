@@ -216,7 +216,7 @@
 					<view class="text-black text-xl text-bold padding-sm">我卖出的订单</view>
 					<view class="allorder-tips text-sm text-929294" @click="recycle_orderlist_tap(0)">全部订单</view>
 					<view class="cu-list grid col-5 no-border">
-						<view class="cu-item" @tap="recycle_orderlist_tap(1)">
+						<view class="cu-item" @tap="recycle_orderlist_tap(0)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-sponsorfill"></text>
 							</view>
@@ -226,10 +226,10 @@
 										{{userInfo.recyclenum|| 0}}
 									</view>
 								</view>
-								<text class="text-101010">待付款</text>
+								<text class="text-101010">发货</text>
 							</view>
 						</view>
-						<view class="cu-item" @tap="recycle_orderlist_tap(2)">
+						<view class="cu-item" @tap="recycle_orderlist_tap(1)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-cartfill"></text>
 							</view>
@@ -239,10 +239,10 @@
 										{{userInfo.shopnum|| 0}}
 									</view>
 								</view>
-								<text class="text-101010">待发货</text>
+								<text class="text-101010">质检</text>
 							</view>
 						</view>
-						<view class="cu-item" @tap="recycle_orderlist_tap(3)">
+						<view class="cu-item" @tap="recycle_orderlist_tap(2)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-favorfill"></text>
 							</view>
@@ -252,10 +252,10 @@
 										{{userInfo.favoritenum|| 0}}
 									</view>
 								</view>
-								<text class="text-101010">待收货</text>
+								<text class="text-101010">结算</text>
 							</view>
 						</view>
-						<view class="cu-item" @tap="recycle_orderlist_tap(4)">
+						<view class="cu-item" @tap="recycle_orderlist_tap(3)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-favorfill"></text>
 							</view>
@@ -265,10 +265,10 @@
 										{{userInfo.favoritenum|| 0}}
 									</view>
 								</view>
-								<text class="text-101010">待评价</text>
+								<text class="text-101010">退货</text>
 							</view>
 						</view>
-						<view class="cu-item" @tap="recycle_orderlist_tap(5)">
+						<view class="cu-item" @tap="recycle_orderlist_tap(4)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-favorfill"></text>
 							</view>
@@ -278,7 +278,7 @@
 										{{userInfo.favoritenum|| 0}}
 									</view>
 								</view>
-								<text class="text-101010">退款/售后</text>
+								<text class="text-101010">待评价</text>
 							</view>
 						</view>
 					</view>

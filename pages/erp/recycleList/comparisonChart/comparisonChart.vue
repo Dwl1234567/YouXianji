@@ -2,9 +2,9 @@
 	<view class="page flex-col">
 		<view class="block_1 flex-col">
 			<view class="section_2 flex-row justify-between">
-				<text class="text_2">加价</text>
-				<view class="input_1 flex-col">
-					<text class="text_3">请输入加价价格</text>
+				<text class="text_2">最终价格</text>
+				<view class="input_1 flex-col" style="width: 200px;">
+					<input type="text" v-model=receiptPrice />
 				</view>
 			</view>
 		</view>
@@ -13,7 +13,7 @@
 				<view class="group_2 flex-col"></view>
 			</view>
 			<view class="group_3 flex-row">
-				<view class="box_1 flex-col">
+				<view class="box_1 flex-col" >
 					<view class="group_4 flex-col"></view>
 					<text class="text_4">隐私清除&nbsp;|&nbsp;专业验机&nbsp;|&nbsp;整机清洁</text>
 				</view>
@@ -21,7 +21,7 @@
 			</view>
 			<view class="group_5 flex-col">
 				<view class="text-wrapper_1 flex-row justify-between">
-					<text class="text_5">iPhone&nbsp;11&nbsp;Pro&nbsp;Max</text>
+					<text class="text_5">{{modelName}}</text>
 					<text class="text_6">质检时间:2023-04-12</text>
 				</view>
 				<view class="image-text_1 flex-row justify-between">
@@ -114,8 +114,9 @@
 				<view class="box_9 flex-col">
 					<view
 						class="section_3 flex-row justify-between"
-						v-for="(item, index) in qualityInfoList"
-						v-if="item.indexs == 1"
+						v-for="(item, index) in Pricepramitems"
+						v-if="item.indexs === 1"
+						:key="index"
 					>
 						<view class="text-group_4 flex-col">
 							<text class="text_33">{{qualityInfoList[index].key}}</text>
@@ -127,7 +128,7 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view
-								v-if="checkInformation(qualityInfoList[index].valueId, Pricepramitems[index].valueId)"
+								v-if="checkInformation(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)"
 							>
 								123
 							</view>
@@ -157,9 +158,7 @@
 							<text class="text_36">{{Pricepramitems[index].value}}</text>
 						</view>
 						<view class="box_10 flex-col">
-							<view
-								v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId)"
-							>
+							<view v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
 								123
 							</view>
 						</view>
@@ -188,9 +187,36 @@
 							<text class="text_36">{{Pricepramitems[index].value}}</text>
 						</view>
 						<view class="box_10 flex-col">
-							<view
-								v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)"
-							>
+							<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
+								123
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="box_14 flex-row justify-between">
+					<text class="text_53">维修情况</text>
+					<image
+						class="icon_2"
+						referrerpolicy="no-referrer"
+						src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png"
+					/>
+				</view>
+				<view class="box_9 flex-col">
+					<view
+						class="section_3 flex-row justify-between"
+						v-for="(item, index) in Pricepramitems"
+						v-if="item.indexs == 4"
+					>
+						<view class="text-group_4 flex-col">
+							<text class="text_33">{{qualityInfoList[index].key}}</text>
+							<text class="text_34">{{qualityInfoList[index].value}}</text>
+						</view>
+						<view class="text-group_5 flex-col">
+							<text class="text_35">{{Pricepramitems[index].key}}</text>
+							<text class="text_36">{{Pricepramitems[index].value}}</text>
+						</view>
+						<view class="box_10 flex-col">
+							<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
 								123
 							</view>
 						</view>
@@ -211,7 +237,11 @@
 	export default {
 		data() {
 			return {
+				priceId: 0,
+				modelName: '',
+				Priceprams: {},
 				receiptPrice: null,
+				data: [1, 2, 3],
 				loopData0: [
 					{
 						lanhuBg0:
@@ -254,9 +284,10 @@
 					radar: {
 						// shape: 'circle',
 						indicator: [
-							{ name: '物品信息', max: 30000 },
-							{ name: '成色情况', max: 6500 },
-							{ name: '功能情况', max: 16000 },
+							{ name: '物品信息', max: 0 },
+							{ name: '成色情况', max: 0 },
+							{ name: '功能情况', max: 0 },
+							{ name: '维修情况', max: 0 },
 						],
 					},
 					series: [
@@ -275,55 +306,91 @@
 			};
 		},
 		onLoad(option) {
+			this.priceId = option.priceId;
 			// 指导价
 			this.forecastMoney = option.forecastMoney;
 			// 整理三角雷达图每个角落的max值
 			this.optionData.radar.indicator[0].max = uni.getStorageSync('dataListNum')[0];
 			this.optionData.radar.indicator[1].max = uni.getStorageSync('dataListNum')[1];
 			this.optionData.radar.indicator[2].max = uni.getStorageSync('dataListNum')[2];
+			this.optionData.radar.indicator[3].max = uni.getStorageSync('dataListNum')[3];
+			this.modelName = uni.getStorageSync('modelName')
+			this.Priceprams = uni.getStorageSync('Priceprams')
 			this.qualityInfoList = uni.getStorageSync('qualityInfoList');
+			console.log(this.qualityInfoList)
 			this.Pricepramitems = uni.getStorageSync('Pricepramitems');
 			this.qualityInfo = uni.getStorageSync('qualityInfo');
 			this.recycleOrderId = uni.getStorageSync('recycleOrderId');
 		},
 		methods: {
-			checkInformation(left, right) {
+			checkInformation(left, right, index) {
+				console.log(left, right, index);
+				this.$nextTick(() => {
+					if (left === right) {
+						return false;
+					} else {
+						this.optionData.series[0].data[0].value[0] = this.optionData.series[0].data[0].value[0] + 1;
+						console.log(this.optionData.series[0].data[0].value[0]);
+						return true;
+					}
+				});
 				if (left === right) {
 					return false;
 				} else {
-					this.optionData.series[0].data[0].value[0] = this.optionData.series[0].data[0].value[0] + 1
+					// this.optionData.series[0].data[0].value[2] = this.optionData.series[0].data[0].value[2] + 1;
 					return true;
 				}
 			},
 			checkFineness(left, right) {
+				console.log(1)
+				this.$nextTick(() => {
+					if (left === right) {
+						return false;
+					} else {
+						this.optionData.series[0].data[0].value[1] = this.optionData.series[0].data[0].value[1] + 1;
+						return true;
+					}
+				});
 				if (left === right) {
 					return false;
 				} else {
-					this.optionData.series[0].data[0].value[1] = this.optionData.series[0].data[0].value[1] + 1
+					// this.optionData.series[0].data[0].value[2] = this.optionData.series[0].data[0].value[2] + 1;
 					return true;
 				}
 			},
 			checkFunctional(left, right) {
+				this.$nextTick(() => {
+					if (left === right) {
+						return false;
+					} else {
+						this.optionData.series[0].data[0].value[2] = this.optionData.series[0].data[0].value[2] + 1;
+						return true;
+					}
+				});
 				if (left === right) {
 					return false;
 				} else {
-					this.optionData.series[0].data[0].value[2] = this.optionData.series[0].data[0].value[2] + 1
+					// this.optionData.series[0].data[0].value[2] = this.optionData.series[0].data[0].value[2] + 1;
 					return true;
 				}
 			},
 			onClick_1() {
+				console.log(this.priceId,this.receiptPrice)
 				empCreateReceipt({
-					'receiptGuidePrice': Number(this.forecastMoney),
-					'receiptPrice': this.receiptPrice,
-					'qualityInfoList': JSON.stringify(this.qualityInfoList),
-					'qualityInfo': JSON.stringify(this.qualityInfo),
-					'recycleOrderId': this.recycleOrderId,
-					'receiptQualityPhotoList': this.receiptQualityPhotoList,
-					'receiver': uni.getStorageSync('createById'),
-					'device_id': uni.getStorageSync('deviceId')
-				}).then(res => {
-					console.log(res)
-				})
+					basicPriceId: this.priceId,
+					receiptGuidePrice: Number(this.forecastMoney),
+					receiptPrice: this.receiptPrice,
+					qualityInfoList: JSON.stringify(this.Pricepramitems),
+					qualityInfo: JSON.stringify(this.Priceprams),
+					recycleOrderId: this.recycleOrderId,
+					receiptQualityPhotoList: this.receiptQualityPhotoList,
+					receiver: uni.getStorageSync('createById'),
+					deviceId: uni.getStorageSync('deviceId'),
+				}).then((res) => {
+					uni.navigateTo({
+						url: '/pages/erp/recycleList/index'
+					})
+				});
 			},
 		},
 	};

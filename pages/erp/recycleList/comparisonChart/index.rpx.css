@@ -61,7 +61,7 @@
 .input_1 {
   border-radius: 6px;
   border: 1px solid rgba(226, 226, 226, 1);
-  padding: 15.267175572519085rpx 343.51145038167937rpx 9.541984732824428rpx
+  padding: 15.267175572519085rpx 17.17557251908397rpx 9.541984732824428rpx
     17.17557251908397rpx;
 }
 
@@ -92,8 +92,8 @@
 .group_2 {
   width: 125.95419847328245rpx;
   height: 82.06106870229007rpx;
-  background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng64f03017e607cfc9490c95b6a607cf63bbbf22ed041c0c3f795e6481a8b18275.png)
-    100% no-repeat;
+ /* background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng64f03017e607cfc9490c95b6a607cf63bbbf22ed041c0c3f795e6481a8b18275.png)
+    100% no-repeat; */
   background-size: 100% 100%;
 }
 
@@ -111,8 +111,8 @@
 .group_4 {
   width: 125.95419847328245rpx;
   height: 82.06106870229007rpx;
-  background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng64f03017e607cfc9490c95b6a607cf63bbbf22ed041c0c3f795e6481a8b18275.png)
-    100% no-repeat;
+  /* background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng64f03017e607cfc9490c95b6a607cf63bbbf22ed041c0c3f795e6481a8b18275.png)
+    100% no-repeat; */
   background-size: 100% 100%;
 }
 
@@ -143,8 +143,8 @@
   top: 0;
   width: 125.95419847328245rpx;
   height: 82.06106870229007rpx;
-  background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng64f03017e607cfc9490c95b6a607cf63bbbf22ed041c0c3f795e6481a8b18275.png)
-    100% no-repeat;
+  /* background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng64f03017e607cfc9490c95b6a607cf63bbbf22ed041c0c3f795e6481a8b18275.png)
+    100% no-repeat; */
   background-size: 100% 100%;
 }
 
@@ -193,7 +193,7 @@
 
 .single-avatar_1 {
   border-radius: 50%;
-  background-image: url(/static/lanhu_zhijianbaogaoduibitu/33cff00665c342b78c9a7e27604b5b6d_mergeImage.png);
+  /* background-image: url(/static/lanhu_zhijianbaogaoduibitu/33cff00665c342b78c9a7e27604b5b6d_mergeImage.png); */
   width: 85.87786259541984rpx;
   height: 85.87786259541984rpx;
 }
@@ -268,8 +268,8 @@
 }
 
 .box_4 {
-  background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng36499691b926ee5945beb7d49ff8dd30a264ffb793ca12222edb63e3273b5c86.png)
-    100% no-repeat;
+  /* background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng36499691b926ee5945beb7d49ff8dd30a264ffb793ca12222edb63e3273b5c86.png)
+    100% no-repeat; */
   background-size: 100% 100%;
   margin-bottom: 24.80916030534351rpx;
   padding: 30.53435114503817rpx 28.625954198473284rpx 15.267175572519085rpx
@@ -277,8 +277,8 @@
 }
 
 .box_5 {
-  background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng1b261c60cc686bd59e37cfdd5f2c44c3b98b95f0d8d8352c5be078bd57893f75.png)
-    100% no-repeat;
+ /* background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng1b261c60cc686bd59e37cfdd5f2c44c3b98b95f0d8d8352c5be078bd57893f75.png)
+    100% no-repeat; */
   background-size: 100% 100%;
   padding: 32.44274809160305rpx 26.717557251908396rpx 17.17557251908397rpx
     26.717557251908396rpx;
@@ -288,8 +288,8 @@
   position: relative;
   width: 232.82442748091603rpx;
   height: 200.38167938931298rpx;
-  background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng090eca4927ed298e16939390904d96d20ccd826ecbc72799cd60e071fa5171ee.png)
-    100% no-repeat;
+ /* background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPng090eca4927ed298e16939390904d96d20ccd826ecbc72799cd60e071fa5171ee.png)
+    100% no-repeat; */
   background-size: 100% 100%;
 }
 
@@ -311,8 +311,8 @@
 
 .image-wrapper_1 {
   height: 97.32824427480917rpx;
-  background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPngd8dafd185f2c3c66ad5b141ec05c2e00e75c89133c200718223b339e976234ff.png)
-    0rpx -1.9083969465648856rpx no-repeat;
+  /* background: url(/static/lanhu_zhijianbaogaoduibitu/SketchPngd8dafd185f2c3c66ad5b141ec05c2e00e75c89133c200718223b339e976234ff.png)
+    0rpx -1.9083969465648856rpx no-repeat; */
   background-size: 169.84732824427482rpx 101.14503816793894rpx;
   width: 167.93893129770993rpx;
   position: absolute;
@@ -560,13 +560,13 @@
 
 .list_1 {
   width: 585.8778625954199rpx;
-  height: 104.9618320610687rpx;
+  /* height: 104.9618320610687rpx; */
   justify-content: space-between;
 }
 
 .list-items_1 {
   border-radius: 6px;
-  background-image: url(/static/lanhu_zhijianbaogaoduibitu/1a7ec9be42154e8e848d643e6e0fa0ad_mergeImage.png);
+  /* background-image: url(/static/lanhu_zhijianbaogaoduibitu/1a7ec9be42154e8e848d643e6e0fa0ad_mergeImage.png); */
   width: 104.9618320610687rpx;
   height: 104.9618320610687rpx;
   border: 1px solid rgba(151, 151, 151, 1);
@@ -799,7 +799,7 @@
 
 .box_11 {
   border-radius: 6px;
-  background-image: url(/static/lanhu_zhijianbaogaoduibitu/8aa420f2b76d4d83bee23565af047690_mergeImage.png);
+  /* background-image: url(/static/lanhu_zhijianbaogaoduibitu/8aa420f2b76d4d83bee23565af047690_mergeImage.png); */
   width: 64.8854961832061rpx;
   height: 64.8854961832061rpx;
   border: 1px solid rgba(151, 151, 151, 1);
@@ -865,7 +865,7 @@
 
 .box_12 {
   border-radius: 6px;
-  background-image: url(/static/lanhu_zhijianbaogaoduibitu/1add0e584d1e4613b56b7a4e7c12448a_mergeImage.png);
+  /* background-image: url(/static/lanhu_zhijianbaogaoduibitu/1add0e584d1e4613b56b7a4e7c12448a_mergeImage.png); */
   width: 64.8854961832061rpx;
   height: 64.8854961832061rpx;
   border: 1px solid rgba(151, 151, 151, 1);
@@ -931,7 +931,7 @@
 
 .block_3 {
   border-radius: 6px;
-  background-image: url(/static/lanhu_zhijianbaogaoduibitu/066cdc51da6045d4bee0d3f7458b1c6a_mergeImage.png);
+  /* background-image: url(/static/lanhu_zhijianbaogaoduibitu/066cdc51da6045d4bee0d3f7458b1c6a_mergeImage.png); */
   width: 64.8854961832061rpx;
   height: 64.8854961832061rpx;
   border: 1px solid rgba(151, 151, 151, 1);
@@ -997,7 +997,7 @@
 
 .box_13 {
   border-radius: 6px;
-  background-image: url(/static/lanhu_zhijianbaogaoduibitu/9c7c1cd82f5448b0b41a770d31208cba_mergeImage.png);
+  /* background-image: url(/static/lanhu_zhijianbaogaoduibitu/9c7c1cd82f5448b0b41a770d31208cba_mergeImage.png); */
   width: 64.8854961832061rpx;
   height: 64.8854961832061rpx;
   border: 1px solid rgba(151, 151, 151, 1);
@@ -1089,7 +1089,7 @@
 
 .box_16 {
   border-radius: 6px;
-  background-image: url(/static/lanhu_zhijianbaogaoduibitu/01580ad986bc4436bf8364dfb5005c63_mergeImage.png);
+  /* background-image: url(/static/lanhu_zhijianbaogaoduibitu/01580ad986bc4436bf8364dfb5005c63_mergeImage.png); */
   width: 64.8854961832061rpx;
   height: 64.8854961832061rpx;
   border: 1px solid rgba(151, 151, 151, 1);

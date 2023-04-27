@@ -303,6 +303,7 @@
 		},
 		data() {
 			return {
+				priceId: 0,
 				storeAddress: '',
 				forecastMoney: '',
 				deviceNo: '',
@@ -365,6 +366,7 @@
 			this.initPickupTime();
 			this.getGlobalInfoFuc();
 			this.selectStoreAddress()
+			this.priceId = option.priceId;
 			this.detailId = option.detailId;
 			this.goodsId = option.goodsId;
 			this.modelName = option.modelName;
@@ -715,6 +717,7 @@
 					var express_name = '同城上门';
 				}
 				let params = {
+					'basicPriceId': Number(that.priceId),
 					'deviceLabel': deviceLabel,
 					'modelName': that.modelName,
 					'qualityInfo':JSON.stringify(that.Priceprams),
@@ -740,8 +743,6 @@
 					"otherPhoto": that.phoneImgArr[7],
 					'storeId': storeId,
 					'firstPrice': that.forecastMoney
-					
-					
 				}
 				createRecycleOrder(params).then(res => {
 					if(res.code == 200){

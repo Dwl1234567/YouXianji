@@ -4,7 +4,6 @@ import {
 import Vue from 'vue'
 export function upload(filePath) {
 	return new Promise((resolve, reject) => {
-		// console.log(filePath);
 		uni.showLoading({
 			title: '上传中'
 		})
@@ -21,7 +20,6 @@ export function upload(filePath) {
 				// 'file': filePath[0]
 			},
 			success: (uploadFileRes) => {
-				console.log(uploadFileRes)
 				let data = JSON.parse(uploadFileRes.data);
 				return resolve(data);
 			},
@@ -44,7 +42,6 @@ export function upload(filePath) {
 
 export function raiseUpload(filePath) {
 	return new Promise((resolve, reject) => {
-		// console.log(filePath);
 		uni.showLoading({
 			title: '上传中'
 		})
@@ -52,16 +49,18 @@ export function raiseUpload(filePath) {
 			url: `${UPLOAD_IMG_URL}`,
 			filePath: filePath,
 			name: 'file',
-			formData: {
-				'file': filePath
+			header: {
+			    // 'content-type': 'multipart/form-data',
+				'Authorization':Vue.prototype.$store.state.token
 			},
+			// formData: {
+			// 	'file': filePath
+			// },
 			success: (uploadFileRes) => {
-				console.log(uploadFileRes.data);
 				let data = JSON.parse(uploadFileRes.data);
 				return resolve(data);
 			},
 			fail: (err) => {
-				console.log(err);
 				uni.showToast({
 					icon: 'none',
 					title: err,

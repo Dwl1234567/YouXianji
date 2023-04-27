@@ -488,7 +488,7 @@
 
 .box_3 {
   border-radius: 6px;
-  background-image: url(/static/lanhu_shunfengshangmenxiangqing/d93a12414a33463c99b5e3dc66ede275_mergeImage.png);
+  /* background-image: url(/static/lanhu_shunfengshangmenxiangqing/d93a12414a33463c99b5e3dc66ede275_mergeImage.png); */
   width: 150.76335877862596rpx;
   height: 150.76335877862596rpx;
   margin-bottom: 1.9083969465648856rpx;
@@ -729,7 +729,7 @@
 
 .list_1 {
   width: 641.2213740458016rpx;
-  height: 122.13740458015268rpx;
+  /* height: 122.13740458015268rpx; */
   justify-content: space-between;
 }
 
@@ -740,7 +740,7 @@
 }
 
 .group_9 {
-  background-image: url(/static/lanhu_shunfengshangmenxiangqing/f78e421e38be4ea8bd4af6fa7779b882_mergeImage.png);
+  /* background-image: url(/static/lanhu_shunfengshangmenxiangqing/f78e421e38be4ea8bd4af6fa7779b882_mergeImage.png); */
   width: 122.13740458015268rpx;
   height: 122.13740458015268rpx;
 }
@@ -751,7 +751,7 @@
 }
 
 .box_7 {
-  background-image: url(/static/lanhu_shunfengshangmenxiangqing/de3115313a4649f28f2f47607b11588c_mergeImage.png);
+  /* background-image: url(/static/lanhu_shunfengshangmenxiangqing/de3115313a4649f28f2f47607b11588c_mergeImage.png); */
   width: 28.625954198473284rpx;
   height: 122.13740458015268rpx;
 }

@@ -105,3 +105,51 @@ export function defaltUserAccount(data) {
 export function idCardVerification(data) {
 	return request.post('/yxj/app/common/idCardVerification' , data, {'noLogin':true});
 }
+
+/**
+ * 用户运输中查看列表
+ * 
+ */
+export function selectRecycleOrderList(data) {
+	return request.get('/yxj/app/recycle/selectRecycleOrderList' , data, {'noLogin':true});
+}
+
+/**
+ * 用户质检查看列表
+ * 
+ */
+export function selectReceiptList(data) {
+	return request.get('/yxj/app/recycle/selectReceiptList' , data, {'noLogin':true});
+}
+
+/**
+ * 用户查看回执单
+ * 
+ */
+export function selectReceiptDetail(data) {
+	return request.get('/yxj/app/recycle/selectReceiptDetail/' + data, {'noLogin':true});
+}
+
+/**
+ * 用户同意并打款
+ * 
+ */
+export function agreeReceipt(data) {
+	return request.get('/yxj/app/recycle/agreeReceipt/' + data, {'noLogin':true});
+}
+
+/**
+ * 用户拒绝并退回
+ * 
+ */
+export function refuseReceipt(data) {
+	return request.get('/yxj/app/recycle/refuseReceipt/' + data, {'noLogin':true});
+}
+
+/**
+ * 用户查看结算列表
+ * 
+ */
+export function selectRecycleOrderSellList(data) {
+	return request.post('/yxj/app/recycle/selectRecycleOrderSellList' , data,{'noLogin':true});
+}

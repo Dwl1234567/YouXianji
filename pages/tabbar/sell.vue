@@ -28,13 +28,13 @@
 			</view>
 		</view>
 		<view class="stores-box">
-			<view
+			<!-- <view
 				id="echarts"
 				class="echarts"
 				@click="echarts.onClick"
 				:prop="optionData"
 				:change:prop="echarts.updateEcharts"
-			></view>
+			></view> -->
 			<view class="bg-white cu-card article radius-2" @click="gostoreInfo(latelystoreInfo.id)">
 				<!-- 同城到店回收-块1 -->
 				<view class="cu-item radius-4 bg-white" v-if="latelystoreInfo.storeName">

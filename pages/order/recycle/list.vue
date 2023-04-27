@@ -13,118 +13,214 @@
 				</scroll-view>
 			</view>
 			<!--订单列表-->
-			<block v-for="(item,index) in dataList[tab_cur].list" :key="index"
-				v-if="dataList[tab_cur].list.length != 0">
-				<view class="bg-white order-tab-view">
-					<!--订单主信息-->
-					<view class="shop-title-view">
-						<view class="cu-avatar sm round"
-							:style="[{backgroundImage:'url('+ 'https://youxianji.zansuo.com/uploads/recying/goods/nopic.jpg' +')'}]" />
-						<view class="text-black text-cut shop-name">{{item.order_number}}</view>
-						<text v-if="item.order_status == 0" class="text-right text-gray text-sm">等待报价</text>
-						<text v-if="item.order_status == 1" class="text-right text-gray text-sm">等待发货</text>
-						<text v-if="item.order_status == 2" class="text-right text-gray text-sm">已发货</text>
-						<text v-if="item.order_status == 3" class="text-right text-gray text-sm">等待机器质检</text>
-						<text v-if="item.order_status == 4" class="text-right text-gray text-sm">待财务付款</text>
-						<text v-if="item.order_status == 5" class="text-right text-gray text-sm">用户待收款</text>
-						<text v-if="item.order_status == 6" class="text-right text-gray text-sm">交易完成</text>
-						<text v-if="item.order_status == 7" class="text-right text-gray text-sm">交易取消</text>
-					</view>
-					<view class="shop-info-view">
-						<!--商品信息-->
-						<view class="goods-list-view" :data-id="item.id">
-							<view class="cu-avatar lg radius"
-								:style="[{backgroundImage:'url('+ item.goods_image +')'}]" />
-							<view class="goods-info-view">
-								<view class="text-black text-cut name">{{item.goods_name}}</view>
-								<view class="tag-view">
-									<block v-for="(item_s,index_s) in item.cart_info" :key="index_s">
-										<text class="cu-tag sm line-red radius"
-											:class="index_s == 0?'tag_1':''">{{item_s}}</text>
-									</block>
+			<!-- 质检 -->
+			<view class="page flex-col" v-if="tab_cur == 1">
+				<view class="box_1 flex-row">
+					<view class="box_4 flex-col">
+						<view class="list_1 flex-col">
+							<view class="list-items_1 flex-col" v-for="(item, index) in receiptList" :key="index">
+								<view class="text-wrapper_1 flex-row justify-between">
+									<text class="text_3">订单编号 {{item.orderNo}}</text>
+									<text class="text_4">时间 {{item.createTime}}</text>
 								</view>
-								<view class="text-price text-red">
-									{{item.quoted_price}}
+								<view class="block_1 flex-row">
+									<view class="image-text_1 flex-row">
+										<view class="box_5 flex-col">
+											<image :src="$httpImage + item.modelPhoto" mode="widthFix"></image>
+										</view>
+										<view class="text-group_1 flex-col">
+											<text class="text_5"> {{item.modelName}}</text>
+											<text class="text_6"> {{item.deviceLabel}}</text>
+											<text class="text_7">序列号：{{item.deviceNo}}</text>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_8" >回收预估价: {{item.firstPrice}}</text>
+												<text class="text_9" v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.transactionPrice - item.firstPrice}}</text>
+											</view>
+										</view>
+										<view class="tag_1 flex-col"></view>
+										<view class="tag_2 flex-col">
+											<text class="text_10">{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}} </text>
+										</view>
+									</view>
+									<view class="tag_3 flex-col"></view>
+								</view>
+								<view class="block_2 flex-row">
+									<text class="text_11" v-html="">回收价{{item.transactionPrice}}</text>
+									<view class="tag_4 flex-col"></view>
+								</view>
+								<view class="block_3 flex-row">
+									<button class="button_1 flex-col" @click="onClick_1(item.receiptId)">
+										<text class="text_12">查看详情</text>
+									</button>
+									<button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
+										<text class="text_13">拒绝并退回</text>
+									</button>
+									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
+										<text class="text_14">同意并打款</text>
+									</button>
 								</view>
 							</view>
 						</view>
-
-						<!--按钮-->
-						<view class="btn-view">
-							<block v-if="item.order_status == 0">
-								<button class="cu-btn line-black sm radius" @click="cannelorder(item.id)">取消订单</button>
-								<button class="cu-btn bg-red sm radius" @click="callKefu()">联系客服</button>
-							</block>
-							<block v-if="item.order_status == 1">
-								<button class="cu-btn line-black sm radius" @click="cannelorder(item.id)">取消订单</button>
-								<button class="cu-btn bg-red sm radius" @click="sendgoods(item.id)">去发货</button>
-							</block>
-							<block v-if="item.order_status == 2">
-								<button class="cu-btn line-red sm radius" @click="callKefu()">联系客服</button>
-								<button class="cu-btn bg-red sm radius"
-									@click="openlogisticsview(item.express_sn)">物流信息</button>
-							</block>
-							<block v-if="item.order_status == 3">
-								<button class="cu-btn bg-red sm radius" @click="callKefu()">联系客服</button>
-							</block>
-							<block v-if="item.order_status == 4">
-								<button class="cu-btn line-black sm radius" @click="goreport(item.id)">质检报告</button>
-								<button class="cu-btn bg-red sm radius" @click="urgePayment(item.id)">催付款</button>
-								<button class="cu-btn line-red sm radius" @click="callKefu()">联系客服</button>
-							</block>
-							<block v-if="item.order_status == 5">
-								<button class="cu-btn line-black sm radius" @click="goreport(item.id)">质检报告</button>
-								<button class="cu-btn line-black sm radius" @click="whereaboutsTap()"
-									:data-id="item.id">钱款去向</button>
-								<button class="cu-btn bg-red sm radius" @click="confirmoney(item.id)">确认收款</button>
-								<button class="cu-btn line-red sm radius" @click="callKefu()">联系客服</button>
-							</block>
-							<block v-if="item.order_status == 6">
-								<!-- <button class="cu-btn line-black sm radius" @click="deleteorder(item.id)">删除订单</button> -->
-								<button class="cu-btn bg-red sm radius" @click="callKefu()">联系售后</button>
-							</block>
-							<block v-if="item.order_status == 7">
-								<!-- <button class="cu-btn line-black sm radius" @click="deleteorder(item.id)">删除订单</button> -->
-							</block>
-							<button class="cu-btn line-red sm radius" @click="detailsTap"
-								:data-id="item.id">查看详情</button>
-						</view>
-						<!--
-						<view class="btn-view" v-if="item.type == 1">
-							<button class="cu-btn line-black sm radius">删除订单</button>
-							<button class="cu-btn line-black sm radius">质检报告</button>
-							<button class="cu-btn line-black sm radius" @tap="whereaboutsTap"
-								:data-id="item.id">钱款去向</button>
-							<button class="cu-btn line-red sm radius" @tap="detailsTap" :data-id="item.id">查看详情</button>
-						</view>
-						<view class="btn-view" v-if="item.type == 0">
-							<button class="cu-btn line-black sm radius">联系卖家</button>
-							<button class="cu-btn line-red sm radius" @tap="detailsTap" :data-id="item.id">查看详情</button>
-						</view>
-						-->
 					</view>
 				</view>
-			</block>
-
-			<!--无数据-->
-			<view class="bg-white" style="text-align: center;padding-top: 100rpx;padding-bottom: 100rpx;" v-if="dataList[tab_cur].list.length == 0">
-				<view class="img-view">
-					<image src="../../../static/emptyCart.jpg" style="width: 200px;" mode="widthFix"></image>
-				</view>
-				<view class="text-sm margin-top-sm">您还没有相关订单哦</view>
 			</view>
-
-
-			<!--到底了-->
-			<view class="order-foot-tip-view" v-if="dataList[tab_cur].list.length != 0">
-				<view class="text-gray">hi,到底啦~</view>
+			<!-- 运送 -->
+			<view class="page flex-col" v-if="tab_cur == 0">
+				<view class="box_1 flex-row">
+					<view class="box_4 flex-col">
+						<view class="list_1 flex-col">
+							<view class="list-items_1 flex-col" v-for="(item, index) in loopData0" :key="index">
+								<view class="text-wrapper_1 flex-row justify-between">
+									<text class="text_3">订单编号 {{item.orderNo}}</text>
+									<text class="text_4">时间 {{item.createTime}}</text>
+								</view>
+								<view class="block_1 flex-row">
+									<view class="image-text_1 flex-row">
+										<view class="box_5 flex-col">
+											<image :src="$httpImage + item.modelPhoto" mode="widthFix"></image>
+										</view>
+										<view class="text-group_1 flex-col">
+											<text class="text_5"> {{item.modelName}}</text>
+											<text class="text_6"> {{item.deviceLabel}}</text>
+											<text class="text_7">序列号：{{item.deviceNo}}</text>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_8" >回收预估价: {{item.firstPrice}}</text>
+												<!-- <text class="text_9" >加价 {{item.receiptPrice - item.receiptGuidePrice}}</text> -->
+											</view>
+										</view>
+										<view class="tag_1 flex-col"></view>
+										<view class="tag_2 flex-col">
+											<text class="text_10">{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}} </text>
+										</view>
+									</view>
+									<view class="tag_3 flex-col"></view>
+								</view>
+								<view class="block_3 flex-row">
+									<!-- <button class="button_1 flex-col" @click="onClick_1(item.receiptId)">
+										<text class="text_12">查看详情</text>
+									</button>
+									<button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
+										<text class="text_13">拒绝并退回</text>
+									</button>
+									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
+										<text class="text_14">同意并打款</text>
+									</button> -->
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 结算 -->
+			<view class="page flex-col" v-if="tab_cur == 2">
+				<view class="box_1 flex-row">
+					<view class="box_4 flex-col">
+						<view class="list_1 flex-col">
+							<view class="list-items_1 flex-col" v-for="(item, index) in jeisuanList" :key="index">
+								<view class="text-wrapper_1 flex-row justify-between">
+									<text class="text_3">订单编号 {{item.orderNo}}</text>
+									<text class="text_4">时间 {{item.createTime}}</text>
+								</view>
+								<view class="block_1 flex-row">
+									<view class="image-text_1 flex-row">
+										<view class="box_5 flex-col">
+											<image :src="$httpImage + item.modelPhoto" mode="widthFix"></image>
+										</view>
+										<view class="text-group_1 flex-col">
+											<text class="text_5"> {{item.modelName}}</text>
+											<text class="text_6"> {{item.deviceLabel}}</text>
+											<text class="text_7">序列号：{{item.deviceNo}}</text>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_8" >回收预估价: {{item.firstPrice}}</text>
+												<text class="text_9" v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.transactionPrice - item.firstPrice}}</text>
+											</view>
+										</view>
+										<view class="tag_1 flex-col"></view>
+										<view class="tag_2 flex-col">
+											<text class="text_10">{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}} </text>
+										</view>
+									</view>
+									<view class="tag_3 flex-col"></view>
+								</view>
+								<view class="block_2 flex-row">
+									<text class="text_11" v-html="">回收价{{item.transactionPrice}}</text>
+									<view class="tag_4 flex-col"></view>
+								</view>
+								<view class="block_3 flex-row" style="justify-content: flex-end;">
+									<button class="button_1 flex-col" >
+										<text class="text_12">代付款</text>
+									</button>
+									<!-- <button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
+										<text class="text_13">拒绝并退回</text>
+									</button>
+									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
+										<text class="text_14">同意并打款</text>
+									</button> -->
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 退货 -->
+			<view class="page flex-col" v-if="tab_cur == 3">
+				<view class="box_1 flex-row">
+					<view class="box_4 flex-col">
+						<view class="list_1 flex-col">
+							<view class="list-items_1 flex-col" v-for="(item, index) in tuihuoList" :key="index">
+								<view class="text-wrapper_1 flex-row justify-between">
+									<text class="text_3">订单编号 {{item.orderNo}}</text>
+									<text class="text_4">时间 {{item.createTime}}</text>
+								</view>
+								<view class="block_1 flex-row">
+									<view class="image-text_1 flex-row">
+										<view class="box_5 flex-col">
+											<image :src="$httpImage + item.modelPhoto" mode="widthFix"></image>
+										</view>
+										<view class="text-group_1 flex-col">
+											<text class="text_5"> {{item.modelName}}</text>
+											<text class="text_6"> {{item.deviceLabel}}</text>
+											<text class="text_7">序列号：{{item.deviceNo}}</text>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_8" >回收预估价: {{item.receiptGuidePrice}}</text>
+												<text class="text_9" v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.receiptPrice - item.receiptGuidePrice}}</text>
+											</view>
+										</view>
+										<view class="tag_1 flex-col"></view>
+										<view class="tag_2 flex-col">
+											<text class="text_10">{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}} </text>
+										</view>
+									</view>
+									<view class="tag_3 flex-col"></view>
+								</view>
+								<view class="block_2 flex-row">
+									<text class="text_11" v-html="">回收价{{item.receiptPrice}}</text>
+									<view class="tag_4 flex-col"></view>
+								</view>
+								<view class="block_3 flex-row" style="justify-content: flex-end;">
+									<button class="button_1 flex-col" >
+										<text class="text_12">查看物流</text>
+									</button>
+									<button class="button_1 flex-col" >
+										<text class="text_12">退回中</text>
+									</button>
+									<!-- <button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
+										<text class="text_13">拒绝并退回</text>
+									</button>
+									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
+										<text class="text_14">同意并打款</text>
+									</button> -->
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 
 		<!--占位底部距离-->
-		<view class="cu-tabbar-height"></view>
+		<!-- <view class="cu-tabbar-height"></view> -->
 		<!--用户手机号-->
-
 	</view>
 </template>
 
@@ -132,16 +228,18 @@
 	import barTitle from '@/components/common/basics/bar-title';
 
 	import _order_data from '@/static/data/order_list.js'; //虚拟数据
-	import {
-		getOrderList
-	} from "@/api/common.js";
+	import { selectRecycleOrderList, selectReceiptList, refuseReceipt, agreeReceipt, selectRecycleOrderSellList } from '@/api/commons.js';
 	export default {
 		name: 'my',
 		components: {
-			barTitle
+			barTitle,
 		},
 		data() {
 			return {
+				jeisuanList:[],
+				tuihuoList: [],
+				receiptList:[],
+				loopData0: [],
 				nav_list: [],
 				tab_cur: 0,
 				tab_scroll: 0,
@@ -150,160 +248,149 @@
 				wxcode: '',
 				sweixin: '',
 				realstatus: '0',
-				dataList: [{
-					'pageindex': 1,
-					'triggered': false,
-					'list': []
-				}, {
-					'pageindex': 1,
-					'triggered': false,
-					'list': []
-				}, {
-					'pageindex': 1,
-					'triggered': false,
-					'list': []
-				}, {
-					'pageindex': 1,
-					'triggered': false,
-					'list': []
-				}, {
-					'pageindex': 1,
-					'triggered': false,
-					'list': []
-				}],
 				pageIndex: 1,
 				pageLimit: 10,
 				loadStatus: ['loadmore', 'loadmore', 'loadmore', 'loadmore', 'loadmore'],
-			}
+			};
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			let that = this;
 			let ordertype = '';
-			this.dataList[this.tab_cur].pageindex = 1;
-			this.dataList[this.tab_cur].list = [];
-			this.getOrderListFuc(this.tab_cur);
 		},
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
 		onReachBottom() {
-			console.log(this.loadStatus[this.tab_cur]);
-			if (this.loadStatus[this.tab_cur] != 'noMore') {
-				this.loadStatus.splice(this.tab_cur, 1, "loading");
-				this.getOrderListFuc(this.tab_cur);
-			}
+			// if (this.loadStatus[this.tab_cur] != 'noMore') {
+			// 	this.loadStatus.splice(this.tab_cur, 1, 'loading');
+			// 	this.getOrderListFuc(this.tab_cur);
+			// }
 		},
 		onLoad(options) {
 			let that = this;
-			if(options.type){
+			if (options.type) {
 				this.tab_cur = Number(options.type);
 			}
 			// this.order_list = _order_data.orderListData();
-			this.nav_list =['全部','待付款','待发货','待收货','待评价'];
+			this.nav_list = ['发货', '质检', '结算', '退货', '待评价'];
 			// that.getOrderListFuc(0);
 			// 获取订单信息
-			this.dataList[this.tab_cur].pageindex = 1;
-			this.dataList[this.tab_cur].list = [];
-			this.getOrderListFuc(this.tab_cur);
-
+			this.selectRecycleOrderList();
+			this.selectReceiptList();
+			this.selectRecycleOrderSellList();
+			this.selectRecycleOrderSellList4();
 		},
-		onShow() {
-			
-		},
+		onShow() {},
 		methods: {
-			// 获取订单信息
-			getOrderListFuc(type) {
-				let that = this;
-				let ordertype = ''
-				switch (that.tab_cur) {
-					case 0:
-						ordertype = 'all';
-						break;
-					case 1:
-						ordertype = 0;
-						break;
-					case 2:
-						ordertype = 1;
-						break;
-					case 3:
-						ordertype = 5;
-						break;
-					case 4:
-						ordertype = 6;
-						break;
+			// 同意并打款
+			onClick_3(receiptId) {
+				agreeReceipt(receiptId).then(res => {
+					if (res.code == 200) {
+						this.selectReceiptList();
+					}
+				});
+			},
+			// 拒绝并退回
+			onClick_2(receiptId) {
+				refuseReceipt(receiptId).then(res => {
+					if (res.code == 200) {
+						this.selectReceiptList();
+					}
+				});
+			},
+			// 查看详情
+			onClick_1(receiptId) {
+				uni.navigateTo({
+					url: '/pages/order/comparisonChart/comparisonChart?receiptId='+receiptId
+				})
+			},
+			// 获取运输列表订单
+			selectRecycleOrderList() {
+				selectRecycleOrderSellList({
+					orderStatusList: ['0']
+				}).then((res) => {
+					if (res.code === 200) {
+						this.loopData0 = res.rows;
+					}
+				});
+			},
+			// 获取质检列表订单
+			selectReceiptList() {
+				selectRecycleOrderSellList({
+					orderStatusList: ['1']
+				}).then((res) => {
+					if (res.code === 200) {
+						this.receiptList = res.rows;
+					}
+				});
+			},
+			// 结算列表
+			selectRecycleOrderSellList() {
+				selectRecycleOrderSellList({
+					orderStatusList: ['2']
+				}).then((res) => {
+					if (res.code === 200) {
+						this.jeisuanList = res.rows;
+					}
+				});
+			},
+			// 退货
+			selectRecycleOrderSellList4() {
+				const data = {
+					'orderStatusList': ['4', '5']
 				}
-				let params = {
-					'page': that.dataList[type].pageindex,
-					'limit': that.pageLimit,
-					'order_status': ordertype
-				}
-				getOrderList(params).then(res => {
-						if (res.code == 1) {
-
-							let data = res.data.list;
-
-							if (data.length > 0 && data.length == that.pageLimit) {
-								that.dataList[type].pageindex = that.dataList[type].pageindex + 1;
-							}
-							if (data.length < that.pageLimit) {
-								this.loadStatus.splice(type, 1, "noMore")
-							} else {
-								this.loadStatus.splice(type, 1, "loadmore")
-							}
-							this.getDataList(type, data);
-						}
-					})
-					.finally(() => {
-						uni.stopPullDownRefresh();
-					})
+				console.log(data)
+				selectRecycleOrderSellList(data).then((res) => {
+					if (res.code === 200) {
+						this.tuihuoList = res.rows;
+					}
+				});
 			},
 			// 页面数据加入
-			getDataList(idx, data) {
-				let that = this;
-				data.map(val => {
-					val['itemId'] = this.$u.guid();
-					that.dataList[idx].list.push(val);
-				})
-				// console.log(that.dataList);
-			},
+			// getDataList(idx, data) {
+			// 	let that = this;
+			// 	data.map((val) => {
+			// 		val['itemId'] = this.$u.guid();
+			// 		that.dataList[idx].list.push(val);
+			// 	});
+			// 	// console.log(that.dataList);
+			// },
 			tabSelect(e) {
 				let index = e.currentTarget.dataset.id;
 				this.tab_cur = index;
 				this.tab_scroll = (index - 1) * 60;
 				uni.pageScrollTo({
 					scrollTop: 0,
-					duration: 0
+					duration: 0,
 				});
-				this.dataList[this.tab_cur].pageindex = 1;
-				this.dataList[this.tab_cur].list = [];
-				this.getOrderListFuc(index);
+				// this.dataList[this.tab_cur].pageindex = 1;
+				// this.dataList[this.tab_cur].list = [];
+				// this.getOrderListFuc(index);
 			},
 			detailsTap(e) {
 				let order_id = e.currentTarget.dataset.id;
 				// console.log(order_id);
 				uni.navigateTo({
-					url: '/pages/order/recycle/details?orderId=' + order_id
+					url: '/pages/order/recycle/details?orderId=' + order_id,
 				});
 			},
 			whereaboutsTap(e) {
 				let order_id = e.currentTarget.dataset.id;
 				// console.log(order_id);
 				uni.navigateTo({
-					url: '/pages/mycenter/whereabouts?orderId=' + order_id
+					url: '/pages/mycenter/whereabouts?orderId=' + order_id,
 				});
 			},
 			//通用跳转
 			baseTap(url) {
 				uni.navigateTo({
-					url: url
+					url: url,
 				});
 			},
 			// 订单系列操作方法
 			// 取消订单
-			cannelorder(id) {
-				
-			},
+			cannelorder(id) {},
 			// 联系客服
 			callKefu() {
 				// this.openQyKefu();
@@ -315,37 +402,30 @@
 			sendgoods(id) {
 				let that = this;
 				uni.navigateTo({
-					url: '../recycling/go-delivery?orderId=' + id
-				})
+					url: '../recycling/go-delivery?orderId=' + id,
+				});
 			},
 			// 物流信息
 			openlogisticsview(id) {
 				uni.navigateTo({
-					url: 'logistics/logisticsview?id=' + id
-				})
+					url: 'logistics/logisticsview?id=' + id,
+				});
 			},
 			// 质检报告
-			goreport(id) {
-
-			},
+			goreport(id) {},
 			// 催付款
-			urgePayment(id) {
-				
-			},
+			urgePayment(id) {},
 			// 确认收款
-			confirmoney(id) {
-				
-			},
+			confirmoney(id) {},
 			// 删除订单
-			deleteorder(id) {
-				
-			}
-		}
-	}
+			deleteorder(id) {},
+		},
+	};
 </script>
 
 <style lang="scss" scoped>
-	
+	@import './common.css';
+	@import './index.rpx.css';
 	.my-box {
 		width: 100%;
 
@@ -357,15 +437,14 @@
 					padding: 0;
 				}
 
-				.cu-list.grid.no-border>.cu-item {
+				.cu-list.grid.no-border > .cu-item {
 					padding-bottom: 9.09rpx;
 				}
 			}
 
-			.cu-list.grid>.cu-item text {
+			.cu-list.grid > .cu-item text {
 				color: inherit;
 			}
-
 		}
 	}
 
@@ -376,7 +455,7 @@
 	.cu-btn.sm {
 		padding: 0 11.9rpx;
 	}
-	.img-view{
+	.img-view {
 		text-align: center;
 	}
 </style>

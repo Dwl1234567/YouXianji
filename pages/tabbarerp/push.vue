@@ -35,7 +35,7 @@
 						<view class="title">客户</view>
 						<view class="cu-capsule radius" @tap="customerTap">
 							<view class="">
-								{{customerInfo.username ? customerInfo.username :'请选择客户'}}
+								{{customerInfo.clientName ? customerInfo.clientName :'请选择客户'}}
 								<text class="cuIcon-right"></text>
 							</view>
 						</view>
@@ -157,7 +157,7 @@
 						<view class="title">客户</view>
 						<view class="cu-capsule radius" @tap="customerTap">
 							<view class="picker">
-								{{customerInfo.username ? customerInfo.username :'请选择客户'}}
+								{{customerInfo.clientName ? customerInfo.clientName :'请选择客户'}}
 								<text class="lg cuIcon-right text-grey"></text>
 							</view>
 						</view>
@@ -771,17 +771,18 @@
 				let that = this;
 				console.log(that.TabCur)
 				if(that.TabCur == 0){
-					if(!that.customerInfo.id){
-						return that.$u.toast('请选择客户');
-					}
-					if(that.goodsList.length <= 0){
-						return that.$u.toast('请录入货品');
-					}
-					if(that.imgList.length <= 0 && !that.switchA){
-						return that.$u.toast('请上传付款凭证');
-					}
+					// if(!that.customerInfo.id){
+					// 	return that.$u.toast('请选择客户');
+					// }
+					// if(that.goodsList.length <= 0){
+					// 	return that.$u.toast('请录入货品');
+					// }
+					// if(that.imgList.length <= 0 && !that.switchA){
+					// 	return that.$u.toast('请上传付款凭证');
+					// }
 					let promisearr = [];
 					that.imgList.forEach((item,index)=>{
+						console.log(item)
 						if(item.indexOf('shousifang') == -1){
 							promisearr.push(raiseUpload(item));
 						}else{

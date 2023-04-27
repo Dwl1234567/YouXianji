@@ -281,6 +281,12 @@
 							badge: 0,
 							name: '盘点记录',
 						},
+						{
+							cuIcon: 'icon-checksheet',
+							color: 'red',
+							badge: 0,
+							name: '仓库管理',
+						},
 					],
 				},
 				{
@@ -562,6 +568,9 @@
 					}
 					if (index == 3) {
 						var value = 'inventory/check/list';
+					}
+					if (index == 4) {
+						var value = 'warehouse/quality';
 					}
 				}
 				if (key == 2) {
