@@ -1151,6 +1151,15 @@
             "style" : {}
         }
         
+        ,{
+            "path" : "pages/erp/diandianUnpload/diandianUnpload",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "开单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
     "tabBar" : {
         "color" : "#646464",

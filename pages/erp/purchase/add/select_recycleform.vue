@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="cu-form-group">
 			<view class="title">标题</view>
-			<input placeholder="请输入产品标题" v-model="formList.title" name="input"></input>
+			<input placeholder="请输入产品标题" v-model="formList.title" name="input" disabled="true"></input>
 		</view>
 		
 		<view class="cu-bar bg-white">
@@ -105,7 +105,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">回收价</view>
-			<input placeholder="请输入回收价" v-model="ActualreceiptsAll" name="input"></input>
+			<input placeholder="请输入回收价" v-model="ActualreceiptsAll" name="input" disabled="true"></input>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">调拨价</view>
@@ -136,9 +136,29 @@
 				<text class="margin-left-xs text-sm"></text>
 			</view>
 		</view>
-		<view style="position: relative;">
-			<LiFilter :isType="0" :alias="['分类','品牌','系列','机型']" @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1" :isFixtop="false" ></LiFilter>
+		<view class="bg-white padding-lr">
+			<view class="">
+				仓库
+			</view>
+			<view class="canngku flex">
+				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == 0" @tap="checkHouseId(item.warehouseId)">
+					{{item.warehouseName}}
+				</view>	
+			</view>	
+			
+			<view class="">
+				分仓
+			</view>
+			<view class="canngku flex">
+				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == parentId" @tap="checkHouseFenId(item.warehouseId)">
+					{{item.warehouseName}}
+				</view>	
+			</view>	
+			
 		</view>
+		<!-- <view style="position: relative;">
+			<LiFilter :isType="0" :alias="['分类','品牌','系列','机型']" @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1" :isFixtop="false" ></LiFilter>
+		</view> -->
 		
 
 		<view class="cu-bar bg-white">
@@ -164,23 +184,23 @@
 						<view class="h-td">属性</view>
 						<view class="h-td">备注</view>
 					</view>
-					<block v-for="(item,index) in nav_list" :key="index">
-						<view class="process-box" v-show="tab_cur == index">
-							<view class="h-tr h-tr-2" v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex">
-							  <view class="h-td">
+					<!-- <block v-for="(item,index) in nav_list" :key="index"> -->
+						<view class="process-box">
+							<view class="h-tr h-tr-2" v-for="(recyitem,recyindex) in qualityInfoList" :key="recyindex" v-if="recyitem.indexs == tab_cur+1">
+							  <view class="h-td" >
 								<view class="text-bold">
-								  {{recyitem.name}}
+								  {{recyitem.key}}
 								</view>
 								<view class="">
 								  {{recyitem.value}}
 								</view>
 							  </view>
 							  <view class="h-td">
-								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyitem.key)" :value="attrRemark[recyitem.key]"></input>
+								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyindex)" :value="recyitem.ramke"></input>
 							  </view>
 							</view>
 						</view>
-					</block>  
+					<!-- </block>  -->
 				</view>
 			</view>
 		</view>
@@ -223,7 +243,7 @@
 		erpProductGetBasicData,
 		erpclickattredit
 	} from "@/api/erpapi.js"
-	import { getInfoByRecycleOrderId } from '@/api/erp.js'
+	import { getInfoByRecycleOrderId, warehouseList, empCreateRecycleForm } from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
 	//import SelectData from '@/components/RecyclingList/SelectData.vue';
@@ -236,6 +256,10 @@
 		},
 		data() {
 			return {
+				warehouseId: null,
+				parentId: null,
+				warehouseLists: [],
+				qualityInfoList: [],
 				formList: [],
 				recycleOrderId: 0,
 				attrRemark:{},
@@ -307,8 +331,9 @@
 			// this.editid = options.id;
 			// this.erppurchaseclickattrviewFuc(options.id)
 			// this.erpProductGetBasicDataFuc();
+			this.guidePrice = options.forecastMoney;
 			this.getInfoByRecycleOrderId();
-			
+			this.warehouseList()
 		},
 		onShow() {
 
@@ -321,76 +346,96 @@
 			});
 		},
 		methods: {
+			// 选择分仓
+			checkHouseFenId(e) {
+				this.warehouseId = e;
+			},
+			// 选择仓库
+			checkHouseId(e) {
+			    this.parentId = e;	
+			},
+			// 仓库列表
+			warehouseList() {
+			 	warehouseList().then(res => {
+					if (res.code == 200) {
+						this.warehouseLists = res.rows;
+					}
+				})
+			},
 			// 查看详情
 			getInfoByRecycleOrderId() {
 			    getInfoByRecycleOrderId(this.recycleOrderId).then(res => {
 					this.formList = res.data;
+					this.goodssn = res.data.deviceNo;
+					this.ActualreceiptsAll = res.data.recyclePrice;
+					this.qualityInfoList = JSON.parse(res.data.qualityInfoList);
 				});
 			},
 			// 提交
 			erpclickattreditFuc(){
-				if(!this.goodssn){
-					return this.$u.toast('请输入SN!');
-				}
-				if(!this.diaobojianum){
-					return this.$u.toast('请输入调拨价!');
-				}
-				if(!this.xiaoshoujianum){
-					return this.$u.toast('请输入销售价!');
-				}
-				if(!this.category_id){
-					return this.$u.toast('请选择SKU!');
-				}
-				if(!this.warehouse_id){
-					return this.$u.toast('请选择仓库!');
-				}
+				// if(!this.goodssn){
+				// 	return this.$u.toast('请输入SN!');
+				// }
+				// if(!this.diaobojianum){
+				// 	return this.$u.toast('请输入调拨价!');
+				// }
+				// if(!this.xiaoshoujianum){
+				// 	return this.$u.toast('请输入销售价!');
+				// }
+				// if(!this.category_id){
+				// 	return this.$u.toast('请选择SKU!');
+				// }
+				// if(!this.warehouse_id){
+				// 	return this.$u.toast('请选择仓库!');
+				// }
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
 				
-				
 				let paramsData={
-					id:this.editid,
-					name:this.goodstitle,
-					sn:this.goodssn,
-					paytype:this.ActualreceiptsJson,
-					cost_price:this.ActualreceiptsAll,
-					sales_price:this.xiaoshoujianum,
-					peer_price:this.diaobojianum,
-					images:this.imgParams.join(','),
-					colour:this.colorvalue,
-					warehouse_id:this.warehouse_id,
-					partition_id:this.partition_id,
-					category_id:this.category_id,
-					brand_id:this.brand_id,
-					series_id:this.series_id,
-					machine_id:this.machine_id,
-					attr_remark:JSON.stringify(this.attrRemark),
-					is_ok:this.switchA?1:0
+					deviceId: this.formList.deviceId,
+					deviceNo: this.goodssn,
+					recycleOrderId: this.recycleOrderId,
+					recyclePrice: this.ActualreceiptsAll + '',
+					allotPrice: this.diaobojianum,
+					sellPrice: this.xiaoshoujianum,
+					warehouseId: this.warehouseId,
+					directSellAble: this.switchA ? 1 : 0,
+					qualityInfo: JSON.stringify(uni.getStorageSync('Priceprams')),
+					qualityInfoList: JSON.stringify(this.qualityInfoList),
+					recycleGuidePrice: this.guidePrice,
+					modelId: this.formList.modelId,
+					recycleFormId: this.formList.recycleFormId,
+					title: this.formList.title
 				}
-			
-				// return;
-				erpclickattredit(paramsData).then(res=>{
-					this.$u.toast('提交成功！')
-					// uni.redirectTo({
-					// 	url:'/pages/tabbarerp/push?huishouid='+res.data
-					// })
-					// uni.$emit('hsgoodsId',res.data)
-					let selectInfo = {
-						hsgoods_id: res.data
+				console.log(paramsData);
+				empCreateRecycleForm(paramsData).then(res => {
+					if (res.code == 200) {
+						this.$u.toast('提交成功！')
 					}
-					// 1. 获取当前页面栈实例（此时最后一个元素为当前页）
-					let pages = getCurrentPages()
-					console.log('pages',pages);
-					// 2. 上一页面实例
-					// 注意是length长度，所以要想得到上一页面的实例需要 -2
-					// 若要返回上上页面的实例就 -3，以此类推
-					let prevPage = pages[pages.length - 2]
-					// 3. 给上一页面实例绑定getValue()方法和参数（注意是$vm）
-					prevPage.$vm.getValue(selectInfo)
-					// 4. 返回上一页面
-					uni.navigateBack({
-						delta: 1
-					})
-				})
+				});
+				// return;
+				// erpclickattredit(paramsData).then(res=>{
+				// 	this.$u.toast('提交成功！')
+				// 	// uni.redirectTo({
+				// 	// 	url:'/pages/tabbarerp/push?huishouid='+res.data
+				// 	// })
+				// 	// uni.$emit('hsgoodsId',res.data)
+				// 	let selectInfo = {
+				// 		hsgoods_id: res.data
+				// 	}
+				// 	// 1. 获取当前页面栈实例（此时最后一个元素为当前页）
+				// 	let pages = getCurrentPages()
+				// 	console.log('pages',pages);
+				// 	// 2. 上一页面实例
+				// 	// 注意是length长度，所以要想得到上一页面的实例需要 -2
+				// 	// 若要返回上上页面的实例就 -3，以此类推
+				// 	let prevPage = pages[pages.length - 2]
+				// 	// 3. 给上一页面实例绑定getValue()方法和参数（注意是$vm）
+				// 	prevPage.$vm.getValue(selectInfo)
+				// 	// 4. 返回上一页面
+				// 	uni.navigateBack({
+				// 		delta: 1
+				// 	})
+				// })
 			},
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {
@@ -469,9 +514,7 @@
 				
 			},
 			inputData(event,dataValue){
-				console.log('inputData',event.target.value,dataValue);
-				this.attrRemark[dataValue] = event.target.value;
-				console.log(this.attrRemark);
+				this.qualityInfoList[dataValue].remark = event.target.value
 			},
 			groupChange(n) {
 				console.log('groupChange', n);
@@ -616,6 +659,13 @@
 </script>
 
 <style lang="scss">
+	.cangkuItem{
+		height: 40rpx;
+		background: #afafb0;
+		line-height: 40rpx;
+		padding-left: 10rpx;
+		padding-right: 10rpx;
+	}
 	.cu-avatar {
 		background-color: #ccc;
 	}

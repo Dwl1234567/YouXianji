@@ -96,3 +96,27 @@ export function getInfoByRecycleOrderId(data) {
 export function updateDeviceNo(data) {
 	return request.post('/yxj/app/recycle/updateDeviceNo' , data,{'noLogin':true});
 }
+
+/**
+ * 创建回收订单
+ * 
+ */
+export function empCreateRecycleForm(data) {
+	return request.post('/yxj/app/recycleForm/empCreateRecycleForm' , data,{'noLogin':true});
+}
+
+/**
+ * 审上架列表
+ * 
+ */
+export function leaderSelectRecycleForm(data) {
+	return request.get('/yxj/app/recycleForm/leaderSelectRecycleForm' , data,{'noLogin':true});
+}
+
+/**
+ * 员工回收单
+ * 
+ */
+export function empSelectRecycleForm(data) {
+	return request.get('/yxj/app/recycleForm/empSelectRecycleForm' , data,{'noLogin':true});
+}

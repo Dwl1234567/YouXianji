@@ -191,7 +191,6 @@
 			};
 		},
 		onLoad(option) {
-			// console.log(this.$httpImage);
 			this.recycleOrderId = option.recycleOrderId;
 			this.userId = uni.getStorageSync('userinfo').userId;
 			this.empSelectRecycleOrderDetail(option.recycleOrderId);
@@ -199,7 +198,6 @@
 		methods: {
 			empSelectRecycleOrderDetail(recycleOrderId) {
 				empSelectRecycleOrderDetail(recycleOrderId).then((res) => {
-					console.log(res);
 					if (res.code == 200) {
 						const { logisticsInfo, qualityInfo, recycleOrder } = res.data;
 						this.recycleOrder = recycleOrder;
@@ -231,7 +229,6 @@
 				uni.setClipboardData({
 					data: text,
 					success: function () {
-						// console.log('success');
 					},
 				});
 			},

@@ -63,8 +63,9 @@
 
 	import _tool from '@/utils/tools.js'; //工具函数
 	import {
-		getShangjiaList,erpShangjiaCheck
-	} from "@/api/erpapi.js"
+		leaderSelectRecycleForm
+	} from "@/api/erp.js"
+	
 	export default {
 		components: {
 			barSearchTitle,
@@ -97,6 +98,7 @@
 				pageLimit: 10,
 				snNumber: '',
 				storeName: '',
+				storeId: '',
 				filtertopnum: '90', //筛选条高度
 			}
 		},
@@ -104,6 +106,8 @@
 			// #ifdef APP-PLUS
 			this.filtertopnum = 10;
 			// #endif
+			console.log(uni.getStorageSync('userinfo'))
+			this.storeId = uni.getStorageSync('userinfo').storeId
 			this.erpusertaskproductFuc();
 			
 		},
@@ -126,19 +130,19 @@
 			erpusertaskproductFuc() {
 				let that = this;
 				let paramsData = {
-					'page': this.pageIndex,
-					'pagelist': this.pageLimit,
-					'keyword': this.storeName
+					'pageNum': this.pageIndex,
+					'pageSize': this.pageLimit,
+					'storeId': this.storeId
 				}
-				getShangjiaList(paramsData).then(res => {
-					let data = res.data.data;
+				leaderSelectRecycleForm(paramsData).then(res => {
+					let data = res.rows;
 					if (that.ifBottomRefresh) {
 						that.dataList = that.dataList.concat(data)
 					} else {
 						that.dataList = data
 					}
 					that.ifBottomRefresh = false
-					that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+					that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 				})
 			},
 			searchTap(e) {

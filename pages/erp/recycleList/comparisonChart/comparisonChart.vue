@@ -130,7 +130,20 @@
 							<view
 								v-if="checkInformation(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)"
 							>
-								123
+							<!-- {{$httpImage +phoneImgArr[index].photo}} -->
+								<view class='cu-avatar xl radius' :style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
+									<view class="img"  @tap="viewImg(phoneImgArr,index)">
+										<text class="text">
+											
+										</text>
+									</view>
+									<!-- {{phoneImgArr[index].photo == ''}} -->
+									<view class='cu-tag badge' :style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"  @tap="uploadImg(index)">
+										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
+											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+										</view>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -158,8 +171,20 @@
 							<text class="text_36">{{Pricepramitems[index].value}}</text>
 						</view>
 						<view class="box_10 flex-col">
-							<view v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
-								123
+							<view v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
+								<view class='cu-avatar xl radius' :style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
+									<view class="img"  @tap="viewImg(phoneImgArr,index)">
+										<text class="text">
+											
+										</text>
+									</view>
+									<!-- {{phoneImgArr[index].photo == ''}} -->
+									<view class='cu-tag badge' :style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"  @tap="uploadImg(index)">
+										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
+											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+										</view>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -188,7 +213,19 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
-								123
+								<view class='cu-avatar xl radius' :style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
+									<view class="img"  @tap="viewImg(phoneImgArr,index)">
+										<text class="text">
+											
+										</text>
+									</view>
+									<!-- {{phoneImgArr[index].photo == ''}} -->
+									<view class='cu-tag badge' :style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"  @tap="uploadImg(index)">
+										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
+											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+										</view>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -217,7 +254,19 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
-								123
+								<view class='cu-avatar xl radius' :style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
+									<view class="img"  @tap="viewImg(phoneImgArr,index)">
+										<text class="text">
+											
+										</text>
+									</view>
+									<!-- {{phoneImgArr[index].photo == ''}} -->
+									<view class='cu-tag badge' :style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"  @tap="uploadImg(index)">
+										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
+											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+										</view>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -233,15 +282,21 @@
 	</view>
 </template>
 <script>
+	import {
+		upload
+	} from "@/api/upload.js";
 	import { empCreateReceipt } from '@/api/retrieve.js';
 	export default {
 		data() {
 			return {
+				uploadImgtype: null,
+				addpicicon:"none",
 				priceId: 0,
 				modelName: '',
 				Priceprams: {},
 				receiptPrice: null,
 				data: [1, 2, 3],
+				phoneImgArr: [],
 				loopData0: [
 					{
 						lanhuBg0:
@@ -317,20 +372,71 @@
 			this.modelName = uni.getStorageSync('modelName')
 			this.Priceprams = uni.getStorageSync('Priceprams')
 			this.qualityInfoList = uni.getStorageSync('qualityInfoList');
-			console.log(this.qualityInfoList)
 			this.Pricepramitems = uni.getStorageSync('Pricepramitems');
+			this.Pricepramitems.map(item => {
+				this.phoneImgArr.push({
+					propKeyId: item.keyId,
+					photo: ''
+				})
+			})
+			console.log(this.phoneImgArr);
 			this.qualityInfo = uni.getStorageSync('qualityInfo');
 			this.recycleOrderId = uni.getStorageSync('recycleOrderId');
 		},
 		methods: {
+			uploadImg(type) {
+				console.log(this.phoneImgArr[type], '123123123');
+				if (this.phoneImgArr[type].photo == '') {
+					let that = this;
+					that.uploadImgtype = type;
+					uni.navigateTo({
+						url:'/pages/idphoto/idphoto'
+					})
+				} else {
+					console.log(222);
+					this.deleteImg(type)
+				}
+				
+			},
+			//设置图片
+			setImage(e) {
+				let that = this;
+				console.log(e);
+				//显示在页面
+				//this.imagesrc = e.path;
+				console.log(e.path);
+				let Imgdata = [];
+				Imgdata.push(e.path);
+				// console.log(Imgdata);
+				upload(Imgdata).then(res => {
+					console.log(res, '22222222222222222222222')
+					// that.$set(that.phoneImgArr, that.uploadImgtype, res.fileName);
+					// that.imgParams.push(res.fileName);
+					that.phoneImgArr[that.uploadImgtype].photo = res.fileName;
+					console.log(that.phoneImgArr, '33333')
+				})
+			},
+			//查看图片
+			viewImg(url,index){
+				//需要分割url并去除空数组
+				if(url){
+					if(url[index]){
+						uni.previewImage({
+							current: index,
+							urls: url
+						})
+					}
+					//this.$u.toast(url); 
+				}else{
+					//this.$u.toast("无图"); 
+				}
+			},
 			checkInformation(left, right, index) {
-				console.log(left, right, index);
 				this.$nextTick(() => {
 					if (left === right) {
 						return false;
 					} else {
 						this.optionData.series[0].data[0].value[0] = this.optionData.series[0].data[0].value[0] + 1;
-						console.log(this.optionData.series[0].data[0].value[0]);
 						return true;
 					}
 				});
@@ -342,7 +448,6 @@
 				}
 			},
 			checkFineness(left, right) {
-				console.log(1)
 				this.$nextTick(() => {
 					if (left === right) {
 						return false;
@@ -375,7 +480,12 @@
 				}
 			},
 			onClick_1() {
-				console.log(this.priceId,this.receiptPrice)
+				let receiptQualityPhotoList = []
+				this.phoneImgArr.map(item => {
+					if (item.photo !== '') {
+						receiptQualityPhotoList.push(item)
+					}
+				})
 				empCreateReceipt({
 					basicPriceId: this.priceId,
 					receiptGuidePrice: Number(this.forecastMoney),
@@ -383,7 +493,7 @@
 					qualityInfoList: JSON.stringify(this.Pricepramitems),
 					qualityInfo: JSON.stringify(this.Priceprams),
 					recycleOrderId: this.recycleOrderId,
-					receiptQualityPhotoList: this.receiptQualityPhotoList,
+					receiptQualityPhotoList: receiptQualityPhotoList,
 					receiver: uni.getStorageSync('createById'),
 					deviceId: uni.getStorageSync('deviceId'),
 				}).then((res) => {

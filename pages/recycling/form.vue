@@ -134,7 +134,7 @@
 			</view> -->
 			<view class="cu-bar bg-white">
 				<view class='action'>
-					<text class='cuIcon-title text-red'></text>
+					<!-- <text class='cuIcon-title text-red'></text> -->
 					<text class="title">序列号/IMEI</text>
 					<text class="margin-left-xs text-sm">
 						<input placeholder="请输入设备序列号/IMEI" name="input" v-model="deviceNo"></input>
@@ -145,7 +145,7 @@
 			
 			<view class="cu-bar bg-white">
 				<view class='action'>
-					<text class='cuIcon-title text-red'></text>
+					<!-- <text class='cuIcon-title text-red'></text> -->
 					<text class="title">机器图片</text>
 					<text class="margin-left-xs text-sm">(添加照片，可提高回收效率哟)</text>
 				</view>
@@ -153,13 +153,14 @@
 			<view class="pic padding flex justify-between align-center">
 				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[0] ?  addpicicon : 'url('+ http + phoneImgArr[0]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,0)">
-						<text class="text">正面</text>7
+						<text class="text">正面</text>
 					</view>
 					<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[0] ? '#111f3a':'#dd514c'}"  @tap="uploadImg(0)">
 						<view :class="phoneImgArr[0] ? 'translate45':''">
 							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 						</view>
 					</view>
+					<!-- <u-upload :action="action" :file-list="fileList" ></u-upload> -->
 				</view>
 				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[1] ?  addpicicon : 'url('+ http +phoneImgArr[1]+')' }">
 					<view class="img"  @tap="viewImg(phoneImgArr,1)">
@@ -303,6 +304,8 @@
 		},
 		data() {
 			return {
+				action: 'http://192.168.2.36:8080/common/upload',
+				fileList: [],
 				priceId: 0,
 				storeAddress: '',
 				forecastMoney: '',

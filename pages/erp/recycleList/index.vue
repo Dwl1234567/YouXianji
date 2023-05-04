@@ -45,7 +45,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="group_5 flex-row justify-between">
+					<view class="group_5 flex-row justify-between" v-if="item.orderStatus != 7">
 						<button class="button_2 flex-col" @click="onClick_2(item)" v-if="!item.receiver">
 							<text class="text_16">接入</text>
 						</button>
@@ -65,7 +65,7 @@
 						<button
 							class="button_3 flex-col"
 							v-else-if="item.orderStatus == 3"
-							@tap="kaidan(item.recycleOrderId)"
+							@tap="kaidan(item)"
 						>
 							<text class="text_17">开单</text>
 						</button>
@@ -252,9 +252,9 @@
 		},
 		methods: {
 			// 开单
-			kaidan(recycleOrderId) {
+			kaidan(item) {
 				uni.navigateTo({
-					url: '/pages/erp/purchase/add/select_recycleform?recycleOrderId='+ recycleOrderId
+					url: '/pages/erp/diandianUnpload/diandianUnpload?recycleOrderId='+ item.recycleOrderId + '&modelId=' + item.modelId
 				})
 			},
 			selectUpimg(e) {
@@ -416,7 +416,7 @@
 				if (e == 1) {
 					this.queryPage.orderStatusList = ['0'];
 				} else if (e == 2) {
-					this.queryPage.orderStatusList = ['1', '2', '3'];
+					this.queryPage.orderStatusList = ['1', '2', '3', '7'];
 				} else if (e == 3) {
 					this.queryPage.orderStatusList = ['4', '5'];
 				} else {
