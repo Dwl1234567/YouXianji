@@ -455,7 +455,9 @@
 			}
 		}
 	}
-
+	page{
+	  background-color: rgba(240, 240, 240, 1);
+	}
 	.my-box.show {
 		display: block;
 	}

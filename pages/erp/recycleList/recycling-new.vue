@@ -8,8 +8,9 @@
 			<view class="header">
 				<!--{{PhoneName}}-->
 				<view class="goods-list-view">
-					<view v-if="goods_info.image" class="cu-avatar lg radius"
-						:style="[{backgroundImage:'url('+ goods_info.image +')'}]" />
+					<image :src="$httpImage + modelPhoto" mode="aspectFit" class="cu-avatar lg radius"></image>
+					<!-- <view class="cu-avatar lg radius"
+						:style="[{backgroundImage:'url('+ modelPhoto +')'}]" /> -->
 					<view class="goods-info-view">
 						<view class="text-black text-cut name">{{goods_info.name}}</view>
 						<view class="tags">
@@ -113,6 +114,7 @@
 		},
 		data() {
 			return {
+				modelPhoto: '',
 				priceId: 0,
 				allPrice:0,
 				basicPrice: [],
@@ -152,6 +154,8 @@
 			this.goodsId = option.modelId;
 			this.modelName = option.modelName
 			this.type = option.type;
+			console.log(option.modelPhoto)
+			this.modelPhoto = option.modelPhoto
 			this.getGodsgoodsDetail();
 		},
 		onShow() {

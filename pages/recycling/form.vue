@@ -536,15 +536,16 @@
 			viewImg(url,index){
 				//需要分割url并去除空数组
 				if(url){
+					const urll = url.map(item => {
+						return this.$httpImage + item
+					})
 					if(url[index]){
 						uni.previewImage({
 							current: index,
-							urls: url
+							urls: urll
 						})
 					}
-					//this.$u.toast(url); 
 				}else{
-					//this.$u.toast("无图"); 
 				}
 			},
 			uploadImg(type) {

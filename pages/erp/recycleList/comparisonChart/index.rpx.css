@@ -77,7 +77,7 @@
 
 .block_2 {
   border-radius: 6px;
-  background-image: url(./e101638c68c5414d865770551b5ecc0b_mergeImage.png);
+  background: url(./e101638c68c5414d865770551b5ecc0b_mergeImage.png) 0 0px repeat-y black;
   position: relative;
   background-repeat: no-repeat;
   margin: -1.9083969465648856rpx 26.717557251908396rpx 0 24.80916030534351rpx;
@@ -682,6 +682,7 @@
 
 .text-group_4 {
   margin-top: 1.9083969465648856rpx;
+  justify-content: center;
 }
 
 .text_33 {
@@ -708,6 +709,7 @@
 
 .text-group_5 {
   margin-top: 1.9083969465648856rpx;
+  justify-content: center;
 }
 
 .text_35 {

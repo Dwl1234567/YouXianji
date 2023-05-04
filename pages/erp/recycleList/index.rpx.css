@@ -273,7 +273,7 @@
   font-size: 22.900763358778626rpx;
   font-family: PingFangSC-Medium;
   font-weight: 500;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   line-height: 32.44274809160305rpx;
 }
@@ -317,8 +317,9 @@
 .group_5 {
   height: 50rpx;
   position: relative;
-  width: 314.8854961832061rpx;
-  margin: 30.53435114503817rpx 19.083969465648856rpx 0 330.1526717557252rpx;
+	justify-content: flex-end;
+  /* width: 314.8854961832061rpx;
+  margin: 30.53435114503817rpx 0 0 330.1526717557252rpx; */
 }
 
 .button_2 {
@@ -339,8 +340,10 @@
 }
 
 .button_3 {
-  position: absolute;
-  right: 0px;
+	margin-left: 10rpx;
+	min-width: 143rpx;
+  /* position: absolute;
+  right: 0px; */
   background-image: linear-gradient(
     90deg,
     rgba(255, 104, 104, 1) 0,
@@ -356,7 +359,7 @@
   color: rgba(255, 255, 255, 1);
   font-size: 24.80916030534351rpx;
   font-weight: NaN;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   line-height: 34.35114503816794rpx;
 }

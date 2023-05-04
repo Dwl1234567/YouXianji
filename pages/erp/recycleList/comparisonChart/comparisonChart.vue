@@ -81,12 +81,17 @@
 				</text>
 				<view class="box_7 flex-row justify-between">
 					<view class="list_1 flex-row">
-						<view
+						<!-- <view
 							class="list-items_1 flex-col"
-							:style="{ background: item.lanhuBg0 }"
-							v-for="(item, index) in loopData0"
+							:style="{ 'background': item }"
+							v-for="(item, index) in urls"
 							:key="index"
-						></view>
+						></view> -->
+						<scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
+							<view class="scroll-view-item_H demo-text-1" v-for="(item, index) in urls" @tap="viewImgs(urls, index)">
+								<image :src="item" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
+							</view>
+						</scroll-view>
 					</view>
 					<image
 						class="image_5"
@@ -289,6 +294,7 @@
 	export default {
 		data() {
 			return {
+				urls: [],
 				uploadImgtype: null,
 				addpicicon:"none",
 				priceId: 0,
@@ -361,6 +367,7 @@
 			};
 		},
 		onLoad(option) {
+			this.urls = uni.getStorageSync('imgList');
 			this.priceId = option.priceId;
 			// 指导价
 			this.forecastMoney = option.forecastMoney;
@@ -401,23 +408,15 @@
 			//设置图片
 			setImage(e) {
 				let that = this;
-				console.log(e);
 				//显示在页面
-				//this.imagesrc = e.path;
-				console.log(e.path);
 				let Imgdata = [];
 				Imgdata.push(e.path);
-				// console.log(Imgdata);
 				upload(Imgdata).then(res => {
-					console.log(res, '22222222222222222222222')
-					// that.$set(that.phoneImgArr, that.uploadImgtype, res.fileName);
-					// that.imgParams.push(res.fileName);
 					that.phoneImgArr[that.uploadImgtype].photo = res.fileName;
-					console.log(that.phoneImgArr, '33333')
 				})
 			},
 			//查看图片
-			viewImg(url,index){
+			viewImgs(url,index){
 				//需要分割url并去除空数组
 				if(url){
 					if(url[index]){
@@ -426,9 +425,23 @@
 							urls: url
 						})
 					}
-					//this.$u.toast(url); 
 				}else{
-					//this.$u.toast("无图"); 
+				}
+			},
+			//查看图片
+			viewImg(url,index){
+				//需要分割url并去除空数组
+				if(url){
+					const urll = url.map(item => {
+						return this.$httpImage + item
+					})
+					if(url[index]){
+						uni.previewImage({
+							current: index,
+							urls: urll
+						})
+					}
+				}else{
 				}
 			},
 			checkInformation(left, right, index) {
@@ -546,5 +559,23 @@
 	.echarts {
 		width: 90%;
 		height: 600rpx;
+	}
+	.page-section-spacing {
+		margin-top: 60rpx;
+	}
+	.scroll-view_H {
+		white-space: nowrap;
+	}
+	.scroll-view-item {
+		height: 300rpx;
+	}
+	.scroll-view-item_H {
+		margin-left: 20rpx;
+		display: inline-block;
+		/* width: 100%; */
+		/* height: 300rpx; */
+	}
+	.scroll-view-item_H:first-child {
+		margin-left: 0px;
 	}
 </style>
