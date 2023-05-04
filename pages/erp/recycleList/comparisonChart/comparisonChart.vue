@@ -10,11 +10,11 @@
 		</view>
 		<view class="block_2 flex-col">
 			<view class="group_1 flex-row">
-				<view class="group_2 flex-col"></view>
+				<!-- <view class="group_2 flex-col"></view> -->
+				<text class="text_71">验机评估报告</text>
 			</view>
 			<view class="group_3 flex-row">
 				<view class="box_1 flex-col" >
-					<view class="group_4 flex-col"></view>
 					<text class="text_4">隐私清除&nbsp;|&nbsp;专业验机&nbsp;|&nbsp;整机清洁</text>
 				</view>
 				<view class="box_2 flex-col"></view>
@@ -272,7 +272,7 @@
 					</view>
 				</view>
 			</view>
-			<text class="text_71">验机评估报告</text>
+			
 		</view>
 		<view class="block_4 flex-col">
 			<button class="button_1 flex-col" @click="onClick_1">

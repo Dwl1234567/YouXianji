@@ -171,29 +171,46 @@
 
 .text-wrapper_2 {
   width: 458.01526717557255rpx;
-  margin: 17.17557251908397rpx 0 0 13.358778625954198rpx;
+  margin: 17.17557251908397rpx 0 0 0;
 }
 
 .text_8 {
+	border: 1px solid #FF0606;
+	flex: 1;
   overflow-wrap: break-word;
   color: rgba(255, 6, 6, 1);
   font-size: 22.900763358778626rpx;
   font-weight: NaN;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   line-height: 24.80916030534351rpx;
 }
 
 .text_9 {
+	margin-left: 5rpx;
+  flex: 1;
   overflow-wrap: break-word;
   color: rgba(57, 201, 74, 1);
   font-size: 22.900763358778626rpx;
   font-weight: NaN;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   line-height: 24.80916030534351rpx;
 }
-
+.text_110{
+	border: 1px solid #006BFF;
+		flex: 1;
+	overflow-wrap: break-word;
+	color: #006BFF;
+	font-size: 22.900763358778626rpx;
+	font-weight: NaN;
+	text-align: center;
+	white-space: nowrap;
+	line-height: 24.80916030534351rpx;
+}
+.text_9 view {
+	border: 1px solid #39C94A;
+}
 .tag_1 {
   border-radius: 2px;
   width: 251.9083969465649rpx;

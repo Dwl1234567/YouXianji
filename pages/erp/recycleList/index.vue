@@ -470,4 +470,10 @@
 <style lang="css">
 	@import './common.css';
 	@import './index.rpx.css';
+	page{
+	  background-color: rgba(240, 240, 240, 1);
+	}
+	.block_3{
+		width: 100vw;
+	}
 </style>

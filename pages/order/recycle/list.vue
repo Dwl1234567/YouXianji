@@ -33,20 +33,20 @@
 											<text class="text_6"> {{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_8" >回收预估价: {{item.firstPrice}}</text>
-												<text class="text_9" v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.transactionPrice - item.firstPrice}}</text>
+												<text class="text_8" ><text>回收预估价: {{item.firstPrice}}</text></text>
+												<text class="text_9" ><view v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.transactionPrice - item.firstPrice}}</view></text>
+											</view>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_110" ><text>回收价: {{item.transactionPrice}}</text></text>
+												<text class="text_9" ></text>
 											</view>
 										</view>
-										<view class="tag_1 flex-col"></view>
+										<!-- <view class="tag_1 flex-col"></view> -->
 										<view class="tag_2 flex-col">
 											<text class="text_10">{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}} </text>
 										</view>
 									</view>
-									<view class="tag_3 flex-col"></view>
-								</view>
-								<view class="block_2 flex-row">
-									<text class="text_11" v-html="">回收价{{item.transactionPrice}}</text>
-									<view class="tag_4 flex-col"></view>
+									<!-- <view class="tag_3 flex-col"></view> -->
 								</view>
 								<view class="block_3 flex-row">
 									<button class="button_1 flex-col" @click="onClick_1(item.receiptId)">
@@ -85,15 +85,15 @@
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
 												<text class="text_8" >回收预估价: {{item.firstPrice}}</text>
-												<!-- <text class="text_9" >加价 {{item.receiptPrice - item.receiptGuidePrice}}</text> -->
+												<text class="text_9" ></text>
 											</view>
 										</view>
-										<view class="tag_1 flex-col"></view>
+										<!-- <view class="tag_1 flex-col"></view> -->
 										<view class="tag_2 flex-col">
 											<text class="text_10">{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}} </text>
 										</view>
 									</view>
-									<view class="tag_3 flex-col"></view>
+									<!-- <view class="tag_3 flex-col"></view> -->
 								</view>
 								<view class="block_3 flex-row">
 									<!-- <button class="button_1 flex-col" @click="onClick_1(item.receiptId)">
@@ -131,21 +131,25 @@
 											<text class="text_6"> {{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_8" >回收预估价: {{item.firstPrice}}</text>
-												<text class="text_9" v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.transactionPrice - item.firstPrice}}</text>
+												<text class="text_8" ><text>回收预估价: {{item.firstPrice}}</text></text>
+												<text class="text_9" ><view v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.transactionPrice - item.firstPrice}}</view></text>
+											</view>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_110" ><text>回收价: {{item.transactionPrice}}</text></text>
+												<text class="text_9" ></text>
 											</view>
 										</view>
-										<view class="tag_1 flex-col"></view>
+										<!-- <view class="tag_1 flex-col"></view> -->
 										<view class="tag_2 flex-col">
 											<text class="text_10">{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}} </text>
 										</view>
 									</view>
-									<view class="tag_3 flex-col"></view>
+									<!-- <view class="tag_3 flex-col"></view> -->
 								</view>
-								<view class="block_2 flex-row">
+								<!-- <view class="block_2 flex-row">
 									<text class="text_11" v-html="">回收价{{item.transactionPrice}}</text>
 									<view class="tag_4 flex-col"></view>
-								</view>
+								</view> -->
 								<view class="block_3 flex-row" style="justify-content: flex-end;">
 									<button class="button_1 flex-col" >
 										<text class="text_12">代付款</text>
@@ -182,21 +186,25 @@
 											<text class="text_6"> {{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_8" >回收预估价: {{item.receiptGuidePrice}}</text>
-												<text class="text_9" v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.receiptPrice - item.receiptGuidePrice}}</text>
+												<text class="text_8" ><text>回收预估价: {{item.firstPrice}}</text></text>
+												<text class="text_9" ><view v-if="item.transactionPrice - item.firstPrice > 0">加价 {{item.transactionPrice - item.firstPrice}}</view></text>
+											</view>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_110" ><text>回收价: {{item.transactionPrice}}</text></text>
+												<text class="text_9" ></text>
 											</view>
 										</view>
-										<view class="tag_1 flex-col"></view>
+										<!-- <view class="tag_1 flex-col"></view> -->
 										<view class="tag_2 flex-col">
 											<text class="text_10">{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}} </text>
 										</view>
 									</view>
-									<view class="tag_3 flex-col"></view>
+									<!-- <view class="tag_3 flex-col"></view> -->
 								</view>
-								<view class="block_2 flex-row">
+								<!-- <view class="block_2 flex-row">
 									<text class="text_11" v-html="">回收价{{item.receiptPrice}}</text>
 									<view class="tag_4 flex-col"></view>
-								</view>
+								</view> -->
 								<view class="block_3 flex-row" style="justify-content: flex-end;">
 									<button class="button_1 flex-col" >
 										<text class="text_12">查看物流</text>
