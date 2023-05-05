@@ -1,190 +1,45 @@
 <template>
 	<view>
-		<filterDropdown ref="filterDropdown" :menuTop="filtertopnum" :filterData="filterData" :defaultSelected="defaultSelected"
-			:updateMenuName="true" @confirm="confirm" @change="changefilter" dataFormat="Object"></filterDropdown>
+		<filterDropdown
+			ref="filterDropdown"
+			:menuTop="filtertopnum"
+			:filterData="shopownerFilterData"
+			:defaultSelected="defaultSelected"
+			:updateMenuName="true"
+			@confirm="confirm"
+			@change="changefilter"
+			dataFormat="Object"
+		></filterDropdown>
 		<!--为上面的临时筛选条进行的临时兼容处理-->
-		<view style="height:40rpx;"></view>
-		<view class="margin-top-xl cu-card article">
-			<view class="cu-item bg-white margin-sm radius-3 padding-sm" v-for="(item,index) in dataList" :key="index">
-				<view class="">
-					<view class="padding-xs flex justify-between text-xs">
-						<view>单号:375858538383833</view>
-						<view>
-							时间:2022-10-26 19:38:27
-						</view>
-					</view>
+		<view class="group_3 flex-col" v-for="(item, index) in dataList">
+			<view class="text-wrapper_1 flex-row justify-between">
+				<text class="text_6">单号:{{item.sortNo}}</text>
+				<text class="text_7">时间:2{{item.createTimeStr}}</text>
+			</view>
+			<view class="section_1 flex-row">
+				<view class=""></view>
+				<image :src="$httpImage + item.modelPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col"></image>
+				<view class="text-wrapper_2 flex-col">
+					<text class="text_8">{{item.modelName}}</text>
+					<text class="text_9">{{item.label}}</text>
+					<text class="text_10">序列号:{{item.deviceNo}}</text>
+					<text class="text_11">回收价:{{item.recyclePrice}}元</text>
 				</view>
-				<view class="content">
-					<image :src="item.image" mode="aspectFill"></image>
-					<view class="desc">
-						<view class="title">
-							<view class="text-cut">{{item.title}}</view>
-						</view>
-						<view class="text-sm">
-							<view class="flex justify-between">
-								<view class="">
-									序列号：<text class="text-blue" @tap="copy(item.sn)">{{item.sn}}</text> 
-								</view>
-							</view>
-							<view class="flex justify-between">
-								<view class="">
-									回收价：{{item.money}}元
-								</view>
-								<view class="">
-									调拨价：{{item.peer_price}}元
-								</view>
-							</view>
-							<view class="flex justify-between">
-								<view class="">
-									销售价：{{item.sales_price}}元
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				
-				<view class="flex justify-end">
-					<view class="cu-btn bg-red sm flex align-center radius-3"
-						@click="tongyongTap(item,'TongyongModal')" data-target="TongyongModal">
-						处理
-					</view>
+				<view class="tag_1 flex-col" v-if="item.sortStatus == 0">
+					<text class="text_12">待送拣</text>
 				</view>
 			</view>
+			<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
 		</view>
 		<!--弹窗-->
-		<view class="cu-modal" :class="modalName=='TongyongModal'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class="content">{{title}}</view>
-					<view class="action" @tap="tongyongHideModal">
-						<text class="cuIcon-close text-red"></text>
-					</view>
-				</view>
-				<view class="padding-xs">
-					<!--选项-->
-					<view class="bg-white nav-tab-view">
-						<scroll-view scroll-x class="nav z" scroll-with-animation :scroll-left="tab_scroll">
-							<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
-								<view class="cu-item" :class="tabindex == tab_cur?'select':''" @tap="tabSelect"
-									:data-id="tabindex">
-									<view :class="tabindex == tab_cur?'text-black':''">{{tabitem.name}}</view>
-									<view class="tab-dot bg-red" />
-								</view>
-							</block>
-						</scroll-view>
-					</view>
-					<!-- <view class="hight-view"></view> -->
-					<!--选项列表  这里传recycle_goods_id向接口erp/product/getrecycleinfo请求数据，和回收点点报价一样-->
-					<view class="process-box margin-top-sm">
-						<block v-for="(item,index) in nav_list" :key="index">
-							<scroll-view v-show="tab_cur == index" scroll-y="true" class="scroll-Y">
 
-								<view class="recy-item" v-for="(citem,cindex) in item.child" :key="cindex">
-									<view class="title">
-										<text class="margin-right-xs">{{citem.name}}</text>
-									</view>
-									<!-- check-list -->
-									<view class="check-list-box">
-										<u-scroll-list :indicator="false">
-											<view class="item" v-for="(checkitem,checkindex) in citem.child"
-												:key="checkindex" @click="itemclick(index,cindex,checkindex)"
-												:class="checkitem.click ? 'active':''">
-												{{checkitem.name}}
-											</view>
-										</u-scroll-list>
-									</view>
-									<view class="text-left text-lightgrey"><input class="text-sm" placeholder="请输入备注信息" v-model="citem.remark" name="input"></input></view>
-								</view>
-
-							</scroll-view>
-						</block>
-						
-					</view>
-					
-				</view>
-				
-				<!--售卖处理-->
-				<view class="margin-bottom-lg">
-					<view class="cu-form-group">
-						<view class="title">是否直售</view>
-						<switch @change="SwitchA" :class="iszs == 1?'checked':''" :checked="iszs == 0?false:true">
-						</switch>
-					</view>
-					<view class="cu-form-group">
-						<view class="title">是否抛售</view>
-						<switch @change="SwitchB" :class="isps == 1?'checked':''" :checked="isps == 0?false:true">
-						</switch>
-					</view>
-					<view class="" v-show="isps == 1">
-						<view class="cu-form-group">
-							<view class="title">抛售状态1</view>
-							<view class="cu-capsule radius">
-								<u-radio-group placement="row" v-model="radiovalue1" @change="groupChange">
-									<u-radio :customStyle="{marginBottom: '8px'}" v-for="(item, index) in radiolist1"
-										:key="index" :label="item.name" :name="item.value">
-									</u-radio>
-								</u-radio-group>
-							</view>
-						</view>
-						<view class="cu-form-group">
-							<view class="title">回收方</view>
-							<view class="cu-capsule radius" @tap="hsfTap">
-								<view class="">
-									{{thirdInfo.name ? thirdInfo.name :'请选择回收方'}}
-									<text class="cuIcon-right"></text>
-								</view>
-							</view>
-						</view>
-					</view>
-					<view class="cu-form-group">
-						<view class="title">是否维修</view>
-						<switch @change="SwitchC" :class="iswx == 1?'checked':''" :checked="iswx == 0?false:true">
-						</switch>
-					</view>
-					<view class="" v-show="iswx == 1">
-						<view class="cu-form-group">
-							<view class="title">维修状态</view>
-							<view class="cu-capsule radius">
-								<u-radio-group placement="row" v-model="radiovalue2" @change="groupChange2">
-									<u-radio :customStyle="{marginBottom: '8px'}" v-for="(item, index) in radiolist2"
-										:key="index" :label="item.name" :name="item.value">
-									</u-radio>
-								</u-radio-group>
-							</view>
-						</view>
-						<view class="cu-form-group">
-							<view class="title">维修成本</view>
-							<input placeholder="维修成本金额" v-model="CostMoney" @input="costmoney"></input>
-						</view>
-						<view class="cu-form-group">
-							<view class="title">维修备注</view>
-							<input placeholder="请输入备注信息" v-model="remark" name="input"></input>
-						</view>
-					</view>
-				</view>
-				<view class="cu-bar bg-white justify-end">
-					<view class="action">
-						<button class="cu-btn line-green text-green" @tap="tongyongHideModal">取消</button>
-						<view class="">
-							<button class="cu-btn bg-green margin-left" @tap="tongyongAction(1)">标记</button>
-							<button class="cu-btn bg-red margin-left" @tap="tongyongAction(2)">提交</button>
-						</view>
-					</view>
-				</view>
-
-			</view>
-		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
-
 	</view>
 </template>
 
 <script>
-	import {
-		erppurchasequalitylist,
-		erppurchasequalityedit
-	} from "@/api/erpapi.js";
+	import { sortingList } from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
@@ -196,77 +51,100 @@
 		},
 		data() {
 			return {
-				filtertopnum:'83',//筛选条高度
+				filerData: [],
+				filtertopnum: '83', //筛选条高度
 				defaultSelected: [],
-				filterData: [{
-					"name": '是否直售',
-					"type": 'hierarchy',
-					"submenu": [{
-						"name": "全部",	//全部设为默认，选中时标签栏显示为全部
-						"value": "all"
-					},{
-						"name": "是",	
-						"value": "0"
+				// 店长可视页面
+				shopownerFilterData: [
+					{
+						name: '是否直售',
+						type: 'hierarchy',
+						submenu: [
+							{
+								name: '全部', //全部设为默认，选中时标签栏显示为全部
+								value: '0,1,2,3',
+							},
+							{
+								name: '待送检',
+								value: '0',
+							},
+							{
+								name: '已送检',
+								value: '1,2',
+							},
+							{
+								name: '代取回',
+								value: '3',
+							},
+							{
+								name: '已取回',
+								value: '4',
+							},
+						],
 					},
 					{
-						"name": "否",
-						"value": "1"
-					}]
-				}, {
-					"name": '抛售状态',
-					"type": 'hierarchy',
-					"submenu": [{
-						"name": "全部",
-						"value": "all"
-					},{
-						"name": "待抛售",
-						"value": "1"
+						name: '抛售状态',
+						type: 'hierarchy',
+						submenu: [
+							{
+								name: '全部',
+								value: '5,6,7',
+							},
+							{
+								name: '待抛售',
+								value: '5',
+							},
+							{
+								name: '抛售中',
+								value: '6',
+							},
+							{
+								name: '已抛售',
+								value: '7',
+							},
+						],
 					},
 					{
-						"name": "抛售中",
-						"value": "2"
+						name: '维修状态', //选择
+						type: 'hierarchy',
+						submenu: [
+							{
+								name: '全部', //设为默认
+								value: '8,9',
+							},
+							{
+								name: '待维修',
+								value: '8',
+							},
+							{
+								name: '维修中',
+								value: '9',
+							},
+						],
 					},
-					{
-						"name": "已抛售",
-						"value": "3"
-					}]
-				}, {
-					"name": '维修状态',	//选择
-					"type": 'hierarchy',
-					"submenu": [{
-						"name": "全部",	//设为默认
-						"value": "0"
-					},
-					{
-						"name": "待送修",
-						"value": "1"
-					},
-					{
-						"name": "已送修",
-						"value": "2"
-					},
-					{
-						"name": "已取回",
-						"value": "3"
-					}]
-				}],
+				],
 				modalName: null,
 				// modalName: 'TongyongModal1',
 				type: 1,
-				title: "分拣处理",
+				title: '分拣处理',
 				tab_scroll: 0,
 				tab_cur: 0,
-				nav_list: [{
-					name: '物品信息',
-					child: []
-				}, {
-					name: '成色情况',
-					child: []
-				}, {
-					name: '功能情况',
-					child: []
-				}, ],
-				radiolist1: [{
+				nav_list: [
+					{
+						name: '物品信息',
+						child: [],
+					},
+					{
+						name: '成色情况',
+						child: [],
+					},
+					{
+						name: '功能情况',
+						child: [],
+					},
+				],
+				radiolist1: [
+					{
 						name: '待抛售',
 						value: '1',
 					},
@@ -281,7 +159,8 @@
 				],
 				radiovalue1: '',
 				radiovalue2: '',
-				radiolist2: [{
+				radiolist2: [
+					{
 						name: '待送修',
 						value: '1',
 					},
@@ -309,18 +188,17 @@
 				dataList: [],
 				thirdInfo: '',
 				queryInfo: {
-					page: 1,
-					pagesize: 10,
-					purchase_id: '',
+					pageNum: 1,
+					pageSize: 10,
 				},
-				newnav_list : [],
+				newnav_list: [],
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
-					"contentdown": "加载更多数据",
-					"contentrefresh": "加载中...",
-					"contentnomore": "暂无更多数据。"
+					contentdown: '加载更多数据',
+					contentrefresh: '加载中...',
+					contentnomore: '暂无更多数据。',
 				},
-			}
+			};
 		},
 		onLoad(options) {
 			// #ifdef APP-PLUS
@@ -329,27 +207,39 @@
 			// 进入页面刷新
 			this.$nextTick(() => {
 				uni.startPullDownRefresh();
-			})
+			});
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
-			this.queryInfo.page = 1; //重置分页页码
+			this.queryInfo.pageNum = 1; //重置分页页码
 			this.getDataList();
 		},
 		onReachBottom() {
-			if (this.loadmore == 'noMore') return
-			this.queryInfo.page += 1;
-			this.ifBottomRefresh = true
+			if (this.loadmore == 'noMore') return;
+			this.queryInfo.pageNum += 1;
+			this.ifBottomRefresh = true;
 			this.getDataList();
 		},
 		onShow() {
 			let that = this;
-			uni.$once('updatethird', function(data) {
+			uni.$once('updatethird', function (data) {
 				console.log(data);
 				that.thirdInfo = data;
-			})
+			});
 		},
 		methods: {
+			confirm(e) {
+				let data = [];
+				e.value.map((item) => {
+					if (item[0]) {
+						item[0].split(',').map((spItem) => {
+							data.push(spItem);
+						});
+					}
+				});
+				this.filerData = data;
+				this.getDataList();
+			},
 			groupChange(n) {
 				console.log('groupChange', n);
 			},
@@ -358,34 +248,37 @@
 			},
 			hsfTap() {
 				uni.navigateTo({
-					url: '/pages/erp/third/list'
-				})
+					url: '/pages/erp/third/list',
+				});
 			},
 			copy(text) {
 				uni.setClipboardData({
-					data: text
+					data: text,
 				});
 			},
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
-				erppurchasequalitylist(paramsData).then(res => {
-						let data = res.data.list;
+				const storeId = uni.getStorageSync('userinfo').storeId;
+				paramsData.storeId = storeId;
+				paramsData.sortingStatusList = that.filerData;
+				sortingList(paramsData)
+					.then((res) => {
+						let data = res.rows;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
 							if (that.ifBottomRefresh) {
-								that.dataList = that.dataList.concat(data)
+								that.dataList = that.dataList.concat(data);
 							} else {
-								that.dataList = data
+								that.dataList = data;
 							}
-							that.ifBottomRefresh = false
-							that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+							that.ifBottomRefresh = false;
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more';
 						}
-
 					})
 					.finally(() => {
 						uni.stopPullDownRefresh();
-					})
+					});
 			},
 			tongyongTap(info, e) {
 				this.nav_list[0].child = info.attr.base_json;
@@ -397,33 +290,33 @@
 				this.modalName = e;
 			},
 			tongyongHideModal(e) {
-				this.modalName = null
+				this.modalName = null;
 			},
 			tongyongAction(id) {
-				console.log(id)
+				console.log(id);
 				let paramsData = {
 					type: id,
 					goods_id: this.checkgoodsid,
-					zs_status:this.iszs?'1':'0',
-					is_ps:this.isps?'1':'0',
-					ps_status:this.radiovalue1,
-					is_wx:this.iswx?'1':'0',
-					wx_status:this.radiovalue2,
-				}
-				if(this.isps){
+					zs_status: this.iszs ? '1' : '0',
+					is_ps: this.isps ? '1' : '0',
+					ps_status: this.radiovalue1,
+					is_wx: this.iswx ? '1' : '0',
+					wx_status: this.radiovalue2,
+				};
+				if (this.isps) {
 					if (!this.radiovalue1) {
-						return this.$u.toast('请选择抛售状态！')
+						return this.$u.toast('请选择抛售状态！');
 					}
 					if (!this.thirdInfo.id) {
-						return this.$u.toast('请选择回收方！')
+						return this.$u.toast('请选择回收方！');
 					}
 				}
-				if(this.iswx){
+				if (this.iswx) {
 					if (!this.radiovalue2) {
-						return this.$u.toast('请选择维修状态！')
+						return this.$u.toast('请选择维修状态！');
 					}
 					if (!this.CostMoney) {
-						return this.$u.toast('请输入维修成本金额')
+						return this.$u.toast('请输入维修成本金额');
 					}
 					paramsData.third_id = this.thirdInfo.id;
 					paramsData.costmoney = this.CostMoney;
@@ -436,42 +329,41 @@
 							if (item2.click) {
 								checkvalue.push(item2);
 							}
-						})
-					})
-				})
+						});
+					});
+				});
 				paramsData.cart_info = JSON.stringify(checkvalue);
 				if (id == 1) {
 					paramsData.actiontype = 1;
 				}
 				if (id == 2) {
 					paramsData.actiontype = 2;
-					
 				}
 				console.log(paramsData);
 				// return;
-				erppurchasequalityedit(paramsData).then(res => {
-					this.$u.toast('提交成功！')
+				erppurchasequalityedit(paramsData).then((res) => {
+					this.$u.toast('提交成功！');
 					this.$nextTick(() => {
 						uni.startPullDownRefresh();
-					})
-				})
-				this.modalName = null
+					});
+				});
+				this.modalName = null;
 			},
 			SwitchA(e) {
-				this.iszs = e.detail.value
+				this.iszs = e.detail.value;
 				if (this.iszs == 1) {
-					this.isps = 0
+					this.isps = 0;
 				}
-				console.log(this.iszs)
+				console.log(this.iszs);
 			},
 			SwitchB(e) {
-				this.isps = e.detail.value
+				this.isps = e.detail.value;
 				if (this.isps == 1) {
-					this.iszs = 0
+					this.iszs = 0;
 				}
 			},
 			SwitchC(e) {
-				this.iswx = e.detail.value
+				this.iswx = e.detail.value;
 			},
 			tabSelect(e) {
 				let index = e.currentTarget.dataset.id;
@@ -479,27 +371,33 @@
 				console.log(this.tab_cur);
 				uni.pageScrollTo({
 					scrollTop: 0,
-					duration: 0
+					duration: 0,
 				});
 			},
 			itemclick(pindex, findex, mindex) {
 				this.nav_list[pindex].child[findex].child.map((item, index) => {
 					item.click = false;
-				})
+				});
 				this.nav_list[pindex].child[findex].child[mindex].click = true;
 				this.newnav_list = this.nav_list;
-			}
-		}
-	}
+			},
+		},
+	};
 </script>
 
 <style lang="scss">
 	/* #ifdef APP-PLUS */
-	@import "/uni_modules/colorui/main.css";
-	@import "/uni_modules/colorui/icon.css";
-	@import "@/uni_modules/mpb-ui/shop/app.scss";
+	@import '/uni_modules/colorui/main.css';
+	@import '/uni_modules/colorui/icon.css';
+	@import '@/uni_modules/mpb-ui/shop/app.scss';
 
 	/* #endif */
+	@import '@/static/common.css';
+	page {
+		background: #f0f0f0;
+		padding-top: 100rpx;
+		padding: 100rpx 21rpx 0rpx 21rpx;
+	}
 	.tips {
 		justify-content: space-between;
 		display: flex;
@@ -509,9 +407,9 @@
 		}
 	}
 
-	.cu-card.article>.cu-item {
-		.title{
-			padding:0 0 10rpx 0;
+	.cu-card.article > .cu-item {
+		.title {
+			padding: 0 0 10rpx 0;
 		}
 		.content {
 			uni-image {
@@ -552,7 +450,7 @@
 		position: relative;
 		padding-bottom: 10rpx;
 		margin-bottom: 10rpx;
-		border-bottom: 1rpx solid #EEEEEE;
+		border-bottom: 1rpx solid #eeeeee;
 
 		.title {
 			width: 20%;
@@ -569,7 +467,7 @@
 			padding-left: 20%;
 
 			.active {
-				color: #FFFFFF !important;
+				color: #ffffff !important;
 				background-color: #f03 !important;
 			}
 
@@ -612,7 +510,125 @@
 	.cu-modal {
 		z-index: 999;
 	}
-	.cu-form-group{
+	.cu-form-group {
 		min-height: 45px;
+	}
+	.group_3 {
+		background-color: rgba(255, 255, 255, 1);
+		border-radius: 6px;
+		padding: 14px 11px 22px 9px;
+	}
+
+	.text-wrapper_1 {
+		width: 348px;
+	}
+
+	.text_6 {
+		overflow-wrap: break-word;
+		color: rgba(142, 142, 142, 1);
+		font-size: 12px;
+		font-weight: NaN;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 13px;
+	}
+
+	.text_7 {
+		overflow-wrap: break-word;
+		color: rgba(142, 142, 142, 1);
+		font-size: 12px;
+		font-weight: NaN;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 13px;
+	}
+
+	.section_1 {
+		margin: 9px 11px 0 0;
+	}
+
+	.box_5 {
+		border-radius: 6px;
+		// background-image: url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/4240095d9d5a4c4b9180ad3ce22071cd_mergeImage.png);
+		width: 79px;
+		height: 79px;
+		margin-top: 5px;
+	}
+
+	.text-wrapper_2 {
+		margin: 5px 0 0 8px;
+	}
+
+	.text_8 {
+		overflow-wrap: break-word;
+		color: rgba(16, 16, 16, 1);
+		font-size: 15px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 15px;
+	}
+
+	.text_9 {
+		overflow-wrap: break-word;
+		color: rgba(142, 142, 142, 1);
+		font-size: 13px;
+		font-weight: NaN;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 13px;
+		margin: 8px 67px 0 0;
+	}
+
+	.text_10 {
+		overflow-wrap: break-word;
+		color: rgba(142, 142, 142, 1);
+		font-size: 13px;
+		font-weight: NaN;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 13px;
+		margin: 8px 31px 0 0;
+	}
+
+	.text_11 {
+		overflow-wrap: break-word;
+		color: rgba(142, 142, 142, 1);
+		font-size: 13px;
+		font-weight: NaN;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 13px;
+		margin: 9px 29px 0 0;
+	}
+
+	.tag_1 {
+		background-color: rgba(235, 246, 255, 1);
+		border-radius: 10px;
+		margin: 0 0 64px 42px;
+		padding: 2px 20px 1px 19px;
+	}
+
+	.text_12 {
+		overflow-wrap: break-word;
+		color: rgba(17, 144, 214, 1);
+		font-size: 12px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 17px;
+	}
+
+	.text_13 {
+		overflow-wrap: break-word;
+		color: rgba(35, 35, 35, 1);
+		font-size: 14px;
+		font-weight: NaN;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 14px;
+		margin: 20px 250px 0 0;
 	}
 </style>

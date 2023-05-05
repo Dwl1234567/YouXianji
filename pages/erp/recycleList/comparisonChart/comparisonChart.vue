@@ -3,8 +3,8 @@
 		<view class="block_1 flex-col">
 			<view class="section_2 flex-row justify-between">
 				<text class="text_2">最终价格</text>
-				<view class="input_1 flex-col" style="width: 200px;">
-					<input type="text" v-model=receiptPrice />
+				<view class="input_1 flex-col" style="width: 200px">
+					<input type="text" v-model="receiptPrice" />
 				</view>
 			</view>
 		</view>
@@ -14,7 +14,7 @@
 				<text class="text_71">验机评估报告</text>
 			</view>
 			<view class="group_3 flex-row">
-				<view class="box_1 flex-col" >
+				<view class="box_1 flex-col">
 					<text class="text_4">隐私清除&nbsp;|&nbsp;专业验机&nbsp;|&nbsp;整机清洁</text>
 				</view>
 				<view class="box_2 flex-col"></view>
@@ -89,7 +89,7 @@
 						></view> -->
 						<scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
 							<view class="scroll-view-item_H demo-text-1" v-for="(item, index) in urls" @tap="viewImgs(urls, index)">
-								<image :src="item" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
+								<image :src="item" mode="aspectFit" style="width: 122rpx; height: 122rpx"></image>
 							</view>
 						</scroll-view>
 					</view>
@@ -132,18 +132,21 @@
 							<text class="text_36">{{Pricepramitems[index].value}}</text>
 						</view>
 						<view class="box_10 flex-col">
-							<view
-								v-if="checkInformation(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)"
-							>
-							<!-- {{$httpImage +phoneImgArr[index].photo}} -->
-								<view class='cu-avatar xl radius' :style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
-									<view class="img"  @tap="viewImg(phoneImgArr,index)">
-										<text class="text">
-											
-										</text>
+							<view v-if="checkInformation(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
+								<!-- {{$httpImage +phoneImgArr[index].photo}} -->
+								<view
+									class="cu-avatar xl radius"
+									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }"
+								>
+									<view class="img" @tap="viewImg(phoneImgArr,index)">
+										<text class="text"></text>
 									</view>
 									<!-- {{phoneImgArr[index].photo == ''}} -->
-									<view class='cu-tag badge' :style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"  @tap="uploadImg(index)">
+									<view
+										class="cu-tag badge"
+										:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
+										@tap="uploadImg(index)"
+									>
 										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
 											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 										</view>
@@ -177,14 +180,19 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
-								<view class='cu-avatar xl radius' :style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
-									<view class="img"  @tap="viewImg(phoneImgArr,index)">
-										<text class="text">
-											
-										</text>
+								<view
+									class="cu-avatar xl radius"
+									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }"
+								>
+									<view class="img" @tap="viewImg(phoneImgArr,index)">
+										<text class="text"></text>
 									</view>
 									<!-- {{phoneImgArr[index].photo == ''}} -->
-									<view class='cu-tag badge' :style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"  @tap="uploadImg(index)">
+									<view
+										class="cu-tag badge"
+										:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
+										@tap="uploadImg(index)"
+									>
 										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
 											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 										</view>
@@ -218,14 +226,19 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
-								<view class='cu-avatar xl radius' :style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
-									<view class="img"  @tap="viewImg(phoneImgArr,index)">
-										<text class="text">
-											
-										</text>
+								<view
+									class="cu-avatar xl radius"
+									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }"
+								>
+									<view class="img" @tap="viewImg(phoneImgArr,index)">
+										<text class="text"></text>
 									</view>
 									<!-- {{phoneImgArr[index].photo == ''}} -->
-									<view class='cu-tag badge' :style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"  @tap="uploadImg(index)">
+									<view
+										class="cu-tag badge"
+										:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
+										@tap="uploadImg(index)"
+									>
 										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
 											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 										</view>
@@ -259,14 +272,19 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
-								<view class='cu-avatar xl radius' :style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
-									<view class="img"  @tap="viewImg(phoneImgArr,index)">
-										<text class="text">
-											
-										</text>
+								<view
+									class="cu-avatar xl radius"
+									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }"
+								>
+									<view class="img" @tap="viewImg(phoneImgArr,index)">
+										<text class="text"></text>
 									</view>
 									<!-- {{phoneImgArr[index].photo == ''}} -->
-									<view class='cu-tag badge' :style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"  @tap="uploadImg(index)">
+									<view
+										class="cu-tag badge"
+										:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
+										@tap="uploadImg(index)"
+									>
 										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
 											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 										</view>
@@ -277,7 +295,6 @@
 					</view>
 				</view>
 			</view>
-			
 		</view>
 		<view class="block_4 flex-col">
 			<button class="button_1 flex-col" @click="onClick_1">
@@ -287,16 +304,14 @@
 	</view>
 </template>
 <script>
-	import {
-		upload
-	} from "@/api/upload.js";
+	import { upload } from '@/api/upload.js';
 	import { empCreateReceipt } from '@/api/retrieve.js';
 	export default {
 		data() {
 			return {
 				urls: [],
 				uploadImgtype: null,
-				addpicicon:"none",
+				addpicicon: 'none',
 				priceId: 0,
 				modelName: '',
 				Priceprams: {},
@@ -376,16 +391,16 @@
 			this.optionData.radar.indicator[1].max = uni.getStorageSync('dataListNum')[1];
 			this.optionData.radar.indicator[2].max = uni.getStorageSync('dataListNum')[2];
 			this.optionData.radar.indicator[3].max = uni.getStorageSync('dataListNum')[3];
-			this.modelName = uni.getStorageSync('modelName')
-			this.Priceprams = uni.getStorageSync('Priceprams')
+			this.modelName = uni.getStorageSync('modelName');
+			this.Priceprams = uni.getStorageSync('Priceprams');
 			this.qualityInfoList = uni.getStorageSync('qualityInfoList');
 			this.Pricepramitems = uni.getStorageSync('Pricepramitems');
-			this.Pricepramitems.map(item => {
+			this.Pricepramitems.map((item) => {
 				this.phoneImgArr.push({
 					propKeyId: item.keyId,
-					photo: ''
-				})
-			})
+					photo: '',
+				});
+			});
 			console.log(this.phoneImgArr);
 			this.qualityInfo = uni.getStorageSync('qualityInfo');
 			this.recycleOrderId = uni.getStorageSync('recycleOrderId');
@@ -397,13 +412,12 @@
 					let that = this;
 					that.uploadImgtype = type;
 					uni.navigateTo({
-						url:'/pages/idphoto/idphoto'
-					})
+						url: '/pages/idphoto/idphoto',
+					});
 				} else {
 					console.log(222);
-					this.deleteImg(type)
+					this.deleteImg(type);
 				}
-				
 			},
 			//设置图片
 			setImage(e) {
@@ -411,37 +425,37 @@
 				//显示在页面
 				let Imgdata = [];
 				Imgdata.push(e.path);
-				upload(Imgdata).then(res => {
+				upload(Imgdata).then((res) => {
 					that.phoneImgArr[that.uploadImgtype].photo = res.fileName;
-				})
+				});
 			},
 			//查看图片
-			viewImgs(url,index){
+			viewImgs(url, index) {
 				//需要分割url并去除空数组
-				if(url){
-					if(url[index]){
+				if (url) {
+					if (url[index]) {
 						uni.previewImage({
 							current: index,
-							urls: url
-						})
+							urls: url,
+						});
 					}
-				}else{
+				} else {
 				}
 			},
 			//查看图片
-			viewImg(url,index){
+			viewImg(url, index) {
 				//需要分割url并去除空数组
-				if(url){
-					const urll = url.map(item => {
-						return this.$httpImage + item
-					})
-					if(url[index]){
+				if (url) {
+					const urll = url.map((item) => {
+						return this.$httpImage + item;
+					});
+					if (url[index]) {
 						uni.previewImage({
 							current: index,
-							urls: urll
-						})
+							urls: urll,
+						});
 					}
-				}else{
+				} else {
 				}
 			},
 			checkInformation(left, right, index) {
@@ -493,13 +507,15 @@
 				}
 			},
 			onClick_1() {
-				let receiptQualityPhotoList = []
-				this.phoneImgArr.map(item => {
+				let receiptQualityPhotoList = [];
+				this.phoneImgArr.map((item) => {
 					if (item.photo !== '') {
-						receiptQualityPhotoList.push(item)
+						receiptQualityPhotoList.push(item);
 					}
-				})
+				});
+				let deviceLabel = uni.getStorageSync('goodsdesc');
 				empCreateReceipt({
+					deviceLabel: deviceLabel,
 					basicPriceId: this.priceId,
 					receiptGuidePrice: Number(this.forecastMoney),
 					receiptPrice: this.receiptPrice,
@@ -511,8 +527,8 @@
 					deviceId: uni.getStorageSync('deviceId'),
 				}).then((res) => {
 					uni.navigateTo({
-						url: '/pages/erp/recycleList/index'
-					})
+						url: '/pages/erp/recycleList/index',
+					});
 				});
 			},
 		},

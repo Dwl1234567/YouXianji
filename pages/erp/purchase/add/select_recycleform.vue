@@ -207,7 +207,7 @@
 
 		<view class="cu-form-group">
 			<view class="title">是否直售</view>
-			<switch :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
+			<switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
 		</view>
 
 
@@ -346,6 +346,9 @@
 			});
 		},
 		methods: {
+			SwitchA(e) {
+				this.switchA = e.detail.value
+			},
 			// 选择分仓
 			checkHouseFenId(e) {
 				this.warehouseId = e;
@@ -389,10 +392,11 @@
 				// 	return this.$u.toast('请选择仓库!');
 				// }
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
-				
+				let deviceLabel = uni.getStorageSync('goodsdesc')
 				let paramsData={
 					deviceId: this.formList.deviceId,
 					deviceNo: this.goodssn,
+					deviceLabel: deviceLabel,
 					recycleOrderId: this.recycleOrderId,
 					recyclePrice: this.ActualreceiptsAll + '',
 					allotPrice: this.diaobojianum,

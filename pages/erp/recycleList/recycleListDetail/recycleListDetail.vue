@@ -21,8 +21,7 @@
 					<view class="text-wrapper_8 flex-row justify-between">
 						<text class="text_23">订单来源方式</text>
 						<text class="text_24">
-							{{recycleOrder.postType == 0 ? '顺丰上门' : recycleOrder.postType == 1? '自行邮寄' :
-							'同城上门'}}
+							{{recycleOrder.postType == 0 ? '顺丰上门' : recycleOrder.postType == 1? '自行邮寄' : '同城上门'}}
 						</text>
 					</view>
 					<view class="text-wrapper_9 flex-row justify-between">
@@ -59,38 +58,9 @@
 					<view class="box_6 flex-row justify-between">
 						<scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
 							<view class="scroll-view-item_H demo-text-1" v-for="(item, index) in urls" @tap="viewImg(urls, index)">
-								<image :src="item" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
+								<image :src="item" mode="aspectFit" style="width: 122rpx; height: 122rpx"></image>
 							</view>
-						    <!-- <view id="demo2" class="scroll-view-item_H demo-text-2" v-if="list.bottomPhoto" @tap="viewImg(list.backPhoto, 1)">
-								<image :src="$httpImage + list.bottomPhoto" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
-							</view>
-							<view id="demo3" class="scroll-view-item_H demo-text-3" v-if="list.cameraPhoto" @tap="viewImg(list.backPhoto, 2)">
-								<image :src="$httpImage + list.cameraPhoto" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
-							</view>
-							<view id="demo4" class="scroll-view-item_H demo-text-3" v-if="list.frontPhoto" @tap="viewImg(list.backPhoto, 3)">
-								<image :src="$httpImage + list.frontPhoto" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
-							</view>
-							<view id="demo5" class="scroll-view-item_H demo-text-3" v-if="list.leftPhoto" @tap="viewImg(list.backPhoto, 4)">
-								<image :src="$httpImage + list.leftPhoto" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
-							</view>
-							<view id="demo6" class="scroll-view-item_H demo-text-3" v-if="list.otherPhoto" @tap="viewImg(list.backPhoto, 5)">
-								<image :src="$httpImage + list.otherPhoto" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
-							</view>
-							<view id="demo7" class="scroll-view-item_H demo-text-3" v-if="list.rightPhoto" @tap="viewImg(list.backPhoto, 0)">
-								<image :src="$httpImage + list.rightPhoto" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
-							</view>
-							<view id="demo8" class="scroll-view-item_H demo-text-3" v-if="list.topPhoto" @tap="viewImg(list.backPhoto, 0)">
-								<image :src="$httpImage + list.topPhoto" mode="aspectFit" style="width: 122rpx;height: 122rpx;"></image>
-							</view> -->
 						</scroll-view>
-						<!-- <view class="list_1 flex-row">
-							<view class="list-items_1 flex-col" v-for="(item, index) in loopData0" :key="index">
-								<view class="group_9 flex-col" :style="{ background: item.lanhuBg1 }"></view>
-							</view>
-						</view>
-						<view class="group_10 flex-col">
-							<view class="box_7 flex-col"></view>
-						</view> -->
 					</view>
 				</view>
 				<view class="box_8 flex-col">
@@ -98,72 +68,26 @@
 					<view class="group_11 flex-row justify-between">
 						<scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
 							<view id="demo1" class="scroll-view-item_H demo-text-1">
-								<view
-									class="flex-col"
-									:class="tab === 1 ? 'text-wrapper_12': 'text-wrapper_13'"
-									@tap="checkTab(1)"
-								>
+								<view class="flex-col" :class="tab === 1 ? 'text-wrapper_12': 'text-wrapper_13'" @tap="checkTab(1)">
 									<text :class="tab === 1 ? 'text_36': 'text_37'">物品信息</text>
 								</view>
 							</view>
 							<view id="demo2" class="scroll-view-item_H demo-text-2">
-								<view
-									class="flex-col"
-									:class="tab === 2 ? 'text-wrapper_12': 'text-wrapper_13'"
-									@tap="checkTab(2)"
-								>
+								<view class="flex-col" :class="tab === 2 ? 'text-wrapper_12': 'text-wrapper_13'" @tap="checkTab(2)">
 									<text :class="tab === 2 ? 'text_36': 'text_37'">成色情况</text>
 								</view>
 							</view>
 							<view id="demo3" class="scroll-view-item_H demo-text-3">
-								<view
-									class="flex-col"
-									:class="tab === 3 ? 'text-wrapper_12': 'text-wrapper_13'"
-									@tap="checkTab(3)"
-								>
+								<view class="flex-col" :class="tab === 3 ? 'text-wrapper_12': 'text-wrapper_13'" @tap="checkTab(3)">
 									<text :class="tab === 3 ? 'text_36': 'text_37'">功能情况</text>
 								</view>
 							</view>
 							<view id="demo4" class="scroll-view-item_H demo-text-3">
-								<view
-									class="flex-col"
-									:class="tab === 4 ? 'text-wrapper_12': 'text-wrapper_13'"
-									@tap="checkTab(4)"
-								>
+								<view class="flex-col" :class="tab === 4 ? 'text-wrapper_12': 'text-wrapper_13'" @tap="checkTab(4)">
 									<text :class="tab === 4 ? 'text_36': 'text_37'">维修情况</text>
 								</view>
 							</view>
 						</scroll-view>
-						<!-- <scroll-view scroll-x scroll-with-animation style="white-space: nowrap;">
-							<view
-								class="flex-col"
-								:class="tab === 1 ? 'text-wrapper_12': 'text-wrapper_13'"
-								@tap="checkTab(1)"
-							>
-								<text :class="tab === 1 ? 'text_36': 'text_37'">物品信息</text>
-							</view>
-							<view
-								class="flex-col"
-								:class="tab === 2 ? 'text-wrapper_12': 'text-wrapper_13'"
-								@tap="checkTab(2)"
-							>
-								<text :class="tab === 2 ? 'text_36': 'text_37'">成色情况</text>
-							</view>
-							<view
-								class="flex-col"
-								:class="tab === 3 ? 'text-wrapper_12': 'text-wrapper_13'"
-								@tap="checkTab(3)"
-							>
-								<text :class="tab === 3 ? 'text_36': 'text_37'">功能情况</text>
-							</view>
-							<view
-								class="flex-col"
-								:class="tab === 4 ? 'text-wrapper_12': 'text-wrapper_13'"
-								@tap="checkTab(4)"
-							>
-								<text :class="tab === 4 ? 'text_36': 'text_37'">维修情况</text>
-							</view>
-						</scroll-view> -->
 					</view>
 					<view
 						class="text-wrapper_15 flex-row justify-between"
@@ -265,16 +189,16 @@
 		},
 		methods: {
 			//查看图片
-			viewImg(url,index){
+			viewImg(url, index) {
 				//需要分割url并去除空数组
-				if(url){
-					if(url[index]){
+				if (url) {
+					if (url[index]) {
 						uni.previewImage({
 							current: index,
-							urls: url
-						})
+							urls: url,
+						});
 					}
-				}else{
+				} else {
 				}
 			},
 			empSelectRecycleOrderDetail(recycleOrderId) {
@@ -295,34 +219,32 @@
 						}
 						this.list = res.data.qualityInfo;
 						let urls = [];
-						if(this.list.backPhoto) {
-							urls.push(this.$httpImage + this.list.backPhoto)
-						} 
-						if(this.list.bottomPhoto) {
-							urls.push(this.$httpImage + this.list.bottomPhoto)
-						} 
-						if(this.list.cameraPhoto) {
-							urls.push(this.$httpImage + this.list.cameraPhoto)
-						} 
-						if(this.list.frontPhoto) {
-							urls.push(this.$httpImage + this.list.frontPhoto)
-						} 
-						if(this.list.leftPhoto) {
-							urls.push(this.$httpImage + this.list.leftPhoto)
-						} 
-						if(this.list.otherPhoto) {
-							urls.push(this.$httpImage + this.list.otherPhoto)
-						} 
-						if(this.list.rightPhoto) {
-							urls.push(this.$httpImage + this.list.rightPhoto)
-						} 
-						if(this.list.topPhoto) {
-							urls.push(this.$httpImage + this.list.topPhoto)
+						if (this.list.backPhoto) {
+							urls.push(this.$httpImage + this.list.backPhoto);
 						}
-						console.log(urls)
+						if (this.list.bottomPhoto) {
+							urls.push(this.$httpImage + this.list.bottomPhoto);
+						}
+						if (this.list.cameraPhoto) {
+							urls.push(this.$httpImage + this.list.cameraPhoto);
+						}
+						if (this.list.frontPhoto) {
+							urls.push(this.$httpImage + this.list.frontPhoto);
+						}
+						if (this.list.leftPhoto) {
+							urls.push(this.$httpImage + this.list.leftPhoto);
+						}
+						if (this.list.otherPhoto) {
+							urls.push(this.$httpImage + this.list.otherPhoto);
+						}
+						if (this.list.rightPhoto) {
+							urls.push(this.$httpImage + this.list.rightPhoto);
+						}
+						if (this.list.topPhoto) {
+							urls.push(this.$httpImage + this.list.topPhoto);
+						}
 						this.urls = urls;
-						console.log(this.urls)
-						uni.setStorageSync('imgList', urls)
+						uni.setStorageSync('imgList', urls);
 						this.deviceNo = res.data.recycleOrder.deviceNo;
 						this.qualityInfoList = JSON.parse(qualityInfo.qualityInfoList);
 						uni.setStorageSync('modelName', recycleOrder.modelName);
