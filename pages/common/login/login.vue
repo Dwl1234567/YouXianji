@@ -122,11 +122,10 @@
 				login(params)
 					.then((res) => {
 						if (res.code == 200) {
-
 							this.$store.commit('setToken', res.token);
 							this.getUserInfo();
 							// console.log(uni.getStorageSync('url'), 'uni.getStorageSync();');
-							
+
 							if (uni.getStorageSync('url')) {
 								uni.navigateTo({
 									url: uni.getStorageSync('url'),
@@ -148,19 +147,23 @@
 			// 获取用户信息
 			getUserInfo() {
 				userInfo().then((res) => {
-					console.log(res)
+					console.log(res);
 					var roles = res.data.roles;
 					roles.map((item) => {
-						console.log(item, '44444')
+						console.log(item, '44444');
 						if (item.roleKey === 'consumer') {
 							this.$store.commit('setRoles', 'consumer');
 						} else if (item.roleKey === 'store_admin') {
 							this.$store.commit('setRoles', 'store_admin');
 						} else if (item.roleKey === 'store_employee') {
 							this.$store.commit('setRoles', 'store_employee');
+						} else if (item.roleKey === 'sorting_leader') {
+							this.$store.commit('setRoles', 'sorting_leader');
+						} else if (item.roleKey === 'sorting_people') {
+							this.$store.commit('setRoles', 'sorting_people');
 						}
 					});
-					uni.setStorageSync('userinfo', res.data)
+					uni.setStorageSync('userinfo', res.data);
 					this.$store.commit('setUserInfo', res.data);
 				});
 			},

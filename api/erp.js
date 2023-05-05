@@ -128,3 +128,19 @@ export function empSelectRecycleForm(data) {
 export function sortingList(data) {
 	return request.post('/yxj/app/sorting/list', data, { noLogin: true });
 }
+
+/**
+ * 获取运营中心
+ *
+ */
+export function getOperatingCenter(data) {
+	return request.get('/yxj/app/common/getOperatingCenter/' + data, { noLogin: true });
+}
+
+/**
+ * 确认送检
+ *
+ */
+export function addInspectDevice(data) {
+	return request.post('/yxj/app/sorting/inspectDevice', data, { noLogin: true });
+}

@@ -1,5 +1,14 @@
 <template>
 	<view>
+		<bar-title bgColor="bg-white">
+			<block slot="content">供应商列表</block>
+			<block slot="right">
+				<button class="cu-btn sm" @tap="snTap">
+					<!-- <text class="cuIcon-add" /> -->
+					{{admin ? '完成' : '管理'}}
+				</button>
+			</block>
+		</bar-title>
 		<filterDropdown
 			ref="filterDropdown"
 			:menuTop="filtertopnum"
@@ -11,27 +20,87 @@
 			dataFormat="Object"
 		></filterDropdown>
 		<!--为上面的临时筛选条进行的临时兼容处理-->
-		<view class="group_3 flex-col" v-for="(item, index) in dataList">
-			<view class="text-wrapper_1 flex-row justify-between">
-				<text class="text_6">单号:{{item.sortNo}}</text>
-				<text class="text_7">时间:2{{item.createTimeStr}}</text>
-			</view>
-			<view class="section_1 flex-row">
-				<view class=""></view>
-				<image :src="$httpImage + item.modelPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col"></image>
-				<view class="text-wrapper_2 flex-col">
-					<text class="text_8">{{item.modelName}}</text>
-					<text class="text_9">{{item.label}}</text>
-					<text class="text_10">序列号:{{item.deviceNo}}</text>
-					<text class="text_11">回收价:{{item.recyclePrice}}元</text>
+		<view style="padding: 0px 20rpx">
+			<!-- :class="admin ? 'transform' : 'transformRight'" -->
+			<view v-for="(item, index) in dataList" style="display: flex; align-items: center">
+				<view :class="admin ? '' : 'transform'" style="margin-right: 28rpx">
+					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
-				<view class="tag_1 flex-col" v-if="item.sortStatus == 0">
-					<text class="text_12">待送拣</text>
+				<view class="group_3 flex-col">
+					<view class="text-wrapper_1 flex-row justify-between">
+						<text class="text_6">单号:{{item.sortNo}}</text>
+						<text class="text_7">时间:2{{item.createTimeStr}}</text>
+					</view>
+					<view class="section_1 flex-row">
+						<view class=""></view>
+						<image
+							:src="$httpImage + item.modelPhoto"
+							mode="aspectFit"
+							class="cu-avatar lg radius box_5 flex-col"
+						></image>
+						<view class="text-wrapper_2 flex-col">
+							<text class="text_8">{{item.modelName}}</text>
+							<text class="text_9">{{item.label}}</text>
+							<text class="text_10">序列号:{{item.deviceNo}}</text>
+							<text class="text_11">回收价:{{item.recyclePrice}}元</text>
+						</view>
+						<view class="tag_1 flex-col" v-if="item.sortStatus == 0">
+							<text class="text_12">待送拣</text>
+						</view>
+						<view class="tag_33 flex-col" v-if="item.sortStatus == 1">
+							<text class="text_33">已送检</text>
+						</view>
+					</view>
+					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
 				</view>
 			</view>
-			<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
+		</view>
+		<view class="bottomView" :class="admin ? '' : 'transform'">
+			<view>
+				<u-checkbox-group style="align-items: center" @change="allCheck">
+					<u-checkbox v-model="checked" active-color="red" shape="circle" style="width: 38rpx; height: 38rpx">
+						光影
+					</u-checkbox>
+					全选
+				</u-checkbox-group>
+			</view>
+			<view class="goXiu" @tap="goXiu">送检</view>
 		</view>
 		<!--弹窗-->
+		<u-popup :show="yunShow" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">送拣信息填写</view>
+				<view class="yunShow-item">
+					<view class="left">运营中心</view>
+					<view class="select">
+						<uni-data-select v-model="centerId" :localdata="range" @change="change"></uni-data-select>
+					</view>
+				</view>
+				<view class="yunShow-item">
+					<view class="left">快递公司</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="logisticsCompany"></u--input>
+					</view>
+				</view>
+				<view class="yunShow-item">
+					<view class="left">快递单号</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="logisticsNo"></u--input>
+					</view>
+				</view>
+				<view class="yunShow-item" v-if="address">
+					<view class="left">收件地址</view>
+					<view class="inputAddress">
+						{{address}}
+						<view class="copy" @tap="copy">一键复制</view>
+					</view>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="addInspectDevices">确定</view>
+			</view>
+		</u-popup>
 
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -39,7 +108,7 @@
 </template>
 
 <script>
-	import { sortingList } from '@/api/erp.js';
+	import { sortingList, getOperatingCenter, addInspectDevice } from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
@@ -51,6 +120,24 @@
 		},
 		data() {
 			return {
+				address: '',
+				// 运营中心id
+				centerId: 0,
+				// 物流公司
+				logisticsCompany: '',
+				// 物流单号
+				logisticsNo: '',
+				range: [
+					{ value: 0, text: '篮球' },
+					{ value: 1, text: '足球' },
+					{ value: 2, text: '游泳' },
+				],
+				values: '',
+				// 运营中心弹框
+				yunShow: false,
+				checked: false,
+				// 控制管理
+				admin: false,
 				filerData: [],
 				filtertopnum: '83', //筛选条高度
 				defaultSelected: [],
@@ -205,6 +292,7 @@
 			this.filtertopnum = 1;
 			// #endif
 			// 进入页面刷新
+			this.getOperatingCenter();
 			this.$nextTick(() => {
 				uni.startPullDownRefresh();
 			});
@@ -223,11 +311,91 @@
 		onShow() {
 			let that = this;
 			uni.$once('updatethird', function (data) {
-				console.log(data);
 				that.thirdInfo = data;
 			});
 		},
 		methods: {
+			// 提交运营中心
+			addInspectDevices() {
+				let sortIdList = [];
+				this.dataList.map((item) => {
+					if (item.disabled) {
+						sortIdList.push(item.sortId);
+					}
+				});
+				let promise = {
+					centerId: this.centerId,
+					logisticsCompany: this.logisticsCompany,
+					logisticsNo: this.logisticsNo,
+					sortIdList,
+				};
+				addInspectDevice(promise).then((res) => {
+					if (res.code === 200) {
+						this.yunShow = false;
+						this.getDataList();
+					}
+				});
+			},
+			// 复制运营中心地址
+			copy() {
+				uni.setClipboardData({
+					data: this.address,
+					success: () =>
+						uni.showToast({
+							title: '链接已复制',
+						}),
+				});
+			},
+			// 运营中心选择change
+			change(e) {
+				this.centerId = e;
+				this.range.map((item) => {
+					if (item.value === e) {
+						this.address = item.address;
+					}
+				});
+			},
+			// 获取运营中心select
+			getOperatingCenter() {
+				getOperatingCenter(uni.getStorageSync('userinfo').storeId).then((res) => {
+					let data = res.data.map((item) => {
+						item.text = item.operatingCenterName;
+						item.value = item.operatingCenterId;
+						return item;
+					});
+					this.range = data;
+				});
+			},
+			// 关闭送检弹框
+			close() {
+				this.yunShow = false;
+			},
+			// 送检
+			goXiu() {
+				this.yunShow = true;
+			},
+			// 全选
+			allCheck() {
+				this.checked = !this.checked;
+				if (this.checked) {
+					this.dataList.map((item) => {
+						return (item.disabled = true);
+					});
+				} else {
+					this.dataList.map((item) => {
+						return (item.disabled = false);
+					});
+				}
+			},
+			// 点击多选按钮
+			radioChange(e) {
+				this.dataList[e].disabled = !this.dataList[e].disabled;
+			},
+			// 点击管理
+			snTap() {
+				this.admin = !this.admin;
+			},
+			// 切换选择框
 			confirm(e) {
 				let data = [];
 				e.value.map((item) => {
@@ -265,6 +433,10 @@
 				sortingList(paramsData)
 					.then((res) => {
 						let data = res.rows;
+						data.map((item) => {
+							return (item.disabled = false);
+						});
+						console.log(data);
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
 							if (that.ifBottomRefresh) {
@@ -396,7 +568,111 @@
 	page {
 		background: #f0f0f0;
 		padding-top: 100rpx;
-		padding: 100rpx 21rpx 0rpx 21rpx;
+		// padding: 100rpx 21rpx 0rpx 21rpx;
+	}
+	.bottomView {
+		position: fixed;
+		bottom: 0px;
+		width: 750rpx;
+		height: 191rpx;
+		background: #ffffff;
+		padding: 29rpx 40rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.transform {
+		// transform: translateX(100rpx);
+		display: none;
+	}
+	.yunShow-top {
+		padding: 26rpx 28rpx 28rpx 28rpx;
+		.yunShow-title {
+			font-size: 36rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #232323;
+			text-align: center;
+		}
+	}
+	.yunShow-item {
+		display: flex;
+		align-items: center;
+		margin-top: 22rpx;
+		.left {
+			font-size: 31rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #232323;
+		}
+		.select {
+			flex: 1;
+			margin-left: 11.45rpx;
+		}
+		.input {
+			margin-left: 11.45rpx;
+			border: 1px solid #e2e2e2;
+			border-radius: 11rpx;
+		}
+		.inputAddress {
+			margin-left: 11.45rpx;
+			border: 1px solid #e2e2e2;
+			border-radius: 11rpx;
+			flex: 1;
+			padding: 9rpx 11rpx;
+			.copy {
+				width: 141rpx;
+				height: 53rpx;
+				background: #ff1a1a;
+				border-radius: 27rpx;
+				font-size: 27rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #ffffff;
+				line-height: 53rpx;
+				text-align: center;
+				margin-top: 17rpx;
+			}
+		}
+	}
+	.yunShow-bottom {
+		display: flex;
+		view {
+			width: 267rpx;
+			height: 99rpx;
+			line-height: 99rpx;
+			flex: 1;
+			text-align: center;
+			border: 1px solid #d8d8d8;
+			font-size: 38rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #232323;
+		}
+	}
+	.goXiu {
+		width: 313rpx;
+		height: 82rpx;
+		background: #ff1a1a;
+		border-radius: 42rpx;
+		text-align: center;
+		line-height: 82rpx;
+		font-size: 34rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #ffffff;
+	}
+	.transformRight {
+		transform: translateX(-100rpx);
+	}
+	.radio {
+		width: 38rpx;
+		height: 38rpx;
+		border-radius: 38rpx;
+		border: 2rpx solid #cecece;
+	}
+	.radio-red {
+		background-color: #ff3a31;
 	}
 	.tips {
 		justify-content: space-between;
@@ -517,6 +793,7 @@
 		background-color: rgba(255, 255, 255, 1);
 		border-radius: 6px;
 		padding: 14px 11px 22px 9px;
+		width: 95vw;
 	}
 
 	.text-wrapper_1 {
@@ -609,7 +886,22 @@
 		margin: 0 0 64px 42px;
 		padding: 2px 20px 1px 19px;
 	}
-
+	.tag_33 {
+		background-color: #e5fcf1;
+		border-radius: 10px;
+		margin: 0 0 64px 42px;
+		padding: 2px 20px 1px 19px;
+	}
+	.text_33 {
+		overflow-wrap: break-word;
+		color: #00c082;
+		font-size: 12px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 17px;
+	}
 	.text_12 {
 		overflow-wrap: break-word;
 		color: rgba(17, 144, 214, 1);

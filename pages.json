@@ -1,1225 +1,1215 @@
 {
-    "easycom" : {
-        // npm安装的方式不需要前面的"@/"，下载安装的方式需要"@/"
-        // npm安装方式
-        // "^u-(.*)": "uni_modules/uview-ui/components/u-$1/u-$1.vue"
-        // 下载安装方式
-        "^u-(.*)" : "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
-    },
-    "pages" : [
-        //pages数组中第一项表示应用启动页
-        //启动页  --tabbar-----start-------
-        {
-            "path" : "pages/tabbar/home",
-            "style" : {
-                "navigationBarTitleText" : "首页",
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true //开启下拉刷新
-            }
-        },
-        {
-            "path" : "pages/tabbar/stores",
-            "style" : {
-                "navigationBarTitleText" : "门店",
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true //开启下拉刷新
-            }
-        },
-        {
-            "path" : "pages/tabbar/sell",
-            "style" : {
-                "navigationBarTitleText" : "卖货",
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true //开启下拉刷新
-            }
-        },
-        {
-            "path" : "pages/tabbar/cart",
-            "style" : {
-                "navigationBarTitleText" : "购物车",
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true //开启下拉刷新
-				
-            }
-        },
-        {
-            "path" : "pages/tabbar/my",
-            "style" : {
-                "navigationBarTitleText" : "我的",
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true, //开启下拉刷新
+	"easycom": {
+		// npm安装的方式不需要前面的"@/"，下载安装的方式需要"@/"
+		// npm安装方式
+		// "^u-(.*)": "uni_modules/uview-ui/components/u-$1/u-$1.vue"
+		// 下载安装方式
+		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [
+		//pages数组中第一项表示应用启动页
+		//启动页  --tabbar-----start-------
+		{
+			"path": "pages/tabbar/home",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true //开启下拉刷新
+			}
+		},
+		{
+			"path": "pages/tabbar/stores",
+			"style": {
+				"navigationBarTitleText": "门店",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true //开启下拉刷新
+			}
+		},
+		{
+			"path": "pages/tabbar/sell",
+			"style": {
+				"navigationBarTitleText": "卖货",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true //开启下拉刷新
+			}
+		},
+		{
+			"path": "pages/tabbar/cart",
+			"style": {
+				"navigationBarTitleText": "购物车",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true //开启下拉刷新
+			}
+		},
+		{
+			"path": "pages/tabbar/my",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true, //开启下拉刷新
 				"navigationBarTextStyle": "black"
-            }
-        }, // --tabbar-----end-------
+			}
+		}, // --tabbar-----end-------
 
-        // --tabbarerp-----start-------
-        {
-            "path" : "pages/tabbarerp/home",
-            "style" : {
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true
-            }
-        },
-        // "navigationBarTitleText": "erp"
-        {
-            "path" : "pages/tabbarerp/push",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            "path" : "pages/tabbarerp/my",
-            "style" : {
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true
-            }
-        },
-        // --tabbarerp-----end-------
-        /* 主要 *///首页
-        // {
-        // 	"path": "pages/home/home",
-        // 	"style": {
-        // 		"navigationBarTitleText": "优闲集|首页",
-        // 		"enablePullDownRefresh": true
-        // 	}
-        // },
-        //搜索
-        {
-            "path" : "pages/home/search",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        //分类
-        {
-            "path" : "pages/home/sort",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        // 商品列表
-        {
-            "path" : "pages/home/sort_list",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationStyle" : "custom"
-            }
-        },
-        //短视频
-        {
-            "path" : "pages/home/video",
-            "style" : {
-                "navigationBarTitleText" : "短视频",
-                "enablePullDownRefresh" : true
-            }
-        },
-        // 短视频详情
-        {
-            "path" : "pages/home/video_detail",
-            "style" : {
-                "navigationBarTitleText" : "视频详情"
-            }
-        },
-        //登录
-        {
-            "path" : "pages/common/login/login",
-            "style" : {
-                "navigationBarTitleText" : "登录",
-                "navigationStyle" : "custom"
-            }
-        },
-        //商城注册
-        {
-            "path" : "pages/common/login/mallreg",
-            "style" : {
-                "navigationBarTitleText" : "商城注册"
-            }
-        },
-        {
-            "path" : "pages/common/login/register",
-            "style" : {
-                "navigationBarTitleText" : "注册",
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            "path" : "pages/stores/goods",
-            "style" : {
-                "navigationBarTitleText" : "",
-                "enablePullDownRefresh" : true //开启下拉刷新
-            }
-        },
-        //客服
-        {
-            "path" : "pages/chat/index",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //聊天登录和未登录状态演示
-        {
-            "path" : "pages/chat/chat",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //聊天
-		
+		// --tabbarerp-----start-------
+		{
+			"path": "pages/tabbarerp/home",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		},
+		// "navigationBarTitleText": "erp"
+		{
+			"path": "pages/tabbarerp/push",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/tabbarerp/my",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		},
+		// --tabbarerp-----end-------
+		/* 主要 */ //首页
+		// {
+		// 	"path": "pages/home/home",
+		// 	"style": {
+		// 		"navigationBarTitleText": "优闲集|首页",
+		// 		"enablePullDownRefresh": true
+		// 	}
+		// },
+		//搜索
+		{
+			"path": "pages/home/search",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		//分类
+		{
+			"path": "pages/home/sort",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		// 商品列表
+		{
+			"path": "pages/home/sort_list",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom"
+			}
+		},
+		//短视频
+		{
+			"path": "pages/home/video",
+			"style": {
+				"navigationBarTitleText": "短视频",
+				"enablePullDownRefresh": true
+			}
+		},
+		// 短视频详情
+		{
+			"path": "pages/home/video_detail",
+			"style": {
+				"navigationBarTitleText": "视频详情"
+			}
+		},
+		//登录
+		{
+			"path": "pages/common/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		//商城注册
+		{
+			"path": "pages/common/login/mallreg",
+			"style": {
+				"navigationBarTitleText": "商城注册"
+			}
+		},
+		{
+			"path": "pages/common/login/register",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/stores/goods",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": true //开启下拉刷新
+			}
+		},
+		//客服
+		{
+			"path": "pages/chat/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //聊天登录和未登录状态演示
+		{
+			"path": "pages/chat/chat",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //聊天
 
-        //{"path": "pages/chat/chat-1"},//聊天2 //废弃
-        //{"path": "pages/chat/hand/hand"},//红包 //废弃
-        {
-            "path" : "pages/news/details",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //
-        {
-            "path" : "pages/news/notice",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //
+		//{"path": "pages/chat/chat-1"},//聊天2 //废弃
+		//{"path": "pages/chat/hand/hand"},//红包 //废弃
+		{
+			"path": "pages/news/details",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //
+		{
+			"path": "pages/news/notice",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //
 
-        //其他
-        {
-            "path" : "pages/common/map",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //地图
+		//其他
+		{
+			"path": "pages/common/map",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //地图
 
-        /* 商城 */
-        {
-            "path" : "pages/goods/goods",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
 		/* 商城 */
 		{
-		    "path" : "pages/goods/goodsNew",
-		    "style" : {
-		        "navigationStyle" : "custom"
-		    }
+			"path": "pages/goods/goods",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		},
-        {
-            "path" : "pages/goods/coupon",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationStyle" : "custom"
-            }
-        },
-        // "navigationBarTitleText": "优惠券列表",
-        //特卖、上新、热销
-        {
-            "path" : "pages/goods/special",
-            "style" : {
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true
-            }
-        },
-        {
-            "path" : "pages/goods/my_cart",
-            "style" : {
-                "navigationBarTitleText" : "购物车"
-            }
-        }, //购物车
-        {
-            "path" : "pages/goods/cart",
-            "style" : {
-                "navigationBarTitleText" : "购物车"
-            }
-        }, //购物车
-        {
-            "path" : "pages/goods/settlement",
-            "style" : {
-                "navigationBarTitleText" : "确认订单"
-            }
-        },
-        {
-            "path" : "pages/goods/pay",
-            "style" : {
-                "navigationBarTitleText" : "立即支付"
-            }
-        },
-        {
-            "path" : "pages/goods/express",
-            "style" : {
-                "navigationBarTitleText" : "查看物流",
-                "enablePullDownRefresh" : true,
-                "app-plus" : {
-                    "bounce" : "none"
-                }
-            }
-        },
-        {
-            "path" : "pages/goods/evaluate",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationBarTitleText" : "发表评论"
-            }
-        },
-        {
-            "path" : "pages/goods/refund",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationBarTitleText" : "申请售后"
-            }
-        },
-        {
-            "path" : "pages/status/pay_status",
-            "style" : {
-                "navigationBarTitleText" : "支付状态"
-            }
-        },
-        //营销
-        {
-            "path" : "pages/goods/sales/kanyidao",
-            "style" : {
-                "navigationBarTitleText" : "砍一刀"
-            }
-        }, //砍一刀
+		/* 商城 */
+		{
+			"path": "pages/goods/goodsNew",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/goods/coupon",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom"
+			}
+		},
+		// "navigationBarTitleText": "优惠券列表",
+		//特卖、上新、热销
+		{
+			"path": "pages/goods/special",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/goods/my_cart",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		}, //购物车
+		{
+			"path": "pages/goods/cart",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		}, //购物车
+		{
+			"path": "pages/goods/settlement",
+			"style": {
+				"navigationBarTitleText": "确认订单"
+			}
+		},
+		{
+			"path": "pages/goods/pay",
+			"style": {
+				"navigationBarTitleText": "立即支付"
+			}
+		},
+		{
+			"path": "pages/goods/express",
+			"style": {
+				"navigationBarTitleText": "查看物流",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/goods/evaluate",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "发表评论"
+			}
+		},
+		{
+			"path": "pages/goods/refund",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "申请售后"
+			}
+		},
+		{
+			"path": "pages/status/pay_status",
+			"style": {
+				"navigationBarTitleText": "支付状态"
+			}
+		},
+		//营销
+		{
+			"path": "pages/goods/sales/kanyidao",
+			"style": {
+				"navigationBarTitleText": "砍一刀"
+			}
+		}, //砍一刀
 
-        /* 
-		 * ERP 
-		 */// {
-        // 	"path": "pages/erp/home/home",
-        // 	"style": {
-        // 		"enablePullDownRefresh": true //开启下拉刷新
-        // 	}
-        // },
-        //客户列表
-        {
-            "path" : "pages/erp/customer/customer",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        // "navigationBarTitleText": "客户列表"
-        //添加客户
-        {
-            "path" : "pages/erp/customer/add",
-            "style" : {
-                "navigationBarTitleText" : "添加客户"
-            }
-        },
-        {
-            //供应商列表
-            "path" : "pages/erp/supplier/supplier",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //供应商列表
-            "path" : "pages/erp/supplier/add",
-            "style" : {
-                "navigationBarTitleText" : "添加供应商"
-            }
-        },
-        {
-            //回收产品审上架
-            "path" : "pages/erp/purchase/shangjia",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom",
-                "navigationBarTitleText" : "审上架"
-            }
-        },
-        //"navigationStyle": "custom"
-        {
-            //回收列表
-            "path" : "pages/erp/purchase/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "回收列表"
-            }
-        },
-        {
-            //回收单产品列表
-            "path" : "pages/erp/purchase/product",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "回收商品详情"
-            }
-        },
-        {
-            //回收单未上架机型产品选择
-            "path" : "pages/erp/purchase/add/select_diyattr",
-            "style" : {
-                "navigationBarTitleText" : "未上架机型"
-            }
-        },
-        {
-            //回收单未上架机型回收订单提交
-            "path" : "pages/erp/purchase/add/select_diyform",
-            "style" : {
-                "navigationBarTitleText" : "未上架机型"
-            }
-        },
-        {
-            //回收单产品选择
-            "path" : "pages/erp/purchase/add/select_product",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //回收单产品属性选择
-            "path" : "pages/erp/purchase/add/select_recycleinfo",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "选择回收产品"
-            }
-        },
-        {
-            //回收单产品表单提交
-            "path" : "pages/erp/purchase/add/select_recycleform",
-            "style" : {
-                "navigationBarTitleText" : "回收产品"
-            }
-        },
-        {
-            //销售列表
-            "path" : "pages/erp/sell/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "销售列表"
-            }
-        },
-        {
-            //销售退款登记列表
-            "path" : "pages/erp/sell/out",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "退款记录",
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //销售退款登记
-            "path" : "pages/erp/sell/outadd",
-            "style" : {
-                "navigationBarTitleText" : "退款登记"
-            }
-        },
-        {
-            //销售单产品列表
-            "path" : "pages/erp/sell/product",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            "path" : "pages/erp/sell/add/select_product",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //采购单开单
-            "path" : "pages/erp/shop/add",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "新设采购"
-            }
-        },
-        {
-            //库存列表、商品列表
-            "path" : "pages/erp/goods/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //调拨开单
-            "path" : "pages/erp/allot/allot_push",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //序列号追踪
-            "path" : "pages/erp/sn/list",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //上门回收
-            "path" : "pages/erp/purchase/local",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "上门回收"
-            }
-        },
-        {
-            //上门回收-回单处理
-            "path" : "pages/erp/purchase/local_receipt",
-            "style" : {
-                "navigationBarTitleText" : "回单处理"
-            }
-        },
-        {
-            //客服接待
-            "path" : "pages/erp/stores/kefurece",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "客服接待"
-            }
-        },
-        {
-            //添加盘点
-            "path" : "pages/erp/inventory/check/add",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //盘点列表
-            "path" : "pages/erp/inventory/check/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //盘点产品
-            "path" : "pages/erp/inventory/check/goods",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //盘点产品状态设置
-            "path" : "pages/erp/inventory/check/status",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //门店商品列表
-            "path" : "pages/erp/stores/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //店长调价任务产品列表
-            "path" : "pages/erp/task/product_list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //门店店长调拨列表
-            "path" : "pages/erp/stores/transferlist",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //门店业绩汇总
-            "path" : "pages/erp/stores/sales",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //我的业绩
-            "path" : "pages/erp/user/yeji",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "我的业绩"
-            }
-        },
-        //"navigationStyle": "custom"
-        {
-            //我的工资查询
-            "path" : "pages/erp/user/salary",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //我的回收商品列表
-            "path" : "pages/erp/user/recyclelist",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //我的销售商品列表
-            "path" : "pages/erp/user/selllist",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //财务待付款
-            "path" : "pages/erp/finance/fukuan",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "待付款"
-            }
-        },
-        //"navigationStyle": "custom"
-        {
-            //流水账单
-            "path" : "pages/erp/finance/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //支出列表
-            "path" : "pages/erp/finance/spending/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            //收入列表
-            "path" : "pages/erp/finance/income/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        //待分拣
-        {
-            "path" : "pages/erp/task/quality",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "待分拣"
-            }
-        },
+		/*
+		 * ERP
+		 */ // {
+		// 	"path": "pages/erp/home/home",
+		// 	"style": {
+		// 		"enablePullDownRefresh": true //开启下拉刷新
+		// 	}
+		// },
+		//客户列表
+		{
+			"path": "pages/erp/customer/customer",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		// "navigationBarTitleText": "客户列表"
+		//添加客户
+		{
+			"path": "pages/erp/customer/add",
+			"style": {
+				"navigationBarTitleText": "添加客户"
+			}
+		},
+		{
+			//供应商列表
+			"path": "pages/erp/supplier/supplier",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//供应商列表
+			"path": "pages/erp/supplier/add",
+			"style": {
+				"navigationBarTitleText": "添加供应商"
+			}
+		},
+		{
+			//回收产品审上架
+			"path": "pages/erp/purchase/shangjia",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "审上架"
+			}
+		},
+		//"navigationStyle": "custom"
+		{
+			//回收列表
+			"path": "pages/erp/purchase/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "回收列表"
+			}
+		},
+		{
+			//回收单产品列表
+			"path": "pages/erp/purchase/product",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "回收商品详情"
+			}
+		},
+		{
+			//回收单未上架机型产品选择
+			"path": "pages/erp/purchase/add/select_diyattr",
+			"style": {
+				"navigationBarTitleText": "未上架机型"
+			}
+		},
+		{
+			//回收单未上架机型回收订单提交
+			"path": "pages/erp/purchase/add/select_diyform",
+			"style": {
+				"navigationBarTitleText": "未上架机型"
+			}
+		},
+		{
+			//回收单产品选择
+			"path": "pages/erp/purchase/add/select_product",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//回收单产品属性选择
+			"path": "pages/erp/purchase/add/select_recycleinfo",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "选择回收产品"
+			}
+		},
+		{
+			//回收单产品表单提交
+			"path": "pages/erp/purchase/add/select_recycleform",
+			"style": {
+				"navigationBarTitleText": "回收产品"
+			}
+		},
+		{
+			//销售列表
+			"path": "pages/erp/sell/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "销售列表"
+			}
+		},
+		{
+			//销售退款登记列表
+			"path": "pages/erp/sell/out",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "退款记录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//销售退款登记
+			"path": "pages/erp/sell/outadd",
+			"style": {
+				"navigationBarTitleText": "退款登记"
+			}
+		},
+		{
+			//销售单产品列表
+			"path": "pages/erp/sell/product",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/erp/sell/add/select_product",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//采购单开单
+			"path": "pages/erp/shop/add",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "新设采购"
+			}
+		},
+		{
+			//库存列表、商品列表
+			"path": "pages/erp/goods/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//调拨开单
+			"path": "pages/erp/allot/allot_push",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//序列号追踪
+			"path": "pages/erp/sn/list",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//上门回收
+			"path": "pages/erp/purchase/local",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "上门回收"
+			}
+		},
+		{
+			//上门回收-回单处理
+			"path": "pages/erp/purchase/local_receipt",
+			"style": {
+				"navigationBarTitleText": "回单处理"
+			}
+		},
+		{
+			//客服接待
+			"path": "pages/erp/stores/kefurece",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "客服接待"
+			}
+		},
+		{
+			//添加盘点
+			"path": "pages/erp/inventory/check/add",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//盘点列表
+			"path": "pages/erp/inventory/check/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//盘点产品
+			"path": "pages/erp/inventory/check/goods",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//盘点产品状态设置
+			"path": "pages/erp/inventory/check/status",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//门店商品列表
+			"path": "pages/erp/stores/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//店长调价任务产品列表
+			"path": "pages/erp/task/product_list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//门店店长调拨列表
+			"path": "pages/erp/stores/transferlist",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//门店业绩汇总
+			"path": "pages/erp/stores/sales",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//我的业绩
+			"path": "pages/erp/user/yeji",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "我的业绩"
+			}
+		},
+		//"navigationStyle": "custom"
+		{
+			//我的工资查询
+			"path": "pages/erp/user/salary",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//我的回收商品列表
+			"path": "pages/erp/user/recyclelist",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//我的销售商品列表
+			"path": "pages/erp/user/selllist",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//财务待付款
+			"path": "pages/erp/finance/fukuan",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "待付款"
+			}
+		},
+		//"navigationStyle": "custom"
+		{
+			//流水账单
+			"path": "pages/erp/finance/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//支出列表
+			"path": "pages/erp/finance/spending/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//收入列表
+			"path": "pages/erp/finance/income/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
 		//待分拣
 		{
-		    "path" : "pages/erp/warehouse/quality",
-		    "style" : {
-		        "enablePullDownRefresh" : true, //开启下拉刷新
-		
-		        "navigationStyle": "custom",
-		        "navigationBarTitleText" : "仓库管理"
-		    }
+			"path": "pages/erp/task/quality",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "待分拣"
+			}
+		},
+		//待分拣
+		{
+			"path": "pages/erp/warehouse/quality",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "仓库管理"
+			}
 		},
 		//添加仓库
 		{
-		    "path" : "pages/erp/warehouse/add",
-		    "style" : {
-		        "enablePullDownRefresh" : true, //开启下拉刷新
-		
-		        // "navigationStyle": "custom",
-		        "navigationBarTitleText" : "添加仓库"
-		    }
+			"path": "pages/erp/warehouse/add",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				// "navigationStyle": "custom",
+				"navigationBarTitleText": "添加仓库"
+			}
 		},
-        //分拣记录
-        {
-            "path" : "pages/erp/quality/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
+		//分拣记录
+		{
+			"path": "pages/erp/quality/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
 
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "分拣记录"
-            }
-        },
-        //分拣处理
-        {
-            "path" : "pages/erp/quality/edit",
-            "style" : {
-                "navigationBarTitleText" : "分拣处理"
-            }
-        },
-        //回收方列表
-        {
-            "path" : "pages/erp/third/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "分拣记录"
+			}
+		},
+		//分拣处理
+		{
+			"path": "pages/erp/quality/edit",
+			"style": {
+				"navigationBarTitleText": "分拣处理"
+			}
+		},
+		//回收方列表
+		{
+			"path": "pages/erp/third/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
 
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "回收方列表",
-                "navigationStyle" : "custom"
-            }
-        },
-        //添加回收方
-        {
-            "path" : "pages/erp/third/add",
-            "style" : {
-                "navigationBarTitleText" : "添加回收方"
-            }
-        },
-        {
-            //回收单审核
-            "path" : "pages/erp/stores/shenhe",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationBarTitleText" : "审核上架"
-            }
-        },
-        //改收价
-        {
-            "path" : "pages/erp/user/attrlist",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "回收方列表",
+				"navigationStyle": "custom"
+			}
+		},
+		//添加回收方
+		{
+			"path": "pages/erp/third/add",
+			"style": {
+				"navigationBarTitleText": "添加回收方"
+			}
+		},
+		{
+			//回收单审核
+			"path": "pages/erp/stores/shenhe",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationBarTitleText": "审核上架"
+			}
+		},
+		//改收价
+		{
+			"path": "pages/erp/user/attrlist",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
 
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "调整收价"
-            }
-        },
-        //待上门
-        {
-            "path" : "pages/erp/purchase/tasklocal",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "调整收价"
+			}
+		},
+		//待上门
+		{
+			"path": "pages/erp/purchase/tasklocal",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
 
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "同城上门"
-            }
-        },
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "同城上门"
+			}
+		},
 		//回收列表
 		{
-		    "path" : "pages/erp/recycleList/index",
-		    "style" : {
-		        "enablePullDownRefresh" : true, //开启下拉刷新
-		
-		        //"navigationStyle": "custom",
-		        "navigationBarTitleText" : "回收列表"
-		    }
+			"path": "pages/erp/recycleList/index",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "回收列表"
+			}
 		},
 		{
-		    "path" : "pages/erp/recycleList/recycleListDetail/recycleListDetail",
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh" : true, //开启下拉刷新
-		        		
-		        //"navigationStyle": "custom",
-		        "navigationBarTitleText" : "订单详情"
-		    }
-		    
+			"path": "pages/erp/recycleList/recycleListDetail/recycleListDetail",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "订单详情"
+			}
 		},
 		//回收点点
 		{
-		    "path" : "pages/erp/recycleList/recycling-new",
-		    "style" : {
-		        "enablePullDownRefresh" : true, //开启下拉刷新
-		
-		        //"navigationStyle": "custom",
-		        "navigationBarTitleText" : "回收"
-		    }
+			"path": "pages/erp/recycleList/recycling-new",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "回收"
+			}
 		},
 		{
-		    "path" : "pages/erp/recycleList/comparisonChart/comparisonChart",
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh" : true, //开启下拉刷新
-		        		
-		        //"navigationStyle": "custom",
-		        "navigationBarTitleText" : "对比图"
-		    }
-		    
+			"path": "pages/erp/recycleList/comparisonChart/comparisonChart",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "对比图"
+			}
 		},
-        //收价提交
-        {
-            "path" : "pages/erp/user/attrprice",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        //"navigationBarTitleText": "调价任务"
-        //审核收价列表
-        {
-            "path" : "pages/erp/user/auditlist",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "收价任务"
-            }
-        },
-        //本店聊天记录
-        {
-            "path" : "pages/erp/chat/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "聊天记录"
-            }
-        },
+		//收价提交
 		{
-		    "path" : "pages/erp/chat/chatAdmin",
-		    "style" : {
-		        "navigationStyle" : "custom"
-		    }
-		}, 
-        //聊天详情
-        {
-            "path" : "pages/erp/chat/view",
-            "style" : {
-                "enablePullDownRefresh" : false, //开启下拉刷新
+			"path": "pages/erp/user/attrprice",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		//"navigationBarTitleText": "调价任务"
+		//审核收价列表
+		{
+			"path": "pages/erp/user/auditlist",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
 
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "聊天详情"
-            }
-        },
-        //订单列表
-        {
-            "path" : "pages/erp/order/list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "收价任务"
+			}
+		},
+		//本店聊天记录
+		{
+			"path": "pages/erp/chat/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
 
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "订单列表"
-            }
-        },
-        /* 我的 *///分销模块
-        {
-            "path" : "pages/my/item/item",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationStyle" : "custom"
-            }
-        }, //分销主页
-        {
-            "path" : "pages/my/item/card",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //推广名片
-        {
-            "path" : "pages/my/item/tixian_add1",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //申请提现1
-        {
-            "path" : "pages/my/item/tixian_list",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationStyle" : "custom"
-            }
-        }, //提现记录
-        {
-            "path" : "pages/my/item/user_list",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationStyle" : "custom"
-            }
-        }, //推广人统计
-        {
-            "path" : "pages/my/item/item_order",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //推广人订单
-        {
-            "path" : "pages/my/item/money_log",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationStyle" : "custom",
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "聊天记录"
+			}
+		},
+		{
+			"path": "pages/erp/chat/chatAdmin",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		//聊天详情
+		{
+			"path": "pages/erp/chat/view",
+			"style": {
+				"enablePullDownRefresh": false, //开启下拉刷新
+
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "聊天详情"
+			}
+		},
+		//订单列表
+		{
+			"path": "pages/erp/order/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "订单列表"
+			}
+		},
+		/* 我的 */ //分销模块
+		{
+			"path": "pages/my/item/item",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom"
+			}
+		}, //分销主页
+		{
+			"path": "pages/my/item/card",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //推广名片
+		{
+			"path": "pages/my/item/tixian_add1",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //申请提现1
+		{
+			"path": "pages/my/item/tixian_list",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom"
+			}
+		}, //提现记录
+		{
+			"path": "pages/my/item/user_list",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom"
+			}
+		}, //推广人统计
+		{
+			"path": "pages/my/item/item_order",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //推广人订单
+		{
+			"path": "pages/my/item/money_log",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom",
 				"backgroundColor": "#F0F0F0"
-            }
-        }, //佣金记录
-        {
-            "path" : "pages/my/item/money_state",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //佣金状态-详情
-        {
-            "path" : "pages/my/item/user_rank",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationStyle" : "custom"
-            }
-        }, //推广人排行
-        {
-            "path" : "pages/my/item/level_list",
-            "style" : {
-                "navigationStyle": "custom"
-                // "navigationBarTitleText" : "等级列表"
-            }
-        }, //等级列表
-        {
-            "path" : "pages/my/item/level_up",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //等级升级
-        {
-            "path" : "pages/my/item/leveltask_list",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //等级任务列表
+			}
+		}, //佣金记录
+		{
+			"path": "pages/my/item/money_state",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //佣金状态-详情
+		{
+			"path": "pages/my/item/user_rank",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom"
+			}
+		}, //推广人排行
+		{
+			"path": "pages/my/item/level_list",
+			"style": {
+				"navigationStyle": "custom"
+				// "navigationBarTitleText" : "等级列表"
+			}
+		}, //等级列表
+		{
+			"path": "pages/my/item/level_up",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //等级升级
+		{
+			"path": "pages/my/item/leveltask_list",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //等级任务列表
 
-        //个人资料
-        {
-            "path" : "pages/my/userdata/index",
-            "style" : {
-                "navigationBarTitleText" : "个人资料"
-            }
-        }, //个人资料列表
+		//个人资料
+		{
+			"path": "pages/my/userdata/index",
+			"style": {
+				"navigationBarTitleText": "个人资料"
+			}
+		}, //个人资料列表
 
-        // "navigationStyle": "custom"
-        {
-            "path" : "pages/my/userdata/address",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //地址列表
-        {
-            "path" : "pages/my/userdata/add-address",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //添加地址
-        {
-            "path" : "pages/my/userdata/edit-address",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //编辑地址
-        {
-            "path" : "pages/my/userdata/avatar",
-            "style" : {
-                "navigationBarTitleText" : "修改头像"
-            }
-        }, //设置头像
+		// "navigationStyle": "custom"
+		{
+			"path": "pages/my/userdata/address",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //地址列表
+		{
+			"path": "pages/my/userdata/add-address",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //添加地址
+		{
+			"path": "pages/my/userdata/edit-address",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //编辑地址
+		{
+			"path": "pages/my/userdata/avatar",
+			"style": {
+				"navigationBarTitleText": "修改头像"
+			}
+		}, //设置头像
 
-        // "navigationStyle": "custom"
-        //{"path": "pages/my/userdata/contact-cards"}, //联系卡 废弃
-        {
-            "path" : "pages/my/userdata/edit-name",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //设置昵称
-        {
-            "path" : "pages/my/userdata/edit-phone",
-            "style" : {
-                // "navigationStyle": "custom",
-                "navigationBarTitleText" : "手机号换绑"
-            }
-        }, //设置手机
-        {
-            "path" : "pages/my/userdata/edit-synopsis",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //设置口号、简介
-        {
-            "path" : "pages/my/address/address",
-            "style" : {
-                //"navigationStyle": "custom",
-                "navigationBarTitleText" : "我的地址"
-            }
-        },
-        {
-            "path" : "pages/my/address/addressManage",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        //{"path": "pages/my/userdata/region"},	//地区列表 废弃
-        {
-            "path" : "pages/my/userdata/realname/index",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //实名认证
-        {
-            "path" : "pages/my/userdata/realname/form",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        }, //我的足迹
-        {
-            "path" : "pages/my/footmark",
-            "style" : {
-                "navigationStyle" : "custom",
-                "enablePullDownRefresh" : true
-            }
-        },
-        {
-            "path" : "pages/my/coupon/list",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationBarTitleText" : "我的优惠券"
-            }
-        }, //我卖出的
-        {
-            "path" : "pages/order/recycle/list",
-            "style" : {
-                "navigationBarTitleText" : "我卖出的"
-            }
-        }, //我卖出的订单详情
-        {
-            "path" : "pages/order/recycle/details",
-            "style" : {
-                "navigationBarTitleText" : "订单详情"
-            }
-        },
-		 {
-		     "path" : "pages/order/comparisonChart/comparisonChart",
-		     "style" :                                                                                    
-		     {
-		         "enablePullDownRefresh" : true, //开启下拉刷新
-		         		
-		         //"navigationStyle": "custom",
-		         "navigationBarTitleText" : "回执单"
-		     }
-		     
-		 },
-		 //我买到的
-        {
-            "path" : "pages/order/goods/list",
-            "style" : {
-                // "navigationStyle": "custom"
-                "navigationBarTitleText" : "我买到的"
-            }
-        }, //我买到的订单详情
-        {
-            "path" : "pages/order/goods/details",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        //系统设置
-        {
-            "path" : "pages/my/set/set-up",
-            "style" : {
-                "navigationBarTitleText" : "设置"
-            }
-        },
-        {
-            //关于我们
-            "path" : "pages/about/about",
-            "style" : {
-                // "navigationStyle": "custom",
-                "navigationBarTitleText" : "关于我们"
-            }
-        },
-        {
-            //平台说明
-            "path" : "pages/about/explain",
-            "style" : {
-                // "navigationStyle": "custom",
-                "navigationBarTitleText" : "平台说明"
-            }
-        },
-        {
-            "path" : "pages/recycling/classify",
-            "style" : {
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            "path" : "pages/recycling/recycling",
-            "style" : {
-                "navigationBarTitleText" : "机器报价"
-            }
-        },
-        //机器报价
-        {
-            "path" : "pages/recycling/recycling-new",
-            "style" : {
-                "navigationBarTitleText" : "机器回收报价"
-            }
-        },
-        //机器搜索
-        {
-            "path" : "pages/recycling/search",
-            "style" : {
-                "navigationBarTitleText" : "机器搜索"
-            }
-        },
-        //评估详情
-        {
-            "path" : "pages/recycling/preview",
-            "style" : {
-                "navigationBarTitleText" : "评估详情",
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            "path" : "pages/recycling/form",
-            "style" : {
-                "navigationBarTitleText" : "提交订单"
-            }
-        },
-        {
-            "path" : "pages/recycling/new-report",
-            "style" : {
-                "navigationBarTitleText" : "每日报价",
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            "path" : "pages/recycling/diyform",
-            "style" : {
-                "navigationBarTitleText" : "未上架机型"
-            }
-        },
-        {
-            "path" : "pages/recycling/go-delivery",
-            "style" : {
-                "navigationStyle" : "default",
-                "navigationBarTitleText" : "发货"
-            }
-        },
-        {
-            "path" : "pages/my/pay/paylist",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                // "navigationStyle": "custom"
-                "navigationBarTitleText" : "账户信息"
-            }
-        },
-        {
-            "path" : "pages/my/pay/add-pay",
-            "style" : {
-                "navigationStyle" : "custom",
-                "navigationBarTitleText" : "添加银行卡"
-            }
-        },
-        {
-            "path" : "pages/my/pay/edit-pay",
-            "style" : {
-                "navigationStyle" : "custom",
-                "navigationBarTitleText" : "编辑银行卡"
-            }
-        },
-        {
-            "path" : "pages/my/evaluate/list",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                // "navigationStyle": "custom"
-                "navigationBarTitleText" : "我的评价"
-            }
-        },
-        {
-            "path" : "pages/idphoto/idphoto",
-            "style" : {
-                "navigationStyle" : "custom",
-                "backgroundColor" : "#000000"
-            }
-        },
-        // 城市选择
-        {
-            "path" : "pages/common/city",
-            "style" : {
-                "enablePullDownRefresh" : true,
-                "navigationBarTitleText" : "选择城市"
-            }
-        },
-        {
-            "path" : "pages/erp/allot/product_list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            "path" : "pages/erp/shop/goods_list",
-            "style" : {
-                "enablePullDownRefresh" : true, //开启下拉刷新
-                "navigationStyle" : "custom"
-            }
-        },
-        {
-            "path" : "App",
-            "style" : {}
-        }
-        
-        ,{
-            "path" : "pages/erp/diandianUnpload/diandianUnpload",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "开单",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
-    "tabBar" : {
-        "color" : "#646464",
-        "selectedColor" : "#262626",
-        "borderStyle" : "white",
-        "backgroundColor" : "#ffffff",
-        "height" : "1px",
-        "list" : [
-            {
-                "pagePath" : "pages/tabbar/home",
-                "iconPath" : "static/images/1-001.png",
-                "selectedIconPath" : "static/images/1-002.png",
-                "text" : "首页",
-                "visible" : false
-            },
-            {
-                "pagePath" : "pages/tabbar/stores",
-                "iconPath" : "static/images/4-001.png",
-                "selectedIconPath" : "static/images/4-002.png",
-                "text" : "门店",
-                "visible" : false
-            },
-            {
-                "pagePath" : "pages/tabbar/sell",
-                "iconPath" : "static/images/4-001.png",
-                "selectedIconPath" : "static/images/4-002.png",
-                "text" : "卖货",
-                "visible" : false
-            },
-            {
-                "pagePath" : "pages/tabbar/cart",
-                "iconPath" : "static/images/4-001.png",
-                "selectedIconPath" : "static/images/4-002.png",
-                "text" : "购物车",
-                "visible" : false
-            },
-            {
-                "pagePath" : "pages/tabbar/my",
-                "iconPath" : "static/images/4-001.png",
-                "selectedIconPath" : "static/images/4-002.png",
-                "text" : "我的",
-                "visible" : false
-            }
-        ]
-    },
-    "globalStyle" : {
-        // "navigationStyle": "custom"
-        "navigationBarBackgroundColor" : "#ffffff",
-        "backgroundColor" : "#ffffff",
-        "navigationBarTextStyle" : "black"
-    },
-    "condition" : {
-        //模式配置，仅开发期间生效
-        "current" : 0, //当前激活的模式(list 的索引项)
-        "list" : [
-            {
-                "name" : "", //模式名称
-                "path" : "", //启动页面，必选
-                "query" : "" //启动参数，在页面的onLoad函数里面得到
-            }
-        ]
-    }
+		// "navigationStyle": "custom"
+		//{"path": "pages/my/userdata/contact-cards"}, //联系卡 废弃
+		{
+			"path": "pages/my/userdata/edit-name",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //设置昵称
+		{
+			"path": "pages/my/userdata/edit-phone",
+			"style": {
+				// "navigationStyle": "custom",
+				"navigationBarTitleText": "手机号换绑"
+			}
+		}, //设置手机
+		{
+			"path": "pages/my/userdata/edit-synopsis",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //设置口号、简介
+		{
+			"path": "pages/my/address/address",
+			"style": {
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "我的地址"
+			}
+		},
+		{
+			"path": "pages/my/address/addressManage",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		//{"path": "pages/my/userdata/region"},	//地区列表 废弃
+		{
+			"path": "pages/my/userdata/realname/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //实名认证
+		{
+			"path": "pages/my/userdata/realname/form",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, //我的足迹
+		{
+			"path": "pages/my/footmark",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/my/coupon/list",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "我的优惠券"
+			}
+		}, //我卖出的
+		{
+			"path": "pages/order/recycle/list",
+			"style": {
+				"navigationBarTitleText": "我卖出的"
+			}
+		}, //我卖出的订单详情
+		{
+			"path": "pages/order/recycle/details",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		},
+		{
+			"path": "pages/order/comparisonChart/comparisonChart",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				//"navigationStyle": "custom",
+				"navigationBarTitleText": "回执单"
+			}
+		},
+		//我买到的
+		{
+			"path": "pages/order/goods/list",
+			"style": {
+				// "navigationStyle": "custom"
+				"navigationBarTitleText": "我买到的"
+			}
+		}, //我买到的订单详情
+		{
+			"path": "pages/order/goods/details",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		//系统设置
+		{
+			"path": "pages/my/set/set-up",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			//关于我们
+			"path": "pages/about/about",
+			"style": {
+				// "navigationStyle": "custom",
+				"navigationBarTitleText": "关于我们"
+			}
+		},
+		{
+			//平台说明
+			"path": "pages/about/explain",
+			"style": {
+				// "navigationStyle": "custom",
+				"navigationBarTitleText": "平台说明"
+			}
+		},
+		{
+			"path": "pages/recycling/classify",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/recycling/recycling",
+			"style": {
+				"navigationBarTitleText": "机器报价"
+			}
+		},
+		//机器报价
+		{
+			"path": "pages/recycling/recycling-new",
+			"style": {
+				"navigationBarTitleText": "机器回收报价"
+			}
+		},
+		//机器搜索
+		{
+			"path": "pages/recycling/search",
+			"style": {
+				"navigationBarTitleText": "机器搜索"
+			}
+		},
+		//评估详情
+		{
+			"path": "pages/recycling/preview",
+			"style": {
+				"navigationBarTitleText": "评估详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/recycling/form",
+			"style": {
+				"navigationBarTitleText": "提交订单"
+			}
+		},
+		{
+			"path": "pages/recycling/new-report",
+			"style": {
+				"navigationBarTitleText": "每日报价",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/recycling/diyform",
+			"style": {
+				"navigationBarTitleText": "未上架机型"
+			}
+		},
+		{
+			"path": "pages/recycling/go-delivery",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "发货"
+			}
+		},
+		{
+			"path": "pages/my/pay/paylist",
+			"style": {
+				"enablePullDownRefresh": true,
+				// "navigationStyle": "custom"
+				"navigationBarTitleText": "账户信息"
+			}
+		},
+		{
+			"path": "pages/my/pay/add-pay",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "添加银行卡"
+			}
+		},
+		{
+			"path": "pages/my/pay/edit-pay",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "编辑银行卡"
+			}
+		},
+		{
+			"path": "pages/my/evaluate/list",
+			"style": {
+				"enablePullDownRefresh": true,
+				// "navigationStyle": "custom"
+				"navigationBarTitleText": "我的评价"
+			}
+		},
+		{
+			"path": "pages/idphoto/idphoto",
+			"style": {
+				"navigationStyle": "custom",
+				"backgroundColor": "#000000"
+			}
+		},
+		// 城市选择
+		{
+			"path": "pages/common/city",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "选择城市"
+			}
+		},
+		{
+			"path": "pages/erp/allot/product_list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/erp/shop/goods_list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "App",
+			"style": {}
+		},
+
+		{
+			"path": "pages/erp/diandianUnpload/diandianUnpload",
+			"style": {
+				"navigationBarTitleText": "开单",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#646464",
+		"selectedColor": "#262626",
+		"borderStyle": "white",
+		"backgroundColor": "#ffffff",
+		"height": "1px",
+		"list": [
+			{
+				"pagePath": "pages/tabbar/home",
+				"iconPath": "static/images/1-001.png",
+				"selectedIconPath": "static/images/1-002.png",
+				"text": "首页",
+				"visible": false
+			},
+			{
+				"pagePath": "pages/tabbar/stores",
+				"iconPath": "static/images/4-001.png",
+				"selectedIconPath": "static/images/4-002.png",
+				"text": "门店",
+				"visible": false
+			},
+			{
+				"pagePath": "pages/tabbar/sell",
+				"iconPath": "static/images/4-001.png",
+				"selectedIconPath": "static/images/4-002.png",
+				"text": "卖货",
+				"visible": false
+			},
+			{
+				"pagePath": "pages/tabbar/cart",
+				"iconPath": "static/images/4-001.png",
+				"selectedIconPath": "static/images/4-002.png",
+				"text": "购物车",
+				"visible": false
+			},
+			{
+				"pagePath": "pages/tabbar/my",
+				"iconPath": "static/images/4-001.png",
+				"selectedIconPath": "static/images/4-002.png",
+				"text": "我的",
+				"visible": false
+			}
+		]
+	},
+	"globalStyle": {
+		// "navigationStyle": "custom"
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#ffffff",
+		"navigationBarTextStyle": "black"
+	},
+	"condition": {
+		//模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
 }
