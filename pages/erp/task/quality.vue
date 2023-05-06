@@ -16,13 +16,22 @@
 			:defaultSelected="defaultSelected"
 			:updateMenuName="true"
 			@confirm="confirm"
-			@change="changefilter"
 			dataFormat="Object"
 		></filterDropdown>
+		<!-- <filterDropdown
+			ref="filterDropdown"
+			:menuTop="filtertopnum"
+			:filterData="shopownerFilterData"
+			:defaultSelected="defaultSelected"
+			:updateMenuName="true"
+			@confirm="confirm"
+			@change="changefilter"
+			dataFormat="Object"
+		></filterDropdown> -->
 		<!--为上面的临时筛选条进行的临时兼容处理-->
 		<view style="padding: 0px 20rpx">
 			<!-- :class="admin ? 'transform' : 'transformRight'" -->
-			<view v-for="(item, index) in dataList" style="display: flex; align-items: center">
+			<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px">
 				<view :class="admin ? '' : 'transform'" style="margin-right: 28rpx">
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
@@ -47,30 +56,71 @@
 						<view class="tag_1 flex-col" v-if="item.sortStatus == 0">
 							<text class="text_12">待送拣</text>
 						</view>
-						<view class="tag_33 flex-col" v-if="item.sortStatus == 1">
+						<view class="tag_33 flex-col" v-if="(item.sortStatus == 2 || item.sortStatus == 1) && roles.store_admin">
 							<text class="text_33">已送检</text>
 						</view>
-						<view class="tag_33 flex-col" v-if="item.sortStatus == 2 && roles.sorting_leader">
+						<view class="tag_33 flex-col" v-if="item.sortStatus == 2 && (roles.sorting_people || roles.sorting_leader)">
+							<text class="text_33">待分拣</text>
+						</view>
+						<view class="tag_33 flex-col" v-if="item.sortStatus == 2 && roles.sorting_leader && !roles.sorting_people">
 							<text class="text_33">已分配</text>
 						</view>
-						<view class="tag_33 flex-col" v-if="item.sortStatus == 2 && roles.sorting_people">
-							<text class="text_33">待分拣</text>
+
+						<view class="tag_1 flex-col" v-if="item.sortStatus == 3 && roles.store_admin">
+							<text class="text_12">待取回</text>
+						</view>
+						<view class="tag_1 flex-col" v-if="item.sortStatus == 3 && (roles.sorting_people || roles.sorting_leader)">
+							<text class="text_12">已寄出</text>
+						</view>
+						<view class="tag_1 flex-col" v-if="item.sortStatus == 4 && roles.store_admin">
+							<text class="text_12">已取回</text>
+						</view>
+						<view class="tag_1 flex-col" v-if="item.sortStatus == 4 && (roles.sorting_people || roles.sorting_leader)">
+							<text class="text_12">已送达</text>
 						</view>
 					</view>
 					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
 					<view class="button">
-						<view class="receipt" v-if="item.sortStatus == 2 && roles.sorting_people" @tap="goDiandian(item)">
+						<view
+							class="receipt"
+							v-if="item.sortStatus == 2 && roles.sorting_people && item.updateStatus == 1"
+							@tap="goBack(item)"
+						>
+							返回门店
+						</view>
+						<view
+							class="receipt"
+							v-if="item.sortStatus == 2 && roles.sorting_people && item.updateStatus == 0"
+							@tap="goDiandian(item)"
+						>
 							待修改
 						</view>
 						<view class="checkLogistics" v-if="item.sortStatus == 1">查看物流</view>
 						<view
 							class="receipt"
 							@tap="receiveInspectDevices(item.sortId)"
-							v-if="item.status === '0' && item.sortStatus == 1"
+							v-if="item.status === '0' && item.sortStatus == 1 && roles.sorting_leader"
 						>
-							确认收获
+							确认收货
 						</view>
-						<view class="receipt" v-if="item.status === '1' && item.sortStatus == 1">已收获</view>
+						<view
+							class="receipt"
+							@tap="getstoreAdminConfirm(item.sortId)"
+							v-if="roles.store_admin && item.sortStatus == 3"
+						>
+							确认收货
+						</view>
+						<view class="checkLogistics" v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 3">
+							物流信息
+						</view>
+						<view
+							class="checkLogistics"
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && item.sortStatus == 4"
+						>
+							物流信息
+						</view>
+						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 4">已收货</view>
+						<view class="receipt" v-if="item.status === '1' && item.sortStatus == 1">已收货</view>
 					</view>
 				</view>
 			</view>
@@ -88,6 +138,40 @@
 			<view class="goXiu" @tap="task" v-if="roles.sorting_leader">任务分配</view>
 		</view>
 		<!--弹窗-->
+		<u-popup :show="backShow" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">送拣信息填写</view>
+				<view class="yunShow-item">
+					<view class="left">门店名称</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="sortName"></u--input>
+					</view>
+				</view>
+				<view class="yunShow-item">
+					<view class="left">快递公司</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="logisticsCompany"></u--input>
+					</view>
+				</view>
+				<view class="yunShow-item">
+					<view class="left">快递单号</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="logisticsNo"></u--input>
+					</view>
+				</view>
+				<view class="yunShow-item">
+					<view class="left">收件地址</view>
+					<view class="inputAddress">
+						{{address}}
+						<view class="copy" @tap="copy">一键复制</view>
+					</view>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="addempReturnStore">确定</view>
+			</view>
+		</u-popup>
 		<u-popup :show="yunShow" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
 			<view class="yunShow-top">
 				<view class="yunShow-title">送拣信息填写</view>
@@ -151,6 +235,9 @@
 		receiveInspectDevice,
 		getSortingPeoples,
 		distributionSortingTask,
+		empGetStoreInfo,
+		empReturnStore,
+		storeAdminConfirm,
 	} from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -163,6 +250,9 @@
 		},
 		data() {
 			return {
+				storeId: 0,
+				sortId: 0,
+				sortName: '',
 				sortingPeople: 0,
 				address: '',
 				// 运营中心id
@@ -179,6 +269,7 @@
 				values: '',
 				// 运营中心弹框
 				taskShow: false,
+				backShow: false,
 				yunShow: false,
 				checked: false,
 				// 控制管理
@@ -335,7 +426,15 @@
 		},
 		onLoad(options) {
 			// #ifdef APP-PLUS
-			this.filtertopnum = 1;
+			// this.filtertopnum = 183;
+			let a = 0;
+			uni.getSystemInfo({
+				success(e) {
+					// console.log(e.statusBarHeight + 83 + 101, '44444');
+					a = e.statusBarHeight + 140;
+				},
+			});
+			this.filtertopnum = a;
 			// #endif
 			// 进入页面刷新
 			// console.log(Vue.prototype.$store.state.roles, '2222222222');
@@ -343,7 +442,9 @@
 			if (uni.getStorageSync('userinfo').storeId) {
 				this.getOperatingCenter();
 			}
-			this.getSortingPeoples();
+			if (this.roles.sorting_leader) {
+				this.getSortingPeoples();
+			}
 			this.$nextTick(() => {
 				uni.startPullDownRefresh();
 			});
@@ -366,6 +467,53 @@
 			});
 		},
 		methods: {
+			// 店长确认收货
+			getstoreAdminConfirm(id) {
+				storeAdminConfirm(id).then((res) => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '收货成功',
+						});
+						this.getDataList();
+					}
+				});
+			},
+			// 返回门店
+			addempReturnStore() {
+				let promise = {
+					sortId: this.sortId,
+					storeId: this.storeId,
+					centerId: this.centerId,
+					logisticsCompany: this.logisticsCompany,
+					logisticsNo: this.logisticsNo,
+				};
+				empReturnStore(promise).then((res) => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '操作成功',
+						});
+						this.close();
+						this.getDataList();
+					}
+				});
+			},
+			// 获取门店地址
+			getEmpGetStoreInfo(storeId) {
+				empGetStoreInfo(storeId).then((res) => {
+					this.sortName = res.data.storeName;
+					this.address = res.data.location;
+				});
+			},
+			// 点击返回门店
+			goBack(item) {
+				this.centerId = item.centerId;
+				this.sortId = item.sortId;
+				this.storeId = item.storeId;
+				this.backShow = true;
+				this.getEmpGetStoreInfo(item.storeId);
+			},
 			// 分拣员点点上传修改
 			goDiandian(item) {
 				uni.navigateTo({
@@ -451,6 +599,7 @@
 			},
 			// 复制运营中心地址
 			copy() {
+				console.log(this.address);
 				uni.setClipboardData({
 					data: this.address,
 					success: () =>
@@ -481,8 +630,9 @@
 			},
 			// 关闭送检弹框
 			close() {
+				this.backShow = false;
 				this.yunShow = false;
-				this.taskShow = fasle;
+				this.taskShow = false;
 			},
 			// 送检
 			goXiu() {
@@ -531,11 +681,6 @@
 			hsfTap() {
 				uni.navigateTo({
 					url: '/pages/erp/third/list',
-				});
-			},
-			copy(text) {
-				uni.setClipboardData({
-					data: text,
 				});
 			},
 			getDataList() {
@@ -676,7 +821,6 @@
 	@import '/uni_modules/colorui/main.css';
 	@import '/uni_modules/colorui/icon.css';
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
-
 	/* #endif */
 	@import '@/static/common.css';
 	page {

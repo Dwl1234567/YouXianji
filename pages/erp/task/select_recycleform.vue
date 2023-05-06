@@ -7,7 +7,6 @@
 		
 		<view class="cu-bar bg-white">
 			<view class='action'>
-				<text class='cuIcon-title text-red'></text>
 				<text class="title">序列号/IMEI</text>
 				<text class="margin-left-xs text-sm">
 					<input placeholder="请输入设备序列号/IMEI" v-model="goodssn" name="input"></input>
@@ -16,7 +15,6 @@
 		</view>
 		<view class="cu-bar bg-white">
 			<view class='action'>
-				<text class='cuIcon-title text-red'></text>
 				<text class="title">机器图片</text>
 				<text class="margin-left-xs text-sm">(添加照片，可提高回收效率哟)</text>
 			</view>
@@ -120,7 +118,7 @@
 		<view class="cu-form-group">
 			<view class="title">成色</view>
 			<view>
-				<u-radio-group style="display: flex;" v-model="colorvalue" placement="row" @change="groupChange">
+				<u-radio-group style="display: flex;" v-model="conditionInfo" placement="row" @change="groupChange">
 					<u-radio :customStyle="{marginRight: '5px'}" :size="12" :labelSize="13" v-for="(item, index) in radiolist1" :key="index"
 						:label="item.name" :name="item.value" @change="radioChange">
 					</u-radio>
@@ -163,13 +161,12 @@
 
 		<view class="cu-bar bg-white">
 			<view class='action'>
-				<text class='cuIcon-title text-red'></text>
 				<text class="title">已选属性</text>
 				<text class="margin-left-xs text-sm"></text>
 			</view>
 		</view>
 		<view class="bg-white padding-lr">
-			<view class="cu-list grid col-3 no-border padding-lr-sm">
+			<view class="cu-list grid col-3 no-border">
 				
 				<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
 					<view class="cu-item radius-2" :class="tabindex == tab_cur?'bg-red cur':''" @tap="tabSelect"
@@ -196,7 +193,7 @@
 								</view>
 							  </view>
 							  <view class="h-td">
-								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyindex)" :value="recyitem.ramke"></input>
+								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyindex)" :value="recyitem.remark"></input>
 							  </view>
 							</view>
 						</view>
@@ -204,10 +201,53 @@
 				</view>
 			</view>
 		</view>
-
 		<view class="cu-form-group">
-			<view class="title">是否直售</view>
-			<switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
+			<view class="title">是否维修</view>
+			<u-switch v-model="isRepair" @change="repairChange"></u-switch>
+		</view>
+		<view class="cu-form-group" v-if="isRepair">
+			<view class="title">维修价格</view>
+			<u--input
+			    placeholder="请输入内容"
+			    border="surround"
+			    v-model="maintainPrice"
+			  ></u--input>
+		</view>
+		<view class="cu-form-group" v-if="isRepair">
+			<view class="title">维修渠道</view>
+			<u--input
+			    placeholder="请输入内容"
+			    border="surround"
+			    v-model="channel"
+			  ></u--input>
+		</view>
+		<view class="cu-form-group" v-if="isRepair">
+			<view class="title">维修内容</view>
+			<u--input
+			    placeholder="请输入内容"
+			    border="surround"
+			    v-model="context"
+			  ></u--input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">是否抛售</view>
+			<u-switch v-model="isSell" @change="sellChange"></u-switch>
+		</view>
+		<view class="cu-form-group" v-if="isSell">
+			<view class="title">抛售预估价</view>
+			<u--input
+			    placeholder="请输入内容"
+			    border="surround"
+			    v-model="undersellPrice"
+			  ></u--input>
+		</view>
+		<view class="cu-form-group" v-if="isSell">
+			<view class="title">抛售渠道</view>
+			<u--input
+			    placeholder="请输入内容"
+			    border="surround"
+			    v-model="sellchannel"
+			  ></u--input>
 		</view>
 
 
@@ -243,7 +283,7 @@
 		erpProductGetBasicData,
 		erpclickattredit
 	} from "@/api/erpapi.js"
-	import { empGetDeviceQuality, warehouseList, empCreateRecycleForm } from '@/api/erp.js'
+	import { empGetDeviceQuality, warehouseList, empUpdateDeviceQuality } from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
 	//import SelectData from '@/components/RecyclingList/SelectData.vue';
@@ -256,6 +296,21 @@
 		},
 		data() {
 			return {
+				// skuid
+				basicPriceId: 0,
+				// 维修价格
+				maintainPrice: '',
+				// 维修渠道
+				channel: '',
+				// 维修内容
+				context: '',
+				// 抛售渠道
+				channel: '',
+				// 抛售价格
+				sellchannel: '',
+				undersellPrice: '',
+				isSell: false,
+				isRepair: false,
 				warehouseId: null,
 				parentId: null,
 				warehouseLists: [],
@@ -281,20 +336,21 @@
 				imgList: [],
 				checkimgshow:false,
 				colorvalue: 1,
+				conditionInfo: 0,
 				radiolist1: [{
-						value: 1,
+						value: 0,
 						name: '99新'
 					},
 					{
-						value: 2,
+						value: 1,
 						name: '95新'
 					},
 					{
-						value: 3,
+						value: 2,
 						name: '9新'
 					},
 					{
-						value: 4,
+						value: 3,
 						name: '9新以下'
 					}
 				],
@@ -328,12 +384,10 @@
 		},
 		onLoad(options) {
 			this.recycleOrderId = options.recycleOrderId
-			// this.editid = options.id;
-			// this.erppurchaseclickattrviewFuc(options.id)
-			// this.erpProductGetBasicDataFuc();
 			this.guidePrice = options.forecastMoney;
 			this.getInfoByRecycleOrderId();
 			this.warehouseList()
+			this.basicPriceId = options.basicPriceId
 		},
 		onShow() {
 
@@ -346,8 +400,23 @@
 			});
 		},
 		methods: {
-			SwitchA(e) {
-				this.switchA = e.detail.value
+			change(e) {
+				console.log('change', e);
+			},
+			// 切换是否维修
+			repairChange(e) {
+				if (this.isSell) {
+					this.isSell = !this.isRepair
+				}
+				// this.isSell = !this.isRepair
+				// this.isRepair = !this.isRepair
+			},
+			// 切换是否抛售
+			sellChange(e) {
+				if (this.isRepair) {
+					this.isRepair = !this.isSell
+				}
+				// this.isRepair = !this.isSell
 			},
 			// 选择分仓
 			checkHouseFenId(e) {
@@ -376,78 +445,54 @@
 			},
 			// 提交
 			erpclickattreditFuc(){
-				// if(!this.goodssn){
-				// 	return this.$u.toast('请输入SN!');
-				// }
-				// if(!this.diaobojianum){
-				// 	return this.$u.toast('请输入调拨价!');
-				// }
-				// if(!this.xiaoshoujianum){
-				// 	return this.$u.toast('请输入销售价!');
-				// }
-				// if(!this.category_id){
-				// 	return this.$u.toast('请选择SKU!');
-				// }
-				// if(!this.warehouse_id){
-				// 	return this.$u.toast('请选择仓库!');
-				// }
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
 				let deviceLabel = uni.getStorageSync('goodsdesc')
 				let paramsData={
 					deviceId: this.formList.deviceId,
 					deviceNo: this.goodssn,
 					deviceLabel: deviceLabel,
-					recycleOrderId: this.recycleOrderId,
-					recyclePrice: this.ActualreceiptsAll + '',
-					allotPrice: this.diaobojianum,
-					sellPrice: this.xiaoshoujianum,
-					warehouseId: this.warehouseId,
-					directSellAble: this.switchA ? 1 : 0,
-					qualityInfo: JSON.stringify(uni.getStorageSync('Priceprams')),
-					qualityInfoList: JSON.stringify(this.qualityInfoList),
-					recycleGuidePrice: this.guidePrice,
-					modelId: this.formList.modelId,
-					recycleFormId: this.formList.recycleFormId,
-					title: this.formList.title
+					sortId: this.recycleOrderId,
+					qualityInfo: {
+						qualityInfo: JSON.stringify(uni.getStorageSync('Priceprams')),
+						qualityInfoList: JSON.stringify(this.qualityInfoList),
+						basicPriceId: Number(this.basicPriceId),
+						conditionInfo: this.conditionInfo,
+						frontPhoto: '',
+						backPhoto: '',
+						topPhoto: '',
+						bottomPhoto: '',
+						leftPhoto: '',
+						rightPhoto: '',
+						cameraPhoto: '',
+						otherPhoto: ''
+					},
+					maintainAble: this.isRepair ? '1' : '0',
+					undersellAble: this.isSell? '1': '0',
+					maintainApprove: {
+						maintainPrice: this.maintainPrice,
+						channel: this.channel,
+						context: this.context
+					},
+					undersellApprove: {
+						undersellPrice: this.undersellPrice,
+						channel: this.sellchannel
+					}
 				}
 				console.log(paramsData);
-				empCreateRecycleForm(paramsData).then(res => {
+				empUpdateDeviceQuality(paramsData).then(res => {
 					if (res.code == 200) {
 						this.$u.toast('提交成功！')
+						uni.navigateTo({
+							url: '/pages/erp/task/quality'
+						})
 					}
 				});
-				// return;
-				// erpclickattredit(paramsData).then(res=>{
-				// 	this.$u.toast('提交成功！')
-				// 	// uni.redirectTo({
-				// 	// 	url:'/pages/tabbarerp/push?huishouid='+res.data
-				// 	// })
-				// 	// uni.$emit('hsgoodsId',res.data)
-				// 	let selectInfo = {
-				// 		hsgoods_id: res.data
-				// 	}
-				// 	// 1. 获取当前页面栈实例（此时最后一个元素为当前页）
-				// 	let pages = getCurrentPages()
-				// 	console.log('pages',pages);
-				// 	// 2. 上一页面实例
-				// 	// 注意是length长度，所以要想得到上一页面的实例需要 -2
-				// 	// 若要返回上上页面的实例就 -3，以此类推
-				// 	let prevPage = pages[pages.length - 2]
-				// 	// 3. 给上一页面实例绑定getValue()方法和参数（注意是$vm）
-				// 	prevPage.$vm.getValue(selectInfo)
-				// 	// 4. 返回上一页面
-				// 	uni.navigateBack({
-				// 		delta: 1
-				// 	})
-				// })
 			},
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {
 				let that = this;
 				erpProductGetBasicData({}).then(res => {
 					let data = res.data;
-					//uni.setStorageSync('filterbasicInfo', JSON.stringify(res.data));
-					//let filterbasicInfo = data;
 					this.filterbasicInfo = data;
 					console.log('接口读取->', this.filterbasicInfo);
 					let tempdata = {
@@ -478,8 +523,6 @@
 			},
 			
 			changebar(e) {
-				//console.log('----------change----------');
-				//console.log('changebar',e);
 			},
 			selectbar(e) {
 				//console.log('----------select----------');
@@ -518,14 +561,14 @@
 				
 			},
 			inputData(event,dataValue){
-				this.qualityInfoList[dataValue].remark = event.target.value
+				this.qualityInfoList[dataValue].remark = event.target.value;
+				console.log(this.qualityInfoList)
 			},
 			groupChange(n) {
-				console.log('groupChange', n);
 				this.colorvalue = 2;
 			},
 			radioChange(n) {
-				// console.log('radioChange', n);
+				this.conditionInfo = n;
 			},
 			erppurchaseclickattrviewFuc(id) {
 				erppurchaseclickattrview({
@@ -605,15 +648,11 @@
 			//设置图片
 			setImage(e) {
 				let that = this;
-				console.log(e);
 				//显示在页面
-				//this.imagesrc = e.path;
-				console.log(e.path);
 				let Imgdata = [];
 				Imgdata.push(e.path);
 				// console.log(Imgdata);
 				upload(Imgdata).then(res => {
-					console.log(res.data.imgurl);
 					that.$set(that.phoneImgArr, that.uploadImgtype, res.data.imgurl);
 					that.imgParams.push(res.data.imgurl);
 				})
@@ -651,12 +690,9 @@
 				this.arrearsMoney = this.ReceivablesMoney - this.ActualreceiptsAll;
 			},
 			tabSelect(e) {
-				// console.log(e.currentTarget);
-				// if (e.currentTarget?.dataset?.id) {
-				// 	this.curTabIndex = e.currentTarget.dataset.id;
-				// }
 				let index = e.currentTarget.dataset.id;
 				this.tab_cur = index;
+				console.log(this.qualityInfoList);
 			},
 		}
 	}

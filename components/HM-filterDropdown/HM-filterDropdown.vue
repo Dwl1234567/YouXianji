@@ -1,5 +1,11 @@
 <template>
-	<view class="HMfilterDropdown" :class="{'setDropdownBottom':maskVisibility}" :style="{'top':menuTop+'rpx'}" @touchmove.stop.prevent="discard" @tap.stop="discard">
+	<view
+		class="HMfilterDropdown"
+		:class="{'setDropdownBottom':maskVisibility}"
+		:style="{'top':menuTop+'rpx'}"
+		@touchmove.stop.prevent="discard"
+		@tap.stop="discard"
+	>
 		<!-- 顶部菜单 -->
 		<view class="nav">
 			<block v-for="(item,index) in menu" :key="index">
@@ -16,10 +22,19 @@
 				<!-- 多级菜单 -->
 				<block v-if="(page.type=='hierarchy'||page.type=='hierarchy-column')&& page.submenu.length>0">
 					<!-- 第一级菜单 -->
-					<scroll-view class="sub-menu-list" :class="{'first':activeMenuArr[page_index].length>1,'alone':activeMenuArr[page_index].length<=1}"
-					 :scroll-y="true" :scroll-into-view="'first_id'+firstScrollInto">
+					<scroll-view
+						class="sub-menu-list"
+						:class="{'first':activeMenuArr[page_index].length>1,'alone':activeMenuArr[page_index].length<=1}"
+						:scroll-y="true"
+						:scroll-into-view="'first_id'+firstScrollInto"
+					>
 						<block v-for="(sub,index) in page.submenu" :key="sub.value">
-							<view class="sub-menu" :id="'first_id'+index" :class="{'on':activeMenuArr[page_index][0]==index}" @tap="selectHierarchyMenu(page_index,index,null,null)">
+							<view
+								class="sub-menu"
+								:id="'first_id'+index"
+								:class="{'on':activeMenuArr[page_index][0]==index}"
+								@tap="selectHierarchyMenu(page_index,index,null,null)"
+							>
 								<view class="menu-name">
 									<text>{{sub.name}}</text>
 									<text class="iconfont selected"></text>
@@ -30,21 +45,45 @@
 					<block v-if="page.type=='hierarchy'">
 						<block v-for="(sub,index) in page.submenu" :key="sub.value">
 							<!-- 第二级菜单 -->
-							<scroll-view class="sub-menu-list not-first" :scroll-y="true" v-if="activeMenuArr[page_index][0]==index&&sub.submenu.length>0"
-							 :scroll-into-view="'second_id'+secondScrollInto">
+							<scroll-view
+								class="sub-menu-list not-first"
+								:scroll-y="true"
+								v-if="activeMenuArr[page_index][0]==index&&sub.submenu.length>0"
+								:scroll-into-view="'second_id'+secondScrollInto"
+							>
 								<block v-for="(sub_second,second_index) in sub.submenu" :key="sub_second.value">
-									<view class="sub-menu" :id="'second_id'+second_index" :class="{'on':activeMenuArr[page_index][1]==second_index}">
-										<view class="menu-name" @tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)">
+									<view
+										class="sub-menu"
+										:id="'second_id'+second_index"
+										:class="{'on':activeMenuArr[page_index][1]==second_index}"
+									>
+										<view
+											class="menu-name"
+											@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)"
+										>
 											<text>{{sub_second.name}}</text>
 											<text class="iconfont selected"></text>
 										</view>
 										<!-- 第三级菜单 -->
-										<view class="more-sub-menu" v-if="sub_second.submenu&&sub.submenu.length>0&&sub_second.submenu.length>0">
+										<view
+											class="more-sub-menu"
+											v-if="sub_second.submenu&&sub.submenu.length>0&&sub_second.submenu.length>0"
+										>
 											<block v-for="(sub2,sub2_index) in sub_second.submenu" :key="sub2.value">
-												<text v-if="sub_second.showAllSub || (sub2_index<8)" :class="{'on':activeMenuArr[page_index][1]==second_index&&activeMenuArr[page_index][2]==sub2_index}"
-												 @tap.stop="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)">{{sub2.name}}</text>
-												<text v-if="sub_second.showAllSub!=true && sub2_index==8 && sub_second.submenu.length>9" @tap.stop="showMoreSub(second_index)">更多<text
-													 class="iconfont triangle"></text></text>
+												<text
+													v-if="sub_second.showAllSub || (sub2_index<8)"
+													:class="{'on':activeMenuArr[page_index][1]==second_index&&activeMenuArr[page_index][2]==sub2_index}"
+													@tap.stop="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)"
+												>
+													{{sub2.name}}
+												</text>
+												<text
+													v-if="sub_second.showAllSub!=true && sub2_index==8 && sub_second.submenu.length>9"
+													@tap.stop="showMoreSub(second_index)"
+												>
+													更多
+													<text class="iconfont triangle"></text>
+												</text>
 											</block>
 										</view>
 									</view>
@@ -52,16 +91,27 @@
 							</scroll-view>
 						</block>
 					</block>
-					
+
 					<!-- 二三级菜单都是行形态 -->
 					<block v-else-if="page.type=='hierarchy-column'">
 						<!-- 第二级菜单 -->
 						<block v-for="(sub,index) in page.submenu" :key="index">
-							<scroll-view class="sub-menu-list not-first" :scroll-y="true" v-if="activeMenuArr[page_index][0]==index&&sub.submenu.length>0"
-							 :scroll-into-view="'second_id'+secondScrollInto">
+							<scroll-view
+								class="sub-menu-list not-first"
+								:scroll-y="true"
+								v-if="activeMenuArr[page_index][0]==index&&sub.submenu.length>0"
+								:scroll-into-view="'second_id'+secondScrollInto"
+							>
 								<block v-for="(sub_second,second_index) in sub.submenu" :key="second_index">
-									<view class="sub-menu" :id="'second_id'+second_index" :class="{'on':activeMenuArr[page_index][1]==second_index}">
-										<view class="menu-name" @tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)">
+									<view
+										class="sub-menu"
+										:id="'second_id'+second_index"
+										:class="{'on':activeMenuArr[page_index][1]==second_index}"
+									>
+										<view
+											class="menu-name"
+											@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)"
+										>
 											<text>{{sub_second.name}}</text>
 										</view>
 									</view>
@@ -71,25 +121,32 @@
 						<!-- 第三级菜单 -->
 						<block v-for="(sub,index) in page.submenu">
 							<block v-for="(sub_second,second_index) in sub.submenu">
-								<scroll-view class="sub-menu-list not-first third" :scroll-y="true" v-if="activeMenuArr[page_index][0]==index&&activeMenuArr[page_index][1]==second_index&&sub_second.submenu.length>0"
-								:scroll-into-view="'third_id'+thirdScrollInto"
+								<scroll-view
+									class="sub-menu-list not-first third"
+									:scroll-y="true"
+									v-if="activeMenuArr[page_index][0]==index&&activeMenuArr[page_index][1]==second_index&&sub_second.submenu.length>0"
+									:scroll-into-view="'third_id'+thirdScrollInto"
 								>
 									<block v-for="(sub2,sub2_index) in sub_second.submenu" :key="sub2_index">
-									<view class="sub-menu" :id="'third_id'+sub2_index" :class="{'on':activeMenuArr[page_index][2]==sub2_index}">
-										<view class="menu-name" @tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)">
-											<text>{{sub2.name}}</text>
+										<view
+											class="sub-menu"
+											:id="'third_id'+sub2_index"
+											:class="{'on':activeMenuArr[page_index][2]==sub2_index}"
+										>
+											<view
+												class="menu-name"
+												@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)"
+											>
+												<text>{{sub2.name}}</text>
+											</view>
 										</view>
-									</view>
 									</block>
 								</scroll-view>
 							</block>
 						</block>
 					</block>
-					
-					
 				</block>
-				
-				
+
 				<!-- 多选筛选 -->
 				<block v-if="page.type=='filter'">
 					<view class="filter">
@@ -97,8 +154,14 @@
 							<view class="box" v-for="(box,box_index) in page.submenu" :key="box_index">
 								<view class="title">{{box.name}}</view>
 								<view class="labels">
-									<view v-for="(label,label_index) in box.submenu" :key="label_index" @tap="selectFilterLabel(page_index,box_index,label_index)"
-									 :class="{'on':label.selected}">{{label.name}}</view>
+									<view
+										v-for="(label,label_index) in box.submenu"
+										:key="label_index"
+										@tap="selectFilterLabel(page_index,box_index,label_index)"
+										:class="{'on':label.selected}"
+									>
+										{{label.name}}
+									</view>
 								</view>
 							</view>
 						</scroll-view>
@@ -108,7 +171,7 @@
 						</view>
 					</view>
 				</block>
-				
+
 				<!-- 单选筛选 -->
 				<block v-if="page.type=='radio'">
 					<view class="filter">
@@ -116,8 +179,14 @@
 							<view class="box" v-for="(box,box_index) in page.submenu" :key="box_index">
 								<view class="title">{{box.name}}</view>
 								<view class="labels">
-									<view v-for="(label,label_index) in box.submenu" :key="label_index" @tap="selectRadioLabel(page_index,box_index,label_index, box)"
-									 :class="{'on':label.selected}">{{label.name}}</view>
+									<view
+										v-for="(label,label_index) in box.submenu"
+										:key="label_index"
+										@tap="selectRadioLabel(page_index,box_index,label_index, box)"
+										:class="{'on':label.selected}"
+									>
+										{{label.name}}
+									</view>
 								</view>
 							</view>
 						</scroll-view>
@@ -136,82 +205,82 @@
 		name: 'HM-filterDropdown',
 		data() {
 			return {
-				menuData:[],
+				menuData: [],
 				subData: [], //菜单数据
 				menu: [], //顶部菜单数据
 				showPage: -1, //菜单页面显示/隐藏动画控制
 				pageState: [], //页面的状态
 				activeMenuArr: [], //UI状态
 				shadowActiveMenuArr: [], //记录选中
-				defaultActive:[],
+				defaultActive: [],
 				triangleDeg: [], //小三角形的翻转动画控制
 				isShowMask: false, //遮罩层显示/隐藏动画控制
 				maskVisibility: false, //遮罩层显示/隐藏状态
-				
+
 				//滚动区域定位
 				firstScrollInto: 0,
 				secondScrollInto: 0,
-				thirdScrollInto:0,
-				componentTop:0	,//组件top
-				isReadNewSelect:false,
-				
+				thirdScrollInto: 0,
+				componentTop: 0, //组件top
+				isReadNewSelect: false,
+
 				cascadeCount: 0, // 级联次数，请求下级次数
-			}
+			};
 		},
 		props: {
-			menuTop:{
+			menuTop: {
 				value: Number,
-				default: false
+				default: false,
 			},
 			filterData: {
 				value: Array,
-				default: []
+				default: [],
 			},
-			defaultSelected:{
+			defaultSelected: {
 				value: Array,
-				default: []
+				default: [],
 			},
-			updateMenuName:{
+			updateMenuName: {
 				value: Boolean,
-				default: true
+				default: true,
 			},
-			dataFormat:{
+			dataFormat: {
 				value: String,
-				default: 'Array'
-			}
+				default: 'Array',
+			},
 		},
 		watch: {
 			filterData: {
 				handler(newVal) {
+					console.log(this.menuTop, '2222');
 					this.menuData = JSON.parse(JSON.stringify(newVal));
 					this.initMenu(); //filterData重新赋值初始化菜单
 				},
 				immediate: true,
-				deep: true
+				deep: true,
 			},
 			defaultSelected(newVal) {
-				if(newVal.length==0){
+				if (newVal.length == 0) {
 					return;
 				}
 				this.defaultActive = JSON.parse(JSON.stringify(newVal));
 				this.activeMenuArr = JSON.parse(JSON.stringify(newVal));
 				this.shadowActiveMenuArr = JSON.parse(JSON.stringify(newVal));
-				if(this.updateMenuName){
+				if (this.updateMenuName) {
 					this.setMenuName();
 				}
-			}
+			},
 		},
 		methods: {
 			initMenu() {
-
-				let tmpMenuActiveArr=[];
-				let tmpMenu=[];
+				let tmpMenuActiveArr = [];
+				let tmpMenu = [];
 				for (let i = 0; i < this.menuData.length; i++) {
 					let tmpitem = this.menuData[i];
 					tmpMenu.push({
 						//如果没有设置name，则取第一个菜单作为menu.name,filter类型则将"筛选"作为menu.name
-						name: tmpitem.name || (tmpitem.type == "filter" ? "筛选" : tmpitem.submenu[0].name),
-						type: tmpitem.type
+						name: tmpitem.name || (tmpitem.type == 'filter' ? '筛选' : tmpitem.submenu[0].name),
+						type: tmpitem.type,
 					});
 					//初始化选中项数组-ui状态
 					tmpMenuActiveArr.push(this.processActive(tmpitem));
@@ -225,32 +294,37 @@
 				}
 				this.menu = tmpMenu;
 				//初始化选中项数组
-				tmpMenuActiveArr = this.defaultActive.length>0?this.defaultActive:this.activeMenuArr.length>0?this.activeMenuArr:tmpMenuActiveArr;
+				tmpMenuActiveArr =
+					this.defaultActive.length > 0
+						? this.defaultActive
+						: this.activeMenuArr.length > 0
+						? this.activeMenuArr
+						: tmpMenuActiveArr;
 				this.defaultActive = [];
-				this.activeMenuArr.splice(0,this.activeMenuArr.length,...JSON.parse(JSON.stringify(tmpMenuActiveArr)));
+				this.activeMenuArr.splice(0, this.activeMenuArr.length, ...JSON.parse(JSON.stringify(tmpMenuActiveArr)));
 				// this.activeMenuArr = JSON.parse(JSON.stringify(tmpMenuActiveArr));
 				this.shadowActiveMenuArr = JSON.parse(JSON.stringify(tmpMenuActiveArr));
 				//加载菜单数据
 				this.subData = this.menuData;
 				//设定顶部菜单名字
-				if(this.updateMenuName){
+				if (this.updateMenuName) {
 					this.setMenuName();
 				}
 			},
-			setMenuName(){
-				for(var i=0;i<this.activeMenuArr.length;i++){
+			setMenuName() {
+				for (var i = 0; i < this.activeMenuArr.length; i++) {
 					let row = this.activeMenuArr[i];
-					if(this.subData[i].type=='hierarchy' || this.subData[i].type=='hierarchy-column'){
-						if (typeof(row[0]) == 'number'){
+					if (this.subData[i].type == 'hierarchy' || this.subData[i].type == 'hierarchy-column') {
+						if (typeof row[0] == 'number') {
 							let tmpsub = this.subData[i].submenu[row[0]];
-							if(row.length>1){
-								tmpsub = tmpsub.submenu[row[1]]||tmpsub;
-								if(row.length>2){
-									tmpsub = tmpsub.submenu[row[2]]||tmpsub;
+							if (row.length > 1) {
+								tmpsub = tmpsub.submenu[row[1]] || tmpsub;
+								if (row.length > 2) {
+									tmpsub = tmpsub.submenu[row[2]] || tmpsub;
 								}
 							}
 							this.menu[i].name = tmpsub.name;
-						}else{
+						} else {
 							this.menu[i].name = this.subData[i].name;
 						}
 					}
@@ -264,7 +338,12 @@
 			//选中
 			selectHierarchyMenu(page_index, level1_index, level2_index, level3_index) {
 				//读取记录
-				if (level2_index == null && level3_index == null && this.shadowActiveMenuArr[page_index].length>0 && this.shadowActiveMenuArr[page_index][0] == level1_index) {
+				if (
+					level2_index == null &&
+					level3_index == null &&
+					this.shadowActiveMenuArr[page_index].length > 0 &&
+					this.shadowActiveMenuArr[page_index][0] == level1_index
+				) {
 					this.activeMenuArr.splice(page_index, 1, JSON.parse(JSON.stringify(this.shadowActiveMenuArr[page_index])));
 				}
 				/////////
@@ -273,24 +352,27 @@
 				////////
 				this.activeMenuArr[page_index].splice(0, 1, level1_index);
 				let tmpMemu = this.subData[page_index].submenu[level1_index];
-				if(tmpMemu.submenu.length==0){
+				if (tmpMemu.submenu.length == 0) {
 					this.selectedMemu(page_index, level1_index, level2_index, level3_index);
-				}else if(level2_index!=null){
+				} else if (level2_index != null) {
 					this.activeMenuArr[page_index].splice(1, 1, level2_index);
 					tmpMemu = tmpMemu.submenu[level2_index];
-					if(tmpMemu.submenu.length==0 || (this.menu[page_index].type == 'hierarchy' && level3_index==null)){
+					if (tmpMemu.submenu.length == 0 || (this.menu[page_index].type == 'hierarchy' && level3_index == null)) {
 						this.selectedMemu(page_index, level1_index, level2_index, level3_index);
-					}else if(level3_index!=null){
+					} else if (level3_index != null) {
 						this.activeMenuArr[page_index].splice(2, 1, level3_index);
 						tmpMemu = tmpMemu.submenu[level3_index];
 						this.selectedMemu(page_index, level1_index, level2_index, level3_index);
 					}
 				}
 			},
-			selectedMemu(page_index, level1_index, level2_index, level3_index){
+			selectedMemu(page_index, level1_index, level2_index, level3_index) {
 				let sub = this.subData[page_index].submenu[level1_index].submenu[level2_index];
-				if(this.updateMenuName){
-					this.menu[page_index].name = (level3_index != null && sub.submenu[level3_index].name) || (level2_index != null && sub.name) || this.subData[page_index].submenu[level1_index].name;
+				if (this.updateMenuName) {
+					this.menu[page_index].name =
+						(level3_index != null && sub.submenu[level3_index].name) ||
+						(level2_index != null && sub.name) ||
+						this.subData[page_index].submenu[level1_index].name;
 				}
 				this.shadowActiveMenuArr[page_index] = JSON.parse(JSON.stringify(this.activeMenuArr[page_index]));
 				this.hideMenu(true);
@@ -329,7 +411,6 @@
 			},
 			//选中单选类label-UI状态
 			selectRadioLabel(page_index, box_index, label_index, box) {
-				
 				// let activeIndex = this.activeMenuArr[page_index][box_index][0];
 				// if(activeIndex == label_index){
 				// 	this.subData[page_index].submenu[box_index].submenu[activeIndex].selected = false;
@@ -338,58 +419,57 @@
 				// 	if(activeIndex!=null && activeIndex<this.subData[page_index].submenu[box_index].submenu.length){
 				// 		this.subData[page_index].submenu[box_index].submenu[activeIndex].selected = false;
 				// 	}
-					
+
 				// 	this.subData[page_index].submenu[box_index].submenu[label_index].selected = true;
 				// 	this.activeMenuArr[page_index][box_index][0] = label_index;
 				// }
-			
-				
+
 				// 筛选块的筛选项改变
-				this.filterLabelChange(page_index, box_index, label_index, box)
-				
-				let that = this
-				setTimeout(function() {
+				this.filterLabelChange(page_index, box_index, label_index, box);
+
+				let that = this;
+				setTimeout(function () {
 					that.$forceUpdate();
-				}, 200)
-				
+				}, 200);
 			},
 			filterLabelChange(page_index, box_index, label_index, box) {
 				this.$emit('filterLabelChange', {
 					page_index,
 					box_index,
 					label_index,
-					box
-				})
+					box,
+				});
 			},
 			//菜单开关
 			togglePage(index) {
-				if(this.isToggleing){return;}
+				if (this.isToggleing) {
+					return;
+				}
 				this.isToggleing = true;
 				if (index == this.showPage) {
 					this.hideMenu();
 				} else {
-					this.showMenu(index)
+					this.showMenu(index);
 				}
-				setTimeout(()=>{
+				setTimeout(() => {
 					this.isToggleing = false;
-				},150)
+				}, 150);
 			},
 			//hide菜单
-			hideMenu(isTriggerConfirm){
+			hideMenu(isTriggerConfirm) {
 				this.hideMenuLayer(true);
 				this.hideMaskLayer();
 				this.showPage = -1;
-				if(isTriggerConfirm){
-					this.confirm()
+				if (isTriggerConfirm) {
+					this.confirm();
 				}
 			},
-			showMenu(index){
-				if(this.showPage>-1){
+			showMenu(index) {
+				if (this.showPage > -1) {
 					this.hideMenuLayer(false);
 				}
 				this.showMenuLayer(index);
 				this.showMaskLayer();
-				
 			},
 			//hide遮罩层
 			hideMaskLayer() {
@@ -402,10 +482,10 @@
 			showMaskLayer() {
 				this.maskVisibility = true;
 				this.$nextTick(() => {
-					setTimeout(()=>{
+					setTimeout(() => {
 						this.isShowMask = true;
-					},0)
-				})
+					}, 0);
+				});
 			},
 			//hide菜单页
 			hideMenuLayer(isAnimation) {
@@ -416,7 +496,7 @@
 						this.pageState.splice(tmpIndex, 1, false);
 					}, 200);
 				} else {
-					this.pageState.splice(tmpIndex, 1, false)
+					this.pageState.splice(tmpIndex, 1, false);
 				}
 				this.firstScrollInto = null;
 				this.secondScrollInto = null;
@@ -426,78 +506,80 @@
 				this.processPage(index);
 				this.pageState.splice(index, 1, true);
 				this.$nextTick(() => {
-					setTimeout(()=>{
+					setTimeout(() => {
 						this.showPage = index;
-					},0)
-				})
+					}, 0);
+				});
 				this.triangleDeg[index] = 180;
 			},
 			confirm() {
 				let index = JSON.parse(JSON.stringify(this.shadowActiveMenuArr));
 				let value = JSON.parse(JSON.stringify(this.shadowActiveMenuArr));
-				
-				console.log('index->', index)
-				console.log('value->', value)
+
+				console.log('index->', index);
+				console.log('value->', value);
 				//对结果做一下处理
 				index.forEach((item, i) => {
-					if (typeof(item[0]) == 'object') {
+					if (typeof item[0] == 'object') {
 						//针对筛选结果过一个排序
 						item.forEach((s, j) => {
-							if(s!=null){
+							if (s != null) {
 								s.sort((val1, val2) => {
 									return val1 - val2;
 								});
 								item[j] = s;
 								s.forEach((v, k) => {
-									value[i][j][k] = (v==null||v>=this.subData[i].submenu[j].submenu.length)?null:this.subData[i].submenu[j].submenu[v].value;
-									if(this.subData[i].type == 'radio' && value[i][j][k] == null){
+									value[i][j][k] =
+										v == null || v >= this.subData[i].submenu[j].submenu.length
+											? null
+											: this.subData[i].submenu[j].submenu[v].value;
+									if (this.subData[i].type == 'radio' && value[i][j][k] == null) {
 										value[i][j] = [];
 										index[i][j] = [];
 									}
 								});
 							}
 						});
-					}else{
+					} else {
 						let submenu = this.subData[i].submenu[item[0]];
 						value[i][0] = submenu.value;
-						if(value[i].length>=2  && item[1]!=null){
-							if(submenu.submenu.length>0){
+						if (value[i].length >= 2 && item[1] != null) {
+							if (submenu.submenu.length > 0) {
 								submenu = submenu.submenu[item[1]];
-								value[i][1] = submenu.hasOwnProperty('value')?submenu.value:null;
-							}else{
-								value[i][1] = null
+								value[i][1] = submenu.hasOwnProperty('value') ? submenu.value : null;
+							} else {
+								value[i][1] = null;
 							}
-							if(value[i].length>=3 && item[2]!=null){
-								if(submenu.submenu.length>0){
+							if (value[i].length >= 3 && item[2] != null) {
+								if (submenu.submenu.length > 0) {
 									submenu = submenu.submenu[item[2]];
-									value[i][2] = submenu.hasOwnProperty('value')?submenu.value:null;
-								}else{
+									value[i][2] = submenu.hasOwnProperty('value') ? submenu.value : null;
+								} else {
 									value[i][2] = null;
 								}
 							}
 						}
 					}
 					index[i] = item;
-					
 				});
 				// 输出
 				this.$emit('confirm', {
 					index: index,
-					value: value
+					value: value,
 				});
 			},
-			
-			reloadActiveMenuArr(){
+
+			reloadActiveMenuArr() {
 				for (let i = 0; i < this.menuData.length; i++) {
 					let tmpitem = this.menuData[i];
 					let tmpArr = this.processActive(tmpitem);
 					tmpitem = this.processSubMenu(tmpitem);
-					if(this.activeMenuArr[i].length!=tmpArr.length){
+					if (this.activeMenuArr[i].length != tmpArr.length) {
 						this.menuData[i] = tmpitem;
 						this.activeMenuArr.splice(i, 1, JSON.parse(JSON.stringify(tmpArr)));
 						this.shadowActiveMenuArr.splice(i, 1, JSON.parse(JSON.stringify(tmpArr)));
 					}
-				} 
+				}
 				this.subData = this.menuData;
 				this.$forceUpdate();
 			},
@@ -526,8 +608,8 @@
 							this.firstScrollInto = parseInt(this.activeMenuArr[index][0]);
 							this.secondScrollInto = parseInt(this.activeMenuArr[index][1]);
 						}, 0);
-					})
-				}else if (this.menu[index].type == 'hierarchy-column') {
+					});
+				} else if (this.menu[index].type == 'hierarchy-column') {
 					this.$nextTick(() => {
 						setTimeout(() => {
 							//滚动到选中项
@@ -535,7 +617,7 @@
 							this.secondScrollInto = parseInt(this.activeMenuArr[index][1]);
 							this.thirdScrollInto = parseInt(this.activeMenuArr[index][2]);
 						}, 0);
-					})
+					});
 				} else if (this.menu[index].type == 'radio') {
 					//重载筛选页选中状态
 					let level = this.shadowActiveMenuArr[index].length;
@@ -549,11 +631,15 @@
 							}
 						}
 					}
-				} 
+				}
 			},
 			processActive(tmpitem) {
-				let tmpArr = []
-				if ((tmpitem.type == 'hierarchy'||tmpitem.type == 'hierarchy-column')&&tmpitem.hasOwnProperty('submenu')&&tmpitem.submenu.length>0) {
+				let tmpArr = [];
+				if (
+					(tmpitem.type == 'hierarchy' || tmpitem.type == 'hierarchy-column') &&
+					tmpitem.hasOwnProperty('submenu') &&
+					tmpitem.submenu.length > 0
+				) {
 					let level = this.getMaxFloor(tmpitem.submenu);
 					while (level > 0) {
 						tmpArr.push(null);
@@ -586,24 +672,22 @@
 			},
 			//计算菜单层级
 			getMaxFloor(treeData) {
-				let floor = 0
-				let max = 0
+				let floor = 0;
+				let max = 0;
 				function each(data, floor) {
-					data.forEach(e => {
+					data.forEach((e) => {
 						max = floor > max ? floor : max;
 						if (e.hasOwnProperty('submenu') && e.submenu.length > 0) {
-							each(e.submenu, floor + 1)
+							each(e.submenu, floor + 1);
 						}
-					})
+					});
 				}
-				each(treeData, 1)
+				each(treeData, 1);
 				return max;
 			},
-			discard() {
-
-			}
-		}
-	}
+			discard() {},
+		},
+	};
 </script>
 <style lang="scss">
 	.HMfilterDropdown {
@@ -615,11 +699,11 @@
 		flex-wrap: nowrap;
 		display: flex;
 		flex-direction: row;
-		top: var(--window-top);
-		left:0;
+		top: var(--status-bar-height) + 101rpx;
+		left: 0;
 		// top:100px;
 		overflow-y: hidden;
-		&.setDropdownBottom{
+		&.setDropdownBottom {
 			// height: 345px;
 			bottom: 0;
 		}
@@ -646,7 +730,7 @@
 			flex-direction: row;
 			align-items: center;
 			justify-content: center;
-			transition: color .2s linear;
+			transition: color 0.2s linear;
 
 			&.on {
 				color: #ec652b;
@@ -666,7 +750,7 @@
 				height: 13px;
 				align-items: center;
 				justify-content: center;
-				transition: transform .2s linear, color .2s linear;
+				transition: transform 0.2s linear, color 0.2s linear;
 			}
 		}
 	}
@@ -674,14 +758,14 @@
 		width: 100%;
 		position: absolute;
 		left: 0;
-		transform: translate3d(0, - 100%, 0);
+		transform: translate3d(0, -100%, 0);
 		max-height: 345px;
 		background-color: #ffffff;
 		z-index: 11;
-		box-shadow: 0 5px 5px rgba(0, 0, 0, .1);
+		box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 		overflow: hidden;
 		flex-direction: row;
-		transition: transform .15s linear;
+		transition: transform 0.15s linear;
 		&.hide {
 			display: none;
 		}
@@ -699,12 +783,12 @@
 			font-size: 13px;
 			flex-direction: column;
 			padding-right: 15px;
-			>.menu-name {
+			> .menu-name {
 				height: 44px;
 				flex-direction: row;
 				align-items: center;
 				justify-content: space-between;
-				>.iconfont {
+				> .iconfont {
 					display: none;
 					font-size: 18px;
 					color: #ec652b;
@@ -736,15 +820,15 @@
 				&.on {
 					color: #ec652b;
 
-					>.menu-name {
-						>.iconfont {
+					> .menu-name {
+						> .iconfont {
 							display: block;
 						}
 					}
 				}
 			}
 		}
-		&.third{
+		&.third {
 			// box-shadow: 5rpx 0 20rpx rgba($color: #000000, $alpha: 0.2) inset;
 		}
 		&.not-first {
@@ -753,9 +837,9 @@
 				min-height: calc(44px - 1rpx);
 				margin-left: 15px;
 				border-bottom: solid 1rpx #e5e5e5;
-				>.menu-name {
+				> .menu-name {
 					height: calc(44px - 1rpx);
-					>.iconfont {
+					> .iconfont {
 						display: none;
 						font-size: 18px;
 						color: #ec652b;
@@ -763,8 +847,8 @@
 				}
 				&.on {
 					color: #ec652b;
-					>.menu-name {
-						>.iconfont {
+					> .menu-name {
+						> .iconfont {
 							display: block;
 						}
 					}
@@ -773,7 +857,7 @@
 					flex-direction: row;
 					flex-wrap: wrap;
 					padding-bottom: 9px;
-					>text {
+					> text {
 						height: 30px;
 						border-radius: 3px;
 						background-color: #f5f5f5;
@@ -816,7 +900,7 @@
 				width: 100%;
 				padding-top: 16px;
 				flex-direction: column;
-				
+
 				.title {
 					width: 100%;
 					font-size: 13px;
@@ -825,13 +909,13 @@
 				.labels {
 					flex-direction: row;
 					flex-wrap: wrap;
-					
+
 					.on {
 						border-color: #ec652b;
 						background-color: #ec652b;
 						color: #fff;
 					}
-					>view {
+					> view {
 						box-sizing: border-box;
 						width: calc((698rpx - 30rpx * 3) / 4);
 						height: 30px;
@@ -859,7 +943,7 @@
 			align-items: center;
 			// justify-content: space-between;
 			justify-content: center; // add by david 20221202
-			>view {
+			> view {
 				width: 320rpx;
 				height: 40px;
 				border-radius: 40px;
@@ -886,7 +970,7 @@
 		right: 0;
 		bottom: 0;
 		background-color: rgba(0, 0, 0, 0);
-		transition: background-color .15s linear;
+		transition: background-color 0.15s linear;
 		&.show {
 			background-color: rgba(0, 0, 0, 0.5);
 		}
@@ -896,22 +980,22 @@
 	}
 	/* 字体图标 */
 	@font-face {
-		font-family: "HM-FD-font";
+		font-family: 'HM-FD-font';
 		src: url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAALAAAsAAAAABpQAAAJzAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgp4gQIBNgIkAwwLCAAEIAWEbQc5G8sFERWMIbIfCbbzqA4hp7InSBibVsYGb4J42o82b3e/nJlHMw/NHbGOlwKJRCRpwzPtpAECCOZubdqxjYpQLMlVg+70/08edrgQOtx2ukpVyApZn+dyehPoQObHo3O85rYx9vOjXoBxQIHugW2yIkqIW2QXcScu4jwE8CSWbKSmrqUHFwOaJoCsLM5P4haSGIxRcRHshrUGucLCVcfqI3AZfV/+USguKCwNmtsxVztDxU/n55C+3W0Z4QQpEOTNFqCBbMCAjDUWB9CIwWk87aa70cYgqLkyd3dEmm+18R8eKATEBrV7A5CulBT8dKiWOYZk412XNcDdKSEKSGODnyKIDl+dmVt9/Dx4pu/xyeutkMlHISGPTsPCnoTNP9nOT6wTtDdlO6dPr47efvj942lkYuQzrhMKEjq9N6y98P3340gmlJ/RStUD6F31CAEEPtUW94/7rf+7XgaAz57X0ZHXAGsFFwVgw38yALuMb0IBbVyNamFYEw4oKMDTj3AHRQP5Pt4dci9VwSVkRNQh5r7CLskZadhsWHhRDBsXczk8ZYk3ewnCxmQeQKa3BOHvA8XXO2j+vqRhf7CE+sPmn4anvoL29JLa4qqaUQkmoK+QG2osCckq7txi2leK86aIPyJ3eQZ8xytXYmyQ51jQndJAxIJlqiGSLsOqImiZCjTiZCJt6Lq26U2OoXqwUo0hRaAE0K5AziANy/uLVeXzWyjVqyjcoeupjxDr5MMDn8MDkLG9Aenu5ZrOSSoghAUsRmogkkahSoWAtnlUARnCkY3It0Iu7mWhdmd9Z/19BwBP6GidEi0G56opckXTGZVSPxgAAAA=');
 	}
 	.iconfont {
-		font-family: "HM-FD-font" !important;
+		font-family: 'HM-FD-font' !important;
 		font-size: 13px;
 		font-style: normal;
 		color: #757575;
 		&.triangle {
 			&:before {
-				content: "\e65a";
+				content: '\e65a';
 			}
 		}
 		&.selected {
 			&:before {
-				content: "\e607";
+				content: '\e607';
 			}
 		}
 	}

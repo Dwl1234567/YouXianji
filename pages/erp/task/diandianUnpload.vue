@@ -109,6 +109,7 @@
 		},
 		data() {
 			return {
+				basicPriceId: 0,
 				priceId: 0,
 				allPrice: 0,
 				basicPrice: [],
@@ -168,9 +169,12 @@
 				empGetDeviceQuality(recycleOrderId).then((res) => {
 					this.qualityInfo = JSON.parse(res.data.qualityInfo);
 					uni.setStorageSync('basicPriceId', res.data.basicPriceId);
+					this.basicPriceId = res.data.basicPriceId;
 				});
 			},
 			moneyFucs(e) {
+				this.basicPriceId = e.priceId;
+				uni.setStorageSync('basicPriceId', e.priceId);
 				this.allPrice = e.basicPrice;
 				this.calcYuguMoney();
 			},
@@ -384,7 +388,9 @@
 						'&title=' +
 						this.qualityInfo.title +
 						'&deviceNo=' +
-						this.qualityInfo.deviceNo,
+						this.qualityInfo.deviceNo +
+						'&basicPriceId=' +
+						this.basicPriceId,
 				});
 			},
 			upper: function (e) {},

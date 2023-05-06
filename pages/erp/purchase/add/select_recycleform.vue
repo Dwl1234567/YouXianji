@@ -196,7 +196,7 @@
 								</view>
 							  </view>
 							  <view class="h-td">
-								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyindex)" :value="recyitem.ramke"></input>
+								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyindex)" :value="recyitem.remark"></input>
 							  </view>
 							</view>
 						</view>
@@ -376,23 +376,10 @@
 			},
 			// 提交
 			erpclickattreditFuc(){
-				// if(!this.goodssn){
-				// 	return this.$u.toast('请输入SN!');
-				// }
-				// if(!this.diaobojianum){
-				// 	return this.$u.toast('请输入调拨价!');
-				// }
-				// if(!this.xiaoshoujianum){
-				// 	return this.$u.toast('请输入销售价!');
-				// }
-				// if(!this.category_id){
-				// 	return this.$u.toast('请选择SKU!');
-				// }
-				// if(!this.warehouse_id){
-				// 	return this.$u.toast('请选择仓库!');
-				// }
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
+				let storeId = uni.getStorageSync('userinfo').storeId
 				let deviceLabel = uni.getStorageSync('goodsdesc')
+				let basicPriceId = uni.getStorageSync('basicPriceId');
 				let paramsData={
 					deviceId: this.formList.deviceId,
 					deviceNo: this.goodssn,
@@ -408,38 +395,31 @@
 					recycleGuidePrice: this.guidePrice,
 					modelId: this.formList.modelId,
 					recycleFormId: this.formList.recycleFormId,
-					title: this.formList.title
+					title: this.formList.title,
+					storeId,
+					basicPriceId
 				}
-				console.log(paramsData);
+				console.log(paramsData)
 				empCreateRecycleForm(paramsData).then(res => {
 					if (res.code == 200) {
 						this.$u.toast('提交成功！')
+						uni.removeStorageSync('goodsdesc')
+						uni.removeStorageSync('deviceId')
+						uni.removeStorageSync('qualityInfoList')
+						uni.removeStorageSync('qualityInfo')
+						uni.removeStorageSync('modelName')
+						uni.removeStorageSync('dataListNum')
+						uni.removeStorageSync('imgList')
+						uni.removeStorageSync('Pricepramitems')
+						uni.removeStorageSync('basicPriceId')
+						uni.removeStorageSync('Priceprams')
+						uni.removeStorageSync('recycleOrderId')
+						uni.removeStorageSync('createById')
+						uni.navigateTo({
+							url: '/pages/erp/recycleList/index'
+						})
 					}
 				});
-				// return;
-				// erpclickattredit(paramsData).then(res=>{
-				// 	this.$u.toast('提交成功！')
-				// 	// uni.redirectTo({
-				// 	// 	url:'/pages/tabbarerp/push?huishouid='+res.data
-				// 	// })
-				// 	// uni.$emit('hsgoodsId',res.data)
-				// 	let selectInfo = {
-				// 		hsgoods_id: res.data
-				// 	}
-				// 	// 1. 获取当前页面栈实例（此时最后一个元素为当前页）
-				// 	let pages = getCurrentPages()
-				// 	console.log('pages',pages);
-				// 	// 2. 上一页面实例
-				// 	// 注意是length长度，所以要想得到上一页面的实例需要 -2
-				// 	// 若要返回上上页面的实例就 -3，以此类推
-				// 	let prevPage = pages[pages.length - 2]
-				// 	// 3. 给上一页面实例绑定getValue()方法和参数（注意是$vm）
-				// 	prevPage.$vm.getValue(selectInfo)
-				// 	// 4. 返回上一页面
-				// 	uni.navigateBack({
-				// 		delta: 1
-				// 	})
-				// })
 			},
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {

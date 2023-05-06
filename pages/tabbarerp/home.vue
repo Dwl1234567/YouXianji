@@ -166,7 +166,14 @@
 				<view @click="show = false">取消</view>
 				<view @click="kefuQiangdan">完成</view>
 			</view>
-			<picker-view indicator-style="height: 40px;line-height: 40px;" style="height:200px; text-align: center;" class="mpvue-picker-view" :value="pickerValue" @change="pickerChange" indicator-class="itemadd">
+			<picker-view
+				indicator-style="height: 40px;line-height: 40px;"
+				style="height: 200px; text-align: center"
+				class="mpvue-picker-view"
+				:value="pickerValue"
+				@change="pickerChange"
+				indicator-class="itemadd"
+			>
 				<block>
 					<picker-view-column>
 						<div class="picker-item" v-for="(item,index) in kefuList" :key="index">{{item.nickname}}</div>
@@ -208,7 +215,7 @@
 				showdate: false,
 				loginfo: '',
 				kefuList: [],
-				kefuListOne: []
+				kefuListOne: [],
 			};
 		},
 		onLoad() {
@@ -422,11 +429,11 @@
 			async kefuQiangdan() {
 				const res = await kefuQiangdan({
 					csr_id: uni.getStorageSync('userInfo').user_id + '|csr',
-					user_id: this.kefuListOne.user_id_in + '|user'
-				})
+					user_id: this.kefuListOne.user_id_in + '|user',
+				});
 				if (res.code === 1) {
 					uni.navigateTo({
-						url: '/pages/erp/chat/chatAdmin'
+						url: '/pages/erp/chat/chatAdmin',
 					});
 				}
 			},
@@ -437,8 +444,8 @@
 				// });
 			},
 			pickerChange(e) {
-				console.log(e.detail.value[0])
-				this.kefuListOne = this.kefuList[e.detail.value[0]]
+				console.log(e.detail.value[0]);
+				this.kefuListOne = this.kefuList[e.detail.value[0]];
 			},
 			close() {
 				this.show = false;
@@ -450,7 +457,7 @@
 				});
 				if (res.code === 1) {
 					this.kefuList = res.data;
-					this.kefuListOne = res.data[0]
+					this.kefuListOne = res.data[0];
 				}
 				console.log(res);
 			},
@@ -588,7 +595,7 @@
 						var value = 'chat/list';
 					}
 					if (index == 4) {
-						var value = "chat/chatAdmin";
+						var value = 'chat/chatAdmin';
 						// this.getKefuUserList();
 						// this.show = true;
 					}
@@ -649,19 +656,19 @@
 </script>
 
 <style lang="scss" scoped>
-	/deep/ .picker-item{
+	/deep/ .picker-item {
 		line-height: 40px;
 	}
-	.popup-item-label{
+	.popup-item-label {
 		padding-left: 10px;
 		padding-right: 10px;
 		height: 45px;
 		line-height: 45px;
-		view:nth-child(1){
+		view:nth-child(1) {
 			color: #888;
 			font-size: 17px;
 		}
-		view:nth-child(2){
+		view:nth-child(2) {
 			color: #007aff;
 			font-size: 17px;
 		}
@@ -681,7 +688,6 @@
 
 	.home-box.show {
 		display: block;
-		
 	}
 	.grid.col-6 > uni-view {
 		width: 16.666%;

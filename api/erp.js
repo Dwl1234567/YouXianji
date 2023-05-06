@@ -176,3 +176,35 @@ export function distributionSortingTask(data) {
 export function empGetDeviceQuality(data) {
 	return request.get('/yxj/app/sorting/empGetDeviceQuality/' + data, { noLogin: true });
 }
+
+/**
+ * 分拣员提交分拣订单
+ *
+ */
+export function empUpdateDeviceQuality(data) {
+	return request.post('/yxj/app/sorting/empUpdateDeviceQuality', data, { noLogin: true });
+}
+
+/**
+ * 分拣员获取门店名称和地址
+ *
+ */
+export function empGetStoreInfo(data) {
+	return request.get('/yxj/app/sorting/empGetStoreInfo/' + data, { noLogin: true });
+}
+
+/**
+ * 分拣员返回门店接口
+ *
+ */
+export function empReturnStore(data) {
+	return request.post('/yxj/app/sorting/empReturnStore', data, { noLogin: true });
+}
+
+/**
+ * 店长确认收货接口
+ *
+ */
+export function storeAdminConfirm(data) {
+	return request.get('/yxj/app/sorting/storeAdminConfirm/' + data, { noLogin: true });
+}

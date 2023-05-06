@@ -455,11 +455,6 @@
 			TimeChange(e) {
 				let that = this;
 				this.timeIndex = e.detail.value
-				
-				// let takeTime = that.takeTime[0][that.timeIndex[0]].value+that.takeTime[1][that.timeIndex[1]].value;
-				// console.log(that.takeTime);
-				// console.log(that.timeIndex);
-				// this.index.time = e.detail.value
 			},
 			// 两列变化
 			Timecolumnchange(e) {
@@ -469,19 +464,16 @@
 				let hourlist = [];
 				if (index == 0) {
 					hourlist = gethoursInfo(0);
-					// that.$set(that.takeTime[1], hourlist);
 					that.takeTime[1] = hourlist.filter((item,index)=>{
 						return item
 					})
 				} else {
 					hourlist = gethoursInfo(1);
-					// that.$set(that.takeTime[1], hourlist);
 					that.takeTime[1] = hourlist.filter((item,index)=>{
 						return item
 					})
 				}
 				this.$forceUpdate()
-				// console.log(that.takeTime);
 			},
 			// 使用拍照功能
 			opencamare(){
@@ -493,13 +485,8 @@
 					success: function(res) {
 						let Imgdata = JSON.stringify(res.tempFilePaths);
 						upload(res.tempFilePaths).then(res => {
-							// console.log(res);
-							// that.phoneImgArr[type] = 'https://mpb.waidu.cn'+res.data.imgurl;
-							// that.$set(that.phoneImgArr, type, 'https://mpb.waidu.cn' + res.data.imgurl);
-							console.log(res.data, '22222222222222222222222')
 							that.$set(that.phoneImgArr, that.uploadImgtype, res.data.imgurl);
 							that.imgParams.push(res.data.imgurl);
-							// console.log(that.phoneImgArr[type]);
 						})
 					},
 					complete:function(){
@@ -517,14 +504,8 @@
 					success: function(res) {
 						let Imgdata = JSON.stringify(res.tempFilePaths);
 						upload(res.tempFilePaths).then(res => {
-							// console.log(res);
-							console.log(res.data, '22222222222222222222222')
-							// that.phoneImgArr[type] = 'https://mpb.waidu.cn'+res.data.imgurl;
-							// that.$set(that.phoneImgArr, type, 'https://mpb.waidu.cn' + res.data.imgurl);
 							that.$set(that.phoneImgArr, that.uploadImgtype, res.data.imgurl);
 							that.imgParams.push(res.data.imgurl);
-							// console.log(that.imgParams);
-							// console.log(that.phoneImgArr[type]);
 						})
 					},
 					complete:function(){
@@ -557,7 +538,6 @@
 						url:'/pages/idphoto/idphoto'
 					})
 				} else {
-					console.log(222);
 					this.deleteImg(type)
 				}
 				
@@ -565,15 +545,10 @@
 			//设置图片
 			setImage(e) {
 				let that = this;
-				console.log(e);
 				//显示在页面
-				//this.imagesrc = e.path;
-				console.log(e.path);
 				let Imgdata = [];
 				Imgdata.push(e.path);
-				// console.log(Imgdata);
 				upload(Imgdata).then(res => {
-					console.log(res, '22222222222222222222222')
 					that.$set(that.phoneImgArr, that.uploadImgtype, res.fileName);
 					that.imgParams.push(res.fileName);
 				})
@@ -600,12 +575,9 @@
 				}
 				that.$set(that.phoneImgArr, type, '');
 				that.imgParams.splice(type, 1);
-				// console.log(that.imgParams);
 			},
 			tabSelect(e) {
-				//this.TabCur = e.currentTarget.dataset.id;
 				this.TabCur = e.currentTarget.dataset.id;
-				console.log(this.TabCur);
 			},
 			PickerChange(e) {
 				this.index.pay = e.detail.value
@@ -628,9 +600,6 @@
 				} else if (that.TabCur == 2) {
 					that.creatinsertBasicOrder();
 				}
-				// uni.navigateTo({
-				// 	url: "/pages/mycenter/orderview"
-				// });
 			},
 			// 获取用户收货地址
 			getUserAddressFuc() {
@@ -643,9 +612,6 @@
 							that.$set(that.index, 'address', 0);
 							console.log(this.index);
 						}
-						// that.takeAddress.forEach((item, index) => {
-						// 	item['all_detail'] = item.all_detail + '-' + item.detail;
-						// })
 					}
 				})
 			},
@@ -677,15 +643,12 @@
 				let puttakeTime = '';
 				let deviceLabel = uni.getStorageSync('goodsdesc')
 				let storeId = uni.getStorageSync('storeId')
-				//console.log(that.timeIndex);
-				// console.log(that.takeTime);
 				if((that.TabCur == 0 || that.TabCur == 2) && that.timeIndex[0] == -1 && that.timeIndex[1] == -1){
 					return that.$u.toast('请选择上门取件时间');
 				}else if((that.TabCur == 0 || that.TabCur == 2) && that.takeTime[1][0].value == '请预约明天的时间吧～'){
 					return that.$u.toast('请选择明天的时间吧~');
 				}else{
 					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy+' '+that.takeTime[1][0].value.split('~')[0] + ':00';
-					console.log(puttakeTime);
 				}
 				if((that.TabCur == 0 || that.TabCur == 2) && that.index.address == -1){
 					return that.$u.toast('请选择一个地址！');
@@ -693,7 +656,6 @@
 				if (that.TabCur == 2) {
 					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy+' '+that.takeTime[1][0].value.split('~')[0] + ':00' + '~' + that.takeTime[1][0].value.split('~')[1] + ':00';
 				}
-				console.log(that.TabCur)
 				if(that.TabCur == 1){
 					if(!that.jjname){
 						return that.$u.toast('请填写姓名！');
@@ -742,7 +704,7 @@
 					"topPhoto": that.phoneImgArr[2],
 					"bottomPhoto": that.phoneImgArr[3],
 					"leftPhoto": that.phoneImgArr[4],
-				    "rightPhoto": that.phoneImgArr[5],
+				  "rightPhoto": that.phoneImgArr[5],
 					"cameraPhoto": that.phoneImgArr[6],
 					"otherPhoto": that.phoneImgArr[7],
 					'storeId': storeId,

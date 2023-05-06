@@ -86,6 +86,16 @@ const store = new Vuex.Store({
 				state.roles.sorting_leader = true;
 			} else if (provider === 'sorting_people') {
 				state.roles.sorting_people = true;
+			} else if (provider === 'clear') {
+				state.roles = {
+					consumer: false,
+					store_admin: false,
+					store_employee: false,
+					company_admin: false,
+					platform_admin: false,
+					sorting_leader: false,
+					sorting_people: false,
+				};
 			}
 			uni.setStorage({
 				key: 'roles',

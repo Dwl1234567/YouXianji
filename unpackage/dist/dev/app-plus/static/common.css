@@ -1,7 +1,7 @@
-body * {
+/* body * {
   box-sizing: border-box;
   flex-shrink: 0;
-}
+} */
 body {
   font-family: PingFangSC-Regular, Roboto, Helvetica Neue, Helvetica, Tahoma,
     Arial, PingFang SC-Light, Microsoft YaHei;
@@ -62,4 +62,3 @@ button:active {
     display: flex;
     align-items: flex-end;
 }
-    

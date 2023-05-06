@@ -126,9 +126,7 @@
 										></image>
 									</view>
 									<view class="right">
-										<text
-											class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"
-										></text>
+										<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
 									</view>
 								</view>
 							</view>
@@ -147,9 +145,7 @@
 										></image>
 									</view>
 									<view class="right">
-										<text
-											class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"
-										></text>
+										<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
 									</view>
 								</view>
 							</view>
@@ -177,11 +173,7 @@
 			<view class="cu-list grid col-5 no-border">
 				<view class="cu-item" v-for="(item,index) in newslist" :key="index" @tap="tabSelect" :data-id="index">
 					<view class="iconfont" :class="[item.icon,index==TabCur?'text-red cur':'text-darkgrey']"></view>
-					<text
-						:class="index==TabCur?'text-red':'text-darkgrey'"
-						class="margin-top"
-						style="margin-top: 24rpx"
-					>
+					<text :class="index==TabCur?'text-red':'text-darkgrey'" class="margin-top" style="margin-top: 24rpx">
 						{{item.name}}
 					</text>
 				</view>
@@ -276,9 +268,7 @@
 			>
 				<block>
 					<picker-view-column>
-						<div class="picker-item" v-for="(item,index) in latelystoreInfoAll" :key="index">
-							{{item.storeName}}
-						</div>
+						<div class="picker-item" v-for="(item,index) in latelystoreInfoAll" :key="index">{{item.storeName}}</div>
 					</picker-view-column>
 				</block>
 			</picker-view>
@@ -322,33 +312,33 @@
 		data() {
 			return {
 				optionData: {
-									title: {
-									    text: ''
-									  },
-									  legend: {
-									    data: ['Allocated Budget', 'Actual Spending']
-									  },
-									  radar: {
-									    // shape: 'circle',
-									    indicator: [
-									      { name: 'Sales', max: 6500 },
-									      { name: 'Administration', max: 16000 },
-									      { name: 'Information Technology', max: 30000 }
-									    ]
-									  },
-									  series: [
-									    {
-									      name: 'Budget vs spending',
-									      type: 'radar',
-									      data: [
-									        {
-									          value: [6500, 16000, 30000],
-									          // name: 'Allocated Budget'
-									        }
-									      ]
-									    }
-									  ]
+					title: {
+						text: '',
+					},
+					legend: {
+						data: ['Allocated Budget', 'Actual Spending'],
+					},
+					radar: {
+						// shape: 'circle',
+						indicator: [
+							{ name: 'Sales', max: 6500 },
+							{ name: 'Administration', max: 16000 },
+							{ name: 'Information Technology', max: 30000 },
+						],
+					},
+					series: [
+						{
+							name: 'Budget vs spending',
+							type: 'radar',
+							data: [
+								{
+									value: [6500, 16000, 30000],
+									// name: 'Allocated Budget'
+								},
+							],
 						},
+					],
+				},
 				// 门店id,
 				storeId: 0,
 				// 全部附近门店
@@ -448,9 +438,10 @@
 		methods: {
 			// 门店切换
 			pickerChange(e) {
-				console.log(e.detail.value[0])
+				console.log(e.detail.value[0]);
+				console.log(this.latelystoreInfoAll[e.detail.value[0]].storeId);
 				uni.setStorageSync('storeId', this.latelystoreInfoAll[e.detail.value[0]].storeId);
-				this.latelystoreInfo = this.latelystoreInfoAll[e.detail.value[0]]
+				this.latelystoreInfo = this.latelystoreInfoAll[e.detail.value[0]];
 			},
 			// 关闭选择门店弹框
 			close() {
@@ -462,7 +453,7 @@
 					latitude: this.latitude,
 					longitude: this.longitude,
 				}).then((res) => {
-					this.latelystoreInfoAll = res.data
+					this.latelystoreInfoAll = res.data;
 					this.latelystoreInfo = res.data[0];
 					this.storeId = res.data[0].storeId;
 					uni.setStorageSync('storeId', res.data[0].storeId);
@@ -617,10 +608,7 @@
 						} else {
 							uni.navigateTo({
 								url:
-									'../recycling/recycling-new?id=' +
-									res.data.goods_info.id +
-									'&cate_id=' +
-									res.data.goods_info.cate_id,
+									'../recycling/recycling-new?id=' + res.data.goods_info.id + '&cate_id=' + res.data.goods_info.cate_id,
 							});
 						}
 					}
@@ -826,9 +814,9 @@
 		line-height: 40px;
 	}
 	.echarts {
-			width: 100%;
-			height: 600rpx;
-		}
+		width: 100%;
+		height: 600rpx;
+	}
 	.popup-item-label {
 		padding-left: 10px;
 		padding-right: 10px;

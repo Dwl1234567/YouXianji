@@ -168,10 +168,12 @@
 				getInfoByRecycleOrderId(recycleOrderId).then((res) => {
 					this.qualityInfo = JSON.parse(res.data.qualityInfo);
 					uni.setStorageSync('basicPriceId', res.data.basicPriceId);
-					console.log(this.qualityInfo);
+					this.basicPriceId = res.data.basicPriceId;
 				});
 			},
 			moneyFucs(e) {
+				this.basicPriceId = e.priceId;
+				uni.setStorageSync('basicPriceId', e.priceId);
 				this.allPrice = e.basicPrice;
 				this.calcYuguMoney();
 			},
