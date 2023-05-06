@@ -25,7 +25,7 @@
 					<button
 						class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12"
 						@tap="goToErp"
-						v-if="roles.store_admin || roles.store_employee"
+						v-if="roles.store_admin || roles.store_employee || roles.sorting_leader"
 						style="box-shadow: 0px 2px 4px 0px rgba(181, 181, 181, 0.5)"
 					>
 						工作模式
@@ -82,11 +82,7 @@
 					</view>
 				</view>
 				<!--用户提示-->
-				<view
-					class="text-sm user-info-tip-box"
-					v-if="userInfo && userInfo.verification != 1"
-					@tap="realNameTap"
-				>
+				<view class="text-sm user-info-tip-box" v-if="userInfo && userInfo.verification != 1" @tap="realNameTap">
 					<view class="text-cut text-gray">偷偷告诉你，实名认证后才能回收下单哦~</view>
 					<text class="cuIcon-right icon" />
 				</view>
@@ -164,9 +160,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daifukuan text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">
-										{{userInfo.recyclenum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">{{userInfo.recyclenum|| 0}}</view>
 								</view>
 								<text class="text-101010">待付款</text>
 							</view>
@@ -177,9 +171,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daifahuo text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">
-										{{userInfo.shopnum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">{{userInfo.shopnum|| 0}}</view>
 								</view>
 								<text>待发货</text>
 							</view>
@@ -190,9 +182,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daishouhuo text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
-										{{userInfo.favoritenum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
 								</view>
 								<text>待收货</text>
 							</view>
@@ -203,9 +193,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daipingjia text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
-										{{userInfo.favoritenum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
 								</view>
 								<text>待评价</text>
 							</view>
@@ -222,9 +210,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daifukuan text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">
-										{{userInfo.recyclenum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">{{userInfo.recyclenum|| 0}}</view>
 								</view>
 								<text class="text-101010">发货</text>
 							</view>
@@ -235,9 +221,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daifahuo text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">
-										{{userInfo.shopnum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">{{userInfo.shopnum|| 0}}</view>
 								</view>
 								<text class="text-101010">质检</text>
 							</view>
@@ -248,9 +232,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daishouhuo text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
-										{{userInfo.favoritenum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
 								</view>
 								<text class="text-101010">结算</text>
 							</view>
@@ -261,9 +243,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daipingjia text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
-										{{userInfo.favoritenum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
 								</view>
 								<text class="text-101010">退货</text>
 							</view>
@@ -274,9 +254,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-refund text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">
-										{{userInfo.favoritenum|| 0}}
-									</view>
+									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
 								</view>
 								<text class="text-101010">待评价</text>
 							</view>
@@ -326,8 +304,8 @@
 
 	import _my_data from '@/static/data/my.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
-	
-	import Vue from "vue"
+
+	import Vue from 'vue';
 	export default {
 		name: 'my',
 		components: {
@@ -360,8 +338,8 @@
 			};
 		},
 		onLoad() {
-			this.roles = Vue.prototype.$store.state.roles
-			console.log(this.roles, '222222')
+			this.roles = Vue.prototype.$store.state.roles;
+			console.log(this.roles, '222222');
 			//加载虚拟数据
 			this.toolsList = _my_data.toolsListData();
 		},

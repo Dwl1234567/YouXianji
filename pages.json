@@ -611,6 +611,26 @@
 		},
 		//待分拣
 		{
+			"path": "pages/erp/task/diandianUnpload",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				// "navigationStyle": "custom",
+				"navigationBarTitleText": "分拣列表"
+			}
+		},
+		//待分拣
+		{
+			"path": "pages/erp/task/select_recycleform",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				// "navigationStyle": "custom",
+				"navigationBarTitleText": "回收产品"
+			}
+		},
+		//待分拣
+		{
 			"path": "pages/erp/warehouse/quality",
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新

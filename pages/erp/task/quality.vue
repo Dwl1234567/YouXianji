@@ -3,7 +3,7 @@
 		<bar-title bgColor="bg-white">
 			<block slot="content">供应商列表</block>
 			<block slot="right">
-				<button class="cu-btn sm" @tap="snTap">
+				<button class="cu-btn sm" @tap="snTap" v-if="roles.sorting_leader || roles.store_admin">
 					<!-- <text class="cuIcon-add" /> -->
 					{{admin ? '完成' : '管理'}}
 				</button>
@@ -50,8 +50,28 @@
 						<view class="tag_33 flex-col" v-if="item.sortStatus == 1">
 							<text class="text_33">已送检</text>
 						</view>
+						<view class="tag_33 flex-col" v-if="item.sortStatus == 2 && roles.sorting_leader">
+							<text class="text_33">已分配</text>
+						</view>
+						<view class="tag_33 flex-col" v-if="item.sortStatus == 2 && roles.sorting_people">
+							<text class="text_33">待分拣</text>
+						</view>
 					</view>
 					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
+					<view class="button">
+						<view class="receipt" v-if="item.sortStatus == 2 && roles.sorting_people" @tap="goDiandian(item)">
+							待修改
+						</view>
+						<view class="checkLogistics" v-if="item.sortStatus == 1">查看物流</view>
+						<view
+							class="receipt"
+							@tap="receiveInspectDevices(item.sortId)"
+							v-if="item.status === '0' && item.sortStatus == 1"
+						>
+							确认收获
+						</view>
+						<view class="receipt" v-if="item.status === '1' && item.sortStatus == 1">已收获</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -64,7 +84,8 @@
 					全选
 				</u-checkbox-group>
 			</view>
-			<view class="goXiu" @tap="goXiu">送检</view>
+			<view class="goXiu" @tap="goXiu" v-if="roles.store_admin">送检</view>
+			<view class="goXiu" @tap="task" v-if="roles.sorting_leader">任务分配</view>
 		</view>
 		<!--弹窗-->
 		<u-popup :show="yunShow" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
@@ -101,14 +122,36 @@
 				<view class="ok" @tap="addInspectDevices">确定</view>
 			</view>
 		</u-popup>
-
+		<u-popup :show="taskShow" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">分拣信息</view>
+				<view class="yunShow-item">
+					<view class="left">分拣人员</view>
+					<view class="select">
+						<uni-data-select v-model="centerId" :localdata="range" @change="changePeople"></uni-data-select>
+					</view>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="distributionSortingTask">确定</view>
+			</view>
+		</u-popup>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
 </template>
 
 <script>
-	import { sortingList, getOperatingCenter, addInspectDevice } from '@/api/erp.js';
+	import Vue from 'vue';
+	import {
+		sortingList,
+		getOperatingCenter,
+		addInspectDevice,
+		receiveInspectDevice,
+		getSortingPeoples,
+		distributionSortingTask,
+	} from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
@@ -120,6 +163,7 @@
 		},
 		data() {
 			return {
+				sortingPeople: 0,
 				address: '',
 				// 运营中心id
 				centerId: 0,
@@ -134,6 +178,7 @@
 				],
 				values: '',
 				// 运营中心弹框
+				taskShow: false,
 				yunShow: false,
 				checked: false,
 				// 控制管理
@@ -285,6 +330,7 @@
 					contentrefresh: '加载中...',
 					contentnomore: '暂无更多数据。',
 				},
+				roles: [],
 			};
 		},
 		onLoad(options) {
@@ -292,7 +338,12 @@
 			this.filtertopnum = 1;
 			// #endif
 			// 进入页面刷新
-			this.getOperatingCenter();
+			// console.log(Vue.prototype.$store.state.roles, '2222222222');
+			this.roles = Vue.prototype.$store.state.roles;
+			if (uni.getStorageSync('userinfo').storeId) {
+				this.getOperatingCenter();
+			}
+			this.getSortingPeoples();
 			this.$nextTick(() => {
 				uni.startPullDownRefresh();
 			});
@@ -315,6 +366,68 @@
 			});
 		},
 		methods: {
+			// 分拣员点点上传修改
+			goDiandian(item) {
+				uni.navigateTo({
+					url: '/pages/erp/task/diandianUnpload?modelId=' + item.modelId + '&sortId=' + item.sortId,
+				});
+			},
+			//分配分拣员
+			distributionSortingTask() {
+				let sortIdList = [];
+				this.dataList.map((item) => {
+					if (item.disabled) {
+						sortIdList.push(item.sortId);
+					}
+				});
+				let promise = {
+					sortingPeople: this.sortingPeople,
+					sortIdList,
+				};
+				distributionSortingTask(promise).then((res) => {
+					if (res.code === 200) {
+						this.taskShow = false;
+						this.getDataList();
+						this.admin = false;
+					}
+				});
+			},
+			// 选择分拣员
+			changePeople(e) {
+				this.sortingPeople = e;
+			},
+			// 获取分拣员列表
+			getSortingPeoples() {
+				getSortingPeoples().then((res) => {
+					let data = res.data.map((item) => {
+						item.text = item.nickName;
+						item.value = item.userId;
+						return item;
+					});
+					this.range = data;
+				});
+			},
+			// 送检确认收获
+			receiveInspectDevices(sortId) {
+				receiveInspectDevice(sortId).then((res) => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '收货成功',
+						});
+						this.getDataList();
+					} else {
+						uni.showToast({
+							icon: 'none',
+							title: '收货失败',
+						});
+					}
+				});
+			},
+			// 点击任务分配
+			task() {
+				this.taskShow = true;
+			},
 			// 提交运营中心
 			addInspectDevices() {
 				let sortIdList = [];
@@ -369,6 +482,7 @@
 			// 关闭送检弹框
 			close() {
 				this.yunShow = false;
+				this.taskShow = fasle;
 			},
 			// 送检
 			goXiu() {
@@ -569,6 +683,30 @@
 		background: #f0f0f0;
 		padding-top: 100rpx;
 		// padding: 100rpx 21rpx 0rpx 21rpx;
+	}
+	.button {
+		display: flex;
+		justify-content: flex-end;
+		view {
+			width: 143rpx;
+			height: 55rpx;
+			border-radius: 29rpx;
+			border: 1px solid #979797;
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #101010;
+			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.receipt {
+			background: linear-gradient(90deg, #ff6868 0%, #ea1515 100%);
+			margin-left: 26rpx;
+			color: #ffffff !important;
+			border: none;
+		}
 	}
 	.bottomView {
 		position: fixed;

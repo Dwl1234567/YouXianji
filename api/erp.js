@@ -144,3 +144,35 @@ export function getOperatingCenter(data) {
 export function addInspectDevice(data) {
 	return request.post('/yxj/app/sorting/inspectDevice', data, { noLogin: true });
 }
+
+/**
+ * 送检确认收货
+ *
+ */
+export function receiveInspectDevice(data) {
+	return request.get('/yxj/app/sorting/receiveInspectDevice/' + data, { noLogin: true });
+}
+
+/**
+ * 获取分拣员列表
+ *
+ */
+export function getSortingPeoples(data) {
+	return request.get('/yxj/app/common/getSortingPeoples', data, { noLogin: true });
+}
+
+/**
+ * 分配分拣员
+ *
+ */
+export function distributionSortingTask(data) {
+	return request.post('/yxj/app/sorting/distributionSortingTask', data, { noLogin: true });
+}
+
+/**
+ * 分拣员点点上传
+ *
+ */
+export function empGetDeviceQuality(data) {
+	return request.get('/yxj/app/sorting/empGetDeviceQuality/' + data, { noLogin: true });
+}
