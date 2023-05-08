@@ -224,3 +224,34 @@ export function storeAdminUndersellApprove(data) {
 export function empUploadUndersellVoucher(data) {
 	return request.post('/yxj/app/sorting/empUploadUndersellVoucher', data, { noLogin: true });
 }
+
+/**
+ * 店长审批维修申请
+ *
+ */
+export function storeAdminMaintainApprove(data) {
+	return request.post('/yxj/app/sorting/storeAdminMaintainApprove', data, { noLogin: true });
+}
+/**
+ * 分拣员上传维修凭证
+ *
+ */
+export function empUploadMaintainVoucher(data) {
+	return request.post('/yxj/app/sorting/empUploadMaintainVoucher', data, { noLogin: true });
+}
+
+/**
+ * 店长选择维修单的处理类型
+ *
+ */
+export function storeAdminSelectHandleType(data) {
+	return request.post('/yxj/app/sorting/storeAdminSelectHandleType', data, { noLogin: true });
+}
+
+/**
+ * 维修失败接口
+ *
+ */
+export function empMaintainFail(data) {
+	return request.post('/yxj/app/sorting/empMaintainFail', data, { noLogin: true });
+}

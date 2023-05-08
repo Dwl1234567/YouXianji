@@ -1,20 +1,18 @@
-import {
-	UPLOAD_IMG_URL
-} from '@/config/app';
-import Vue from 'vue'
+import { UPLOAD_IMG_URL } from '@/config/app';
+import Vue from 'vue';
 export function upload(filePath) {
 	return new Promise((resolve, reject) => {
 		uni.showLoading({
-			title: '上传中'
-		})
+			title: '上传中',
+		});
 		uni.uploadFile({
 			// url: `${UPLOAD_IMG_URL}file/upload`,
 			url: `${UPLOAD_IMG_URL}`,
 			filePath: filePath[0],
 			name: 'file',
 			header: {
-			    'content-type': 'multipart/form-data',
-				'Authorization':Vue.prototype.$store.state.token
+				'content-type': 'multipart/form-data',
+				'Authorization': Vue.prototype.$store.state.token,
 			},
 			formData: {
 				// 'file': filePath[0]
@@ -28,30 +26,28 @@ export function upload(filePath) {
 					icon: 'none',
 					title: err,
 					mask: true,
-					duration: 2000
+					duration: 2000,
 				});
 			},
 			complete() {
-				uni.hideLoading()
-			}
-		})
-	})
-
+				uni.hideLoading();
+			},
+		});
+	});
 }
-
 
 export function raiseUpload(filePath) {
 	return new Promise((resolve, reject) => {
 		uni.showLoading({
-			title: '上传中'
-		})
+			title: '上传中',
+		});
 		uni.uploadFile({
 			url: `${UPLOAD_IMG_URL}`,
 			filePath: filePath,
 			name: 'file',
 			header: {
-			    // 'content-type': 'multipart/form-data',
-				'Authorization':Vue.prototype.$store.state.token
+				// 'content-type': 'multipart/form-data',
+				Authorization: Vue.prototype.$store.state.token,
 			},
 			// formData: {
 			// 	'file': filePath
@@ -65,13 +61,12 @@ export function raiseUpload(filePath) {
 					icon: 'none',
 					title: err,
 					mask: true,
-					duration: 2000
+					duration: 2000,
 				});
 			},
 			complete() {
-				uni.hideLoading()
-			}
-		})
-	})
-
+				uni.hideLoading();
+			},
+		});
+	});
 }

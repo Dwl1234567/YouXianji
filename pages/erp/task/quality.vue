@@ -18,16 +18,6 @@
 			@confirm="confirm"
 			dataFormat="Object"
 		></filterDropdown>
-		<!-- <filterDropdown
-			ref="filterDropdown"
-			:menuTop="filtertopnum"
-			:filterData="shopownerFilterData"
-			:defaultSelected="defaultSelected"
-			:updateMenuName="true"
-			@confirm="confirm"
-			@change="changefilter"
-			dataFormat="Object"
-		></filterDropdown> -->
 		<!--为上面的临时筛选条进行的临时兼容处理-->
 		<view style="padding: 0px 20rpx">
 			<!-- :class="admin ? 'transform' : 'transformRight'" -->
@@ -55,6 +45,9 @@
 						</view>
 						<view class="tag_1 flex-col" v-if="item.sortStatus == 0">
 							<text class="text_12">待送拣</text>
+						</view>
+						<view class="tag_33 flex-col" v-if="item.sortStatus == 1 && roles.sorting_leader">
+							<text class="text_33">待分配</text>
 						</view>
 						<view class="tag_33 flex-col" v-if="(item.sortStatus == 2 || item.sortStatus == 1) && roles.store_admin">
 							<text class="text_33">已送检</text>
@@ -89,6 +82,36 @@
 							v-if="item.sortStatus == 6 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
 						>
 							<text class="text_12">抛售中</text>
+						</view>
+						<view
+							class="tag_1 flex-col"
+							v-if="item.sortStatus == 7 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
+						>
+							<text class="text_12">已抛售</text>
+						</view>
+						<view
+							class="tag_1 flex-col"
+							v-if="item.sortStatus == 8 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
+						>
+							<text class="text_12">待维修</text>
+						</view>
+						<view
+							class="tag_1 flex-col"
+							v-if="item.sortStatus == 9 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
+						>
+							<text class="text_12">维修中</text>
+						</view>
+						<view
+							class="tag_1 flex-col"
+							v-if="item.sortStatus == 10 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
+						>
+							<text class="text_12">维修完成</text>
+						</view>
+						<view
+							class="tag_1 flex-col"
+							v-if="item.sortStatus == 11 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
+						>
+							<text class="text_12">维修失败</text>
 						</view>
 					</view>
 					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
@@ -133,21 +156,125 @@
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 4">已收货</view>
 						<view class="receipt" v-if="item.status === '1' && item.sortStatus == 1">已收货</view>
-						<view class="checkLogistics" v-if="roles.store_admin && item.sortStatus == 5">拒绝</view>
-						<view class="receipt" @tap="goshowSell(item)" v-if="roles.store_admin && item.sortStatus == 5">接受</view>
+						<view
+							class="checkLogistics"
+							@tap="falseshowSell(item)"
+							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 0"
+						>
+							拒绝
+						</view>
+						<view
+							class="receipt"
+							@tap="goshowSell(item)"
+							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 0"
+						>
+							接受
+						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 6">已接受</view>
 						<view
 							class="checkLogistics"
-							v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 6 && item.undersellApprove.collectionVoucher == null"
+							@tap="showImg2(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 6 || item.sortStatus == 7) && !item.undersellApprove.collectionVoucher"
 						>
 							上传收款凭证
 						</view>
 						<view
 							class="receipt"
 							@tap="showImg1(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 6 && item.undersellApprove.undersellVoucher == null"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 6 || item.sortStatus == 7) && !item.undersellApprove.undersellVoucher"
 						>
 							上传抛售凭证
+						</view>
+						<view
+							class="receipt"
+							@tap="seeImg1(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 6 || item.sortStatus == 7) && item.undersellApprove.undersellVoucher"
+						>
+							查看抛售凭证
+						</view>
+						<view
+							class="receipt"
+							@tap="seeImg2(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 6 || item.sortStatus == 7) && item.undersellApprove.collectionVoucher"
+						>
+							查看收款凭证
+						</view>
+						<view
+							class="checkLogistics"
+							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 2"
+						>
+							已拒绝
+						</view>
+						<view
+							class="checkLogistics"
+							@tap="goBack(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 5 && item.undersellApprove.status == 2"
+						>
+							返回门店
+						</view>
+						<view
+							class="checkLogistics"
+							@tap="falseshowMain(item)"
+							v-if="roles.store_admin && item.sortStatus == 8 && item.maintainApprove.status == 0"
+						>
+							拒绝
+						</view>
+						<view
+							class="receipt"
+							@tap="goshowMain(item)"
+							v-if="roles.store_admin && item.sortStatus == 8 && item.maintainApprove.status == 0"
+						>
+							接受
+						</view>
+						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 9">已接受</view>
+						<view
+							class="receipt"
+							@tap="empMaintainFail(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 9) && !item.maintainApprove.maintainVoucher"
+						>
+							维修失败
+						</view>
+						<view
+							class="receipt"
+							@tap="showMainImg1(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 9) && !item.maintainApprove.maintainVoucher"
+						>
+							上传维修凭证
+						</view>
+						<view
+							class="checkLogistics"
+							@tap="storeAdminSelectHandleType(item, '0')"
+							v-if="(roles.store_admin) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.status == 1 && item.maintainApprove.handleType == null"
+						>
+							抛售
+						</view>
+						<view
+							class="receipt"
+							@tap="seeImg3(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 10) && item.maintainApprove.maintainVoucher"
+						>
+							查看维修凭证
+						</view>
+						<view
+							class="checkLogistics"
+							@tap="storeAdminSelectHandleType(item, '1')"
+							v-if="(roles.store_admin) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.status == 1 && item.maintainApprove.handleType == null"
+						>
+							返回门店
+						</view>
+						<view
+							class="checkLogistics"
+							@tap="goDiandian(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.handleType == 0"
+						>
+							抛售
+						</view>
+						<view
+							class="checkLogistics"
+							@tap="goBack(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.handleType == 1"
+						>
+							返回门店
 						</view>
 					</view>
 				</view>
@@ -166,6 +293,14 @@
 			<view class="goXiu" @tap="task" v-if="roles.sorting_leader">任务分配</view>
 		</view>
 		<!--弹窗-->
+		<!-- 维修弹框 -->
+		<u-modal
+			:show="showMain"
+			@cancel="showMain = false"
+			@confirm="confirmFucs"
+			title="确定维修？"
+			:showCancelButton="true"
+		></u-modal>
 		<!-- 抛售弹框 -->
 		<u-modal
 			:show="showSell"
@@ -174,27 +309,58 @@
 			title="确定抛售？"
 			:showCancelButton="true"
 		></u-modal>
+		<!-- 上传维修凭证 -->
+		<u-popup :show="yunShowImgMain" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">上传维修凭证</view>
+				<view class="yunShow-img">
+					<u-upload
+						:fileList="fileList1"
+						@afterRead="afterRead"
+						@delete="deletePic"
+						name="1"
+						multiple
+						:maxCount="3"
+					></u-upload>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="empUploadMaintainVoucher">确定</view>
+			</view>
+		</u-popup>
 		<!-- 上传抛售凭证 -->
 		<u-popup :show="yunShowImg1" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
 			<view class="yunShow-top">
 				<view class="yunShow-title">上传销售凭证</view>
 				<view class="yunShow-img">
-					<!-- <uni-file-picker
-						v-model="fileList"
-						fileMediatype="image"
-						mode="grid"
-						@select="select"
-						@progress="progress"
-						@success="success"
-						@fail="fail"
-					/> -->
 					<u-upload
-						:fileList="fileList"
+						:fileList="fileList1"
 						@afterRead="afterRead"
 						@delete="deletePic"
 						name="1"
 						multiple
-						:maxCount="10"
+						:maxCount="3"
+					></u-upload>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="empUploadUndersellVoucher">确定</view>
+			</view>
+		</u-popup>
+		<!-- 上传收款凭证 -->
+		<u-popup :show="yunShowImg2" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">上传收款凭证</view>
+				<view class="yunShow-img">
+					<u-upload
+						:fileList="fileList2"
+						@afterRead="afterRead"
+						@delete="deletePic"
+						name="2"
+						multiple
+						:maxCount="3"
 					></u-upload>
 				</view>
 			</view>
@@ -305,6 +471,10 @@
 		storeAdminConfirm,
 		storeAdminUndersellApprove,
 		empUploadUndersellVoucher,
+		storeAdminMaintainApprove,
+		empUploadMaintainVoucher,
+		storeAdminSelectHandleType,
+		empMaintainFail,
 	} from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -317,12 +487,15 @@
 		},
 		data() {
 			return {
-				action: 'http://192.168.2.36:8080/common/upload',
-				fileList: [],
+				yunShowImgMain: false,
+				fileList2: [],
+				fileList1: [],
 				// 抛售id
 				undersellId: 0,
+				showMain: false,
 				showSell: false,
 				storeId: 0,
+				maintainId: 0,
 				sortId: 0,
 				sortName: '',
 				sortingPeople: 0,
@@ -340,6 +513,7 @@
 				],
 				values: '',
 				// 运营中心弹框
+				yunShowImg2: false,
 				yunShowImg1: false,
 				taskShow: false,
 				backShow: false,
@@ -498,6 +672,7 @@
 			};
 		},
 		onLoad(options) {
+			console.log(this.$u.config.v);
 			// #ifdef APP-PLUS
 			// this.filtertopnum = 183;
 			let a = 0;
@@ -540,33 +715,180 @@
 			});
 		},
 		methods: {
-			// 获取上传状态
-			select(e) {
-				console.log('选择文件：', e);
+			// 维修失败
+			empMaintainFail(e) {
+				let promise = {
+					maintainId: e.maintainApprove.maintainId,
+					sortId: e.sortId,
+				};
+				empMaintainFail(promise).then((res) => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '提交成功',
+						});
+						this.getDataList();
+					}
+				});
 			},
-			// 获取上传进度
-			progress(e) {
-				console.log('上传进度：', e);
+			// 维修完成店长返回门店
+			storeAdminSelectHandleType(e, index) {
+				let promise = {
+					maintainId: e.maintainApprove.maintainId,
+					handleType: index,
+				};
+				console.log(promise);
+				storeAdminSelectHandleType(promise).then((res) => {
+					if (res.code === 200) {
+						this.getDataList();
+						if (index == 1) {
+							uni.showToast({
+								icon: 'none',
+								title: '确认返回门店',
+							});
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '确认抛售',
+							});
+						}
+					}
+				});
 			},
-
-			// 上传成功
-			success(e) {
-				console.log('上传成功');
+			// 上传凭证
+			empUploadMaintainVoucher() {
+				const img = this.fileList1.map((item) => {
+					return item.url;
+				});
+				let promise = {
+					sortId: this.sortId,
+					maintainId: this.maintainId,
+					maintainVoucher: img.join(','),
+				};
+				console.log(promise);
+				empUploadMaintainVoucher(promise).then((res) => {
+					if (res.code === 200) {
+						this.close();
+						this.getDataList();
+						uni.showToast({
+							icon: 'none',
+							title: '上传成功',
+						});
+					}
+				});
 			},
-
-			// 上传失败
-			fail(e) {
-				console.log('上传失败：', e);
+			// 拒绝维修申请
+			falseshowMain(e) {
+				let promise = {
+					sortId: e.sortId,
+					maintainId: e.undersellApprove.maintainId,
+					status: '2',
+				};
+				storeAdminMaintainApprove(promise).then((res) => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '已拒绝',
+						});
+						this.getDataList();
+					}
+				});
+			},
+			// 确定维修
+			confirmFucs() {
+				let promise = {
+					sortId: this.sortId,
+					maintainId: this.maintainId,
+					status: '1',
+				};
+				storeAdminMaintainApprove(promise).then((res) => {
+					if (res.code === 200) {
+						this.showMain = false;
+						this.getDataList();
+					}
+				});
+			},
+			// 同意维修
+			goshowMain(e) {
+				this.showMain = true;
+				this.maintainId = e.maintainApprove.maintainId;
+				this.sortId = e.sortId;
+			},
+			// 查看维修凭证
+			seeImg3(e) {
+				let urll = e.maintainApprove.maintainVoucher.split(',');
+				let a = urll.map((item) => {
+					console.log(this.$httpImage + item);
+					return this.$httpImage + item;
+				});
+				console.log(a);
+				uni.previewImage({
+					current: 0,
+					urls: a,
+				});
+			},
+			// 查看收款凭证
+			seeImg2(e) {
+				let urll = e.undersellApprove.undersellVoucher.split(',');
+				let a = urll.map((item) => {
+					console.log(this.$httpImage + item);
+					return this.$httpImage + item;
+				});
+				console.log(a);
+				uni.previewImage({
+					current: 0,
+					urls: a,
+				});
+			},
+			// 查看抛售凭证
+			seeImg1(e) {
+				let urll = e.undersellApprove.undersellVoucher.split(',');
+				let a = urll.map((item) => {
+					console.log(this.$httpImage + item);
+					return this.$httpImage + item;
+				});
+				console.log(a);
+				uni.previewImage({
+					current: 0,
+					urls: a,
+				});
 			},
 			// 上传凭证
 			empUploadUndersellVoucher() {
-				console.log(this.fileList);
+				const img = this.fileList1.map((item) => {
+					return item.url;
+				});
+				const img2 = this.fileList2.map((item) => {
+					return item.url;
+				});
 				let promise = {
 					sortId: this.sortId,
 					undersellId: this.undersellId,
-					undersellVoucher: '',
-					collectionVoucher: '',
+					undersellVoucher: img.join(','),
+					collectionVoucher: img2.join(','),
 				};
+				empUploadUndersellVoucher(promise).then((res) => {
+					if (res.code === 200) {
+						this.close();
+						this.getDataList();
+						uni.showToast({
+							icon: 'none',
+							title: '上传成功',
+						});
+					}
+				});
+			},
+			// 点击上收维修凭证
+			showMainImg1(e) {
+				this.maintainId = e.maintainApprove.maintainId;
+				this.sortId = e.sortId;
+				this.yunShowImgMain = true;
+			},
+			// 点击上收款售凭证
+			showImg2(e) {
+				this.undersellId = e.undersellApprove.undersellId;
+				this.sortId = e.sortId;
+				this.yunShowImg2 = true;
 			},
 			// 点击上传销售凭证
 			showImg1(e) {
@@ -609,7 +931,7 @@
 			goshowSell(e) {
 				this.showSell = true;
 				this.undersellId = e.undersellApprove.undersellId;
-				this.sortId = e.storeId;
+				this.sortId = e.sortId;
 			},
 			// 店长确认收货
 			getstoreAdminConfirm(id) {
@@ -775,9 +1097,13 @@
 			},
 			// 关闭送检弹框
 			close() {
+				this.showMain = false;
+				this.yunShowImg2 = false;
+				this.yunShowImg1 = false;
 				this.backShow = false;
 				this.yunShow = false;
 				this.taskShow = false;
+				this.yunShowImgMain = false;
 			},
 			// 送检
 			goXiu() {
@@ -966,6 +1292,7 @@
 				console.log(123);
 				// 当设置 multiple 为 true 时, file 为数组格式，否则为对象格式
 				let lists = [].concat(event.file);
+				console.log(this[`fileList${event.name}`]);
 				let fileListLen = this[`fileList${event.name}`].length;
 				lists.map((item) => {
 					this[`fileList${event.name}`].push({
@@ -975,7 +1302,9 @@
 					});
 				});
 				for (let i = 0; i < lists.length; i++) {
+					console.log(lists[i].url);
 					const result = await this.uploadFilePromise(lists[i].url);
+					console.log(result);
 					let item = this[`fileList${event.name}`][fileListLen];
 					this[`fileList${event.name}`].splice(
 						fileListLen,
@@ -989,18 +1318,19 @@
 					fileListLen++;
 				}
 			},
-			uploadFilePromise(url) {
+			uploadFilePromise(urls) {
 				return new Promise((resolve, reject) => {
-					let a = uni.uploadFile({
-						url: 'http://192.168.2.21:7001/upload', // 仅为示例，非真实的接口地址
-						filePath: url,
+					uni.uploadFile({
+						url: 'http://192.168.2.36:8080/common/upload', // 仅为示例，非真实的接口地址
+						filePath: urls,
 						name: 'file',
-						formData: {
-							user: 'test',
+						header: {
+							Authorization: Vue.prototype.$store.state.token,
 						},
 						success: (res) => {
 							setTimeout(() => {
-								resolve(res.data.data);
+								const data = JSON.parse(res.data);
+								resolve(data.fileName);
 							}, 1000);
 						},
 					});
@@ -1297,6 +1627,7 @@
 	}
 
 	.section_1 {
+		position: relative;
 		margin: 9px 11px 0 0;
 	}
 
@@ -1361,12 +1692,16 @@
 		border-radius: 10px;
 		margin: 0 0 64px 42px;
 		padding: 2px 20px 1px 19px;
+		position: absolute;
+		right: 0;
 	}
 	.tag_33 {
 		background-color: #e5fcf1;
 		border-radius: 10px;
 		margin: 0 0 64px 42px;
 		padding: 2px 20px 1px 19px;
+		position: absolute;
+		right: 0;
 	}
 	.text_33 {
 		overflow-wrap: break-word;

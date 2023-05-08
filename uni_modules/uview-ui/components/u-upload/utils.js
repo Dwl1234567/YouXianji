@@ -1,8 +1,8 @@
 function pickExclude(obj, keys) {
 	// 某些情况下，type可能会为
-    if (!['[object Object]', '[object File]'].includes(Object.prototype.toString.call(value))) {
-        return {}
-    }
+    // if (!['[object Object]', '[object File]'].includes(Object.prototype.toString.call(value))) {
+    //     return {}
+    // }
     return Object.keys(obj).reduce((prev, key) => {
         if (!keys.includes(key)) {
             prev[key] = obj[key]
