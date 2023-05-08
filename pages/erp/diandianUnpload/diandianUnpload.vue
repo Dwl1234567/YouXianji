@@ -347,7 +347,7 @@
 				}
 				const basicPriceId = uni.getStorageSync('basicPriceId');
 				that.basicPrice[0].map((item, index) => {
-					if (item.priceId == basicPriceId) {
+					if (item.priceId == this.basicPriceId) {
 						item.checked = true;
 					} else {
 						item.checked = false;

@@ -208,3 +208,19 @@ export function empReturnStore(data) {
 export function storeAdminConfirm(data) {
 	return request.get('/yxj/app/sorting/storeAdminConfirm/' + data, { noLogin: true });
 }
+
+/**
+ * 店长审批抛售申请
+ *
+ */
+export function storeAdminUndersellApprove(data) {
+	return request.post('/yxj/app/sorting/storeAdminUndersellApprove', data, { noLogin: true });
+}
+
+/**
+ * 分拣员上传抛售凭证和收款凭证
+ *
+ */
+export function empUploadUndersellVoucher(data) {
+	return request.post('/yxj/app/sorting/empUploadUndersellVoucher', data, { noLogin: true });
+}

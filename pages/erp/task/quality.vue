@@ -78,6 +78,18 @@
 						<view class="tag_1 flex-col" v-if="item.sortStatus == 4 && (roles.sorting_people || roles.sorting_leader)">
 							<text class="text_12">已送达</text>
 						</view>
+						<view
+							class="tag_1 flex-col"
+							v-if="item.sortStatus == 5 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
+						>
+							<text class="text_12">待抛售</text>
+						</view>
+						<view
+							class="tag_1 flex-col"
+							v-if="item.sortStatus == 6 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
+						>
+							<text class="text_12">抛售中</text>
+						</view>
 					</view>
 					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
 					<view class="button">
@@ -121,6 +133,22 @@
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 4">已收货</view>
 						<view class="receipt" v-if="item.status === '1' && item.sortStatus == 1">已收货</view>
+						<view class="checkLogistics" v-if="roles.store_admin && item.sortStatus == 5">拒绝</view>
+						<view class="receipt" @tap="goshowSell(item)" v-if="roles.store_admin && item.sortStatus == 5">接受</view>
+						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 6">已接受</view>
+						<view
+							class="checkLogistics"
+							v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 6 && item.undersellApprove.collectionVoucher == null"
+						>
+							上传收款凭证
+						</view>
+						<view
+							class="receipt"
+							@tap="showImg1(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 6 && item.undersellApprove.undersellVoucher == null"
+						>
+							上传抛售凭证
+						</view>
 					</view>
 				</view>
 			</view>
@@ -138,6 +166,43 @@
 			<view class="goXiu" @tap="task" v-if="roles.sorting_leader">任务分配</view>
 		</view>
 		<!--弹窗-->
+		<!-- 抛售弹框 -->
+		<u-modal
+			:show="showSell"
+			@cancel="showSell = false"
+			@confirm="confirmFuc"
+			title="确定抛售？"
+			:showCancelButton="true"
+		></u-modal>
+		<!-- 上传抛售凭证 -->
+		<u-popup :show="yunShowImg1" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">上传销售凭证</view>
+				<view class="yunShow-img">
+					<!-- <uni-file-picker
+						v-model="fileList"
+						fileMediatype="image"
+						mode="grid"
+						@select="select"
+						@progress="progress"
+						@success="success"
+						@fail="fail"
+					/> -->
+					<u-upload
+						:fileList="fileList"
+						@afterRead="afterRead"
+						@delete="deletePic"
+						name="1"
+						multiple
+						:maxCount="10"
+					></u-upload>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="empUploadUndersellVoucher">确定</view>
+			</view>
+		</u-popup>
 		<u-popup :show="backShow" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
 			<view class="yunShow-top">
 				<view class="yunShow-title">送拣信息填写</view>
@@ -238,6 +303,8 @@
 		empGetStoreInfo,
 		empReturnStore,
 		storeAdminConfirm,
+		storeAdminUndersellApprove,
+		empUploadUndersellVoucher,
 	} from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -250,6 +317,11 @@
 		},
 		data() {
 			return {
+				action: 'http://192.168.2.36:8080/common/upload',
+				fileList: [],
+				// 抛售id
+				undersellId: 0,
+				showSell: false,
 				storeId: 0,
 				sortId: 0,
 				sortName: '',
@@ -268,6 +340,7 @@
 				],
 				values: '',
 				// 运营中心弹框
+				yunShowImg1: false,
 				taskShow: false,
 				backShow: false,
 				yunShow: false,
@@ -467,6 +540,77 @@
 			});
 		},
 		methods: {
+			// 获取上传状态
+			select(e) {
+				console.log('选择文件：', e);
+			},
+			// 获取上传进度
+			progress(e) {
+				console.log('上传进度：', e);
+			},
+
+			// 上传成功
+			success(e) {
+				console.log('上传成功');
+			},
+
+			// 上传失败
+			fail(e) {
+				console.log('上传失败：', e);
+			},
+			// 上传凭证
+			empUploadUndersellVoucher() {
+				console.log(this.fileList);
+				let promise = {
+					sortId: this.sortId,
+					undersellId: this.undersellId,
+					undersellVoucher: '',
+					collectionVoucher: '',
+				};
+			},
+			// 点击上传销售凭证
+			showImg1(e) {
+				this.undersellId = e.undersellApprove.undersellId;
+				this.sortId = e.sortId;
+				this.yunShowImg1 = true;
+			},
+			// 拒绝抛售申请
+			falseshowSell(e) {
+				let promise = {
+					sortId: e.sortId,
+					undersellId: e.undersellApprove.undersellId,
+					status: '2',
+				};
+				storeAdminUndersellApprove(promise).then((res) => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '已拒绝',
+						});
+						this.getDataList();
+					}
+				});
+			},
+			// 确定抛售
+			confirmFuc() {
+				let promise = {
+					sortId: this.sortId,
+					undersellId: this.undersellId,
+					status: '1',
+				};
+				storeAdminUndersellApprove(promise).then((res) => {
+					if (res.code === 200) {
+						this.showSell = false;
+						this.getDataList();
+					}
+				});
+			},
+			// 同意抛售
+			goshowSell(e) {
+				this.showSell = true;
+				this.undersellId = e.undersellApprove.undersellId;
+				this.sortId = e.storeId;
+			},
 			// 店长确认收货
 			getstoreAdminConfirm(id) {
 				storeAdminConfirm(id).then((res) => {
@@ -594,6 +738,7 @@
 					if (res.code === 200) {
 						this.yunShow = false;
 						this.getDataList();
+						this.admin();
 					}
 				});
 			},
@@ -812,6 +957,55 @@
 				this.nav_list[pindex].child[findex].child[mindex].click = true;
 				this.newnav_list = this.nav_list;
 			},
+			// 删除图片
+			deletePic(event) {
+				this[`fileList${event.name}`].splice(event.index, 1);
+			},
+			// 新增图片
+			async afterRead(event) {
+				console.log(123);
+				// 当设置 multiple 为 true 时, file 为数组格式，否则为对象格式
+				let lists = [].concat(event.file);
+				let fileListLen = this[`fileList${event.name}`].length;
+				lists.map((item) => {
+					this[`fileList${event.name}`].push({
+						...item,
+						status: 'uploading',
+						message: '上传中',
+					});
+				});
+				for (let i = 0; i < lists.length; i++) {
+					const result = await this.uploadFilePromise(lists[i].url);
+					let item = this[`fileList${event.name}`][fileListLen];
+					this[`fileList${event.name}`].splice(
+						fileListLen,
+						1,
+						Object.assign(item, {
+							status: 'success',
+							message: '',
+							url: result,
+						})
+					);
+					fileListLen++;
+				}
+			},
+			uploadFilePromise(url) {
+				return new Promise((resolve, reject) => {
+					let a = uni.uploadFile({
+						url: 'http://192.168.2.21:7001/upload', // 仅为示例，非真实的接口地址
+						filePath: url,
+						name: 'file',
+						formData: {
+							user: 'test',
+						},
+						success: (res) => {
+							setTimeout(() => {
+								resolve(res.data.data);
+							}, 1000);
+						},
+					});
+				});
+			},
 		},
 	};
 </script>
@@ -832,7 +1026,7 @@
 		display: flex;
 		justify-content: flex-end;
 		view {
-			width: 143rpx;
+			min-width: 143rpx;
 			height: 55rpx;
 			border-radius: 29rpx;
 			border: 1px solid #979797;
