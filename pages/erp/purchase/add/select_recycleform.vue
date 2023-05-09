@@ -7,7 +7,6 @@
 		
 		<view class="cu-bar bg-white">
 			<view class='action'>
-				<text class='cuIcon-title text-red'></text>
 				<text class="title">序列号/IMEI</text>
 				<text class="margin-left-xs text-sm">
 					<input placeholder="请输入设备序列号/IMEI" v-model="goodssn" name="input"></input>
@@ -16,7 +15,6 @@
 		</view>
 		<view class="cu-bar bg-white">
 			<view class='action'>
-				<text class='cuIcon-title text-red'></text>
 				<text class="title">机器图片</text>
 				<text class="margin-left-xs text-sm">(添加照片，可提高回收效率哟)</text>
 			</view>
@@ -131,7 +129,6 @@
 		<!--选择SKU 与仓库-->
 		<view class="cu-bar bg-white">
 			<view class='action'>
-				<text class='cuIcon-title text-red'></text>
 				<text class="title">入库信息</text>
 				<text class="margin-left-xs text-sm"></text>
 			</view>
@@ -163,13 +160,12 @@
 
 		<view class="cu-bar bg-white">
 			<view class='action'>
-				<text class='cuIcon-title text-red'></text>
 				<text class="title">已选属性</text>
 				<text class="margin-left-xs text-sm"></text>
 			</view>
 		</view>
 		<view class="bg-white padding-lr">
-			<view class="cu-list grid col-3 no-border padding-lr-sm">
+			<view class="cu-list grid col-3 no-border">
 				
 				<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
 					<view class="cu-item radius-2" :class="tabindex == tab_cur?'bg-red cur':''" @tap="tabSelect"

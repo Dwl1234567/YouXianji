@@ -2,9 +2,9 @@ import { UPLOAD_IMG_URL } from '@/config/app';
 import Vue from 'vue';
 export function upload(filePath) {
 	return new Promise((resolve, reject) => {
-		uni.showLoading({
-			title: '上传中',
-		});
+		// uni.showLoading({
+		// 	title: '上传中',
+		// });
 		uni.uploadFile({
 			// url: `${UPLOAD_IMG_URL}file/upload`,
 			url: `${UPLOAD_IMG_URL}`,

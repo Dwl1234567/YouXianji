@@ -77,20 +77,22 @@
 						<view class="text-black text-bold text-lg title-view">{{orderInfo.orderNum}}</view>
 					</view> -->
 					<view class="goods-list-view">
-						<view class="cu-avatar radius" v-if="goodsInfo.image"
-							:style="[{backgroundImage:'url('+ goodsInfo.image +')'}]" />
+						<!-- <view class="cu-avatar radius" v-if="photo"
+							:style="[{backgroundImage:'url('+ photo +')'}]" /> -->
+							<image :src="$httpImage + photo" mode="aspectFit" class="cu-avatar lg radius"></image>
 						<view class="goods-info-view">
-							<view class="text-black text-cut name">{{goodsInfo.name}} </view>
+							<view class="text-black text-cut name">{{modelName}} </view>
 							<view class="tag-view">
-								<block v-for="(item_s,index_s) in cartInfo" :key="index_s">
+								<!-- <block v-for="(item_s,index_s) in cartInfo" :key="index_s">
 									<text v-if="index_s < 5" class="cu-tag sm line-red radius"
 										:class="index_s == 0?'tag_1':''">{{item_s.child_name}}</text>
-								</block>
+								</block> -->
+								<view class="tags">{{goodsdesc}}</view>
 								<!-- <view class="more" @tap="tagsTap">
 									更多>>
 								</view> -->
 								<view class="text-price text-red">
-									<text class="text-xxl text-bold">{{goodsInfo.money}}</text>
+									<text class="text-xxl text-bold">{{forecastMoney}}</text>
 								</view>
 							</view>
 						</view>
@@ -304,6 +306,9 @@
 		},
 		data() {
 			return {
+				goodsdesc: '',
+				modelName: '',
+				photo: '',
 				action: 'http://192.168.2.36:8080/common/upload',
 				fileList: [],
 				priceId: 0,
@@ -367,14 +372,16 @@
 			this.Pricepramitems = uni.getStorageSync('Pricepramitems')
 			this.http = HTTP_REQUEST_IMAGEURL
 			this.initPickupTime();
-			this.getGlobalInfoFuc();
+			// this.getGlobalInfoFuc();
 			this.selectStoreAddress()
+			this.goodsdesc = option.goodsdesc
+			this.photo = option.photo
 			this.priceId = option.priceId;
 			this.detailId = option.detailId;
 			this.goodsId = option.goodsId;
 			this.modelName = option.modelName;
 			this.forecastMoney = option.forecastMoney
-			this.addBasicOrderFuc();
+			// this.addBasicOrderFuc();
 		},
 		onShow() {
 			this.getUserAddressFuc();
@@ -389,18 +396,6 @@
 					}
 				})
 			},
-			// 获取全局信息
-			getGlobalInfoFuc(){
-				let that = this;
-				let params = {
-					'name':''
-				}
-				getGlobalInfo(params).then(res=>{
-					if(res.code == 1){
-						that.platformInfo = res.data.platform_receipt.recipient + res.data.platform_receipt.recipient_phone + res.data.platform_receipt.recipient_address;
-					}
-				})
-			},
 			// 复制
 			copyfuc(){
 				let that = this;
@@ -410,20 +405,6 @@
 				        console.log('success');
 				    }
 				});
-			},
-			// 获取系统报价提交订单基础信息
-			addBasicOrderFuc() {
-				let that = this;
-				let params = {
-					"goods_id": that.goodsId,
-					"detail_id": that.detailId
-				}
-				addBasicOrder(params).then(res => {
-					if (res.code == 1) {
-						that.goodsInfo = res.data.good_info;
-						that.cartInfo = res.data.key_value;
-					}
-				})
 			},
 			// 初始化取货时间
 			initPickupTime() {
@@ -450,7 +431,6 @@
 					}
 				}
 				that.takeTime[1] = gethoursInfo(0);
-				console.log(that.takeTime);
 			},
 			TimeChange(e) {
 				let that = this;
@@ -530,7 +510,6 @@
 				}
 			},
 			uploadImg(type) {
-				console.log(this.phoneImgArr[type], '123123123');
 				if (!this.phoneImgArr[type]) {
 					let that = this;
 					that.uploadImgtype = type;
@@ -557,7 +536,6 @@
 			uploadImg1(type) {
 				let that = this;
 				that.uploadImgtype = type;
-				// console.log(!that.phoneImgArr[type]);
 				if (that.pImgDeleteStatus) {
 					that.pImgDeleteStatus = false;
 					return false;
@@ -607,10 +585,8 @@
 				selectUserAddressList().then(res => {
 					if (res.code == 200) {
 						that.takeAddress = res.data;
-						console.log(res.data)
 						if (that.takeAddress.length > 0) {
 							that.$set(that.index, 'address', 0);
-							console.log(this.index);
 						}
 					}
 				})
@@ -634,8 +610,6 @@
 			refreshList(data, type) {
 				//添加或修改后事件，这里直接在最前面添加了一条数据，实际应用中直接刷新地址列表即可
 				this.takeAddress.unshift(data);
-			
-				console.log(data, type);
 			},
 			// 创建订单
 			creatinsertBasicOrder() {
@@ -710,6 +684,7 @@
 					'storeId': storeId,
 					'firstPrice': that.forecastMoney
 				}
+				console.log(params)
 				createRecycleOrder(params).then(res => {
 					if(res.code == 200){
 						that.$u.toast('提交订单成功');

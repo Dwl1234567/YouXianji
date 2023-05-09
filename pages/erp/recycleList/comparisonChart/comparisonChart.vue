@@ -309,6 +309,7 @@
 	export default {
 		data() {
 			return {
+				setImg: false,
 				urls: [],
 				uploadImgtype: null,
 				addpicicon: 'none',
@@ -386,8 +387,10 @@
 			this.priceId = option.priceId;
 			// 指导价
 			this.forecastMoney = option.forecastMoney;
+			this.receiptPrice = option.forecastMoney;
 			// 整理三角雷达图每个角落的max值
 			this.optionData.radar.indicator[0].max = uni.getStorageSync('dataListNum')[0];
+			console.log(this.optionData.radar.indicator[0].max);
 			this.optionData.radar.indicator[1].max = uni.getStorageSync('dataListNum')[1];
 			this.optionData.radar.indicator[2].max = uni.getStorageSync('dataListNum')[2];
 			this.optionData.radar.indicator[3].max = uni.getStorageSync('dataListNum')[3];
@@ -401,21 +404,32 @@
 					photo: '',
 				});
 			});
-			console.log(this.phoneImgArr);
 			this.qualityInfo = uni.getStorageSync('qualityInfo');
 			this.recycleOrderId = uni.getStorageSync('recycleOrderId');
 		},
 		methods: {
+			deleteImg(type) {
+				let that = this;
+				that.pImgDeleteStatus = true;
+				if (!that.phoneImgArr[type]) {
+					return false;
+				}
+				that.phoneImgArr[type].photo = '';
+			},
 			uploadImg(type) {
-				console.log(this.phoneImgArr[type], '123123123');
 				if (this.phoneImgArr[type].photo == '') {
+					this.optionData.series[0].data[0].value = [0, 0, 0];
 					let that = this;
 					that.uploadImgtype = type;
 					uni.navigateTo({
 						url: '/pages/idphoto/idphoto',
 					});
 				} else {
-					console.log(222);
+					const a = this.optionData.series[0].data[0].value.map((item) => {
+						const i = item / 2;
+						return i;
+					});
+					this.optionData.series[0].data[0].value = a;
 					this.deleteImg(type);
 				}
 			},
@@ -459,6 +473,16 @@
 				}
 			},
 			checkInformation(left, right, index) {
+				// console.log(33333);
+				// console.log(this.optionData.series[0].data[0].value);
+				// if (this.setImg) {
+				// 	console.log(this.optionData.series[0].data[0].value);
+				// 	if (left === right) {
+				// 		return false;
+				// 	} else {
+				// 		this.optionData.series[0].data[0].value[0] = this.optionData.series[0].data[0].value[0] + 1;
+				// 	}
+				// }
 				this.$nextTick(() => {
 					if (left === right) {
 						return false;

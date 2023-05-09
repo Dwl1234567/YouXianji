@@ -13,9 +13,7 @@
 					<image :src="$httpImage + photo" mode="aspectFit" class="cu-avatar lg radius"></image>
 					<view class="goods-info-view">
 						<view class="text-black text-cut name">{{goods_info.name}}</view>
-						<view class="tags">
-							{{goodsdesc}}
-						</view>
+						<view class="tags">{{goodsdesc}}</view>
 						<view class="text-price" v-if="forecastMoney > capacity20Money">
 							<text class="text-xxl">{{forecastMoney}}</text>
 						</view>
@@ -32,7 +30,10 @@
 				</view>
 
 				<view class="tips-text margin-bottom-sm">
-					<text class=""><text class="cuIcon-info" />如您认为该价格与市场价不符</text>
+					<text class="">
+						<text class="cuIcon-info" />
+						如您认为该价格与市场价不符
+					</text>
 					<text class="cu-btn sm" @click="callKefu()">去反馈</text>
 				</view>
 			</view>
@@ -40,8 +41,7 @@
 			<view class="bg-white nav-tab-view">
 				<scroll-view scroll-x class="nav z" scroll-with-animation :scroll-left="tab_scroll">
 					<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
-						<view class="cu-item" :class="tabindex == tab_cur?'select':''" @tap="tabSelect"
-							:data-id="tabindex">
+						<view class="cu-item" :class="tabindex == tab_cur?'select':''" @tap="tabSelect" :data-id="tabindex">
 							<view :class="tabindex == tab_cur?'text-101010':''">{{tabitem}}</view>
 							<view class="tab-dot text-color-yellow" />
 						</view>
@@ -54,18 +54,18 @@
 		<!--选项列表-->
 		<block v-for="(item,index) in nav_list" :key="index">
 			<view class="process-box" v-show="tab_cur == index">
-				<scroll-view v-for="(recyitem,recyindex) in basicPrice" scroll-y="true"
-					class="scroll-Y" v-if="tab_cur == 0">
+				<scroll-view v-for="(recyitem,recyindex) in basicPrice" scroll-y="true" class="scroll-Y" v-if="tab_cur == 0">
 					<!-- {{recyitem}} -->
-					<SelectDataFirst title="机器SKU" :checklist="recyitem" @itemclick="moneyFucs">
-					</SelectDataFirst>
+					<SelectDataFirst title="机器SKU" :checklist="recyitem" @itemclick="moneyFucs"></SelectDataFirst>
 				</scroll-view>
-				<scroll-view v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex" scroll-y="true"
-					class="scroll-Y">
+				<scroll-view
+					v-for="(recyitem,recyindex) in retrieveList[index]"
+					:key="recyindex"
+					scroll-y="true"
+					class="scroll-Y"
+				>
 					<!-- {{recyitem}} -->
-					<SelectData :title="recyitem.name" :checklist="recyitem.value" @itemclick="moneyFuc">
-					</SelectData>
-
+					<SelectData :title="recyitem.name" :checklist="recyitem.value" @itemclick="moneyFuc"></SelectData>
 				</scroll-view>
 			</view>
 		</block>
@@ -81,35 +81,22 @@
 				:customStyle="{height:'88rpx',borderRadius:'30rpx',color:'#ffffff',backgroundColor:'#e54d42'}"
 				@tap="deliveryTap"></u-button>
 		</view>
-		-->
-
-
-	</view>
+		--></view>
 </template>
 
 <script>
 	import barTitle from '@/components/common/basics/bar-title';
-	import {
-		GodsgoodsDetail,
-		GodsgoodsPrice,
-		getUserMobile
-	} from "@/api/common.js";
-	import {
-		getPriceTemplateByModel
-	} from "@/api/retrieve.js";
+	import { GodsgoodsDetail, GodsgoodsPrice, getUserMobile } from '@/api/common.js';
+	import { getPriceTemplateByModel } from '@/api/retrieve.js';
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
 	import SelectDataFirst from '@/components/RecyclingList/SelectDataFirst.vue';
-	import {
-		openQyKefu
-	} from "@/utils/util.js"
-	import {
-		mapState
-	} from 'vuex';
+	import { openQyKefu } from '@/utils/util.js';
+	import { mapState } from 'vuex';
 	export default {
 		components: {
 			SelectDataFirst,
 			SelectData,
-			barTitle
+			barTitle,
 		},
 		data() {
 			return {
@@ -126,12 +113,7 @@
 				//选项卡
 				tab_scroll: 0,
 				tab_cur: 0,
-				nav_list: [
-					'物品信息',
-					'成色情况',
-					'功能情况',
-					'维修情况'
-				],
+				nav_list: ['物品信息', '成色情况', '功能情况', '维修情况'],
 				retrieveList: [],
 				forecastMoney: 0, //报价金额
 				baseMoney: 0,
@@ -139,19 +121,19 @@
 				goodsdesc: '--',
 				scrollTop: 0,
 				old: {
-					scrollTop: 0
+					scrollTop: 0,
 				},
 				Priceprams: {},
 				Pricepramitems: [],
-				detailId: ''
-			}
+				detailId: '',
+			};
 		},
 		onLoad(option) {
 			// let data = JSON.parse(decodeURIComponent(option.data))
 
 			this.goodsInfo = option;
 			this.goodsId = option.id;
-			this.modelName = option.modelName
+			this.modelName = option.modelName;
 			this.photo = option.photo;
 			// this.type = option.type;
 			this.getGodsgoodsDetail();
@@ -162,8 +144,8 @@
 			uni.login({
 				success(res) {
 					that.wxcode = res.code;
-				}
-			})
+				},
+			});
 			let token = uni.getStorageSync('LOGIN_STATUS_TOKEN');
 			if (token) {
 				that.tokenstatus = true;
@@ -171,7 +153,7 @@
 			// #endif
 		},
 		computed: {
-			...mapState(['hasLogin'])
+			...mapState(['hasLogin']),
 		},
 		methods: {
 			moneyFucs(e) {
@@ -181,7 +163,7 @@
 			moneyFuc(e) {
 				let that = this;
 				let ckindex = e.ckid.split('-');
-			
+
 				if (e.status == 1) {
 					that.capacity20Money = Number(e.money) * 0.2;
 				}
@@ -191,25 +173,24 @@
 					} else {
 						item.checked = false;
 					}
-				})
-			
+				});
+
 				this.calcYuguMoney();
-			
 			},
 			// 计算价格
 			calcYuguMoney() {
 				let that = this;
 				that.forecastMoney = 0;
 				that.allPrice = 0;
-				that.itemPrice = 0
+				that.itemPrice = 0;
 				that.goodsdesc = '';
-				that.Pricepramitems = []
-				that.basicPrice[0].map(item => {
+				that.Pricepramitems = [];
+				that.basicPrice[0].map((item) => {
 					if (item.checked) {
 						that.allPrice = item.basicPrice;
 						that.priceId = item.priceId;
 					}
-				})
+				});
 				that.retrieveList.forEach((item, index) => {
 					item.forEach((iitem, indexx) => {
 						iitem.value.forEach((iiitem, indexxx) => {
@@ -218,78 +199,78 @@
 								// console.log(that.retrieveList[0].length, indexx, indexs)
 								that.Priceprams[iitem.keyId] = indexxx;
 								that.Pricepramitems.push({
-									keyId:iitem.keyId,
-									valueId:iiitem.valueId,
+									keyId: iitem.keyId,
+									valueId: iiitem.valueId,
 									key: iitem.name,
 									value: iiitem.value,
-									indexs: iitem.indexs
-								})
+									indexs: iitem.indexs,
+								});
 								if (index == 0 && iitem.key != 'small') {
 									that.goodsdesc = that.goodsdesc + iiitem.value + ' | ';
 								}
 							}
-						})
-					})
-				})
-				that.forecastMoney = that.allPrice - that.itemPrice
-				uni.setStorageSync('goodsdesc', that.goodsdesc)
-				uni.setStorageSync('Priceprams', that.Priceprams)
-				uni.setStorageSync('Pricepramitems', that.Pricepramitems)
+						});
+					});
+				});
+				that.forecastMoney = that.allPrice - that.itemPrice;
+				uni.setStorageSync('goodsdesc', that.goodsdesc);
+				uni.setStorageSync('Priceprams', that.Priceprams);
+				uni.setStorageSync('Pricepramitems', that.Pricepramitems);
 				console.log('总价：');
 				console.log(that.forecastMoney);
-				console.log('that.Priceprams',that.Priceprams);
+				console.log('that.Priceprams', that.Priceprams);
 				console.log('that.Pricepramitems', that.Pricepramitems);
 			},
 			getGodsgoodsDetail() {
 				let that = this;
-				getPriceTemplateByModel(that.goodsInfo.id).then(res => {
+				getPriceTemplateByModel(that.goodsInfo.id)
+					.then((res) => {
 						if (res.code == 200) {
 							// that.retrieveList = res.data.goods_list;
 							that.retrieveList[0] = res.data.propPrice[0];
-							res.data.propPrice[0].map(item => {
-								item.indexs = 1
-								return item
-							})
-							res.data.propPrice[1].map(item => {
-								item.indexs = 2
-								return item
-							})
-							res.data.propPrice[2].map(item => {
-								item.indexs = 3
-								return item
-							})
-							res.data.propPrice[3].map(item => {
-								item.indexs = 4
-								return item
-							})
-							that.basicPrice = [res.data.basicPrice]	
-							that.retrieveList = res.data.propPrice
+							res.data.propPrice[0].map((item) => {
+								item.indexs = 1;
+								return item;
+							});
+							res.data.propPrice[1].map((item) => {
+								item.indexs = 2;
+								return item;
+							});
+							res.data.propPrice[2].map((item) => {
+								item.indexs = 3;
+								return item;
+							});
+							res.data.propPrice[3].map((item) => {
+								item.indexs = 4;
+								return item;
+							});
+							that.basicPrice = [res.data.basicPrice];
+							that.retrieveList = res.data.propPrice;
 							that.goods_info = res.data.model;
 							that.addcheckattr();
 							setTimeout(() => {
 								that.addcheckattr();
 								this.calcYuguMoney();
-							}, 500)
-							
+							}, 500);
 						}
 					})
-					.catch(err => {
+					.catch((err) => {
 						uni.showModal({
 							title: '提示',
 							content: err,
 							showCancel: false,
-							success: function(res) {
+							success: function (res) {
 								if (res.confirm) {
 									console.log('用户点击确定');
 									uni.navigateBack({
-										delta: -1
-									})
+										delta: -1,
+									});
 								} else if (res.cancel) {
 									console.log('用户点击取消');
 								}
-							}
+							},
 						});
-					})
+					});
 			},
 			// 添加选择熟悉
 			addcheckattr() {
@@ -303,17 +284,17 @@
 								iiitem['checked'] = false;
 							}
 							iiitem['ckid'] = index + '-' + indexx + '-' + indexxx;
-						})
-					})
-				})
-				that.basicPrice[0].map((item,index) => {
+						});
+					});
+				});
+				that.basicPrice[0].map((item, index) => {
 					if (index == 0) {
 						item.checked = true;
 					} else {
 						item.checked = false;
 					}
-					return item
-				})
+					return item;
+				});
 				// console.log(that.basicPrice)
 				// console.log(that.retrieveList);
 			},
@@ -323,38 +304,50 @@
 				// console.log(this.tab_cur);
 				uni.pageScrollTo({
 					scrollTop: 0,
-					duration: 0
+					duration: 0,
 				});
 			},
 			// 获取报价
 			getGodsgoodsPrice() {
 				uni.navigateTo({
-					url: 'form?type=' + this.type + '&goodsId=' + this.goodsId + '&modelName=' + this.modelName + '&forecastMoney=' + this.forecastMoney + '&priceId=' + this.priceId
-				})
+					url:
+						'form?photo=' +
+						this.photo +
+						'&goodsId=' +
+						this.goodsId +
+						'&modelName=' +
+						this.modelName +
+						'&forecastMoney=' +
+						this.forecastMoney +
+						'&priceId=' +
+						this.priceId +
+						'&goodsdesc=' +
+						this.goodsdesc,
+				});
 			},
 			//去发货
 			async deliveryTap() {
 				this.getGodsgoodsPrice();
 			},
-			upper: function(e) {
-				console.log(e)
+			upper: function (e) {
+				console.log(e);
 			},
-			lower: function(e) {
-				console.log(e)
+			lower: function (e) {
+				console.log(e);
 			},
-			scroll: function(e) {
-				console.log(e)
-				this.old.scrollTop = e.detail.scrollTop
+			scroll: function (e) {
+				console.log(e);
+				this.old.scrollTop = e.detail.scrollTop;
 			},
-			goTop: function(e) {
-				this.scrollTop = this.old.scrollTop
+			goTop: function (e) {
+				this.scrollTop = this.old.scrollTop;
 				this.$nextTick(() => {
-					this.scrollTop = 0
+					this.scrollTop = 0;
 				});
 				uni.showToast({
-					icon: "none",
-					title: "纵向滚动 scrollTop 值已被修改为 0"
-				})
+					icon: 'none',
+					title: '纵向滚动 scrollTop 值已被修改为 0',
+				});
 			},
 			// 联系客服
 			callKefu() {
@@ -364,59 +357,58 @@
 			},
 			onGetPhoneNumber(e) {
 				let that = this;
-				if (e.detail.errMsg == "getPhoneNumber:fail user deny") { //用户决绝授权  
-					//拒绝授权后弹出一些提示  
+				if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
+					//用户决绝授权
+					//拒绝授权后弹出一些提示
 				} else {
-					//允许授权  
-					// e.detail.encryptedData //加密的用户信息  
-					// e.detail.iv //加密算法的初始向量时要用到  
+					//允许授权
+					// e.detail.encryptedData //加密的用户信息
+					// e.detail.iv //加密算法的初始向量时要用到
 					uni.checkSession({
-						success: function() {
+						success: function () {
 							let usertoken = uni.getStorageSync('UID');
 							let parmas = {
-								'user_token': usertoken,
-								'code': that.wxcode,
-								'encryptedData': encodeURIComponent(e.detail.encryptedData),
-								'iv': e.detail.iv,
-							}
-							getUserMobile(parmas).then(res => {
+								user_token: usertoken,
+								code: that.wxcode,
+								encryptedData: encodeURIComponent(e.detail.encryptedData),
+								iv: e.detail.iv,
+							};
+							getUserMobile(parmas).then((res) => {
 								if (res.code == 1) {
 									that.tokenstatus = true;
-									that.$store.commit("LOGIN", {
-										'token': res.data.token
+									that.$store.commit('LOGIN', {
+										token: res.data.token,
 									});
 								}
-							})
+							});
 						},
-						fail: function(err) {
+						fail: function (err) {
 							console.log(err + '检查code错误');
 							uni.login({
 								success(res) {
 									let usertoken = uni.getStorageSync('UID');
 									let parmas = {
-										'user_token': usertoken,
-										'code': res.code,
-										'encryptedData': encodeURIComponent(e.detail
-											.encryptedData),
-										'iv': e.detail.iv,
-									}
-									getUserMobile(parmas).then(res => {
+										user_token: usertoken,
+										code: res.code,
+										encryptedData: encodeURIComponent(e.detail.encryptedData),
+										iv: e.detail.iv,
+									};
+									getUserMobile(parmas).then((res) => {
 										if (res.code == 1) {
 											that.tokenstatus = true;
-											that.$store.commit("LOGIN", {
-												'token': res.data.token
+											that.$store.commit('LOGIN', {
+												token: res.data.token,
 											});
 										}
-									})
-								}
-							})
-						}
-
-					})
+									});
+								},
+							});
+						},
+					});
 				}
 			},
-		}
-	}
+		},
+	};
 </script>
 
 <style scoped lang="scss">
@@ -431,7 +423,7 @@
 
 		position: fixed;
 		z-index: 998;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 		margin-bottom: 340rpx;
 		width: 100%;
 
@@ -534,7 +526,7 @@
 		bottom: 0rpx;
 		width: 100%;
 		padding: 20rpx 30rpx;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 	}
 
 	.nav.z .cu-item.select .tab-dot {
@@ -542,7 +534,7 @@
 	}
 
 	.uni-mask {
-		background: rgba(0, 0, 0, .9);
+		background: rgba(0, 0, 0, 0.9);
 	}
 
 	.orderview-footer-fixed {

@@ -1060,7 +1060,7 @@
 					if (res.code === 200) {
 						this.yunShow = false;
 						this.getDataList();
-						this.admin();
+						this.admin = false;
 					}
 				});
 			},
@@ -1370,10 +1370,14 @@
 			justify-content: center;
 		}
 		.receipt {
+			padding: 9rpx 17rpx;
 			background: linear-gradient(90deg, #ff6868 0%, #ea1515 100%);
 			margin-left: 26rpx;
 			color: #ffffff !important;
 			border: none;
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
 		}
 	}
 	.bottomView {

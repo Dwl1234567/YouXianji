@@ -109,6 +109,7 @@
 		},
 		data() {
 			return {
+				basicPriceId: 0,
 				priceId: 0,
 				allPrice: 0,
 				basicPrice: [],
