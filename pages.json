@@ -718,7 +718,7 @@
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
 
-				//"navigationStyle": "custom",
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "回收列表"
 			}
 		},
@@ -984,6 +984,7 @@
 		{
 			"path": "pages/order/recycle/list",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "我卖出的"
 			}
 		}, //我卖出的订单详情
@@ -1168,6 +1169,14 @@
 			"style": {
 				"navigationBarTitleText": "开单",
 				"enablePullDownRefresh": false
+			}
+		},
+		// 整备仓
+		{
+			"path": "pages/erp/maintenance/list",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "我卖出的"
 			}
 		}
 	],

@@ -7,7 +7,7 @@
 			<!-- #endif -->
 			
 			<!--标题栏-->
-			<bar-title bgColor="bg-white">
+			<bar-title bgColor="bg-white" adress="/pages/tabbarerp/push">
 				<block slot="content">客户列表</block>
 				<block slot="right">
 					<button class="cu-btn sm line-red round"  @tap="addCustomer">

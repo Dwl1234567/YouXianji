@@ -102,6 +102,12 @@
 					</view>
 					<text>回收列表</text>
 				</view>
+				<view class="cu-item" @tap="maintenance">
+					<view class="iconfont icon-tubiao-64 text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>整备仓</text>
+				</view>
 			</view>
 		</view>
 
@@ -436,6 +442,11 @@
 						url: '/pages/erp/chat/chatAdmin',
 					});
 				}
+			},
+			maintenance() {
+				uni.navigateTo({
+					url: '/pages/erp/maintenance/list',
+				});
 			},
 			gotokefu() {
 				console.log(this.kefuListOne);

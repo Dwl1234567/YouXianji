@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<bar-title bgColor="bg-white">
+		<bar-title bgColor="bg-white" adress="/pages/tabbarerp/home">
 			<block slot="content">供应商列表</block>
 			<block slot="right">
 				<button class="cu-btn sm" @tap="snTap" v-if="roles.sorting_leader || roles.store_admin">

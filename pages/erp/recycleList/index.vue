@@ -1,5 +1,10 @@
 <template>
 	<view class="page flex-col">
+		<bar-title bgColor="bg-white" adress="/pages/tabbarerp/home">
+			<block slot="content">回收列表</block>
+			<block slot="right">
+			</block>
+		</bar-title>
 		<view class="group_1 flex-row">
 			<view class="block_1 flex-col">
 				<view class="tabs_1 flex-col">
@@ -183,7 +188,11 @@
 	import {
 		raiseUpload
 	} from "@/api/upload.js";
+	import barTitle from '@/components/common/basics/bar-title';
 	export default {
+		components: {
+			barTitle
+		},
 		data() {
 			return {
 				TabCur: 1,

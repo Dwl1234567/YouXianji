@@ -2,7 +2,7 @@
 	<view class="bar-title-box">
 		<view class="cu-bar" :class="[fixed?'fixed':'', shadow?'':'no-shadow', bgColor]">
 			<view class="action" @tap="BackPage" v-if="isBack">
-				<text class=" iconfont icon-fanhui"/>
+				<text class="iconfont icon-fanhui" />
 				<text>{{backText}}</text>
 			</view>
 			<view class="action" @tap="leftTap" v-if="!isBack">
@@ -29,56 +29,69 @@
 		props: {
 			bgColor: {
 				type: String,
-				default: 'bg-white'
+				default: 'bg-white',
+			},
+			adress: {
+				type: String,
+				default: '',
 			},
 			datas: {
 				type: String,
-				default: ''
+				default: '',
 			},
 			isBack: {
 				type: Boolean,
-				default: true
+				default: true,
 			},
 			backText: {
 				type: String,
-				default: ""
+				default: '',
 			},
 			fixed: {
 				type: Boolean,
-				default: true
+				default: true,
 			},
 			shadow: {
 				type: Boolean,
-				default: false
-			}
+				default: false,
+			},
 		},
-		created() {
-			
-		},
+		created() {},
 		methods: {
 			BackPage() {
-				const canNavBack = getCurrentPages()
-				console.log(canNavBack, 'canNavBack2222222222')
+				console.log(this.adress);
+				if (this.adress && this.adress !== '/pages/tabbar/my') {
+					uni.navigateTo({
+						url: this.adress,
+					});
+					return;
+				} else if (this.adress && this.adress === '/pages/tabbar/my') {
+					uni.switchTab({
+						url: this.adress,
+					});
+					return;
+				}
+				const canNavBack = getCurrentPages();
+				console.log(canNavBack, 'canNavBack2222222222');
 				if (this.datas == 1) {
 					uni.navigateBack({
-						delta: 6
-					})
+						delta: 6,
+					});
 				} else {
 					//判断是否刷新了浏览器，刷新了浏览器，页面栈只有当前一个
 					// #ifdef H5
 					if (canNavBack && canNavBack.length > 1) {
 						uni.navigateBack({
-							delta: 1
-						})
+							delta: 1,
+						});
 					} else {
-						history.back()
+						history.back();
 					}
 					// #endif
 					// #ifndef H5
-					uni.navigateBack()
+					uni.navigateBack();
 					// #endif
 				}
-				
 			},
 			leftTap() {
 				this.$emit('leftTap');
@@ -88,9 +101,9 @@
 			},
 			rightTap() {
 				this.$emit('rightTap');
-			}
-		}
-	}
+			},
+		},
+	};
 </script>
 
 <style lang="scss" scoped>

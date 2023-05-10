@@ -48,8 +48,8 @@
 
 <script>
 	import {
-		erpsuppliergetlist
-	}from "@/api/erpapi.js"
+		supplierList
+	}from "@/api/erp.js"
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -62,8 +62,8 @@
 				seachtext:'',
 				dataList: [],
 				queryInfo: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
@@ -85,12 +85,12 @@
 			
 		},
 		onPullDownRefresh() {
-			this.queryInfo.page = 1; //重置分页页码
+			this.queryInfo.pageNum = 1; //重置分页页码
 			this.getDataList();
 		},
 		onReachBottom() {
 			if (this.loadmore == 'noMore') return
-			this.queryInfo.page += 1;
+			this.queryInfo.pageNum += 1;
 			this.ifBottomRefresh = true
 			this.getDataList();
 		},
@@ -118,17 +118,12 @@
 			},
 			getDataList() {
 				let that = this;
-				if(this.isMobile(that.seachtext)){
-					that.queryInfo.phone  = that.seachtext;
-					that.queryInfo.name = '';
-				}else{
-					that.queryInfo.name  = that.seachtext;
-					that.queryInfo.phone = '';
-				}
 				let paramsData = {
 					...that.queryInfo,
 				}
-				erpsuppliergetlist(paramsData).then(res => {
+				let storeId = uni.getStorageSync('userinfo').storeId;
+				paramsData.storeId = storeId;
+				supplierList(paramsData).then(res => {
 						let data = res.data.data;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载

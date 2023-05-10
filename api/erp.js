@@ -255,3 +255,59 @@ export function storeAdminSelectHandleType(data) {
 export function empMaintainFail(data) {
 	return request.post('/yxj/app/sorting/empMaintainFail', data, { noLogin: true });
 }
+
+/**
+ * 整备仓列表
+ *
+ */
+export function selectReoragnizeList(data) {
+	return request.get('/yxj/app/reoragnize/selectReoragnizeList/' + data, { noLogin: true });
+}
+
+/**
+ * 整备仓上架接口
+ *
+ */
+export function putaway(data) {
+	return request.get('/yxj/app/reoragnize/putaway/' + data, { noLogin: true });
+}
+
+/**
+ * 整备仓抛售接口
+ *
+ */
+export function undersell(data) {
+	return request.get('/yxj/app/reoragnize/undersell/' + data, { noLogin: true });
+}
+
+/**
+ * 整备仓抛售接口
+ *
+ */
+export function storeAdminApproveList(data) {
+	return request.get('/yxj/app/recycleForm/storeAdminApproveList', data, { noLogin: true });
+}
+
+/**
+ * 店长审批回收单接口
+ *
+ */
+export function empApproveRecycleForm(data) {
+	return request.post('/yxj/app/recycleForm/empApproveRecycleForm', data, { noLogin: true });
+}
+
+/**
+ * 获取供应商列表
+ *
+ */
+export function supplierList(data) {
+	return request.get('/yxj/app/supplier/list', data, { noLogin: true });
+}
+
+/**
+ * 获取供应商列表
+ *
+ */
+export function addsupplier(data) {
+	return request.post('/yxj/app/supplier', data, { noLogin: true });
+}
