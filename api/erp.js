@@ -311,3 +311,26 @@ export function supplierList(data) {
 export function addsupplier(data) {
 	return request.post('/yxj/app/supplier', data, { noLogin: true });
 }
+
+/**
+ * 查询门店配件订单列表
+ *
+ */
+export function fittingsOrderList(data) {
+	return request.get('/yxj/app/fittingsOrder/list', data, { noLogin: true });
+}
+
+/**
+ * 查询配件配置列表
+ *
+ */
+export function fittingsConfigList(data) {
+	return request.get('/yxj/platform/fittingsConfig/list', data, { noLogin: true });
+}
+/**
+ * 新增门店配件订单
+ *
+ */
+export function fittingsOrder(data) {
+	return request.post('/yxj/app/fittingsOrder', data, { noLogin: true });
+}

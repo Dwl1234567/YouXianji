@@ -309,7 +309,7 @@
 							cuIcon: 'icon-buyaccessory',
 							color: 'red',
 							badge: 0,
-							name: '新设采购',
+							name: '配件管理',
 						},
 						{
 							cuIcon: 'icon-product',
@@ -593,7 +593,7 @@
 				}
 				if (key == 2) {
 					if (index == 0) {
-						var value = 'shop/add';
+						var value = 'shop/list';
 					}
 					if (index == 1) {
 						var value = 'stores/list';

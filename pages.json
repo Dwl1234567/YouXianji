@@ -423,6 +423,7 @@
 			"path": "pages/erp/shop/add",
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "新设采购"
 			}
 		},
@@ -1177,6 +1178,22 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "我卖出的"
+			}
+		},
+		{
+			"path": "pages/erp/shop/list",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/erp/shop/configList",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
 		}
 	],

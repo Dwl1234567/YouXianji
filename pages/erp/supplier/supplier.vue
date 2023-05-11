@@ -31,11 +31,11 @@
 			<block v-for="(item,index) in dataList" :key="index">
 				<view class="cu-item bg-white radius-4 margin-sm" @click="choosecust(item)">
 					<view class="content">
-						<view class="text-grey">{{item.name}}</view>
+						<view class="text-grey">{{item.supplierLinkname}}</view>
 					</view>
 					<view class="action">
 						<view class="text-gray text-sm">
-							{{item.phone}}
+							{{item.supplierPhone}}
 						</view>
 					</view>
 				</view>
@@ -124,7 +124,7 @@
 				let storeId = uni.getStorageSync('userinfo').storeId;
 				paramsData.storeId = storeId;
 				supplierList(paramsData).then(res => {
-						let data = res.data.data;
+						let data = res.rows;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
 			
@@ -134,7 +134,7 @@
 								that.dataList = data
 							}
 							that.ifBottomRefresh = false
-							that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 			
 						}
 					})
