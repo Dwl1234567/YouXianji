@@ -384,6 +384,7 @@
 			"path": "pages/erp/sell/list",
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "销售列表"
 			}
 		},

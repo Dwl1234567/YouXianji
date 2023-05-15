@@ -40,7 +40,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="cu-form-group" v-if="!recycleFormId">
+					<view class="cu-form-group" v-if="!reorganizeId">
 						<view class="title">货品</view>
 						<view class="cu-capsule radius">
 							<view class="padding-right" @tap="scanTap">
@@ -63,19 +63,18 @@
 						</view>
 					</view>
 					
-					<view class="cu-list menu-avatar">
+					<view class="cu-list menu-avatar" v-if="!reorganizeId">
 						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''"
 							v-for="(item,index) in goodsList" :key="index" @touchstart="ListTouchStart"
 							@touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index">
-							<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ item.image +')'}]">
-							</view>
+							<image class="cu-avatar lg" :src="$httpImage + item.modelPhoto" mode="widthFix"/>
 							<view class="content">
-								<view class="text-grey">{{item.product_name}}</view>
-								<view class="text-grey">序列号：{{item.product_sn}}</view>
+								<view class="text-grey">{{item.modelName}}</view>
+								<view class="text-grey">序列号：{{item.deviceNo}}</view>
 								<view class="text-gray text-sm">
-									收:<text class="text-red margin-right-xs">{{item.cost_price}}</text> 调:<text
-										class="margin-right-xs">{{item.peer_price}}</text> 销:<text
-										class="margin-right-xs">{{item.sales_price}}</text>
+									收:<text class="text-red margin-right-xs">{{item.recyclePrice}}</text> 调:<text
+										class="margin-right-xs">{{item.allotPrice}}</text> 销:<text
+										class="margin-right-xs">{{item.sellPrice}}</text>
 								</view>
 							</view>
 							<view class="move">
@@ -256,8 +255,8 @@
 				
 				<view class="orderview-footer-fixed">
 					<view class="flex">
-						<button class="cu-btn radius-4 margin-tb-xs lg text-400" @click="upbiaojiTap" style="flex: 1; border: 1px solid rgba(235,25,25,1); color: #EB1919;">预制开单</button>
-						<button class="cu-btn bg-reds radius-4 margin-tb-xs lg text-400 margin-left-sm" @click="upShareimg" style="flex: 1;">确定开单</button>
+						<button class="cu-btn radius-4 margin-tb-xs lg text-400" @click="upbiaojiTap(0)" style="flex: 1; border: 1px solid rgba(235,25,25,1); color: #EB1919;">预制开单</button>
+						<button class="cu-btn bg-reds radius-4 margin-tb-xs lg text-400 margin-left-sm" @click="upbiaojiTap(1)" style="flex: 1;">确定开单</button>
 					</view>
 				</view>
 			</view>
@@ -409,6 +408,7 @@
 		},
 		data() {
 			return {
+				reorganizeId: 0,
 				totalPrice: 0,
 				costPrice: 0,
 				deviceId: 0,
@@ -470,6 +470,7 @@
 		},
 		onUnload() {
 			uni.removeStorageSync('updatehouse')
+			uni.removeStorageSync('updatecustomer')
 		},
 		onLoad(options) {
 			//加载虚拟数据
@@ -489,6 +490,7 @@
 				id: 1,
 				name: '回收'
 			}];
+			this.reorganizeId = options.reorganizeId
 			this.typeListData = typeListData;
 			if (options.reorganizeId) {
 				this.selectReoragnizeSellInfo(options.reorganizeId);
@@ -502,6 +504,17 @@
 					...data
 				};
 			})
+			this.customer = uni.getStorageSync('updatecustomer')
+			if (uni.getStorageSync('updatecustomer')) {
+				this.goodsList = [uni.getStorageSync('updatecustomer')]
+			}
+			if (this.customer) {
+				this.costPrice = this.customer.costPrice;
+				this.deviceId = this.customer.deviceId
+				this.qualityInfoId = this.customer.qualityInfoId
+				this.recycleFormId = this.customer.recycleFormId
+				this.totalPrice = this.customer.costPrice;
+			}
 			this.house = uni.getStorageSync('updatehouse')
 			if (this.house) {
 				this.house.map(item => {
@@ -847,7 +860,8 @@
 				});
 				
 			},
-			unploadImg(list) {
+			// 销售上传图片开单
+			unploadImg(list, type) {
 				const stordId = uni.getStorageSync('userinfor').stordId
 				const paramsData = this.hsdangoodsList[0];
 				paramsData.recycleFormPayment = {
@@ -858,18 +872,19 @@
 					bankCardPrice: this.hsdihuonum, // 银行卡金额
 					cashPaymentPrice: this.hsxianjinnum, // 现金金额
 				}
-				paramsData.prefabricate = 0
+				paramsData.prefabricate = type
 				paramsData.clientId = this.customerInfo.id
 				paramsData.remark = this.remark1
 				console.log(paramsData)
 				empCreateRecycleForm(paramsData).then(res => {
 					if (res.code === 200) {
 						this.$u.toast('开单成功');
+						
 						uni.removeStorageSync('data')
 					}
 				})
 			},
-			upbiaojiTap() {
+			upbiaojiTap(type) {
 				
 				let promisearr = this.imgList1.map(item => {
 					return raiseUpload(item)
@@ -883,7 +898,7 @@
 						imagesList.push(itemm.fileName)
 					})
 				}).finally(() => {
-					this.unploadImg(imagesList.join(','))
+					this.unploadImg(imagesList.join(','),type)
 				})
 			},
 			// 上传分享图片
@@ -968,6 +983,7 @@
 					})
 				let sellFormFittingsList = this.house.map(item => {
 					return {
+						fittingsName: item.fittingsConfig.fittingsName,
 						fittingsId: item.fittingsId,
 						fittingsNumber: item.value,
 						fittingsCostPrice: item.fittingsCostPrice,
@@ -975,24 +991,6 @@
 					}
 				})
 				const storeId = uni.getStorageSync('userinfo').storeId
-				console.log({
-					totalPrice: that.totalPrice, // 总成本价
-					clienterId:that.customerInfo.id, // 客户id
-					costPrice:that.costPrice, // 成本
-					deviceId: that.deviceId, // 设备id
-					recycleFormId: that.recycleFormId, // 回收单id
-					qualityInfoId: that.qualityInfoId, // 设备质量信息id
-					accountReceived:that.ReceivablesMoney, // 应收款
-					remark:that.remark,
-					fundsReceived: String(that.ActualreceiptsAll), // 实收款
-					wxPaymentPrice: that.weixinnum, // 微信付款金额
-					zfbPaymentPrice: that.alipaynum, // 支付宝金额
-					bankCardPrice: that.dihuonum, // 银行卡金额
-					cashPaymentPrice: that.xianjinnum, // 现金金额
-					pendingOrder:that.switchA ? '1' : '0', // 是否挂单
-					sellFormFittingsList, // 配件
-					storeId
-				})
 				fittingsForm({
 					totalPrice: that.totalPrice, // 总成本价
 					clienterId:that.customerInfo.id, // 客户id
@@ -1013,7 +1011,12 @@
 				}).then(res => {
 					if (res.code === 200) {
 						that.$u.toast('开单成功');
+						uni.navigateTo({
+							url: '/pages/erp/sell/list'
+						})
+						this.goodsList = [];
 						uni.removeStorageSync('updatehouse')
+						uni.removeStorageSync('updatecustomer')
 					}
 				})
 			},

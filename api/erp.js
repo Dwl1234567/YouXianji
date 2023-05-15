@@ -390,3 +390,11 @@ export function selectReoragnizeSellInfo(data) {
 export function selectStaySellFormList(data) {
 	return request.get('/yxj/app/fittingsForm/selectStaySellFormList', data, { noLogin: true });
 }
+
+/**
+ * 查询已开销售单列表
+ *
+ */
+export function selectSellFormList(data) {
+	return request.get('/yxj/app/fittingsForm/selectSellFormList', data, { noLogin: true });
+}

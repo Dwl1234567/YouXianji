@@ -8,7 +8,7 @@
 		</bar-search-title>
 		<!--为上面的临时筛选条进行的临时兼容处理-->
 		<view style="padding: 0px 20rpx">
-			<!-- 			<view class="listData">
+			<view class="listData">
 				<view
 					class="list-item"
 					:class="topWarehouseId == item.configId? 'check' : ''"
@@ -18,25 +18,25 @@
 				>
 					{{item.warehouseName}}
 				</view>
-			</view> -->
+			</view>
 			<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px">
 				<view class="transform" style="margin-right: 28rpx">
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
-				<view class="group_3 flex-col">
+				<view class="group_3 flex-col" @tap="updatecustomer(item)">
 					<view class="text-wrapper_1 flex-row justify-between"></view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
 						<image
-							:src="$httpImage + item.fittingsConfig.fittingsPhoto"
+							:src="$httpImage + item.modelPhoto"
 							mode="aspectFit"
 							class="cu-avatar lg radius box_5 flex-col"
 						></image>
 						<view class="text-wrapper_2 flex-col">
-							<text class="text_8">{{item.fittingsConfig.fittingsName}}</text>
-							<text class="text_9">颜色：{{item.fittingsConfig.fittingsColor}}</text>
-							<text class="text_9">成本价：{{item.fittingsCostPrice}}</text>
-							<text class="text_9">销售价：{{item.fittingsSellPrice}}</text>
+							<text class="text_8">{{item.modelName}}</text>
+							<!-- <text class="text_9">颜色：{{item.fittingsConfig.fittingsColor}}</text> -->
+							<text class="text_9">成本价：{{item.costPrice}}</text>
+							<text class="text_9">销售价：{{item.sellPrice}}</text>
 						</view>
 					</view>
 					<view class="button">
@@ -112,6 +112,12 @@
 			});
 		},
 		methods: {
+			updatecustomer(item) {
+				uni.setStorageSync('updatecustomer', item);
+				uni.navigateTo({
+					url: '/pages/tabbarerp/push',
+				});
+			},
 			// 切换进步
 			valChange(item) {
 				console.log(this.dataList);
@@ -153,10 +159,6 @@
 				selectStaySellFormList(paramsData)
 					.then((res) => {
 						let data = res.rows;
-						data.map((item) => {
-							item.value = 0;
-							return;
-						});
 						if (data) {
 							// 判断是触底加载还是第一次进入页面的加载;
 							if (that.ifBottomRefresh) {
