@@ -1220,6 +1220,33 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
+		},
+		// 回收选择货品
+		{
+			"path": "pages/tabbarerp/classify",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 回收点点
+		{
+			"path": "pages/tabbarerp/recycling-new",
+			"style": {
+				"navigationBarTitleText": "回收开单",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 回收开单
+		{
+			"path": "pages/tabbarerp/form",
+			"style": {
+				"navigationBarTitleText": "回收开单",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"tabBar": {

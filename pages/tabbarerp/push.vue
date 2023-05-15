@@ -217,11 +217,11 @@
 							<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ item.image +')'}]">
 							</view>
 							<view class="content">
-								<view class="text-grey">{{item.name}}</view>
+								<view class="text-grey">{{item.title}}</view>
 								<view class="text-gray text-sm">
-									收:<text class="text-red margin-right-xs">{{item.cost_price}}</text> 调:<text
-										class="margin-right-xs">{{item.peer_price}}</text> 销:<text
-										class="margin-right-xs">{{item.sales_price}}</text>
+									收:<text class="text-red margin-right-xs">{{item.recyclePrice}}</text> 调:<text
+										class="margin-right-xs">{{item.allotPrice}}</text> 销:<text
+										class="margin-right-xs">{{item.sellPrice}}</text>
 								</view>
 							</view>
 							<view class="move">
@@ -341,11 +341,11 @@
 							<input class="text-purple" type="number" v-model="hsdihuonum" placeholder="抵货款" @input="ActualreceiptsAllFuchs"></input>
 						</view>
 					</view>
-					<view class="margin-top">
+					<!-- <view class="margin-top">
 						已填写：<text class="text-red">{{hsActualreceiptsAll}}</text>
 						<text class="margin-left-sm">应付款：</text><text class="text-red">{{hsyinggaiMoney}}</text>
 						<text class="margin-left-sm">剩余：</text><text class="text-red">{{hsarrearsMoney}}</text>
-					</view>
+					</view> -->
 					<!---->
 					<view class="cu-form-group pingzheng" :class="switchGD?'hide':''">
 						<view class="title">客户收款账户</view>
@@ -395,7 +395,8 @@
 	} from "@/api/erpapi.js"
 	import {
 		fittingsForm,
-		selectReoragnizeSellInfo
+		selectReoragnizeSellInfo,
+		empCreateRecycleForm
 	} from "@/api/erp.js"
 	import {
 		raiseUpload
@@ -473,7 +474,13 @@
 		onLoad(options) {
 			//加载虚拟数据
 			//this.typeListData();
-			
+			if (options.tab == 1) {
+				this.TabCur = 1
+			}
+			const data = uni.getStorageSync('data')
+			if (data) {
+				this.hsdangoodsList = [data]
+			}
 			let typeListData = [{}];
 			typeListData = [{
 				id: 0,
@@ -496,9 +503,12 @@
 				};
 			})
 			this.house = uni.getStorageSync('updatehouse')
-			this.house.map(item => {
-				this.totalPrice =  Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
-			})
+			if (this.house) {
+				this.house.map(item => {
+					this.totalPrice =  Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+				})
+			}
+			
 		},
 		methods: {
 			selectReoragnizeSellInfo(id) {
@@ -686,7 +696,7 @@
 			},
 			selectRecycleTap() {
 				uni.navigateTo({
-					url: '/pages/erp/purchase/add/select_product'
+					url: '/pages/tabbarerp/classify'
 					
 				})
 			},
@@ -837,7 +847,44 @@
 				});
 				
 			},
+			unploadImg(list) {
+				const stordId = uni.getStorageSync('userinfor').stordId
+				const paramsData = this.hsdangoodsList[0];
+				paramsData.recycleFormPayment = {
+					stordId,
+					paymentVoucher: list,
+					wxPaymentPrice: this.hsweixinnum, // 微信付款金额
+					zfbPaymentPrice: this.hsalipaynum, // 支付宝金额
+					bankCardPrice: this.hsdihuonum, // 银行卡金额
+					cashPaymentPrice: this.hsxianjinnum, // 现金金额
+				}
+				paramsData.prefabricate = 0
+				paramsData.clientId = this.customerInfo.id
+				paramsData.remark = this.remark1
+				console.log(paramsData)
+				empCreateRecycleForm(paramsData).then(res => {
+					if (res.code === 200) {
+						this.$u.toast('开单成功');
+						uni.removeStorageSync('data')
+					}
+				})
+			},
 			upbiaojiTap() {
+				
+				let promisearr = this.imgList1.map(item => {
+					return raiseUpload(item)
+				})
+				let imagesList = []
+				Promise.all(promisearr).then((res)=>{
+					// console.log(res);
+					console.log(res)
+					// imagesList.push(res[0].fileName)
+					res.map(itemm => {
+						imagesList.push(itemm.fileName)
+					})
+				}).finally(() => {
+					this.unploadImg(imagesList.join(','))
+				})
 			},
 			// 上传分享图片
 			upShareimg(){
