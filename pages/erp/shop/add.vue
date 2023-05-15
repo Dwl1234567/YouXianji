@@ -77,7 +77,7 @@
 
 <script>
 	import Vue from 'vue';
-	import { fittingsOrder } from '@/api/erp.js';
+	import { fittingsOrder, fittingsOrders } from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
@@ -90,12 +90,13 @@
 		data() {
 			return {
 				data: {},
+				fittingsOrderId: 0,
 				fittingsName: '',
 				fittingsColor: '',
 				fittingsNumber: '',
 				fittingsCostPrice: '',
 				fittingsSellPrice: '',
-				supplierInfo: '',
+				supplierInfo: {},
 			};
 		},
 		onLoad(options) {
@@ -103,6 +104,9 @@
 			this.fittingsCostPrice = options.fittingsCostPrice;
 			this.fittingsNumber = options.fittingsNumber;
 			this.fittingsSellPrice = options.fittingsSellPrice;
+			this.supplierInfo.supplierId = options.supplierId;
+			this.supplierInfo.supplierLinkname = options.supplierName;
+			this.fittingsOrderId = options.fittingsOrderId;
 		},
 		// 下拉刷新
 		onPullDownRefresh() {},
@@ -123,7 +127,7 @@
 					fittingsCostPrice: this.fittingsCostPrice,
 					fittingsSellPrice: this.fittingsSellPrice,
 					wareHouseConfigId: this.data.warehouseId,
-					supplierId: this.supplierInfo.supplierId,
+					supplierId: Number(this.supplierInfo.supplierId),
 					fittingsConfigId: this.data.fittingsConfigId,
 					fittingsConfig: {
 						warehouseName: this.data.warehouseName,
@@ -131,15 +135,29 @@
 						fittingsColor: this.data.fittingsColor,
 					},
 				};
-				fittingsOrder(paramsData).then((res) => {
-					if (res.code === 200) {
-						uni.showToast({
-							icon: 'none',
-							title: '添加成功',
-						});
-						uni.navigateBack();
-					}
-				});
+				console.log(this.fittingsOrderId);
+				if (this.fittingsOrderId) {
+					paramsData.fittingsOrderId = this.fittingsOrderId;
+					fittingsOrders(paramsData).then((res) => {
+						if (res.code === 200) {
+							uni.showToast({
+								icon: 'none',
+								title: '修改成功',
+							});
+							uni.navigateBack();
+						}
+					});
+				} else {
+					fittingsOrder(paramsData).then((res) => {
+						if (res.code === 200) {
+							uni.showToast({
+								icon: 'none',
+								title: '添加成功',
+							});
+							uni.navigateBack();
+						}
+					});
+				}
 			},
 			supplierTap() {
 				uni.navigateTo({

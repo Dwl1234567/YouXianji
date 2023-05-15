@@ -40,7 +40,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="cu-form-group">
+					<view class="cu-form-group" v-if="!recycleFormId">
 						<view class="title">货品</view>
 						<view class="cu-capsule radius">
 							<view class="padding-right" @tap="scanTap">
@@ -83,10 +83,47 @@
 							</view>
 						</view>
 					</view>
-					
+					<view class="cu-form-group">
+						<view class="title">配件</view>
+						<view class="cu-capsule radius">			
+							<view class="" @tap="selectSellTaps">
+								<view class="cu-tag bg-red">
+									<text class="iconfont icon-choosebay text-white"></text>
+								</view>
+								<view class="cu-tag line-red">
+									选
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="cu-list menu-avatar">
+						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''"
+							v-for="(item,index) in house" :key="index" @touchstart="ListTouchStart"
+							@touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index" style="padding:3px">
+							<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ $httpImage + item.fittingsConfig.fittingsPhoto +')'}]">
+							</view>
+							<view class="content" style="display: flex;
+    flex-direction: column;">
+								<text class="text_8">{{item.fittingsConfig.fittingsName}}</text>
+								<view class="" style="display: flex;">
+									<view>
+										<text class="text_9">颜色：{{item.fittingsConfig.fittingsColor}}</text>
+										<text class="text_9">数量：{{item.value}}</text>
+									</view>
+									<view class="">
+										<text class="text_9">成本价：{{item.fittingsCostPrice}}</text>
+										<text class="text_9">销售价：{{item.fittingsSellPrice}}</text>
+									</view>
+								</view>
+							</view>
+							<view class="move">
+								<view class="bg-red" @tap="delectTap(index)">删除</view>
+							</view>
+						</view>
+					</view>
 					<view class="cu-form-group">
 						<view class="title">总价</view>
-						{{outputmoney}}元
+						{{totalPrice}}元
 					</view>
 					
 					<view class="cu-form-group">
@@ -247,7 +284,7 @@
 							<input class="text-red" type="number" v-model="xianjinnum" placeholder="现金" @input="ActualreceiptsAllFuc"></input>
 						</view>
 						<view class="cu-item bg-deepblue">
-							<input class="text-purple" type="number" v-model="dihuonum" placeholder="抵货款" @input="ActualreceiptsAllFuc"></input>
+							<input class="text-purple" type="number" v-model="dihuonum" placeholder="银行卡" @input="ActualreceiptsAllFuc"></input>
 						</view>
 					</view>
 					<view class="margin-top">
@@ -357,6 +394,10 @@
 		erppurchaseadd,erppurchaseclickattrview1
 	} from "@/api/erpapi.js"
 	import {
+		fittingsForm,
+		selectReoragnizeSellInfo
+	} from "@/api/erp.js"
+	import {
 		raiseUpload
 	} from "@/api/upload.js";
 	export default {
@@ -367,6 +408,12 @@
 		},
 		data() {
 			return {
+				totalPrice: 0,
+				costPrice: 0,
+				deviceId: 0,
+				qualityInfoId: 0,
+				recycleFormId: 0,
+				house: [],
 				TabCur: 0,
 				scrollLeft: 0,
 				typeListData: [],
@@ -417,9 +464,16 @@
 				hsReceivablesMoney:''
 			}
 		},
+		onHide() {
+			console.log(123)
+		},
+		onUnload() {
+			uni.removeStorageSync('updatehouse')
+		},
 		onLoad(options) {
 			//加载虚拟数据
 			//this.typeListData();
+			
 			let typeListData = [{}];
 			typeListData = [{
 				id: 0,
@@ -429,10 +483,9 @@
 				name: '回收'
 			}];
 			this.typeListData = typeListData;
-			// this.erppurchaseclickattrviewFuc('3497');
-			// this.erppurchaseclickattrviewFuc('3497');
-			//this.TabCur = typeListData[0];
-			//console.log(typeListData);
+			if (options.reorganizeId) {
+				this.selectReoragnizeSellInfo(options.reorganizeId);
+			}
 		},
 		onShow() {
 			let that = this;
@@ -442,12 +495,26 @@
 					...data
 				};
 			})
-			// uni.$once('hsgoodsId', function(data) {
-			// 	console.log(data);
-			// 	this.hsgoods_id = data
-			// })
+			this.house = uni.getStorageSync('updatehouse')
+			this.house.map(item => {
+				this.totalPrice =  Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+			})
 		},
 		methods: {
+			selectReoragnizeSellInfo(id) {
+				selectReoragnizeSellInfo(id).then(res => {
+					if (res.code === 200) {
+						this.costPrice = res.data.costPrice;
+						this.deviceId = res.data.deviceId
+						this.qualityInfoId = res.data.qualityInfoId
+						this.recycleFormId = res.data.recycleFormId
+						this.totalPrice = res.data.costPrice;
+						this.house.map(item => {
+							this.totalPrice =  Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+						})
+					}
+				})
+			},
 			// 截止挂单时间
 			DateChange(e){
 				console.log(e);
@@ -607,14 +674,20 @@
 				);
 			},
 			selectSellTap() {
-				console.log(1234);
 				uni.navigateTo({
-					url: '/pages/erp/sell/add/select_product?type=0'
+					// url: '/pages/erp/sell/add/select_product?type=0'
+					url: '/pages/tabbarerp/commodity'
+				})
+			},
+			selectSellTaps() {
+				uni.navigateTo({
+					url: '/pages/tabbarerp/storehouse'
 				})
 			},
 			selectRecycleTap() {
 				uni.navigateTo({
 					url: '/pages/erp/purchase/add/select_product'
+					
 				})
 			},
 			// ListTouch触摸开始
@@ -846,24 +919,55 @@
 				let ids = that.goodsList.map((item,index)=>{
 						return item.sn_id;
 					})
-				
-				selladd({
-					client_id:that.customerInfo.id,
-					nums:that.goodsList.length,
-					money:that.ReceivablesMoney,
-					paytype:that.ActualreceiptsJson,
-					images:that.upgetimgList.join(','),
+				let sellFormFittingsList = this.house.map(item => {
+					return {
+						fittingsId: item.fittingsId,
+						fittingsNumber: item.value,
+						fittingsCostPrice: item.fittingsCostPrice,
+						fittingsSellPrice: item.fittingsSellPrice
+					}
+				})
+				const storeId = uni.getStorageSync('userinfo').storeId
+				console.log({
+					totalPrice: that.totalPrice, // 总成本价
+					clienterId:that.customerInfo.id, // 客户id
+					costPrice:that.costPrice, // 成本
+					deviceId: that.deviceId, // 设备id
+					recycleFormId: that.recycleFormId, // 回收单id
+					qualityInfoId: that.qualityInfoId, // 设备质量信息id
+					accountReceived:that.ReceivablesMoney, // 应收款
 					remark:that.remark,
-					putstatus:that.switchA ? '1' : '0',
-					putendtime:that.putendtime,
-					snIds:ids.join(','),
-					type:0,
-					debt:that.arrearsMoney
-				}).then(res=>{
-					that.$u.toast('销售开单成功');
-					setTimeout(() => {
-						location.reload()
-					}, 1000);
+					fundsReceived: String(that.ActualreceiptsAll), // 实收款
+					wxPaymentPrice: that.weixinnum, // 微信付款金额
+					zfbPaymentPrice: that.alipaynum, // 支付宝金额
+					bankCardPrice: that.dihuonum, // 银行卡金额
+					cashPaymentPrice: that.xianjinnum, // 现金金额
+					pendingOrder:that.switchA ? '1' : '0', // 是否挂单
+					sellFormFittingsList, // 配件
+					storeId
+				})
+				fittingsForm({
+					totalPrice: that.totalPrice, // 总成本价
+					clienterId:that.customerInfo.id, // 客户id
+					costPrice:that.costPrice, // 成本
+					deviceId: that.deviceId, // 设备id
+					recycleFormId: that.recycleFormId, // 回收单id
+					qualityInfoId: that.qualityInfoId, // 设备质量信息id
+					accountReceived:that.ReceivablesMoney, // 应收款
+					remark:that.remark,
+					fundsReceived: String(that.ActualreceiptsAll), // 实收款
+					wxPaymentPrice: that.weixinnum, // 微信付款金额
+					zfbPaymentPrice: that.alipaynum, // 支付宝金额
+					bankCardPrice: that.dihuonum, // 银行卡金额
+					cashPaymentPrice: that.xianjinnum, // 现金金额
+					pendingOrder:that.switchA ? '1' : '0', // 是否挂单
+					sellFormFittingsList, // 配件
+					storeId
+				}).then(res => {
+					if (res.code === 200) {
+						that.$u.toast('开单成功');
+						uni.removeStorageSync('updatehouse')
+					}
 				})
 			},
 			// 回收开单
@@ -940,7 +1044,10 @@
 				}
 			}
 		}
-		
+		.cu-avatar{
+				left: 12px !important;
+				border-top: 0.5px solid #eee;
+			}
 		.cu-list.menu-avatar>.cu-item>.cu-avatar.lg{
 			width: 60px;
 			height: 60px;
@@ -949,7 +1056,10 @@
 		    left: 90px;
 		    width: calc(100% - 100px);
 		}
-		
+		.cu-list{
+			// border-top: 0.5px solid #eee !important;
+			border-bottom: 0.5px solid #eee !important;
+		}
 		.zaiui-seat-height {
 			width: 100%;
 
@@ -987,6 +1097,27 @@
 				border-radius: 12%;
 			}
 		}
+	}
+	.text_8 {
+		overflow-wrap: break-word;
+		color: rgba(16, 16, 16, 1);
+		font-size: 15px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 15px;
+	}
+	
+	.text_9 {
+		overflow-wrap: break-word;
+		color: rgba(142, 142, 142, 1);
+		font-size: 13px;
+		font-weight: NaN;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 13px;
+		margin: 8px 67px 0 0;
 	}
 	.nav{
 		width: 90%;

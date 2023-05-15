@@ -27,8 +27,7 @@
 				</view>
 				<view class="group_3 flex-col">
 					<view class="text-wrapper_1 flex-row justify-between">
-						<text class="text_6">单号:{{item.sortNo}}</text>
-						<text class="text_7">时间:2{{item.createTimeStr}}</text>
+						<text class="text_7">时间:{{item.createTimeStr}}</text>
 					</view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
@@ -49,72 +48,83 @@
 						<view class="tag_33 flex-col" v-if="item.sortStatus == 1 && roles.sorting_leader">
 							<text class="text_33">待分配</text>
 						</view>
-						<view class="tag_33 flex-col" v-if="(item.sortStatus == 2 || item.sortStatus == 1) && roles.store_admin">
-							<text class="text_33">已送检</text>
+						<view class="tag_44 flex-col" v-if="(item.sortStatus == 2 || item.sortStatus == 1) && roles.store_admin">
+							<text class="text_44">已送检</text>
 						</view>
-						<view class="tag_33 flex-col" v-if="item.sortStatus == 2 && (roles.sorting_people || roles.sorting_leader)">
-							<text class="text_33">待分拣</text>
+						<view class="tag_44 flex-col" v-if="item.sortStatus == 2 && (roles.sorting_people || roles.sorting_leader)">
+							<text class="text_44">待分拣</text>
 						</view>
-						<view class="tag_33 flex-col" v-if="item.sortStatus == 2 && roles.sorting_leader && !roles.sorting_people">
-							<text class="text_33">已分配</text>
+						<view class="tag_44 flex-col" v-if="item.sortStatus == 2 && roles.sorting_leader && !roles.sorting_people">
+							<text class="text_44">已分配</text>
 						</view>
 
-						<view class="tag_1 flex-col" v-if="item.sortStatus == 3 && roles.store_admin">
-							<text class="text_12">待取回</text>
+						<view class="tag_55 flex-col" v-if="item.sortStatus == 3 && roles.store_admin">
+							<text class="text_55">待取回</text>
 						</view>
-						<view class="tag_1 flex-col" v-if="item.sortStatus == 3 && (roles.sorting_people || roles.sorting_leader)">
-							<text class="text_12">已寄出</text>
+						<view class="tag_55 flex-col" v-if="item.sortStatus == 3 && (roles.sorting_people || roles.sorting_leader)">
+							<text class="text_55">已寄出</text>
 						</view>
-						<view class="tag_1 flex-col" v-if="item.sortStatus == 4 && roles.store_admin">
-							<text class="text_12">已取回</text>
+						<view class="tag_66 flex-col" v-if="item.sortStatus == 4 && roles.store_admin">
+							<text class="text_66">已取回</text>
 						</view>
-						<view class="tag_1 flex-col" v-if="item.sortStatus == 4 && (roles.sorting_people || roles.sorting_leader)">
-							<text class="text_12">已送达</text>
+						<view class="tag_66 flex-col" v-if="item.sortStatus == 4 && (roles.sorting_people || roles.sorting_leader)">
+							<text class="text_66">已送达</text>
 						</view>
 						<view
-							class="tag_1 flex-col"
+							class="tag_77 flex-col"
 							v-if="item.sortStatus == 5 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
 						>
-							<text class="text_12">待抛售</text>
+							<text class="text_77">待抛售</text>
 						</view>
 						<view
-							class="tag_1 flex-col"
+							class="tag_77 flex-col"
 							v-if="item.sortStatus == 6 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
 						>
-							<text class="text_12">抛售中</text>
+							<text class="text_77">抛售中</text>
 						</view>
 						<view
-							class="tag_1 flex-col"
+							class="tag_77 flex-col"
 							v-if="item.sortStatus == 7 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
 						>
-							<text class="text_12">已抛售</text>
+							<text class="text_77">已抛售</text>
 						</view>
 						<view
-							class="tag_1 flex-col"
+							class="tag_88 flex-col"
 							v-if="item.sortStatus == 8 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
 						>
-							<text class="text_12">待维修</text>
+							<text class="text_88">待维修</text>
 						</view>
 						<view
-							class="tag_1 flex-col"
+							class="tag_88 flex-col"
 							v-if="item.sortStatus == 9 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
 						>
-							<text class="text_12">维修中</text>
+							<text class="text_88">维修中</text>
 						</view>
 						<view
-							class="tag_1 flex-col"
+							class="tag_88 flex-col"
 							v-if="item.sortStatus == 10 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
 						>
-							<text class="text_12">维修完成</text>
+							<text class="text_88">维修完成</text>
 						</view>
 						<view
-							class="tag_1 flex-col"
+							class="tag_88 flex-col"
 							v-if="item.sortStatus == 11 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
 						>
-							<text class="text_12">维修失败</text>
+							<text class="text_88">维修失败</text>
 						</view>
 					</view>
-					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
+					<text class="text_13" v-if="item.recyclePeopleName">回收人：{{item.recyclePeopleName}}</text>
+					<text class="text_13" v-if="item.sortingPeopleName">分拣人：{{item.sortingPeopleName}}</text>
+					<text class="text_13" v-if="item.storeName">门店名称：{{item.storeName}}</text>
+					<text class="text_13" v-if="item.undersellApprove.channel">抛售渠道：{{item.undersellApprove.channel}}</text>
+					<text class="text_13" v-if="item.undersellApprove.undersellPrice">
+						抛售预估价：{{item.undersellApprove.undersellPrice}}
+					</text>
+					<text class="text_13" v-if="item.maintainApprove.channel">维修渠道：{{item.maintainApprove.channel}}</text>
+					<text class="text_13" v-if="item.maintainApprove.maintainPrice">
+						维修价：{{item.maintainApprove.maintainPrice}}
+					</text>
+					<text class="text_13" v-if="item.maintainApprove.context">维修内容：{{item.maintainApprove.context}}</text>
 					<view class="button">
 						<view
 							class="receipt"
@@ -831,10 +841,8 @@
 			seeImg2(e) {
 				let urll = e.undersellApprove.undersellVoucher.split(',');
 				let a = urll.map((item) => {
-					console.log(this.$httpImage + item);
 					return this.$httpImage + item;
 				});
-				console.log(a);
 				uni.previewImage({
 					current: 0,
 					urls: a,
@@ -1353,6 +1361,7 @@
 		// padding: 100rpx 21rpx 0rpx 21rpx;
 	}
 	.button {
+		margin-top: 20rpx;
 		display: flex;
 		justify-content: flex-end;
 		view {
@@ -1632,7 +1641,7 @@
 
 	.section_1 {
 		position: relative;
-		margin: 9px 11px 0 0;
+		margin: 9px 0px 0 0;
 	}
 
 	.box_5 {
@@ -1700,7 +1709,7 @@
 		right: 0;
 	}
 	.tag_33 {
-		background-color: #e5fcf1;
+		background-color: #fff4e5;
 		border-radius: 10px;
 		margin: 0 0 64px 42px;
 		padding: 2px 20px 1px 19px;
@@ -1709,7 +1718,97 @@
 	}
 	.text_33 {
 		overflow-wrap: break-word;
+		color: #e29140;
+		font-size: 12px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 17px;
+	}
+	.tag_44 {
+		background-color: #ebf6ff;
+		border-radius: 10px;
+		margin: 0 0 64px 42px;
+		padding: 2px 20px 1px 19px;
+		position: absolute;
+		right: 0;
+	}
+	.text_44 {
+		overflow-wrap: break-word;
+		color: #1190d6;
+		font-size: 12px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 17px;
+	}
+	.tag_55 {
+		background-color: #ffef95;
+		border-radius: 10px;
+		margin: 0 0 64px 42px;
+		padding: 2px 20px 1px 19px;
+		position: absolute;
+		right: 0;
+	}
+	.text_55 {
+		overflow-wrap: break-word;
+		color: #bc890e;
+		font-size: 12px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 17px;
+	}
+	.tag_66 {
+		background-color: #ef2727;
+		border-radius: 10px;
+		margin: 0 0 64px 42px;
+		padding: 2px 20px 1px 19px;
+		position: absolute;
+		right: 0;
+	}
+	.text_66 {
+		overflow-wrap: break-word;
+		color: #ffffff;
+		font-size: 12px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 17px;
+	}
+	.tag_77 {
+		background-color: #e5fcf1;
+		border-radius: 10px;
+		margin: 0 0 64px 42px;
+		padding: 2px 20px 1px 19px;
+		position: absolute;
+		right: 0;
+	}
+	.text_77 {
+		overflow-wrap: break-word;
 		color: #00c082;
+		font-size: 12px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 17px;
+	}
+	.tag_88 {
+		background-color: #ffdbdb;
+		border-radius: 10px;
+		margin: 0 0 64px 42px;
+		padding: 2px 20px 1px 19px;
+		position: absolute;
+		right: 0;
+	}
+	.text_88 {
+		overflow-wrap: break-word;
+		color: #f76540;
 		font-size: 12px;
 		font-family: PingFangSC-Medium;
 		font-weight: 500;

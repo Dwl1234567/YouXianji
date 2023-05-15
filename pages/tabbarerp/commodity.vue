@@ -1,37 +1,46 @@
 <template>
 	<view>
-		<bar-title bgColor="bg-white" adress="/pages/tabbarerp/home">
-			<block slot="content">整备仓</block>
-		</bar-title>
+		<bar-search-title bgColor="bg-white" content="名称/序列号" @seachTap="searchTap">
+			<block slot="right">
+				<!-- <text class="cuIcon-scan" @tap="snTap" /> -->
+				<text class="iconfont icon-saomiao" @tap="snTap"></text>
+			</block>
+		</bar-search-title>
 		<!--为上面的临时筛选条进行的临时兼容处理-->
 		<view style="padding: 0px 20rpx">
+			<!-- 			<view class="listData">
+				<view
+					class="list-item"
+					:class="topWarehouseId == item.configId? 'check' : ''"
+					v-for="(item,index) in listData"
+					:key="index"
+					@tap="check(item)"
+				>
+					{{item.warehouseName}}
+				</view>
+			</view> -->
 			<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px">
 				<view class="transform" style="margin-right: 28rpx">
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
 				<view class="group_3 flex-col">
-					<view class="text-wrapper_1 flex-row justify-between">
-						<text class="text_7">时间:{{item.createTimeStr}}</text>
-					</view>
+					<view class="text-wrapper_1 flex-row justify-between"></view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
 						<image
-							:src="$httpImage + item.modelPhoto"
+							:src="$httpImage + item.fittingsConfig.fittingsPhoto"
 							mode="aspectFit"
 							class="cu-avatar lg radius box_5 flex-col"
 						></image>
 						<view class="text-wrapper_2 flex-col">
-							<text class="text_8">{{item.modelName}}</text>
-							<text class="text_9">{{item.label}}</text>
-							<text class="text_10">序列号:{{item.deviceNo}}</text>
-							<text class="text_11">回收价:{{item.recyclePrice}}元</text>
+							<text class="text_8">{{item.fittingsConfig.fittingsName}}</text>
+							<text class="text_9">颜色：{{item.fittingsConfig.fittingsColor}}</text>
+							<text class="text_9">成本价：{{item.fittingsCostPrice}}</text>
+							<text class="text_9">销售价：{{item.fittingsSellPrice}}</text>
 						</view>
 					</view>
-					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
 					<view class="button">
-						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="sell(item)">抛售</view>
-						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="shelves(item)">上架</view>
-						<view class="receipt" v-if="item.reorganizeStatus == 1" @tap="billing(item)">销售开单</view>
+						<!-- <u-number-box v-model="item.value" min="0" @change="valChange(item)"></u-number-box> -->
 					</view>
 				</view>
 			</view>
@@ -45,18 +54,26 @@
 
 <script>
 	import Vue from 'vue';
-	import { selectReoragnizeList, undersell, putaway } from '@/api/erp.js';
-	import barTitle from '@/components/common/basics/bar-title';
+	import { selectStaySellFormList, selectTopWarehouseList } from '@/api/erp.js';
+	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
 	export default {
 		components: {
-			barTitle,
+			barSearchTitle,
 			filterDropdown,
 		},
 		data() {
 			return {
+				value: 0,
+				topWarehouseId: null,
+				listData: [
+					{
+						configId: null,
+						warehouseName: '全部',
+					},
+				],
 				listTouchStart: 0,
 				listTouchDirection: null,
 				ifBottomRefresh: false,
@@ -74,6 +91,7 @@
 			};
 		},
 		onLoad(options) {
+			this.selectTopWarehouseList();
 			this.getDataList();
 		},
 		// 下拉刷新
@@ -94,53 +112,61 @@
 			});
 		},
 		methods: {
-			// 销售开单
-			billing(e) {
+			// 切换进步
+			valChange(item) {
+				console.log(this.dataList);
+				let info = [];
+				this.dataList.map((item) => {
+					if (item.value) {
+						info.push(item);
+					}
+				});
+				setTimeout(() => {
+					uni.setStorageSync('updatehouse', info);
+				}, 1000);
+
+				// uni.$emit('updatehouse', info);
+			},
+			// 切换头部筛选
+			check(e) {
+				this.topWarehouseId = e.configId;
+				this.getDataList();
+			},
+			selectTopWarehouseList() {
+				selectTopWarehouseList().then((res) => {
+					if (res.code === 200) {
+						this.listData = this.listData.concat(res.data);
+					}
+				});
+			},
+			goTap(item) {
+				uni.setStorageSync('shopAdd', item);
 				uni.navigateTo({
-					url: '/pages/tabbarerp/push?reorganizeId=' + e.reorganizeId,
-				});
-			},
-			// 上架
-			shelves(e) {
-				putaway(e.reorganizeId).then((res) => {
-					if (res.code === 200) {
-						uni.showToast({
-							icon: 'none',
-							title: '操作成功',
-						});
-						this.getDataList();
-					}
-				});
-			},
-			// 抛售
-			sell(e) {
-				undersell(e.reorganizeId).then((res) => {
-					if (res.code === 200) {
-						uni.showToast({
-							icon: 'none',
-							title: '操作成功',
-						});
-						this.getDataList();
-					}
+					url: '/pages/erp/shop/add',
 				});
 			},
 			// 获取列表
 			getDataList() {
 				let that = this;
-				const storeId = uni.getStorageSync('userinfo').storeId;
-				selectReoragnizeList(storeId)
+				let paramsData = that.queryInfo;
+				paramsData.topWarehouseId = this.topWarehouseId;
+				selectStaySellFormList(paramsData)
 					.then((res) => {
-						this.dataList = res.data;
-						// if (data) {
-						//判断是触底加载还是第一次进入页面的加载
-						// if (that.ifBottomRefresh) {
-						// 	that.dataList = that.dataList.concat(data);
-						// } else {
-						// 	that.dataList = data;
-						// }
-						// that.ifBottomRefresh = false;
-						// that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more';
-						// }
+						let data = res.rows;
+						data.map((item) => {
+							item.value = 0;
+							return;
+						});
+						if (data) {
+							// 判断是触底加载还是第一次进入页面的加载;
+							if (that.ifBottomRefresh) {
+								that.dataList = that.dataList.concat(data);
+							} else {
+								that.dataList = data;
+							}
+							that.ifBottomRefresh = false;
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more';
+						}
 					})
 					.finally(() => {
 						uni.stopPullDownRefresh();
@@ -162,6 +188,26 @@
 		padding-top: 30rpx;
 		// padding: 100rpx 21rpx 0rpx 21rpx;
 	}
+	.listData {
+		display: flex;
+		margin-bottom: 25rpx;
+	}
+	.list-item {
+		margin-right: 30rpx;
+		font-size: 32rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #8e8e8e;
+		line-height: 46rpx;
+	}
+	.check {
+		margin-right: 30rpx;
+		font-size: 32rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 500 !important;
+		color: #101010 !important;
+		line-height: 46rpx;
+	}
 	.button {
 		display: flex;
 		justify-content: flex-end;
@@ -169,7 +215,6 @@
 			min-width: 143rpx;
 			height: 55rpx;
 			border-radius: 29rpx;
-			border: 1px solid #979797;
 			font-size: 25rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;

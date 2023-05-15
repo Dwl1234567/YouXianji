@@ -334,3 +334,59 @@ export function fittingsConfigList(data) {
 export function fittingsOrder(data) {
 	return request.post('/yxj/app/fittingsOrder', data, { noLogin: true });
 }
+
+/**
+ * 修改门店配件订单
+ *
+ */
+export function fittingsOrders(data) {
+	return request.put('/yxj/app/fittingsOrder', data, { noLogin: true });
+}
+
+/**
+ * 上传配件凭证
+ *
+ */
+export function confirmWarehousing(data) {
+	return request.post('/yxj/app/fittingsOrder/confirmWarehousing', data, { noLogin: true });
+}
+
+/**
+ * 获取顶级配件仓列表
+ *
+ */
+export function selectTopWarehouseList(data) {
+	return request.get('/yxj/app/fittings/selectTopWarehouseList', data, { noLogin: true });
+}
+
+/**
+ * 获取顶级配件仓列表
+ *
+ */
+export function fittingsList(data) {
+	return request.get('/yxj/app/fittings/list', data, { noLogin: true });
+}
+
+/**
+ * 新增销售开单
+ *
+ */
+export function fittingsForm(data) {
+	return request.post('/yxj/app/fittingsForm', data, { noLogin: true });
+}
+
+/**
+ * 获取devsId
+ *
+ */
+export function selectReoragnizeSellInfo(data) {
+	return request.get('/yxj/app/fittingsForm/selectReoragnizeSellInfo/' + data, { noLogin: true });
+}
+
+/**
+ * 获取销售开单商品列表
+ *
+ */
+export function selectStaySellFormList(data) {
+	return request.get('/yxj/app/fittingsForm/selectStaySellFormList', data, { noLogin: true });
+}

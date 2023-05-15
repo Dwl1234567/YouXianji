@@ -26,7 +26,7 @@
 				<view class="transform" style="margin-right: 28rpx">
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
-				<view class="group_3 flex-col" @tap="gotap(item)">
+				<view class="group_3 flex-col">
 					<view class="text-wrapper_1 flex-row justify-between">
 						<text class="text_7">时间:2{{item.createTime}}</text>
 					</view>
@@ -56,15 +56,35 @@
 						</view>
 					</view>
 					<view class="button">
-						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="sell(item)">抛售</view>
-						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="shelves(item)">上架</view>
-						<view class="receipt" v-if="item.reorganizeStatus == 1" @tap="billing(item)">销售开单</view>
+						<view class="receipt" @tap="sell(item)">打印</view>
+						<view class="receipt" @tap="gotap(item)">修改</view>
+						<view class="receipt" @tap="billing(item)" v-if="!item.fittingsVoucher">上传凭证</view>
+						<view class="receipt" @tap="seebilling(item)" v-else>查看凭证</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<!--弹窗-->
-
+		<!-- 上传凭证 -->
+		<u-popup :show="yunShowImgMain" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">上传维修凭证</view>
+				<view class="yunShow-img">
+					<u-upload
+						:fileList="fileList1"
+						@afterRead="afterRead"
+						@delete="deletePic"
+						name="1"
+						multiple
+						:maxCount="3"
+					></u-upload>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="confirmWarehousing">确定</view>
+			</view>
+		</u-popup>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
@@ -72,7 +92,7 @@
 
 <script>
 	import Vue from 'vue';
-	import { fittingsOrderList, undersell, putaway } from '@/api/erp.js';
+	import { fittingsOrderList, undersell, putaway, confirmWarehousing } from '@/api/erp.js';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
@@ -84,6 +104,9 @@
 		},
 		data() {
 			return {
+				fittingsOrderId: 0,
+				yunShowImgMain: false,
+				fileList1: [],
 				sexIndex: 0,
 				listTouchStart: 0,
 				monthVal: '',
@@ -124,6 +147,42 @@
 			});
 		},
 		methods: {
+			// 查看凭证
+			seebilling(e) {
+				let urll = e.fittingsVoucher.split(',');
+				let a = urll.map((item) => {
+					return this.$httpImage + item;
+				});
+				uni.previewImage({
+					current: 0,
+					urls: a,
+				});
+			},
+			// 上传凭证
+			confirmWarehousing() {
+				let fittingsVoucher = this.fileList1.map((item) => {
+					return item.url;
+				});
+				let paramsData = {
+					fittingsOrderId: this.fittingsOrderId,
+					fittingsVoucher: fittingsVoucher.join(','),
+				};
+				// 点击上传凭证按钮
+				confirmWarehousing(paramsData).then((res) => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '上传成功',
+						});
+						this.yunShowImgMain = false;
+						this.getDataList();
+					}
+				});
+			},
+			billing(e) {
+				this.fittingsOrderId = e.fittingsOrderId;
+				this.yunShowImgMain = true;
+			},
 			sexPickerChange(e) {
 				this.monthVal = this.sexPicker[e.detail.value];
 				this.getDataList();
@@ -137,7 +196,13 @@
 						'&fittingsSellPrice=' +
 						item.fittingsSellPrice +
 						'&fittingsCostPrice=' +
-						item.fittingsCostPrice,
+						item.fittingsCostPrice +
+						'&supplierId=' +
+						item.supplierId +
+						'&supplierName=' +
+						item.supplierName +
+						'&fittingsOrderId=' +
+						item.fittingsOrderId,
 				});
 			},
 			snTap() {
@@ -169,6 +234,59 @@
 					.finally(() => {
 						uni.stopPullDownRefresh();
 					});
+			},
+			// 删除图片
+			deletePic(event) {
+				this[`fileList${event.name}`].splice(event.index, 1);
+			},
+			// 新增图片
+			async afterRead(event) {
+				console.log(123);
+				// 当设置 multiple 为 true 时, file 为数组格式，否则为对象格式
+				let lists = [].concat(event.file);
+				console.log(this[`fileList${event.name}`]);
+				let fileListLen = this[`fileList${event.name}`].length;
+				lists.map((item) => {
+					this[`fileList${event.name}`].push({
+						...item,
+						status: 'uploading',
+						message: '上传中',
+					});
+				});
+				for (let i = 0; i < lists.length; i++) {
+					console.log(lists[i].url);
+					const result = await this.uploadFilePromise(lists[i].url);
+					console.log(result);
+					let item = this[`fileList${event.name}`][fileListLen];
+					this[`fileList${event.name}`].splice(
+						fileListLen,
+						1,
+						Object.assign(item, {
+							status: 'success',
+							message: '',
+							url: result,
+						})
+					);
+					fileListLen++;
+				}
+			},
+			uploadFilePromise(urls) {
+				return new Promise((resolve, reject) => {
+					uni.uploadFile({
+						url: 'http://192.168.2.36:8080/common/upload', // 仅为示例，非真实的接口地址
+						filePath: urls,
+						name: 'file',
+						header: {
+							Authorization: Vue.prototype.$store.state.token,
+						},
+						success: (res) => {
+							setTimeout(() => {
+								const data = JSON.parse(res.data);
+								resolve(data.fileName);
+							}, 1000);
+						},
+					});
+				});
 			},
 		},
 	};

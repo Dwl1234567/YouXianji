@@ -112,7 +112,7 @@
 		</view>
 
 		<!--快捷功能-->
-		<view class="bg-white padding-bottom-xl" style="margin-top: 1px">
+		<view class="bg-white padding-bottom-xxl" style="margin-top: 1px; margin-bottom: 240rpx">
 			<view class="cu-bar solid-bottom padding-top-sm">
 				<view class="action">
 					<text class="cuIcon-titles text-orange"></text>
@@ -333,7 +333,7 @@
 							cuIcon: 'icon-announce',
 							color: 'red',
 							badge: 0,
-							name: '即时通话',
+							name: '配件仓库',
 						},
 					],
 				},
@@ -606,7 +606,7 @@
 						var value = 'chat/list';
 					}
 					if (index == 4) {
-						var value = 'chat/chatAdmin';
+						var value = 'shop/storehouse';
 						// this.getKefuUserList();
 						// this.show = true;
 					}
