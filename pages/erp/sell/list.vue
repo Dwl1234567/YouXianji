@@ -29,7 +29,17 @@
 		</scroll-view>
 		<view class="cu-card article" v-if="1==TabCur">
 			<view style="padding: 20rpx 20rpx">
-				<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px">
+				<view class="cu-item arrow" style="display: flex; justify-content: space-between; margin-bottom: 10px">
+					<view class="content">筛选时间</view>
+					<view class="action">
+						<view class="picker text-gray" @tap="show = true">{{ time ? time : '请选择月份'}}</view>
+					</view>
+				</view>
+				<view
+					v-for="(item, index) in dataList"
+					style="display: flex; align-items: center; margin-bottom: 10px"
+					@tap="goDetail(item.sellFormId)"
+				>
 					<view class="group_3 flex-col">
 						<view class="text-wrapper_1 flex-row justify-between">
 							<text class="text_7">时间:{{item.createTime}}</text>
@@ -116,7 +126,8 @@
 			v-model="value1"
 			mode="year-month"
 			:formatter="formatter"
-			:confirm="aaa()"
+			@confirm="aaa(1)"
+			@cancel="close"
 		></u-datetime-picker>
 	</view>
 </template>
@@ -133,6 +144,7 @@
 			return {
 				show: false,
 				value1: Number(new Date()),
+				time: '',
 				TabCur: 1,
 				ifBottomRefresh: false,
 				ifBottomRefresh1: false,
@@ -211,6 +223,11 @@
 			}
 		},
 		methods: {
+			goDetail(sellFormId) {
+				uni.navigateTo({
+					url: '/pages/erp/sell/form?sellFormId=' + sellFormId,
+				});
+			},
 			day(e) {
 				var today = new Date(e);
 
@@ -238,8 +255,16 @@
 				}
 				return value;
 			},
+			close() {
+				this.show = false;
+			},
 			aaa(value) {
-				console.log(this.day(this.value1), value);
+				setTimeout(() => {
+					console.log(this.day(this.value1), value);
+					this.time = this.day(this.value1);
+					this.show = false;
+					this.getDataList();
+				}, 100);
 			},
 			copy(value) {
 				uni.setClipboardData({
@@ -257,7 +282,8 @@
 			},
 			getDataList() {
 				let that = this;
-				let paramsData = that.TabCur == 1 ? that.queryInfo : that.TabCur == 2 ? that.queryInfo1 : that.queryInfo2;
+				let paramsData = that.queryInfo;
+				paramsData.queryDateStr = this.time;
 				selectSellFormList(paramsData)
 					.then((res) => {
 						let data = res.rows;

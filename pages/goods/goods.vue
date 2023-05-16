@@ -50,26 +50,26 @@
 							</text>
 						</view>
 
-						
-
 						<!--标题-->
 						<view class="bg-white view-box title-view-box radius-2 margin-sm">
 							<!--分销按钮-->
 							<view class="btn-group flex flex-wrap align-center">
-								<view class="cu-btns bg-FFEBEB radius-3 text-red" @click="renderScript.emitData">
-									一键保存图片
-								</view>
+								<view class="cu-btns bg-FFEBEB radius-3 text-red" @click="renderScript.emitData">一键保存图片</view>
 								<!-- <view class="cu-btn bg-deepblue radius-4" @click="settingQrImgBase64">一键保存图片</view> -->
-								<view class="cu-btns bg-F0F0F0 radius-3 margin-left-sm text-101010" @click="copydesc">一键复制文案</view>
+								<view class="cu-btns bg-F0F0F0 radius-3 margin-left-sm text-101010" @click="copydesc">
+									一键复制文案
+								</view>
 							</view>
 							<!--商品价格-->
 							<view class="margin-top-sm">
-								<text class="text-price text-xxl text-red text-sl" style="font-family: DINCondensed-Bold;">{{product.sales_price}}</text>
+								<text class="text-price text-xxl text-red text-sl" style="font-family: DINCondensed-Bold">
+									{{product.sales_price}}
+								</text>
 								<view class="text-xs cost-price-num text-red flex text-929294">
 									<view class="text-through">原价￥{{product.market_price}}</view>
 									<view class="margin-left-sm">剩余{{product.stock}}件</view>
 								</view>
-							
+
 								<!-- <view class="text-right time-right ">
 									<view class="text-through">原价￥{{product.market_price}}</view>
 									<view class="text-xs">剩余{{product.stock}}件</view>
@@ -82,7 +82,6 @@
 							<view class="text-lg margin-bottom-sm">
 								<text class="sm text-gray">{{product.tags}}</text>
 							</view>
-							
 						</view>
 
 						<view class="bg-white margin-sm radius-2">
@@ -145,10 +144,7 @@
 							<view class="view-box">
 								<view class="flex flex-wrap text-sm">
 									<view class="basis-1 margin-right-sm">
-										<view
-											class="cu-avatar sm round"
-											:style="'backgroundImage: url('+items.avatar+')'"
-										/>
+										<view class="cu-avatar sm round" :style="'backgroundImage: url('+items.avatar+')'" />
 									</view>
 									<view class="basis-9 text-sm">
 										<view class="text-lg text-bold">{{items.username}}</view>
@@ -214,7 +210,6 @@
 				</view>
 				<!--参数-->
 				<view id="canshuBlock" class="bg-white margin-sm padding-sm radius-2">
-
 					<view class="margin-tb-xs text-bold text-xl">温馨提示</view>
 					<image src="/static/img/shili.jpg"></image>
 					<view class="margin-bottom-xs text-bold text-lg margin-top-xs">防拆标签</view>
@@ -226,8 +221,8 @@
 			<!--包含参数end-->
 			<!--详情-->
 			<!-- <view id="xiangqingBlock" class="goods-details-box margin-sm bg-white radius-2 padding-sm"> -->
-				<!-- <rich-text :nodes="product.desc|formatRichText"></rich-text> -->
-				<!-- <image src="/static/delect_images/home/goods/goods-1.png" mode="widthFix" />
+			<!-- <rich-text :nodes="product.desc|formatRichText"></rich-text> -->
+			<!-- <image src="/static/delect_images/home/goods/goods-1.png" mode="widthFix" />
 				<image src="/static/delect_images/home/goods/goods-2.png" mode="widthFix" /> -->
 			<!-- </view> -->
 
@@ -290,18 +285,14 @@
 							<text class="text-cut text-black">已验机</text>
 						</view>
 						<view class="text-sm text-list-view">
-							<view class="margin-left text-cut text-gray">
-								转转&富士康联合制定验机标准，对设备进行专业质检
-							</view>
+							<view class="margin-left text-cut text-gray">转转&富士康联合制定验机标准，对设备进行专业质检</view>
 						</view>
 						<view class="text-view">
 							<text class="cuIcon-title text-red" />
 							<text class="text-cut text-black">7天无理由</text>
 						</view>
 						<view class="text-sm text-list-view">
-							<view class="margin-left text-cut text-gray">
-								自收到商品7天内，不喜欢可以申请退货，并自付邮费寄回
-							</view>
+							<view class="margin-left text-cut text-gray">自收到商品7天内，不喜欢可以申请退货，并自付邮费寄回</view>
 						</view>
 						<view class="text-view">
 							<text class="cuIcon-title text-red" />
@@ -335,18 +326,14 @@
 							<text class="text-cut text-black">已验机</text>
 						</view>
 						<view class="text-sm text-list-view">
-							<view class="margin-left text-cut text-gray">
-								转转&富士康联合制定验机标准，对设备进行专业质检
-							</view>
+							<view class="margin-left text-cut text-gray">转转&富士康联合制定验机标准，对设备进行专业质检</view>
 						</view>
 						<view class="text-view">
 							<text class="cuIcon-title text-red" />
 							<text class="text-cut text-black">7天无理由</text>
 						</view>
 						<view class="text-sm text-list-view">
-							<view class="margin-left text-cut text-gray">
-								自收到商品7天内，不喜欢可以申请退货，并自付邮费寄回
-							</view>
+							<view class="margin-left text-cut text-gray">自收到商品7天内，不喜欢可以申请退货，并自付邮费寄回</view>
 						</view>
 						<view class="text-view">
 							<text class="cuIcon-title text-red" />
@@ -394,14 +381,16 @@
 					<view class="view-box select" v-if="modalType=='select'">
 						<!--商品信息-->
 						<view class="cu-list menu-avatar">
-				 			<view class="cu-item">
+							<view class="cu-item">
 								<view
 									class="cu-avatar radius lg"
 									style="background-image: url(/static/delect_images/home/goods/1.png)"
 								/>
 								<view class="content">
 									<view class="text-price-view">
-										<text class="text-price text-FF3A31 margin-right-xs text-sl" style="font-family: DINCondensed-Bold;">{{product.sales_price}}</text>
+										<text class="text-price text-FF3A31 margin-right-xs text-sl" style="font-family: DINCondensed-Bold">
+											{{product.sales_price}}
+										</text>
 										<text class="text-sm text-gray text-through">￥{{product.market_price}}</text>
 										<text class="cu-tag bg-gradual-red radius sm">
 											<text class="cuIcon-hotfill" />
@@ -451,6 +440,7 @@
 <script>
 	import Vue from 'vue';
 	import { goodsdetail, bindingUser } from '@/api/common.js';
+	import { shoppingCart } from '@/api/malls.js';
 	import qrcode from './qrcode';
 	import { ProductDetail, FlashProductDetail, ProductEvaluate, CartAdd, OrderCreate } from '@/api/mall.js';
 	import { setuservisit } from '@/api/user.js';
@@ -497,6 +487,7 @@
 		},
 		data() {
 			return {
+				goodsId: 0,
 				imageData: '',
 				qrUrl: '', // 生成二维码的链接
 				userInfo: {},
@@ -545,11 +536,12 @@
 				pageIndex: 1,
 				pageLimit: 10,
 				evalueteList: [],
-				isNew: false
+				isNew: false,
 			};
 		},
 		onLoad(options) {
-		    this.isNew = options.isNew
+			this.goodsId = options.id;
+			this.isNew = options.isNew;
 			// 获取当前页面信息
 			const pages = getCurrentPages();
 			const currentPage = pages[pages.length - 1];
@@ -565,10 +557,10 @@
 				this.$api.checkLogin();
 				if (userInfo.token) {
 					this.bindingUser(options.nameId);
-					this.datas = '1'
+					this.datas = '1';
 				}
 			}
-			
+
 			this.goodsid = options.id;
 			let flash_id = options.flash ? options.flash : 0;
 			if (flash_id != 0) {
@@ -606,9 +598,7 @@
 						return match;
 					});
 					newContent = newContent.replace(/style="[^"]+"/gi, function (match, capture) {
-						match = match
-							.replace(/width:[^;]+;/gi, 'max-width:100%;')
-							.replace(/width:[^;]+;/gi, 'max-width:100%;');
+						match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
 						return match;
 					});
 					newContent = newContent.replace(/<br[^>]*\/>/gi, '');
@@ -661,12 +651,15 @@
 		methods: {
 			bottomDisplay(e) {
 				const query = uni.createSelectorQuery().in(this);
-				query.selectAll('#btn').boundingClientRect((data) =>{
-					console.log(data[0].top, e.target.y)
-					if (e.target.y < data[0].top) {
-						this.bottomModal = false;
-					}
-				}).exec();
+				query
+					.selectAll('#btn')
+					.boundingClientRect((data) => {
+						console.log(data[0].top, e.target.y);
+						if (e.target.y < data[0].top) {
+							this.bottomModal = false;
+						}
+					})
+					.exec();
 				// console.log(this.$refs.btn.$el.getBoundingClientRect(), ' 123123123')
 				// const height = this.$refs.btn.$el.getBoundingClientRect().top
 				// if (e.target.y < height) {
@@ -674,7 +667,7 @@
 				// }
 			},
 			async bindingUser(item) {
-				const res = await bindingUser({userId: item, downId: this.userInfo.user_id, type: 'lowernum'});
+				const res = await bindingUser({ userId: item, downId: this.userInfo.user_id, type: 'lowernum' });
 			},
 			async onCanvas() {
 				qrcode
@@ -689,20 +682,17 @@
 						fileType: 'jpg',
 						errorCorrectLevel: qrcode.errorCorrectLevel.H,
 					})
-					.then((res) => {
-						
-					});
-					const userInfo = Vue.prototype.$store.state.userInfo;
-					const ctx = uni.createCanvasContext('img1', this);
-					const ctx2 = uni.createCanvasContext('img2', this);
-					ctx.fillRect(0, 0, 324, 324);
-					ctx2.fillRect(0, 0, 40, 40);
-					ctx.drawImage(this.product.images_text[0], 0, 0, 324, 324);
-					ctx2.drawImage(this.userInfo.avatar, 0, 0, 40, 40);
-					let pic = await this.setTime(ctx);
-					let pic2 = await this.setTime(ctx2);
-					this.$emit('success', pic);
-				
+					.then((res) => {});
+				const userInfo = Vue.prototype.$store.state.userInfo;
+				const ctx = uni.createCanvasContext('img1', this);
+				const ctx2 = uni.createCanvasContext('img2', this);
+				ctx.fillRect(0, 0, 324, 324);
+				ctx2.fillRect(0, 0, 40, 40);
+				ctx.drawImage(this.product.images_text[0], 0, 0, 324, 324);
+				ctx2.drawImage(this.userInfo.avatar, 0, 0, 40, 40);
+				let pic = await this.setTime(ctx);
+				let pic2 = await this.setTime(ctx2);
+				this.$emit('success', pic);
 			},
 			setTime(ctx) {
 				return new Promise((resole, err) => {
@@ -1025,21 +1015,31 @@
 				this.showModal();
 			},
 			async selectTap(type) {
-				this.selectType = type;
-				this.modalTitle = '选择规格';
-				this.modalType = 'select';
-				let is_login = await this.$api.checkLogin();
-				if (is_login) {
-					this.showModal();
+				// this.selectType = type;
+				// this.modalTitle = '选择规格';
+				// this.modalType = 'select';
+				// let is_login = await this.$api.checkLogin();
+				// if (is_login) {
+				// 	this.showModal();
+				// }
+				if (type == 'add') {
+					let params = {
+						handGoodsId: Number(this.goodsId),
+					};
+					shoppingCart(params).then((res) => {
+						if (res.code === 200) {
+							uni.showToast({
+								icon: 'none',
+								title: '加入购物车成功',
+							});
+						}
+					});
 				}
 			},
 			confirmFuc() {
 				let that = this;
 				let type = that.selectType;
 				if (type == 'add') {
-					let params = {
-						id: that.goodsid,
-					};
 					CartAdd(params)
 						.then((res) => {
 							if (res.code == 1) {
@@ -1159,38 +1159,37 @@
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
 	@import '@/uni_modules/mpb-ui/shop/goods.scss';
-	page{
-		background: #F0F0F0;
+	page {
+		background: #f0f0f0;
 	}
-	.xiangqingH{
+	.xiangqingH {
 		position: relative;
 		top: calc(0px - var(--status-bar-height) - 104rpx) !important;
 	}
-	.text-color-yellows{
-		background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%) !important;
+	.text-color-yellows {
+		background-image: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%) !important;
 		border-radius: 22px !important;
 	}
-	.cu-avatar.lg{
+	.cu-avatar.lg {
 		width: 136rpx;
 		height: 136rpx;
 	}
-	.menu-avatar{
+	.menu-avatar {
 		height: 136rpx;
 		margin-top: 19px;
-		
 	}
-	.select-item{
+	.select-item {
 		border: none !important;
 	}
-	.modal-content{
-		.cu-btn{
-			background: #F0F0F0;
+	.modal-content {
+		.cu-btn {
+			background: #f0f0f0;
 			border-radius: 6px;
 			border: none !important;
 		}
-		.selected{
-			background: #FFEBEB !important;
-			border: 1px solid rgba(255,58,49,1) !important;
+		.selected {
+			background: #ffebeb !important;
+			border: 1px solid rgba(255, 58, 49, 1) !important;
 			border-radius: 6px !important;
 		}
 	}

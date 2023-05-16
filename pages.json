@@ -1248,6 +1248,24 @@
 				// "navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
+		},
+		// 销售订单详情页 回收开单
+		{
+			"path": "pages/erp/sell/form",
+			"style": {
+				"navigationBarTitleText": "详情",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 结算
+		{
+			"path": "pages/tabbar/settlement",
+			"style": {
+				// "navigationBarTitleText": "详情",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"tabBar": {

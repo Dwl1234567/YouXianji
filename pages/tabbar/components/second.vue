@@ -23,7 +23,7 @@
 			<!-- #endif -->
 			<view class="tab">
 				<view @tap="checkView('second')" class="tab-item" :class=" !newViews ? 'option': ''">二手商城</view>
-				<view @tap="checkView('new')" class="tab-item" :class="newViews ? 'option': ''">全新商城</view>	
+				<view @tap="checkView('new')" class="tab-item" :class="newViews ? 'option': ''">全新商城</view>
 			</view>
 			<!--搜索框-->
 			<view class="cu-bar search search-box">
@@ -63,7 +63,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<!--中间内容区域-->
 		<view class="view-content" :class="[headTab.TabCur==0?'show':'']">
 			<!--滑动菜单-->
@@ -120,12 +120,7 @@
 										<text class="price">{{UserPhoneMoney}}</text>
 									</view>
 									<view class="text-center">
-										<text
-											class="padding-lr-xl btn radius-4"
-											@click="goevaluation()"
-										>
-											立即估价
-										</text>
+										<text class="padding-lr-xl btn radius-4" @click="goevaluation()">立即估价</text>
 									</view>
 								</view>
 								<!--回收报价条 end-->
@@ -273,6 +268,8 @@
 		ProductFuscreen,
 		ProductFulists,
 	} from '@/api/mall.js';
+	// 接口
+	import { secondGoodsList } from '@/api/malls.js';
 	import { getIndexPrice } from '@/api/common.js';
 	import { kefuInitUser } from '@/api/user.js';
 	export default {
@@ -347,19 +344,19 @@
 				},
 			};
 		},
-		created(){
+		created() {
 			// 储存isNew值 1为全新0为二手
-			uni.setStorageSync('isNew', 1)
+			uni.setStorageSync('isNew', 1);
 			let that = this;
 			let userInfo = uni.getStorageSync('userInfo');
 			if (userInfo) {
 				this.userInfo = userInfo;
 			}
-			
+
 			this.swiperInfo.list = _home_data.swiper();
 			this.gridMenuData = _home_data.nav();
 			this.goodsTabData.list = _home_data.goodsTab();
-			
+
 			uni.getSystemInfo({
 				success: function (res) {
 					if (res.model) {
@@ -394,9 +391,7 @@
 			// 427
 			this.loadData();
 		},
-		onLoad() {
-			
-		},
+		onLoad() {},
 		onPullDownRefresh() {
 			this.pageIndex = 1;
 			this.getProduct();
@@ -407,13 +402,13 @@
 			this.getProduct();
 		},
 		methods: {
-			checkView(e){
+			checkView(e) {
 				if (e === 'new') {
-					uni.setStorageSync('isNew', 1)
-				} else{
-					uni.setStorageSync('isNew', 2)
+					uni.setStorageSync('isNew', 1);
+				} else {
+					uni.setStorageSync('isNew', 2);
 				}
-				this.$emit('checkView', e)
+				this.$emit('checkView', e);
 			},
 			snTap() {
 				console.log('扫描二维码获取序列号筛选结果');
@@ -459,21 +454,23 @@
 			},
 			// 获取产品列表
 			getProduct() {
+				console.log(222);
 				let that = this;
 				let params = {
-					page: this.pageIndex,
-					pagesize: this.pageLimit,
+					pageNum: this.pageIndex,
+					pageSize: this.pageLimit,
 				};
-				ProductLists(params)
+				secondGoodsList(params)
 					.then((res) => {
-						let data = res.data;
+						console.log(res);
+						let data = res.rows;
 
 						if (that.pageIndex == 1) {
 							that.goodsData = data;
 						} else {
 							that.goodsData.push(...data);
 						}
-						if (res.data.length == 10) {
+						if (res.rows.length == 10) {
 							that.pageIndex++;
 						} else {
 							that.loadmore = 'noMore';
@@ -607,7 +604,7 @@
 			},
 			goodsListTap(e) {
 				uni.navigateTo({
-					url: '/pages/goods/goods?id=' + e.data.product_id + '&isNew=false',
+					url: '/pages/goods/goods?id=' + e.data.goodsId + '&isNew=false',
 				});
 			},
 			liveListTap(e) {},
@@ -616,12 +613,7 @@
 				// 点击品牌
 				uni.navigateTo({
 					url:
-						'/pages/home/sort_list?sid=' +
-						e.data.id +
-						'&bid=' +
-						this.headTab.TabCatID +
-						'&cid=' +
-						e.data.category_id,
+						'/pages/home/sort_list?sid=' + e.data.id + '&bid=' + this.headTab.TabCatID + '&cid=' + e.data.category_id,
 				});
 			},
 			goToTap() {
@@ -669,11 +661,9 @@
 					});
 				}
 			},
-			async kefuInitUser () {
+			async kefuInitUser() {
 				console.log(this.userInfo, '222222');
-				const res = await kefuInitUser({
-					
-				})
+				const res = await kefuInitUser({});
 			},
 			// 联系客服
 			btnClick() {
@@ -688,19 +678,19 @@
 </script>
 
 <style lang="scss" scoped>
-	.products{
+	.products {
 		display: flex;
 		align-items: center;
 		justify-content: space-evenly;
-		.products-item{
+		.products-item {
 			display: flex;
 			align-items: center;
-			image{
+			image {
 				margin-right: 5px;
 				width: 20px;
 				height: 20px;
 			}
-			text{
+			text {
 				font-family: PingFangSC-Regular;
 				font-size: 12px;
 				color: #101010;
@@ -716,17 +706,17 @@
 		padding-top: var(--status-bar-height);
 		transition: top 0.25s;
 		padding-bottom: 10rpx;
-		.tab{
+		.tab {
 			margin-top: 20px;
 			display: flex;
-			justify-content:space-evenly;
+			justify-content: space-evenly;
 			align-items: center;
-			.tab-item{
+			.tab-item {
 				font-size: 19px;
 				color: #101010;
 				font-weight: 400;
 			}
-			.option{
+			.option {
 				font-size: 23px;
 				color: #101010;
 				font-weight: 500;
@@ -735,18 +725,18 @@
 		.search-box {
 			position: relative;
 			.search-form {
-				border: 1px solid rgba(255,193,73,1);
+				border: 1px solid rgba(255, 193, 73, 1);
 				.sbtn {
 					height: 32px;
 					line-height: 32px;
 					position: absolute;
 					right: 37px;
-					background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);
+					background-image: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%);
 				}
-				text{
+				text {
 					font-family: PingFangSC-Regular;
 					font-size: 17px;
-					color: #8E8E8E;
+					color: #8e8e8e;
 					font-weight: 400;
 					position: absolute;
 					left: 25px;
@@ -767,7 +757,7 @@
 					flex-basis: 90%;
 					width: 90%;
 					z-index: 1;
-					.nav{
+					.nav {
 						padding-left: 10px;
 					}
 				}
@@ -963,8 +953,8 @@
 			width: 100%;
 			height: 127px;
 			color: #0081ff;
-			background-image: linear-gradient(-44deg, #FDF1FF 0%, #CCDEF8 100%);
-			border: 0.5px solid rgba(213,218,223,1);
+			background-image: linear-gradient(-44deg, #fdf1ff 0%, #ccdef8 100%);
+			border: 0.5px solid rgba(213, 218, 223, 1);
 			border-radius: 6px;
 			padding: 0 10rpx;
 			text-align: center;
@@ -990,9 +980,9 @@
 				}
 
 				.btn {
-					border: 1px solid rgba(30,129,255,1);
+					border: 1px solid rgba(30, 129, 255, 1);
 					border-radius: 4px;
-					color: rgba(30,129,255,1);
+					color: rgba(30, 129, 255, 1);
 					font-size: 10px;
 					height: 23px !important;
 					line-height: 23px;

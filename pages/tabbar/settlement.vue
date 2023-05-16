@@ -2,10 +2,7 @@
 	<view class="cart-box container">
 		<!--标题栏-->
 		<bar-title bgColor="bg-white" :isBack="false">
-			<block slot="content">购物车</block>
-			<block slot="right">
-				<text @tap="checkouts">{{checkout ? '完成' : '管理'}}</text>
-			</block>
+			<block slot="content">确认订单</block>
 		</bar-title>
 		<!-- 空白页 -->
 		<!-- <view v-if="(!hasLogin || empty===true) && state != 'load'" class="empty">
@@ -21,20 +18,14 @@
 		</view> -->
 
 		<view class="cart-list-view">
+			<view class="adress">
+				<view class="">{{addressN.linkman}} {{addressN.phonenumber}}</view>
+				<view>{{addressN.provinceName}}{{addressN.cityName}}{{addressN.regionName}} {{addressN.detailAddress}}</view>
+			</view>
 			<!-- 列表 -->
-			<view
-				class="cart-list bg-white margin-sm"
-				style="
-					border-radius: 11rpx;
-					display: flex;
-					justify-items: center;
-					align-items: center;
-					padding-left: 20rpx;
-					position: relative;
-				"
-			>
+			<view class="cart-list bg-white margin-sm" style="border-radius: 11rpx; position: relative">
 				<block v-for="(item, index) in cartList" :key="item.cart_id">
-					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
+					<!-- <view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view> -->
 					<view
 						class="cart-item"
 						:class="{'b-b': index!==cartList.length-1}"
@@ -56,8 +47,10 @@
 								￥
 								<text class="text-red text-xxl text-bold">{{item.goodsInfo.sellPrice}}</text>
 								<text style="color: red">{{cartPrice(item.oldPrice, item.nowPrice)}}</text>
+								<text class="step">x {{item.value}}</text>
 							</view>
-							<u-number-box class="step" v-model="item.value" min="0" @change="valChange(item)"></u-number-box>
+
+							<!-- <u-number-box class="step" v-model="item.value" min="0" @change="valChange(item)"></u-number-box> -->
 							<!-- <uni-number-box
 								class="step"
 								:min="1"
@@ -75,14 +68,51 @@
 						<text class="invalid" v-if="item.stock == 0 && item.isset == true">库存不足</text>
 					</view>
 				</block>
+				<view class="xinxi">
+					<view class="xinxi-item">
+						<view>配送服务</view>
+						<view>快递包邮</view>
+					</view>
+					<view class="xinxi-item">
+						<view>店铺优惠</view>
+						<view>无优惠</view>
+					</view>
+					<view class="xinxi-item">
+						<view>开具发票</view>
+						<view>该商品不支持线上开票，请联系商家</view>
+					</view>
+					<view class="xinxi-item">
+						<view>配送服务</view>
+						<view>快递包邮</view>
+					</view>
+				</view>
 			</view>
 		</view>
-
+		<view class="pay">
+			<view class="wxPay">
+				<view class="left">
+					<image src="/static/微信@2x.png" mode=""></image>
+					<text>微信</text>
+				</view>
+				<view class="right">
+					<image :src="isWx ? '/static/checkYuan.png' : '/static/yuan.png'" @tap="checkWx"></image>
+				</view>
+			</view>
+			<view class="zfbPay">
+				<view class="left">
+					<image src="/static/支付宝@2x.png" mode=""></image>
+					<text>微信</text>
+				</view>
+				<view class="right">
+					<image :src="!isWx ? '/static/checkYuan.png' : '/static/yuan.png'" @tap="checkWx"></image>
+				</view>
+			</view>
+		</view>
 		<!--占位底部距离-->
 		<view class="cu-tabbar-height" />
 
 		<!-- 底部菜单栏 -->
-		<view class="action-section bg-white" v-if="state != 'load'">
+		<view class="action-section bg-white">
 			<view class="checkbox">
 				<image
 					:src="allChoose?'/static/selected.png':'/static/select.png'"
@@ -122,7 +152,7 @@
 	import _my_cart_data from '@/static/data/my_cart.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
 	import { CartIndex, CartAdd, CartDelete, CartNumberChange, CartChooseChange } from '@/api/mall.js';
-	import { shoppingCartList } from '@/api/malls.js';
+	import { shoppingCartList, getDefaultAddress } from '@/api/malls.js';
 	import { mapState } from 'vuex';
 	export default {
 		name: 'cart',
@@ -133,6 +163,8 @@
 		},
 		data() {
 			return {
+				addressN: {},
+				isWx: true,
 				checkout: false,
 				goodsList: [],
 				checkAll: true,
@@ -145,15 +177,10 @@
 			};
 		},
 		onLoad() {
-			uni.startPullDownRefresh({});
-			this.state = 'load';
-			this.cartList = [];
+			this.cartList = uni.getStorageSync('cartList');
+			this.getDefaultAddresss();
 		},
-		onPullDownRefresh() {
-			this.state = 'load';
-			this.cartList = [];
-			this.getCart();
-		},
+		onPullDownRefresh() {},
 		watch: {
 			//显示空白页
 			cartList(e) {
@@ -167,6 +194,17 @@
 			...mapState(['hasLogin']),
 		},
 		methods: {
+			// 获取默认地址
+			getDefaultAddresss() {
+				getDefaultAddress().then((res) => {
+					if (res.code === 200) {
+						this.addressN = res.data;
+					}
+				});
+			},
+			checkWx() {
+				this.isWx = !this.isWx;
+			},
 			// 全选
 			checkall() {
 				this.allChoose = !this.allChoose;
@@ -383,10 +421,18 @@
 			},
 			//创建订单
 			createOrder() {
-				uni.setStorageSync('cartList', this.cartList);
-				uni.navigateTo({
-					url: '/pages/tabbar/settlement',
+				let list = this.cartList;
+				let cartId = [];
+				list.forEach((item) => {
+					if (item.choose) {
+						cartId.push(item.cart_id);
+					}
 				});
+				if (cartId.length == 0) {
+					this.$api.msg('没有选中商品');
+					return;
+				}
+				this.$api.navTo(`/pages/goods/settlement?cart=${cartId.join(',')}`);
 			},
 			navTo(url) {
 				this.$api.navTo(url);
@@ -452,6 +498,78 @@
 	}
 	.cart-box.show {
 		display: block;
+	}
+	.adress {
+		margin: 20rpx;
+		background: #ffffff;
+		border-radius: 11rpx;
+		padding: 30rpx 32rpx;
+	}
+	.xinxi {
+		padding: 28rpx 32rpx;
+	}
+	.xinxi-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 34rpx;
+		view {
+			font-size: 27rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #101010;
+			line-height: 38rpx;
+		}
+		view:nth-child(2) {
+			color: #929294;
+		}
+	}
+	.pay {
+		margin: 20rpx;
+		background: #ffffff;
+		border-radius: 11rpx;
+		padding: 30rpx 32rpx;
+	}
+	.zfbPay {
+		margin-top: 34rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.left {
+			display: flex;
+			align-items: center;
+			image {
+				width: 57rpx;
+				height: 57rpx;
+				margin-right: 11rpx;
+			}
+		}
+		.right {
+			image {
+				width: 38rpx;
+				height: 38rpx;
+			}
+		}
+	}
+	.wxPay {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.left {
+			display: flex;
+			align-items: center;
+			image {
+				width: 57rpx;
+				height: 57rpx;
+				margin-right: 11rpx;
+			}
+		}
+		.right {
+			image {
+				width: 38rpx;
+				height: 38rpx;
+			}
+		}
 	}
 	.radio {
 		width: 38rpx;

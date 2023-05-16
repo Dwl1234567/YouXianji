@@ -398,3 +398,19 @@ export function selectStaySellFormList(data) {
 export function selectSellFormList(data) {
 	return request.get('/yxj/app/fittingsForm/selectSellFormList', data, { noLogin: true });
 }
+
+/**
+ * 查询销售单详情
+ *
+ */
+export function selectSellFormDetail(data) {
+	return request.get('/yxj/app/fittingsForm/selectSellFormDetail', data, { noLogin: true });
+}
+
+/**
+ * 查看默认地址
+ *
+ */
+export function getDefaultAddress(data) {
+	return request.get('/yxj/app/user/getDefaultAddress', data, { noLogin: true });
+}

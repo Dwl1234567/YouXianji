@@ -2,14 +2,14 @@
 	<view class="content">
 		<view class="cu-form-group">
 			<view class="title">标题</view>
-			<input placeholder="请输入产品标题" v-model="formList.title" name="input"></input>
+			<input placeholder="请输入产品标题" v-model="formList.title" name="input" disabled="true"></input>
 		</view>
 		
 		<view class="cu-bar bg-white">
 			<view class='action'>
 				<text class="title">序列号/IMEI</text>
 				<text class="margin-left-xs text-sm">
-					<input placeholder="请输入设备序列号/IMEI" v-model="goodssn" name="input"></input>
+					<input placeholder="请输入设备序列号/IMEI" v-model="formList.deviceNo" name="input" disabled="true"></input>
 				</text>
 			</view>
 		</view>
@@ -97,21 +97,21 @@
 		<view class="flex-sub text-center">
 			<view class="tips padding-sm light bg-red">
 				<text class="text-lg">回收指导价：</text>
-				<text class="text-price text-lg">{{guidePrice}}</text>
+				<text class="text-price text-lg">{{formList.recycleGuidePrice}}</text>
 			</view>
 			
 		</view>
 		<view class="cu-form-group">
 			<view class="title">回收价</view>
-			<input placeholder="请输入回收价" v-model="ActualreceiptsAll" name="input"></input>
+			<input placeholder="请输入回收价" v-model="formList.recyclePrice" name="input" disabled="true"></input>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">调拨价</view>
-			<input placeholder="请输入调拨价" v-model="diaobojianum" name="input"></input>
+			<input placeholder="请输入调拨价" v-model="formList.accountReceived" name="input" disabled="true"></input>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">销售价</view>
-			<input placeholder="请输入销售价" v-model="xiaoshoujianum" name="input"></input>
+			<input placeholder="请输入销售价" v-model="formList.fundsReceived" name="input" disabled="true"></input>
 		</view>
 
 		<!--点点单-->
@@ -138,17 +138,8 @@
 				仓库
 			</view>
 			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == 0" @tap="checkHouseId(item.warehouseId)">
-					{{item.warehouseName}}
-				</view>	
-			</view>	
-			
-			<view class="">
-				分仓
-			</view>
-			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == parentId" @tap="checkHouseFenId(item.warehouseId)">
-					{{item.warehouseName}}
+				<view class="cangkuItem margin-left-sm">
+					{{formList.warehouseName}}
 				</view>	
 			</view>	
 			
@@ -192,7 +183,7 @@
 								</view>
 							  </view>
 							  <view class="h-td">
-								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyindex)" :value="recyitem.remark"></input>
+								<input class=" text-sm" placeholder="请输入备注信息" :value="recyitem.remark" disabled="true"></input>
 							  </view>
 							</view>
 						</view>
@@ -201,30 +192,18 @@
 			</view>
 		</view>
 
-		<view class="cu-form-group">
+		<!-- <view class="cu-form-group">
 			<view class="title">是否直售</view>
 			<switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
-		</view>
-		<view class="cu-form-group" v-if="isDistribution">
-			<view class="title">是否分销</view>
-			<switch @change="SwitchB" :class="switchB?'checked':''" :checked="switchB?true:false"></switch>
-		</view>
-		<view class="cu-form-group" >
-			<view class="title">是否热销</view>
-			<switch @change="SwitchC" :class="switchC?'checked':''" :checked="switchC?true:false"></switch>
-		</view>
-		<view class="cu-form-group" >
-			<view class="title">是否特卖</view>
-			<switch @change="SwitchD" :class="switchD?'checked':''" :checked="switchD?true:false"></switch>
-		</view>
+		</view> -->
 
 
-		<view class="hight-view" />
-		<view class="bg-white orderview-footer-fixed">
+		<!-- <view class="hight-view" /> -->
+		<!-- <view class="bg-white orderview-footer-fixed">
 			<view class="flex flex-direction">
 				<button class="cu-btn bg-red margin-tb-sm lg" @click="erpclickattreditFuc">确定</button>
 			</view>
-		</view>
+		</view> -->
 		
 		
 		<!-- 相机相册选择 -->
@@ -251,7 +230,7 @@
 		erpProductGetBasicData,
 		erpclickattredit
 	} from "@/api/erpapi.js"
-	import { getInfoByRecycleOrderId, warehouseList, empCreateRecycleForm } from '@/api/erp.js'
+	import { getInfoByRecycleOrderId, warehouseList, empCreateRecycleForm,selectSellFormDetail } from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
 	//import SelectData from '@/components/RecyclingList/SelectData.vue';
@@ -264,8 +243,7 @@
 		},
 		data() {
 			return {
-				isDistribution: false,
-				modelId: 0,
+				sellFormId:0,
 				warehouseId: null,
 				parentId: null,
 				warehouseLists: [],
@@ -313,9 +291,6 @@
 				goodsvalue: [],
 				allmoney: 0,
 				switchA: true,
-				switchB: false,
-				switchC: false,
-				switchD: false,
 				filterbasicInfo: '', //筛选数据
 				filterbasiclist:{},
 				warehouse_id: '', //主仓库
@@ -340,34 +315,9 @@
 			}
 		},
 		onLoad(options) {
-			this.modelId = options.goodsId
-			this.recycleOrderId = options.recycleOrderId
-			// this.editid = options.id;
-			// this.erppurchaseclickattrviewFuc(options.id)
-			// this.erpProductGetBasicDataFuc();
-			this.guidePrice = options.forecastMoney;
-			this.qualityInfoList = uni.getStorageSync('Pricepramitems')
+			this.sellFormId = options.sellFormId
+			this.getInfoByRecycleOrderId();
 			this.warehouseList()
-		},
-		watch: {
-			xiaoshoujianum() {
-				const fenxiao = Number(this.xiaoshoujianum) * 0.03;
-				const chengben = (Number(this.xiaoshoujianum) - Number(this.ActualreceiptsAll)) / 2;
-				if (chengben > fenxiao) {
-					this.isDistribution = true
-				} else {
-					this.isDistribution = false
-				}
-			},
-			ActualreceiptsAll() {
-				const fenxiao = Number(this.xiaoshoujianum) * 0.03;
-				const chengben = (Number(this.xiaoshoujianum) - Number(this.ActualreceiptsAll)) / 2;
-				if (chengben > fenxiao) {
-					this.isDistribution = true
-				} else {
-					this.isDistribution = false
-				}
-			}
 		},
 		onShow() {
 
@@ -380,27 +330,6 @@
 			});
 		},
 		methods: {
-			SwitchB(e) {
-				this.switchB = e.detail.value
-				if (this.switchB) {
-					this.switchC = false;
-					this.switchD = false;
-				}
-			},
-			SwitchC(e) {
-				this.switchC = e.detail.value
-				if (this.switchC) {
-					this.switchB = false;
-					this.switchD = false;
-				}
-			},
-			SwitchD(e) {
-				this.switchD = e.detail.value
-				if (this.switchD) {
-					this.switchC = false;
-					this.switchB = false;
-				}
-			},
 			SwitchA(e) {
 				this.switchA = e.detail.value
 			},
@@ -421,14 +350,16 @@
 				})
 			},
 			// 查看详情
-			// getInfoByRecycleOrderId() {
-			//     getInfoByRecycleOrderId(this.recycleOrderId).then(res => {
-			// 		this.formList = res.data;
-			// 		this.goodssn = res.data.deviceNo;
-			// 		this.ActualreceiptsAll = res.data.recyclePrice;
-			// 		this.qualityInfoList = JSON.parse(res.data.qualityInfoList);
-			// 	});
-			// },
+			getInfoByRecycleOrderId() {
+			    selectSellFormDetail({
+						sellFormId:this.sellFormId
+					}).then(res => {
+					this.formList = res.data;
+					// this.goodssn = res.data.deviceNo;
+					// this.ActualreceiptsAll = res.data.recyclePrice;
+					this.qualityInfoList = JSON.parse(res.data.qualityInfo.qualityInfoList);
+				});
+			},
 			// 提交
 			erpclickattreditFuc(){
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
@@ -445,9 +376,6 @@
 					sellPrice: this.xiaoshoujianum,
 					warehouseId: this.warehouseId,
 					directSellAble: this.switchA ? 1 : 0,
-					distributionAble: this.switchB ? 1 : 0,
-					hotAble: this.switchC ? 1 : 0,
-					specialSaleAble: this.switchD ? 1 : 0,
 					qualityInfo: JSON.stringify(uni.getStorageSync('Priceprams')),
 					qualityInfoList: JSON.stringify(this.qualityInfoList),
 					recycleGuidePrice: this.guidePrice,
