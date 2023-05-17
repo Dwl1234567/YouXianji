@@ -408,9 +408,25 @@ export function selectSellFormDetail(data) {
 }
 
 /**
- * 查看默认地址
+ * 获取待调价列表
  *
  */
-export function getDefaultAddress(data) {
-	return request.get('/yxj/app/user/getDefaultAddress', data, { noLogin: true });
+export function getAdjustPriceList(data) {
+	return request.get('/yxj/app/adjustPrice/getAdjustPriceList', data, { noLogin: true });
+}
+
+/**
+ * 确定调价
+ *
+ */
+export function adjustPrice(data) {
+	return request.post('/yxj/app/adjustPrice/adjustPrice', data, { noLogin: true });
+}
+
+/**
+ * 获取已调价的记录列表
+ *
+ */
+export function adjustPriceList(data) {
+	return request.get('/yxj/app/adjustPrice/list', data, { noLogin: true });
 }

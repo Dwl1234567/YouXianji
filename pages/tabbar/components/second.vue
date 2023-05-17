@@ -23,7 +23,7 @@
 			<!-- #endif -->
 			<view class="tab">
 				<view @tap="checkView('second')" class="tab-item" :class=" !newViews ? 'option': ''">二手商城</view>
-				<view @tap="checkView('new')" class="tab-item" :class="newViews ? 'option': ''">全新商城</view>
+				<!-- <view @tap="checkView('new')" class="tab-item" :class="newViews ? 'option': ''">全新商城</view> -->
 			</view>
 			<!--搜索框-->
 			<view class="cu-bar search search-box">
@@ -288,9 +288,16 @@
 			gridSortList,
 			modalImg,
 		},
+		props: {
+			goodsData: {
+				type: Array,
+				default: '',
+			},
+		},
 		data() {
 			return {
-				newViews: false,
+				firstFlag: true,
+				newViews: true,
 				tabID: 0,
 				appMode: _tool.mpb_mode('tips'),
 				swiperInfo: {
@@ -326,7 +333,7 @@
 					TabCur: 0,
 					list: [],
 				},
-				goodsData: [],
+				// goodsData: [],
 				liveData: [],
 				videoData: [],
 				initgridSortData: [],
@@ -374,6 +381,7 @@
 						model: that.phoneModel,
 					};
 					getIndexPrice(parmas).then((res) => {
+						console.log(123);
 						if (res.code == 1) {
 							that.UserPhoneMoney = res.data.money;
 							if (res.data.money > 0) {
@@ -393,13 +401,13 @@
 		},
 		onLoad() {},
 		onPullDownRefresh() {
-			this.pageIndex = 1;
-			this.getProduct();
+			// this.pageIndex = 1;
+			// this.getProduct();
 		},
 		onReachBottom() {
-			if (this.loadmore == 'noMore') return;
-			// this.pageIndex += 1;
-			this.getProduct();
+			// if (this.loadmore == 'noMore') return;
+			// // this.pageIndex += 1;
+			// this.getProduct();
 		},
 		methods: {
 			checkView(e) {
@@ -450,31 +458,31 @@
 					that.headTab.list = data;
 				});
 
-				this.getProduct();
+				// this.getProduct();
 			},
 			// 获取产品列表
 			getProduct() {
 				console.log(222);
 				let that = this;
 				let params = {
-					pageNum: this.pageIndex,
-					pageSize: this.pageLimit,
+					firstFlag: this.firstFlag,
 				};
 				secondGoodsList(params)
 					.then((res) => {
 						console.log(res);
-						let data = res.rows;
-
-						if (that.pageIndex == 1) {
-							that.goodsData = data;
-						} else {
-							that.goodsData.push(...data);
-						}
-						if (res.rows.length == 10) {
-							that.pageIndex++;
-						} else {
-							that.loadmore = 'noMore';
-						}
+						let data = res.data;
+						that.goodsData.push(...data);
+						this.firstFlag = false;
+						// if (that.pageIndex == 1) {
+						// 	that.goodsData = data;
+						// } else {
+						// 	that.goodsData.push(...data);
+						// }
+						// if (res.rows.length == 10) {
+						// 	that.pageIndex++;
+						// } else {
+						// 	that.loadmore = 'noMore';
+						// }
 					})
 					.finally(() => {
 						uni.stopPullDownRefresh();

@@ -16,21 +16,21 @@
 		<view class="margin-sm">
 			<view class="cu-card article">
 				<view class="flex bg-white radius-6 " v-for="(item,index) in dataList" style="overflow: hidden;">
-					<image :src="item.image" mode="aspectFill" style="width: 280rpx; height: 280rpx;">
+					<image :src=" $httpImage + item.frontPhoto" mode="aspectFill" style="width: 280rpx; height: 280rpx;">
 					</image>
 					<view class="" style="padding: 34rpx 26rpx 20rpx 26rpx; display: flex; flex-direction: column;justify-content: space-between; flex: 1 1 auto;">		
 						<view class="desc">
 							<view class="">
 								<view class="title">
-									<view class="text-cut text-lg text-500">{{item.name}}</view>
+									<view class="text-cut text-lg text-500">{{item.title}}</view>
 								</view>
 								<view class="margin-top-sm">
 									<view class="text-sm text-929294">
-										销售价:<text class="text-red">{{item.sales_price}}</text>元
-										<span class="margin-left-sm">库存:<text class="text-red">{{item.stock}}</text></span>
+										销售价:<text class="text-red">{{item.sellPrice}}</text>元
+										<!-- <span class="margin-left-sm">库存:<text class="text-red">{{item.stock}}</text></span> -->
 										<!--<text class="margin-left-sm cuIcon-edit text-orange" @tap="showModal(item)" data-target="Modal">调价</text>-->
 									</view>
-									<view class="text-sm text-929294 margin-top-sm">序列号：{{item.sn}} 
+									<view class="text-sm text-929294 margin-top-sm">序列号：{{item.deviceNo}} 
 									<!-- <text class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)"></text> -->
 									</view>
 									<!-- <view class="text-sm">
@@ -66,19 +66,32 @@
 						<view class="cu-list grid col-3">
 							<view class="cu-item">
 								销售价
-								<input class="text-red" type="number" v-model="tiaojiaInfo.sales_price" placeholder="销售价"
+								<input class="text-red" type="number" v-model="sellPrice" placeholder="销售价"
 									name="input"></input>
 							</view>
 							<view class="cu-item">
 								调拨价
-								<input class="text-blue" type="number" v-model="tiaojiaInfo.peer_price" placeholder="调拨价"
+								<input class="text-blue" type="number" v-model="allotPrice" placeholder="调拨价"
 									name="input"></input>
 							</view>
 							<view class="cu-item">
 								回收价
-								<input class="text-green" type="number" v-model="tiaojiaInfo.cost_price" placeholder="回收价"
+								<input class="text-green" type="number" v-model="recyclePrice" placeholder="回收价"
 									name="input"></input>
 							</view>
+							
+						</view>
+						<view class="cu-form-group" v-if="isDistribution">
+							<view class="title">是否分销</view>
+							<switch @change="SwitchB" :class="switchB?'checked':''" :checked="switchB?true:false"></switch>
+						</view>
+						<view class="cu-form-group" >
+							<view class="title">是否热销</view>
+							<switch @change="SwitchC" :class="switchC?'checked':''" :checked="switchC?true:false"></switch>
+						</view>
+						<view class="cu-form-group" >
+							<view class="title">是否特卖</view>
+							<switch @change="SwitchD" :class="switchD?'checked':''" :checked="switchD?true:false"></switch>
 						</view>
 					</view>
 					<view class="cu-bar bg-white">
@@ -106,6 +119,10 @@
 		erpProductGetBasicData,
 		erpusereditproductmoney
 	} from "@/api/erpapi.js"
+	import {
+		getAdjustPriceList,
+		adjustPrice
+	} from "@/api/erp.js"
 	export default {
 		components: {
 			barSearchTitle,
@@ -115,6 +132,13 @@
 		},
 		data() {
 			return {
+				isDistribution: false,
+				sellPrice: '',
+				allotPrice: '',
+				recyclePrice: '',
+				switchB: false,
+				switchC: false,
+				switchD: false,
 				index: '',
 				swiperIndex: 0,
 				swiperList: [],
@@ -162,6 +186,26 @@
 				filtertopnum: '90', //筛选条高度
 			}
 		},
+		watch: {
+			recyclePrice() {
+				const fenxiao = Number(this.sellPrice) * 0.03;
+				const chengben = (Number(this.sellPrice) - Number(this.recyclePrice)) / 2;
+				if (chengben > fenxiao) {
+					this.isDistribution = true
+				} else {
+					this.isDistribution = false
+				}
+			},
+			sellPrice() {
+				const fenxiao = Number(this.sellPrice) * 0.03;
+				const chengben = (Number(this.sellPrice) - Number(this.recyclePrice)) / 2;
+				if (chengben > fenxiao) {
+					this.isDistribution = true
+				} else {
+					this.isDistribution = false
+				}
+			}
+		},
 		onLoad(e) {
 			// #ifdef APP-PLUS
 			this.filtertopnum = 10;
@@ -176,7 +220,7 @@
 		},
 		//加载更多
 		onReachBottom() {
-			this.erpusertaskproducttFuc();
+			this.erpusertaskproductFuc();
 		},
 		onReady() {
 			_tool.setBarColor(true);
@@ -186,6 +230,27 @@
 			});
 		},
 		methods: {
+			SwitchB(e) {
+				this.switchB = e.detail.value
+				if (this.switchB) {
+					this.switchC = false;
+					this.switchD = false;
+				}
+			},
+			SwitchC(e) {
+				this.switchC = e.detail.value
+				if (this.switchC) {
+					this.switchB = false;
+					this.switchD = false;
+				}
+			},
+			SwitchD(e) {
+				this.switchD = e.detail.value
+				if (this.switchD) {
+					this.switchC = false;
+					this.switchB = false;
+				}
+			},
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {
 				let that = this;
@@ -296,26 +361,18 @@
 			erpusertaskproductFuc() {
 				let that = this;
 				let paramsData = {
-					'page': this.pageIndex,
-					'pagelist': this.pageLimit,
-					'warehouse_id': this.warehouse_id,
-					'partition_id': this.partition_id,
-					'category_id': this.category_id,
-					'brand_id': this.brand_id,
-					'series_id': this.series_id,
-					'machine_id': this.machine_id,
-					// 'sn':this.snNumber,
-					'keyword': this.storeName
+					'pageSize': this.pageIndex,
+					'pageNum': this.pageLimit,
 				}
-				erpUserTaskProduct(paramsData).then(res => {
-					let data = res.data.data;
+				getAdjustPriceList(paramsData).then(res => {
+					let data = res.rows;
 					if (that.ifBottomRefresh) {
 						that.dataList = that.dataList.concat(data)
 					} else {
 						that.dataList = data
 					}
 					that.ifBottomRefresh = false
-					that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+					that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 				})
 			},
 			searchTap(e) {
@@ -347,20 +404,15 @@
 			},
 			edit() {
 				//编辑提交
-				console.log(this.tiaojiaInfo);
-				return;
-				if (this.tiaojiaInfo.sales_price <= 0) {
-					return uni.showToast({
-						title: '价格不能为0小于0！',
-						icon: 'none',
-						position: 'top'
-					});
-				}
-				erpusereditproductmoney({
-						money: this.tiaojiaInfo.sales_price,
-						peer_price: this.tiaojiaInfo.peer_price,
-						cost_price: this.tiaojiaInfo.cost_price,
-						goods_id: this.tiaojiaInfo.id
+				adjustPrice({
+						goodsId: this.tiaojiaInfo.goodsId,
+						recycleFormId: this.tiaojiaInfo.recycleFormId,
+						recyclePrice: this.recyclePrice,
+						allotPrice: this.allotPrice,
+						sellPrice: this.sellPrice,
+						distributionAble: this.switchB ? 1 : 0,
+						hotAble: this.switchC ? 1 : 0,
+						specialSaleAble: this.switchD ? 1 : 0,
 					}).then(res => {
 						this.$u.toast('调价成功！');
 						uni.startPullDownRefresh({

@@ -17,11 +17,11 @@
 			<view class="second" @tap="checkView(1)">二手</view>
 			<view class="new" @tap="checkView(2)">全新</view>
 		</view> -->
-		<view v-if="newViews">
+		<!-- <view v-if="newViews">
 			<newView @checkView="checkView"></newView>
-		</view>
-		<view v-if="!newViews">
-			<secondView @checkView="checkView"></secondView>
+		</view> -->
+		<view>
+			<secondView @checkView="checkView" :goodsData="goodsData"></secondView>
 		</view>
 		<!--返回顶部-->
 		<view class="add-btn-view-box">
@@ -71,6 +71,7 @@
 	} from '@/api/mall.js';
 	import { getIndexPrice } from '@/api/common.js';
 	import { kefuInitUser } from '@/api/user.js';
+	import { secondGoodsList } from '@/api/malls.js';
 	export default {
 		name: 'home',
 		components: {
@@ -91,6 +92,7 @@
 		},
 		data() {
 			return {
+				firstFlag: true,
 				newViews: true,
 				tabID: 0,
 				appMode: _tool.mpb_mode('tips'),
@@ -201,7 +203,7 @@
 		},
 		methods: {
 			checkView(e) {
-				console.log(e)
+				console.log(e);
 				if (e === 'new') {
 					this.newViews = true;
 				} else {
@@ -252,25 +254,27 @@
 			},
 			// 获取产品列表
 			getProduct() {
+				console.log(222);
 				let that = this;
 				let params = {
-					page: this.pageIndex,
-					pagesize: this.pageLimit,
+					firstFlag: this.firstFlag,
 				};
-				ProductLists(params)
+				secondGoodsList(params)
 					.then((res) => {
+						console.log(res);
 						let data = res.data;
-
-						if (that.pageIndex == 1) {
-							that.goodsData = data;
-						} else {
-							that.goodsData.push(...data);
-						}
-						if (res.data.length == 10) {
-							that.pageIndex++;
-						} else {
-							that.loadmore = 'noMore';
-						}
+						that.goodsData.push(...data);
+						this.firstFlag = false;
+						// if (that.pageIndex == 1) {
+						// 	that.goodsData = data;
+						// } else {
+						// 	that.goodsData.push(...data);
+						// }
+						// if (res.rows.length == 10) {
+						// 	that.pageIndex++;
+						// } else {
+						// 	that.loadmore = 'noMore';
+						// }
 					})
 					.finally(() => {
 						uni.stopPullDownRefresh();
@@ -409,12 +413,7 @@
 				// 点击品牌
 				uni.navigateTo({
 					url:
-						'/pages/home/sort_list?sid=' +
-						e.data.id +
-						'&bid=' +
-						this.headTab.TabCatID +
-						'&cid=' +
-						e.data.category_id,
+						'/pages/home/sort_list?sid=' + e.data.id + '&bid=' + this.headTab.TabCatID + '&cid=' + e.data.category_id,
 				});
 			},
 			goToTap() {
@@ -462,11 +461,11 @@
 					});
 				}
 			},
-			async kefuInitUser () {
+			async kefuInitUser() {
 				uni.navigateTo({
 					url: '/pages/chat/chat',
 				});
-				const res = await this.$api.checkLogin()
+				const res = await this.$api.checkLogin();
 				// if (res) {
 				// 	console.log(this.userInfo)
 				// 	const isNew  = uni.getStorageSync('isNew')

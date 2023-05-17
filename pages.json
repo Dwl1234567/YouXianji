@@ -1266,6 +1266,15 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
+		},
+		// 调价列表
+		{
+			"path": "pages/erp/adjustmentList/list",
+			"style": {
+				// "navigationBarTitleText": "详情",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"tabBar": {

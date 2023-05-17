@@ -158,6 +158,7 @@
 		methods: {
 			moneyFucs(e) {
 				this.allPrice = e.basicPrice;
+
 				this.calcYuguMoney();
 			},
 			moneyFuc(e) {
@@ -187,6 +188,7 @@
 				that.Pricepramitems = [];
 				that.basicPrice[0].map((item) => {
 					if (item.checked) {
+						uni.setStorageSync('basicPriceId', item.priceId);
 						that.allPrice = item.basicPrice;
 						that.priceId = item.priceId;
 					}

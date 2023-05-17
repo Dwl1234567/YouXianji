@@ -3,7 +3,10 @@
 		<view class="cu-list menu-avatar">
 			<block v-for="(item,index) in list_data" :key="index">
 				<view class="cu-item margin-sm bg-white radius-2" @tap="listTap(item,index)">
-					<view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ item.image +')'}]"></view>
+					<view
+						class="cu-avatar radius lg"
+						:style="[{backgroundImage:'url('+ $httpImage + item.frontPhoto +')'}]"
+					></view>
 					<view class="content">
 						<!--标题-->
 						<view class="text-black text-cut">

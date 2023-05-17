@@ -6,7 +6,7 @@ import request from '@/utils/request.js';
  *
  */
 export function secondGoodsList(data) {
-	return request.get('/yxj/app/secondGoods/list', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoods/getRandomGoods', data, { noLogin: true });
 }
 
 /**
@@ -38,4 +38,12 @@ export function shoppingCartList(data) {
  */
 export function getDefaultAddress(data) {
 	return request.get('/yxj/app/user/getDefaultAddress', data, { noLogin: true });
+}
+
+/**
+ * 查看热销分销等列表
+ *
+ */
+export function secondGoodsLists(data) {
+	return request.get('/yxj/app/secondGoods/list', data, { noLogin: true });
 }

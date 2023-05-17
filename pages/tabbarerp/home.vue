@@ -108,6 +108,12 @@
 					</view>
 					<text>整备仓</text>
 				</view>
+				<view class="cu-item" @tap="adjustmentList">
+					<view class="iconfont icon-tubiao-64 text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>调价列表</text>
+				</view>
 			</view>
 		</view>
 
@@ -442,6 +448,11 @@
 						url: '/pages/erp/chat/chatAdmin',
 					});
 				}
+			},
+			adjustmentList() {
+				uni.navigateTo({
+					url: '/pages/erp/adjustmentList/list',
+				});
 			},
 			maintenance() {
 				uni.navigateTo({
