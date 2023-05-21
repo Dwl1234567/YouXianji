@@ -24,7 +24,7 @@
 			</view>
 			<!-- 列表 -->
 			<view class="cart-list bg-white margin-sm" style="border-radius: 11rpx; position: relative">
-				<block v-for="(item, index) in cartList" :key="item.cart_id">
+				<block v-for="(item, index) in cartList" :key="item.cart_id" v-if="item.disabled == true">
 					<!-- <view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view> -->
 					<view
 						class="cart-item"
@@ -152,7 +152,7 @@
 	import _my_cart_data from '@/static/data/my_cart.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
 	import { CartIndex, CartAdd, CartDelete, CartNumberChange, CartChooseChange } from '@/api/mall.js';
-	import { shoppingCartList, getDefaultAddress } from '@/api/malls.js';
+	import { shoppingCartList, getDefaultAddress, initiatePayment } from '@/api/malls.js';
 	import { mapState } from 'vuex';
 	export default {
 		name: 'cart',
@@ -163,6 +163,7 @@
 		},
 		data() {
 			return {
+				orderPaymentId: 0,
 				addressN: {},
 				isWx: true,
 				checkout: false,
@@ -176,7 +177,8 @@
 				state: 'load',
 			};
 		},
-		onLoad() {
+		onLoad(option) {
+			this.orderPaymentId = option.id;
 			this.cartList = uni.getStorageSync('cartList');
 			this.getDefaultAddresss();
 		},
@@ -421,18 +423,45 @@
 			},
 			//创建订单
 			createOrder() {
-				let list = this.cartList;
-				let cartId = [];
-				list.forEach((item) => {
-					if (item.choose) {
-						cartId.push(item.cart_id);
+				console.log({
+					orderPaymentId: Number(this.orderPaymentId),
+					paymentType: this.isWx ? '1' : '0',
+				});
+				initiatePayment({
+					orderPaymentId: Number(this.orderPaymentId),
+					paymentType: this.isWx ? '1' : '0',
+				}).then((res) => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '结算成功',
+						});
 					}
 				});
-				if (cartId.length == 0) {
-					this.$api.msg('没有选中商品');
-					return;
-				}
-				this.$api.navTo(`/pages/goods/settlement?cart=${cartId.join(',')}`);
+				// uni.requestPayment({
+				// 	provider: 'wxpay',
+				// 	success(res) {
+				// 		console.log(res);
+				// 	},
+				// 	fail(res) {
+				// 		console.log(res);
+				// 	},
+				// 	complete(res) {
+				// 		console.log(res);
+				// 	},
+				// });
+				// let list = this.cartList;
+				// let cartId = [];
+				// list.forEach((item) => {
+				// 	if (item.choose) {
+				// 		cartId.push(item.cart_id);
+				// 	}
+				// });
+				// if (cartId.length == 0) {
+				// 	this.$api.msg('没有选中商品');
+				// 	return;
+				// }
+				// this.$api.navTo(`/pages/goods/settlement?cart=${cartId.join(',')}`);
 			},
 			navTo(url) {
 				this.$api.navTo(url);
@@ -711,10 +740,10 @@
 		position: fixed;
 		left: 0px;
 		/* #ifndef APP-PLUS */
-		bottom: 0px;
+		bottom: 100upx;
 		/* #endif */
 		/* #ifdef APP-PLUS */
-		bottom: 0px;
+		bottom: 100upx;
 		/* #endif */
 		z-index: 95;
 		display: flex;

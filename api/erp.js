@@ -430,3 +430,51 @@ export function adjustPrice(data) {
 export function adjustPriceList(data) {
 	return request.get('/yxj/app/adjustPrice/list', data, { noLogin: true });
 }
+
+/**
+ * 员工查询购物订单列表
+ *
+ */
+export function empSelectList(data) {
+	return request.get('/yxj/app/shoppingOrder/empSelectList', data, { noLogin: true });
+}
+
+/**
+ * 员工填写运单号
+ *
+ */
+export function sellerShipments(data) {
+	return request.post('/yxj/app/shoppingOrder/sellerShipments', data, { noLogin: true });
+}
+
+/**
+ * 审批时获取拒绝理由的接口
+ *
+ */
+export function refuseReasonList(data) {
+	return request.get('/yxj/app/secondGoodsReturn/refuseReasonList', data, { noLogin: true });
+}
+
+/**
+ * 同意退款接口
+ *
+ */
+export function agreeReturn(data) {
+	return request.get('/yxj/app/secondGoodsReturn/agreeReturn', data, { noLogin: true });
+}
+
+/**
+ * 查看退货原因接口
+ *
+ */
+export function selectReturnReason(data) {
+	return request.get('/yxj/app/secondGoodsReturn/selectReturnReason', data, { noLogin: true });
+}
+
+/**
+ * 上传售后凭证接口
+ *
+ */
+export function uploadAfterSaleVoucher(data) {
+	return request.post('//yxj/app/secondGoodsReturn/uploadAfterSaleVoucher', data, { noLogin: true });
+}

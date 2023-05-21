@@ -16,15 +16,15 @@
 					</button>
 				</block>
 			</bar-title>
-			
+
 			<!-- #endif -->
-			
+
 			<!--用户信息-->
 			<view class="user-info-box">
 				<!--已登陆-->
 				<view class="cu-list menu-avatar">
 					<view class="cu-item">
-						<view class="cu-avatar round lg" style="background-image:url(/static/images/avatar/1.jpg);"/>
+						<view class="cu-avatar round lg" style="background-image: url(/static/images/avatar/1.jpg)" />
 						<view class="content text-xl">
 							<view class="text-white">
 								<text class="margin-right">{{storeInfo.name}}</text>
@@ -37,90 +37,94 @@
 				</view>
 			</view>
 		</view>
-		
-		
+
 		<view class="view-content">
 			<!--用户数据-->
 			<view class="padding-xs bg-white user-info-order-box">
 				<view class="text-black text-lg text-bold padding-top-xl"></view>
 				<view class="cu-list grid col-5 no-border">
+					<view class="cu-item" @tap="payment">
+						<view class="iconfont icon-cashorange text-red">
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
+						<text>代付款</text>
+					</view>
+					<view class="cu-item" @tap="delivery">
+						<view class="iconfont icon-cashorange text-red">
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
+						<text>代发货</text>
+					</view>
+					<view class="cu-item" @tap="receipt">
+						<view class="iconfont icon-cashorange text-red">
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
+						<text>代收货</text>
+					</view>
+					<view class="cu-item" @tap="refund">
+						<view class="iconfont icon-cashorange text-red">
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
+						<text>退款/售后</text>
+					</view>
 					<view class="cu-item" @tap="taskPriceTap">
 						<view class="iconfont icon-cashorange text-red">
-							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">
-								{{loginfo.taskpricenum || 0}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
 						<text>待调价</text>
 					</view>
 					<view class="cu-item" @tap="transferlistTap">
 						<view class="iconfont icon-myselect text-red">
-							<view class="cu-tag badge" v-if="loginfo.transnum!=0">
-								{{loginfo.transnum  || 0}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.transnum!=0">{{loginfo.transnum || 0}}</view>
+						</view>
 						<text>待调拨</text>
 					</view>
 					<view class="cu-item" @tap="shenheTap">
 						<view class="iconfont icon-checktouploadorange text-red">
-							<view class="cu-tag badge" v-if="loginfo.shenhenum!=0">
-								{{loginfo.shenhenum || 2}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.shenhenum!=0">{{loginfo.shenhenum || 2}}</view>
+						</view>
 						<text>审上架</text>
 					</view>
 					<view class="cu-item" @tap="financeTap">
 						<view class="iconfont icon-reward text-red">
-							<view class="cu-tag badge" v-if="loginfo.fukuannum!=0">
-								{{loginfo.fukuannum || 0}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.fukuannum!=0">{{loginfo.fukuannum || 0}}</view>
+						</view>
 						<text>待付款</text>
 					</view>
 					<view class="cu-item" @tap="qualityTaskTap">
 						<view class="iconfont icon-selectandcheck text-red">
-							<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">
-								{{loginfo.qualitynum || 0}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
+						</view>
 						<text>待分拣</text>
 					</view>
-					
+
 					<view class="cu-item" @tap="fahuoTap">
 						<view class="iconfont icon-goship text-red">
-							<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">
-								{{loginfo.qualitynum  || 0}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
+						</view>
 						<text>待发货</text>
 					</view>
 					<view class="cu-item" @tap="taskattrPriceTap">
 						<view class="iconfont icon-recyclepricecheck text-red">
-							<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">
-								{{loginfo.qualitynum  || 0}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
+						</view>
 						<text>审收价</text>
 					</view>
 					<view class="cu-item" @tap="attrPriceTap">
 						<view class="iconfont icon-tubiao-64 text-red">
-							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">
-								{{loginfo.taskpricenum || 0}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
 						<text>改收价</text>
 					</view>
 					<view class="cu-item" @tap="localTap">
 						<view class="iconfont icon-tubiao-64 text-red">
-							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">
-								{{loginfo.taskpricenum || 0}}
-							</view>	
-						</view> 
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
 						<text>待上门</text>
 					</view>
 				</view>
 			</view>
-			
-			
+
 			<!--推荐工具-->
 			<view class="cu-list menu sm-border margin-top">
 				<view class="cu-item arrow" @tap="useryejiTap">
@@ -139,9 +143,8 @@
 					<view class="content">我的接待</view>
 				</view>
 			</view>
-			
 		</view>
-		
+
 		<!--占位底部距离-->
 		<view class="cu-tabbar-height"></view>
 		<!--切换工作台-->
@@ -149,7 +152,7 @@
 			<button class="cu-btn cuIcon-shake bg-red"></button>
 		</view>-->
 		<!--底部导航-->
-		<footer-tabbar :tabID='4' :msgDot='true' />
+		<footer-tabbar :tabID="4" :msgDot="true" />
 	</view>
 </template>
 
@@ -157,26 +160,22 @@
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
 	import barTitle from '@/components/common/basics/bar-title';
-	import {
-		erpuserbacklog
-	} from "@/api/erpapi.js";
-	import {
-		getKefuUserList
-	} from "@/api/user.js";
-	import _my_data from '@/static/data/my.js';	//虚拟数据
-	import _tool from '@/utils/tools.js';	//工具函数
+	import { erpuserbacklog } from '@/api/erpapi.js';
+	import { getKefuUserList } from '@/api/user.js';
+	import _my_data from '@/static/data/my.js'; //虚拟数据
+	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		name: 'my',
-		components: { 
+		components: {
 			barTitle,
-			footerTabbar
+			footerTabbar,
 		},
 		data() {
 			return {
 				login: false,
-				storeInfo:{},
-				loginfo:''
-			}
+				storeInfo: {},
+				loginfo: '',
+			};
 		},
 		onLoad() {
 			//加载虚拟数据
@@ -187,17 +186,40 @@
 			this.erpuserbacklogFuc();
 		},
 		methods: {
-			
 			// 获取待办数据
-			erpuserbacklogFuc(){
-				erpuserbacklog({}).then(res=>{
+			erpuserbacklogFuc() {
+				erpuserbacklog({}).then((res) => {
 					this.loginfo = res.data;
-				})
+				});
+			},
+			// 代付款
+			payment() {
+				uni.navigateTo({
+					url: '/pages/erp/commodity/payment',
+				});
+			},
+			// 代发货
+			delivery() {
+				uni.navigateTo({
+					url: '/pages/erp/commodity/delivery',
+				});
+			},
+			// 代收货
+			receipt() {
+				uni.navigateTo({
+					url: '/pages/erp/commodity/receipt',
+				});
+			},
+			// 退款
+			refund() {
+				uni.navigateTo({
+					url: '/pages/erp/commodity/refund',
+				});
 			},
 			// 我的工资
-			mywages(){
+			mywages() {
 				uni.navigateTo({
-					url: "/pages/erp/user/salary"
+					url: '/pages/erp/user/salary',
 				});
 				console.log('我的工资');
 			},
@@ -209,101 +231,100 @@
 			setReachBottom() {
 				console.log('触底了');
 			},
-			useryejiTap(){
+			useryejiTap() {
 				uni.navigateTo({
-					url: "/pages/erp/user/yeji"
+					url: '/pages/erp/user/yeji',
 				});
 			},
-			userrecycleTap(){
+			userrecycleTap() {
 				uni.navigateTo({
-					url: "/pages/erp/user/recyclelist"
+					url: '/pages/erp/user/recyclelist',
 				});
 			},
-			usersellTap(){
+			usersellTap() {
 				uni.navigateTo({
-					url: "/pages/erp/user/selllist"
+					url: '/pages/erp/user/selllist',
 				});
 			},
-			goToShop(){
+			goToShop() {
 				uni.switchTab({
-					url:'/pages/tabbar/my'
-				})
+					url: '/pages/tabbar/my',
+				});
 			},
 			// 待发货
 			fahuoTap() {
 				uni.navigateTo({
-					url: "/pages/erp/order/list"
+					url: '/pages/erp/order/list',
 				});
 			},
 			// 预警调价
 			taskPriceTap() {
 				uni.navigateTo({
-					url: "/pages/erp/task/product_list"
+					url: '/pages/erp/task/product_list',
 				});
 			},
 			//改收价
 			attrPriceTap() {
 				uni.navigateTo({
-					url: "/pages/erp/user/attrlist"
+					url: '/pages/erp/user/attrlist',
 				});
 			},
 			//审核收价
 			taskattrPriceTap() {
 				uni.navigateTo({
-					url: "/pages/erp/user/auditlist"
+					url: '/pages/erp/user/auditlist',
 				});
 			},
 			//待调拨
 			transferlistTap() {
 				uni.navigateTo({
-					url: "/pages/erp/stores/transferlist"
+					url: '/pages/erp/stores/transferlist',
 				});
 			},
 			//待付款
 			financeTap() {
 				uni.navigateTo({
-					url: "/pages/erp/finance/fukuan"
+					url: '/pages/erp/finance/fukuan',
 				});
 			},
 			//待审核
 			shenheTap() {
 				uni.navigateTo({
-					url: "/pages/erp/purchase/shangjia"
+					url: '/pages/erp/purchase/shangjia',
 					//url: "/pages/erp/purchase/list?status=0"
 				});
 			},
 			//待分拣
 			qualityTaskTap() {
 				uni.navigateTo({
-					url: "/pages/erp/task/quality"
+					url: '/pages/erp/task/quality',
 				});
 			},
 			//待上门
 			localTap() {
 				uni.navigateTo({
-					url: "/pages/erp/purchase/tasklocal"
+					url: '/pages/erp/purchase/tasklocal',
 				});
 			},
 			//我的接待
 			kefujdTap() {
 				uni.navigateTo({
-					url: "/pages/erp/stores/kefurece"
+					url: '/pages/erp/stores/kefurece',
 				});
 			},
-		}
-	}
+		},
+	};
 </script>
 
 <style lang="scss" scoped>
-	.background{
+	.background {
 		width: 100vw;
 		height: 100vh;
 		position: absolute;
 		top: 0px;
-		left:0px;
+		left: 0px;
 	}
 	.my-box {
-		
 		width: 100%;
 		// display: none;
 		.head-box {
@@ -321,7 +342,7 @@
 						margin-bottom: 18.18rpx;
 					}
 				}
-				.cu-list.menu-avatar>.cu-item {
+				.cu-list.menu-avatar > .cu-item {
 					background-color: inherit;
 					.content {
 						width: calc(100% - 94.54rpx - 59.99rpx - 20rpx);
@@ -329,15 +350,15 @@
 							color: #e8e8e8;
 							.text-border-x {
 								margin-right: 25.45rpx;
-							    position: relative;
+								position: relative;
 								&:after {
 									position: absolute;
 									background: #dddddd;
-								    top: 5.45rpx;
-								    width: 1.81rpx;
+									top: 5.45rpx;
+									width: 1.81rpx;
 									right: -12.72rpx;
-								    height: 16.36rpx;
-								    content: " ";
+									height: 16.36rpx;
+									content: ' ';
 								}
 							}
 						}
@@ -348,7 +369,7 @@
 						border-bottom: 0;
 					}
 				}
-				.cu-list.menu-avatar>.cu-item .content>view:first-child {
+				.cu-list.menu-avatar > .cu-item .content > view:first-child {
 					font-size: 34.54rpx;
 				}
 			}
@@ -356,14 +377,14 @@
 				.cu-list.grid.no-border {
 					padding: 0;
 				}
-				.cu-list.grid.no-border>.cu-item {
-				    padding-top: 27.27rpx;
-				    padding-bottom: 9.09rpx;
+				.cu-list.grid.no-border > .cu-item {
+					padding-top: 27.27rpx;
+					padding-bottom: 9.09rpx;
 				}
 				.cu-list.grid {
 					background-color: inherit;
 				}
-				.cu-list.grid>.cu-item text {
+				.cu-list.grid > .cu-item text {
 					color: #e8e8e8;
 					font-size: 20rpx;
 					line-height: 27.27rpx;
@@ -393,16 +414,16 @@
 				position: relative;
 				background-color: white;
 				border-radius: 18.18rpx;
-				box-shadow: 0px 0px 4px 0px rgba(159,159,159,0.5);
+				box-shadow: 0px 0px 4px 0px rgba(159, 159, 159, 0.5);
 				.cu-list.grid.no-border {
-				    padding: 0;
+					padding: 0;
 				}
-				.cu-list.grid.no-border>.cu-item {
-				    padding-bottom: 9.09rpx;
+				.cu-list.grid.no-border > .cu-item {
+					padding-bottom: 9.09rpx;
 				}
 			}
-			.cu-list.grid>.cu-item text {
-			    color: inherit;
+			.cu-list.grid > .cu-item text {
+				color: inherit;
 			}
 			.user-info-money-box {
 				border-radius: 18.18rpx;
@@ -422,9 +443,9 @@
 							}
 							.money-content {
 								position: relative;
-							    margin-left: 109.09rpx;
-							    margin-bottom: 27.27rpx;
-							    top: 12.72rpx;
+								margin-left: 109.09rpx;
+								margin-bottom: 27.27rpx;
+								top: 12.72rpx;
 							}
 						}
 					}
@@ -435,22 +456,21 @@
 				.tools-view {
 					position: relative;
 					.tools-title {
-						padding-right: 81.81rpx;	
+						padding-right: 81.81rpx;
 					}
 					.tools-right {
 						position: absolute;
-					    right: 9.09rpx;
-					    bottom: 23.63rpx;	
+						right: 9.09rpx;
+						bottom: 23.63rpx;
 					}
 				}
-				
 			}
 		}
 	}
 	.my-box.show {
 		display: block;
 	}
-	.grid.col-6 > uni-view{
-		width:16.666%;
+	.grid.col-6 > uni-view {
+		width: 16.666%;
 	}
 </style>

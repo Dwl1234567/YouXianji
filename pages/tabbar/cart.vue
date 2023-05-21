@@ -20,7 +20,7 @@
 			</view>
 		</view> -->
 
-		<view class="cart-list-view">
+		<view class="cart-list-view" v-for="(item, index) in cartList" :key="item.cart_id">
 			<!-- 列表 -->
 			<view
 				class="cart-list bg-white margin-sm"
@@ -33,7 +33,7 @@
 					position: relative;
 				"
 			>
-				<block v-for="(item, index) in cartList" :key="item.cart_id">
+				<block>
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 					<view
 						class="cart-item"
@@ -80,9 +80,9 @@
 
 		<!--占位底部距离-->
 		<view class="cu-tabbar-height" />
-
+		<view>123</view>
 		<!-- 底部菜单栏 -->
-		<view class="action-section bg-white" v-if="state != 'load'">
+		<view class="action-section bg-white">
 			<view class="checkbox">
 				<image
 					:src="allChoose?'/static/selected.png':'/static/select.png'"
@@ -99,7 +99,6 @@
 			<button class="no-border cu-btn bg-deepblue radius-4" @click="createOrder" v-if="!checkout">结算</button>
 			<button class="no-border cu-btn bg-deepblue radius-4" @click="createOrder" v-else>删除</button>
 		</view>
-
 		<!--小程序端显示-->
 		<!-- #ifdef MP -->
 		<!--编辑-->
@@ -122,7 +121,7 @@
 	import _my_cart_data from '@/static/data/my_cart.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
 	import { CartIndex, CartAdd, CartDelete, CartNumberChange, CartChooseChange } from '@/api/mall.js';
-	import { shoppingCartList } from '@/api/malls.js';
+	import { shoppingCartList, shoppingOrder } from '@/api/malls.js';
 	import { mapState } from 'vuex';
 	export default {
 		name: 'cart',
@@ -384,8 +383,25 @@
 			//创建订单
 			createOrder() {
 				uni.setStorageSync('cartList', this.cartList);
-				uni.navigateTo({
-					url: '/pages/tabbar/settlement',
+				const shoppingOrderItemList = [];
+				this.cartList.map((item) => {
+					if (item.disabled) {
+						shoppingOrderItemList.push({ goodsId: item.goodsInfo.goodsId, cartId: item.cartId });
+					}
+				});
+				console.log({
+					totalPrice: this.total,
+					shoppingOrderItemList,
+				});
+				shoppingOrder({
+					totalPrice: this.total,
+					shoppingOrderItemList,
+				}).then((res) => {
+					if (res.code === 200) {
+						uni.navigateTo({
+							url: '/pages/tabbar/settlement?id=' + res.data,
+						});
+					}
 				});
 			},
 			navTo(url) {
@@ -593,10 +609,10 @@
 		position: fixed;
 		left: 0px;
 		/* #ifndef APP-PLUS */
-		bottom: 0px;
+		bottom: 0upx;
 		/* #endif */
 		/* #ifdef APP-PLUS */
-		bottom: 0px;
+		bottom: 100upx;
 		/* #endif */
 		z-index: 95;
 		display: flex;

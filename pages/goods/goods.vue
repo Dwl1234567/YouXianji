@@ -440,7 +440,7 @@
 <script>
 	import Vue from 'vue';
 	import { goodsdetail, bindingUser } from '@/api/common.js';
-	import { shoppingCart } from '@/api/malls.js';
+	import { shoppingCart, secondGoodsFootprint } from '@/api/malls.js';
 	import qrcode from './qrcode';
 	import { ProductDetail, FlashProductDetail, ProductEvaluate, CartAdd, OrderCreate } from '@/api/mall.js';
 	import { setuservisit } from '@/api/user.js';
@@ -541,6 +541,7 @@
 		},
 		onLoad(options) {
 			this.goodsId = options.id;
+			this.secondGoodsFootprint(options.id);
 			this.isNew = options.isNew;
 			// 获取当前页面信息
 			const pages = getCurrentPages();
@@ -649,6 +650,15 @@
 			}
 		},
 		methods: {
+			secondGoodsFootprint(id) {
+				secondGoodsFootprint({
+					secondGoodsId: Number(id),
+				}).then((res) => {
+					if (res.code === 200) {
+						console.log('足迹添加成功');
+					}
+				});
+			},
 			bottomDisplay(e) {
 				const query = uni.createSelectorQuery().in(this);
 				query

@@ -3,23 +3,32 @@
 		<view class="cu-list menu-avatar">
 			<block v-for="(item,index) in list_data" :key="index">
 				<view class="cu-item bg-white margin-bottom-sm radius-6" @tap="listTap(item,index)">
-					<view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ item.image +')'}]"></view>
+					<!-- <view
+						class="cu-avatar radius lg"
+						:style="[{backgroundImage:'url('+ $httpImage + item.goodsInfo.frontPhoto +')'}]"
+					></view> -->
+					<image :src="$httpImage + item.goodsInfo.frontPhoto" mode="" class="cu-avatar radius lg"></image>
 					<view class="content">
 						<!--标题-->
 						<view class="text-black text-cut">
-							<text class="text-bold">{{item.title}}</text>
+							<text class="text-bold">{{item.goodsInfo.title}}</text>
 						</view>
 						<!--标签-->
 						<view class="text-gray text-cut text-sm">
-							<text class="cu-label bg-red radius" style="padding:0 5rpx;">{{item.colourname}}</text>
+							<text class="cu-label bg-red radius" style="padding: 0 5rpx">
+								{{item.goodsInfo.conditionInfo == 0 ? '99新' : item.goodsInfo.conditionInfo == 1 ? '95新' :
+								item.goodsInfo.conditionInfo == 2 ? '9新' : item.goodsInfo.conditionInfo == 3 ? '9新以下' : ''}}
+							</text>
 							<!--item.type-->
-							<block v-for="(items,indexs) in item.tags" :key="indexs">
-								<text class="text-black  margin-left-sm"> {{items}}</text>
+							<block>
+								<text class="text-black margin-left-sm">{{item.goodsInfo.deviceLabel}}</text>
 							</block>
 						</view>
 						<!--价格-->
 						<view class="text-gray text-cut text-sm tag-view">
-							<text class="text-red text-bold text-price text-xl" v-if="item.sales_price">{{item.sales_price}}2222</text>
+							<text class="text-red text-bold text-price text-xl" v-if="item.goodsInfo.sellPrice">
+								{{item.goodsInfo.sellPrice}}
+							</text>
 							<!-- <text class="text-gray through" v-if="item.cost_price">￥{{item.cost_price}}</text> -->
 							<block v-for="(items,indexs) in item.discount" :key="indexs">
 								<text class="cu-tag line-orange radius sm">{{items}}</text>
@@ -40,29 +49,29 @@
 			list_data: {
 				type: Array,
 				default: () => {
-					return []
-				}
+					return [];
+				},
 			},
 			show: {
 				type: Boolean,
-				default: true
-			}
+				default: true,
+			},
 		},
 		methods: {
-			listTap(data,index) {
+			listTap(data, index) {
 				this.$emit('listTap', {
 					data,
-					index
+					index,
 				});
-			}
-		}
-	}
+			},
+		},
+	};
 </script>
 
 <style lang="scss" scoped>
 	.goods-list-box {
 		display: none;
-		.cu-list{
+		.cu-list {
 			overflow: hidden;
 		}
 		.cu-list.menu-avatar > .cu-item {
@@ -73,7 +82,7 @@
 				height: 0;
 				border-bottom: 0;
 			}
-			.cu-avatar{
+			.cu-avatar {
 				left: 12px;
 			}
 			.cu-avatar.lg {
@@ -96,12 +105,12 @@
 				}
 				view:first-child {
 					font-size: 26rpx;
-					font-weight:blod;
+					font-weight: blod;
 					display: inherit;
 					align-items: inherit;
 				}
 				.through {
-					text-decoration:line-through;
+					text-decoration: line-through;
 				}
 				.tag-view {
 					text {

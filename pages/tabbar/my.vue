@@ -154,7 +154,7 @@
 					<view class="text-black text-xl text-bold padding-sm">我买到的订单</view>
 					<view class="allorder-tips text-sm text-929294" @click="goods_orderlist_tap(0)">全部订单</view>
 					<view class="cu-list grid col-4 no-border">
-						<view class="cu-item" @tap="goods_orderlist_tap(1)">
+						<view class="cu-item" @tap="goods_orderlist_tap(0)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-qr_code"></text>
 							</view>
@@ -165,7 +165,7 @@
 								<text class="text-101010">待付款</text>
 							</view>
 						</view>
-						<view class="cu-item" @tap="goods_orderlist_tap(2)">
+						<view class="cu-item" @tap="goods_orderlist_tap(1)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-cartfill"></text>
 							</view>
@@ -176,7 +176,7 @@
 								<text>待发货</text>
 							</view>
 						</view>
-						<view class="cu-item" @tap="goods_orderlist_tap(3)">
+						<view class="cu-item" @tap="goods_orderlist_tap(2)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-favorfill"></text>
 							</view>
@@ -187,7 +187,7 @@
 								<text>待收货</text>
 							</view>
 						</view>
-						<view class="cu-item" @tap="goods_orderlist_tap(4)">
+						<view class="cu-item" @tap="goods_orderlist_tap(3)">
 							<view class="text-xxl text-red" v-if="login">
 								<text class="cuIcon-favorfill"></text>
 							</view>

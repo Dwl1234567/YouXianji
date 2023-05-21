@@ -1275,6 +1275,51 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
+		},
+		// 代付款
+		{
+			"path": "pages/erp/commodity/payment",
+			"style": {
+				"navigationBarTitleText": "代付款",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 代付款
+		{
+			"path": "pages/erp/commodity/delivery",
+			"style": {
+				"navigationBarTitleText": "代发货",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 代付款
+		{
+			"path": "pages/erp/commodity/receipt",
+			"style": {
+				"navigationBarTitleText": "代收货",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 代付款
+		{
+			"path": "pages/erp/commodity/refund",
+			"style": {
+				"navigationBarTitleText": "退款/售后",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 评价
+		{
+			"path": "pages/order/goods/evaluate",
+			"style": {
+				"navigationBarTitleText": "评价",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"tabBar": {

@@ -22,12 +22,12 @@
 			</view>
 		</scroll-view>
 		<block class="content" v-if="TabCur == 0">
-			<view class="padding-lr-sm padding-top-lg" style="background: #F0F0F0;">
+			<view class="padding-lr-sm padding-top-lg" style="background: #f0f0f0">
 				<goods-mini-list :list_data="querydata[TabCur].dataList" @listTap="goodsSortListTap"></goods-mini-list>
 			</view>
 		</block>
 		<block class="" v-else>
-			<view class="margin-lr-sm margin-top-lg" style="background: #F0F0F0;">
+			<view class="margin-lr-sm margin-top-lg" style="background: #f0f0f0">
 				<goods-mini-list :list_data="querydata[TabCur].dataList" @listTap="goodsSortListTap"></goods-mini-list>
 			</view>
 		</block>
@@ -56,7 +56,7 @@
 		<view class="bg-white footer-fixed foot-padding-bottom" v-if="goods_checked">
 			<view class="cu-bar padding-lr">
 				<view class="checked-view" @tap="tapChecked">
-					<checkbox class='round red sm checked' :class="checkbox_all?'checked':''" :checked="checkbox_all" />
+					<checkbox class="round red sm checked" :class="checkbox_all?'checked':''" :checked="checkbox_all" />
 					<text class="text-black text-lg">全选</text>
 				</view>
 				<view class="btn-view">
@@ -79,71 +79,76 @@
 </template>
 
 <script>
-	import {userVisitlist} from "@/api/user.js";
+	import { secondGoodsFootprintList } from '@/api/malls.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import goodsMiniList from '@/components/common/list/goods-mini-list';
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		components: {
 			barTitle,
-			goodsMiniList
+			goodsMiniList,
 		},
 		data() {
 			return {
-				TabCur:0,
+				TabCur: 0,
 				goods_img: '/static/images/home/goods/1.png',
 				goods_img_a: '/static/images/home/goods/2.png',
 				checkbox_list: [],
 				checkbox_all: false,
 				goods_checked: false,
-				querydata:[
+				querydata: [
 					{
-						page:1,
-						limit:10,
+						page: 1,
+						limit: 10,
 						loadmore: 'more', //more 还有数据   noMore 无数据
-						dataList:[]
+						dataList: [],
 					},
 					{
-						page:1,
-						limit:10,
+						page: 1,
+						limit: 10,
 						loadmore: 'more', //more 还有数据   noMore 无数据
-						dataList:[]
+						dataList: [],
 					},
 					{
-						page:1,
-						limit:10,
+						page: 1,
+						limit: 10,
 						loadmore: 'more', //more 还有数据   noMore 无数据
-						dataList:[]
-					}
+						dataList: [],
+					},
 				],
 				contentText: {
-					"contentdown": "加载更多数据",
-					"contentrefresh": "加载中...",
-					"contentnomore": "暂无更多数据。"
+					contentdown: '加载更多数据',
+					contentrefresh: '加载中...',
+					contentnomore: '暂无更多数据。',
 				},
-			}
+			};
 		},
 		onLoad() {
-			this.checkbox_list = [{
+			this.checkbox_list = [
+				{
 					id: 1,
-					checked: true
-				}, {
+					checked: true,
+				},
+				{
 					id: 2,
-					checked: false
-				}, {
+					checked: false,
+				},
+				{
 					id: 3,
-					checked: false
+					checked: false,
 				},
 				{
 					id: 4,
-					checked: false
-				}, {
+					checked: false,
+				},
+				{
 					id: 5,
-					checked: false
-				}, {
+					checked: false,
+				},
+				{
 					id: 6,
-					checked: false
-				}
+					checked: false,
+				},
 			];
 			this.getdataList();
 		},
@@ -151,7 +156,7 @@
 			_tool.setBarColor(true);
 			uni.pageScrollTo({
 				scrollTop: 0,
-				duration: 0
+				duration: 0,
 			});
 		},
 		onPullDownRefresh() {
@@ -159,53 +164,54 @@
 			this.getdataList();
 		},
 		onReachBottom() {
-			console.log(123)
+			console.log(123);
 			// this.querydata[this.TabCur].page = this.querydata[this.TabCur].page + 1;
-			if(this.querydata[this.TabCur].loadmore == 'noMore'){
+			if (this.querydata[this.TabCur].loadmore == 'noMore') {
 				return;
 			}
 			this.getdataList();
 		},
 		methods: {
 			// 获取列表
-			getdataList(){
+			getdataList() {
 				let that = this;
 				let paramsData = {
-					type:this.TabCur+1,
-					page:this.querydata[this.TabCur].page,
-					pagesize:this.querydata[this.TabCur].limit,
-				}
-				userVisitlist(paramsData).then(res=>{
-					let data = res.data.list;
-					if (data) {
-						//判断是触底加载还是第一次进入页面的加载
-						if (that.querydata[this.TabCur].page == 1) {
-							that.querydata[this.TabCur].dataList = data
-						} else {
-							that.querydata[this.TabCur].dataList.push(...data);
+					pageNum: this.querydata[this.TabCur].page,
+					pageSize: this.querydata[this.TabCur].limit,
+				};
+				secondGoodsFootprintList(paramsData)
+					.then((res) => {
+						let data = res.rows;
+						if (data) {
+							//判断是触底加载还是第一次进入页面的加载
+							if (that.querydata[this.TabCur].page == 1) {
+								that.querydata[this.TabCur].dataList = data;
+							} else {
+								that.querydata[this.TabCur].dataList.push(...data);
+							}
+							console.log(res.total, that.querydata[this.TabCur].dataList.length);
+							if (res.total !== that.querydata[this.TabCur].dataList.length) {
+								that.querydata[this.TabCur].page += 1;
+							}
+							that.querydata[this.TabCur].loadmore =
+								res.total == that.querydata[this.TabCur].dataList.length ? 'noMore' : 'more';
 						}
-						console.log(res.data.total_count, that.querydata[this.TabCur].dataList.length)
-						if(res.data.total_count !== that.querydata[this.TabCur].dataList.length){
-							that.querydata[this.TabCur].page += 1;
-						}
-						that.querydata[this.TabCur].loadmore = res.data.total_count == that.querydata[this.TabCur].dataList.length ? 'noMore' : 'more'
-					}
-				})
-				.finally(()=>{
-					uni.stopPullDownRefresh();
-				})
+					})
+					.finally(() => {
+						uni.stopPullDownRefresh();
+					});
 			},
 			//tab菜单被点击
 			tabSelect(e) {
 				let index = e.currentTarget.dataset.id;
 				this.TabCur = Number(index);
-				this.$nextTick(()=>{
-					uni.startPullDownRefresh()
-				})
+				this.$nextTick(() => {
+					uni.startPullDownRefresh();
+				});
 				//滚动到顶部
 				uni.pageScrollTo({
 					scrollTop: 0,
-					duration: 100
+					duration: 100,
 				});
 			},
 			//编辑
@@ -240,33 +246,32 @@
 			goodsSortListTap(e) {
 				if (this.TabCur === 2) {
 					uni.navigateTo({
-						url: '/pages/goods/goodsNew?id=' + e.data.id
+						url: '/pages/goods/goodsNew?id=' + e.data.id,
 					});
 				} else {
 					uni.navigateTo({
-						url: '/pages/goods/goods?id=' + e.data.id
+						url: '/pages/goods/goods?id=' + e.data.id,
 					});
 				}
-				
-			}
-		}
-	}
+			},
+		},
+	};
 </script>
 
 <style lang="scss" scoped>
 	/* #ifdef APP-PLUS */
-	@import "@/uni_modules/colorui/main.css";
-	@import "@/uni_modules/colorui/icon.css";
-	@import "@/uni_modules/mpb-ui/shop/app.scss";
+	@import '@/uni_modules/colorui/main.css';
+	@import '@/uni_modules/colorui/icon.css';
+	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
-	@import "@/uni_modules/mpb-ui/shop/footmark.scss";
-	.contents{
-		background: #F0F0F0;
+	@import '@/uni_modules/mpb-ui/shop/footmark.scss';
+	.contents {
+		background: #f0f0f0;
 	}
-	.nav{
+	.nav {
 		background: white;
 	}
-	page{
-		background: #F0F0F0;
+	page {
+		background: #f0f0f0;
 	}
 </style>

@@ -47,3 +47,123 @@ export function getDefaultAddress(data) {
 export function secondGoodsLists(data) {
 	return request.get('/yxj/app/secondGoods/list', data, { noLogin: true });
 }
+
+/**
+ * 创建购物订单
+ *
+ */
+export function shoppingOrder(data) {
+	return request.post('/yxj/app/shoppingOrder', data, { noLogin: true });
+}
+
+/**
+ * 查询订单列表接口
+ *
+ */
+export function shoppingOrderList(data) {
+	return request.get('/yxj/app/shoppingOrder/list', data, { noLogin: true });
+}
+
+/**
+ * 发起支付接口
+ *
+ */
+export function initiatePayment(data) {
+	return request.post('/yxj/app/shoppingOrder/initiatePayment', data, { noLogin: true });
+}
+
+/**
+ * 新增二手商品足迹接口
+ *
+ */
+export function secondGoodsFootprint(data) {
+	return request.post('/yxj/app/secondGoodsFootprint', data, { noLogin: true });
+}
+
+/**
+ * 查询二手商品足迹列表
+ *
+ */
+export function secondGoodsFootprintList(data) {
+	return request.get('/yxj/app/secondGoodsFootprint/list', data, { noLogin: true });
+}
+
+/**
+ * 取消订单接口
+ *
+ */
+export function cancelOrder(data) {
+	return request.get('/yxj/app/shoppingOrder/cancelOrder', data, { noLogin: true });
+}
+
+/**
+ * 取消订单接口
+ *
+ */
+export function continuePayment(data) {
+	return request.post('/yxj/app/shoppingOrder/continuePayment', data, { noLogin: true });
+}
+
+/**
+ * 用户确认收货接口
+ *
+ */
+export function clientConfirm(data) {
+	return request.get('/yxj/app/shoppingOrder/clientConfirm', data, { noLogin: true });
+}
+
+/**
+ * 新增二手订单评价
+ *
+ */
+export function shoppingOrderEvaluate(data) {
+	return request.post('/yxj/app/shoppingOrderEvaluate', data, { noLogin: true });
+}
+
+/**
+ * 申请售后
+ *
+ */
+export function secondGoodsReturn(data) {
+	return request.post('/yxj/app/secondGoodsReturn', data, { noLogin: true });
+}
+
+/**
+ * 买家退货接口
+ *
+ */
+export function clientReturn(data) {
+	return request.post('/yxj/app/shoppingOrder/clientReturn', data, { noLogin: true });
+}
+
+/**
+ * 买家发货前退款接口
+ *
+ */
+export function clientRefund(data) {
+	return request.get('/yxj/app/shoppingOrder/clientRefund', data, { noLogin: true });
+}
+
+/**
+ * 查看最新的售后记录
+ *
+ */
+export function selectNewest(data) {
+	return request.get('/yxj/app/secondGoodsReturn/selectNewest', data, { noLogin: true });
+}
+
+/**
+ * 新增二手商品收藏
+ *
+ */
+export function secondGoodsFavorite(data) {
+	return request.post('/yxj/app/secondGoodsFavorite', data, { noLogin: true });
+}
+
+/**
+ * 查询二手商品收藏列
+ *
+ */
+export function secondGoodsFavoriteList(data) {
+	return request.post('/yxj/app/secondGoodsFavorite/list', data, { noLogin: true });
+}
