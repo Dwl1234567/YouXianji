@@ -40,10 +40,23 @@
 	</view>
 </template>
 <script>
-	import { sendCaptcha, login, userInfo } from '@/api/login.js';
-	import { mapMutations } from 'vuex';
-	import { smslogin, loginCode, kefulogin } from '@/api/common.js';
-	import { UserLogin } from '@/api/mall.js';
+	import {
+		sendCaptcha,
+		login,
+		userInfo
+	} from '@/api/login.js';
+	import {
+		mapMutations
+	} from 'vuex';
+	import Vue from 'vue';
+	import {
+		smslogin,
+		loginCode,
+		kefulogin
+	} from '@/api/common.js';
+	import {
+		UserLogin
+	} from '@/api/mall.js';
 	export default {
 		data() {
 			return {
@@ -69,14 +82,10 @@
 				UserLogin(params).then((res) => {
 					let data = res.data;
 					if (data) {
+
 						this.$store.commit('login', data);
-
 						this.logining = true;
-
-						setTimeout(function () {
-							// uni.navigateTo({
-							// 	url: '../../home/home'
-							// })
+						setTimeout(function() {
 							uni.switchTab({
 								url: '/pages/tabbar/home',
 							});
@@ -122,8 +131,42 @@
 				login(params)
 					.then((res) => {
 						if (res.code == 200) {
+							let data = {}
+							// #ifdef APP-PLUS
+							let type = '';
+							uni.getSystemInfo({
+								success: function(res) {
+									if (res.osName == 'ios') {
+										type = 'wgs84'
+									} else {
+										type = 'gcj02'
+									}
+								}
+							});
+							uni.getLocation({
+								type: type,
+								geocode: true, //设置该参数为true可直接获取经纬度及城市信息
+								success: function(res) {
+									data = res
+								},
+								fail: function(res) {
+									uni.showToast({
+										title: '获取地址失败，将导致部分功能不可用',
+										icon: 'none',
+									});
+								},
+								complete() {
+									// that.getstoresstorelatelystore();
+								},
+							});
+							// #endif
 							this.$store.commit('setToken', res.token);
-							this.getUserInfo();
+							if (data) {
+								setTimeout(() => {
+									this.$store.commit('setAddress', data);
+									this.getUserInfo();
+								}, 1200)
+							}
 							// console.log(uni.getStorageSync('url'), 'uni.getStorageSync();');
 
 							if (uni.getStorageSync('url')) {
@@ -146,11 +189,11 @@
 			},
 			// 获取用户信息
 			getUserInfo() {
-				userInfo().then((res) => {
-					console.log(res);
+				const data = Vue.prototype.$store.state.address
+				userInfo(data).then((res) => {
+					console.log(res, 33333333);
 					var roles = res.data.roles;
 					roles.map((item) => {
-						console.log(item, '44444');
 						if (item.roleKey === 'consumer') {
 							this.$store.commit('setRoles', 'consumer');
 						} else if (item.roleKey === 'store_admin') {

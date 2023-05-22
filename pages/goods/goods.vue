@@ -440,7 +440,7 @@
 <script>
 	import Vue from 'vue';
 	import { goodsdetail, bindingUser } from '@/api/common.js';
-	import { shoppingCart, secondGoodsFootprint } from '@/api/malls.js';
+	import { shoppingCart, secondGoodsFootprint, secondGoodsFavorite, secondGoods } from '@/api/malls.js';
 	import qrcode from './qrcode';
 	import { ProductDetail, FlashProductDetail, ProductEvaluate, CartAdd, OrderCreate } from '@/api/mall.js';
 	import { setuservisit } from '@/api/user.js';
@@ -542,6 +542,8 @@
 		onLoad(options) {
 			this.goodsId = options.id;
 			this.secondGoodsFootprint(options.id);
+			this.secondGoods();
+			this.secondGoodsFavorite();
 			this.isNew = options.isNew;
 			// 获取当前页面信息
 			const pages = getCurrentPages();
@@ -650,6 +652,24 @@
 			}
 		},
 		methods: {
+			// 添加收藏
+			secondGoodsFavorite() {
+				secondGoodsFavorite({
+					secondGoodsId: this.goodsId,
+				}).then((res) => {
+					if (res.code === 200) {
+						console.log('收藏添加成功');
+					}
+				});
+			},
+			// 获取详情
+			secondGoods() {
+				secondGoods(this.goodsId).then((res) => {
+					if (res.code === 200) {
+						this.goodsList = res.data;
+					}
+				});
+			},
 			secondGoodsFootprint(id) {
 				secondGoodsFootprint({
 					secondGoodsId: Number(id),

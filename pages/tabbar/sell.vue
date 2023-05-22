@@ -118,12 +118,8 @@
 										<view class="text-929294 text-sm margin-top-sm">更自由，时间随性</view>
 									</view>
 									<view class="ziji">
-										<image
-											class="img"
-											@click.stop="gocateFuc(0)"
-											src="../../static/img/push/kd-3.png"
-											mode="widthFix"
-										></image>
+										<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/kd-3.png" mode="widthFix">
+										</image>
 									</view>
 									<view class="right">
 										<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
@@ -137,12 +133,8 @@
 										<view class="text-929294 text-sm margin-top-sm">免邮费，一键下单</view>
 									</view>
 									<view class="ziji">
-										<image
-											class="img"
-											@click.stop="gocateFuc(0)"
-											src="../../static/img/push/kd-1.png"
-											mode="widthFix"
-										></image>
+										<image class="img" @click.stop="gocateFuc(0)" src="../../static/img/push/kd-1.png" mode="widthFix">
+										</image>
 									</view>
 									<view class="right">
 										<text class="margin-right-sm more text-red text-xl iconfont icon-nextpageorange"></text>
@@ -180,72 +172,46 @@
 			</view>
 			<view class="">
 				<scroll-view scroll-x class="bg-white nav text-center text-sm" v-if="TabCur == 1">
-					<view
-						class="cu-item"
-						:class="index==miniTabCur?'text-red cur':''"
-						v-for="(item,index) in newslist[1].child"
-						:key="index"
-						@tap="minitabSelect"
-						:data-id="index"
-					>
+					<view class="cu-item" :class="index==miniTabCur?'text-red cur':''" v-for="(item,index) in newslist[1].child"
+						:key="index" @tap="minitabSelect" :data-id="index">
 						{{item.name}}
 					</view>
 				</scroll-view>
 				<!--内容列表-->
 				<view class="list">
 					<u-collapse accordion :border="false">
-						<u-collapse-item
-							:border="false"
-							:title="item.title"
-							v-for="(item,index) in newslist[0].list"
-							:key="index"
-							v-if="TabCur == 0"
-						>
+						<u-collapse-item :border="false" :title="item.title" v-for="(item,index) in newslist[0].list" :key="index"
+							v-if="TabCur == 0">
 							<text class="u-collapse-content">{{item.view}}</text>
 						</u-collapse-item>
 					</u-collapse>
 
 					<block v-if="TabCur == 1">
 						<u-collapse accordion @change="change" @close="close" @open="open" :border="false">
-							<u-collapse-item
-								:title="items.title"
-								v-for="(items,index1) in newslist[1].child[miniTabCur].list"
-								:key="index1"
-							>
+							<u-collapse-item :title="items.title" v-for="(items,index1) in newslist[1].child[miniTabCur].list"
+								:key="index1">
 								<text class="u-collapse-content">{{items.view}}</text>
 							</u-collapse-item>
 						</u-collapse>
 					</block>
 
 					<u-collapse accordion :border="false">
-						<u-collapse-item
-							:title="item.title"
-							v-for="(item,index) in newslist[2].list"
-							:key="index"
-							v-if="TabCur == 2"
-						>
+						<u-collapse-item :title="item.title" v-for="(item,index) in newslist[2].list" :key="index"
+							v-if="TabCur == 2">
 							<text class="u-collapse-content">{{item.view}}</text>
 						</u-collapse-item>
 					</u-collapse>
 
 					<u-collapse accordion :border="false">
-						<u-collapse-item
-							:title="item.title"
-							v-for="(item,index) in newslist[3].list"
-							:key="index"
-							v-if="TabCur == 3"
-						>
+						<u-collapse-item :title="item.title" v-for="(item,index) in newslist[3].list" :key="index"
+							v-if="TabCur == 3">
 							<text class="u-collapse-content">{{item.view}}</text>
 						</u-collapse-item>
 					</u-collapse>
 
 					<u-collapse accordion :border="false">
-						<u-collapse-item
-							:title="item.title"
-							v-for="(item,index) in newslist[4].list"
-							:key="index"
-							v-if="TabCur == 4"
-						>
+						<u-collapse-item :title="item.title" v-for="(item,index) in newslist[4].list" :key="index"
+							v-if="TabCur == 4">
 							<text class="u-collapse-content">{{item.view}}</text>
 						</u-collapse-item>
 					</u-collapse>
@@ -258,14 +224,8 @@
 				<view @click="show = false">取消</view>
 				<view @click="show = false">完成</view>
 			</view>
-			<picker-view
-				indicator-style="height: 40px;line-height: 40px;"
-				style="height: 200px; text-align: center"
-				class="mpvue-picker-view"
-				:value="pickerValue"
-				@change="pickerChange"
-				indicator-class="itemadd"
-			>
+			<picker-view indicator-style="height: 40px;line-height: 40px;" style="height: 200px; text-align: center"
+				class="mpvue-picker-view" :value="pickerValue" @change="pickerChange" indicator-class="itemadd">
 				<block>
 					<picker-view-column>
 						<div class="picker-item" v-for="(item,index) in latelystoreInfoAll" :key="index">{{item.storeName}}</div>
@@ -300,7 +260,9 @@
 		storelist,
 		storesstorelatelystore,
 	} from '@/api/common.js';
-	import { getNearestStoreList } from '@/api/commons.js';
+	import {
+		getNearestStoreList
+	} from '@/api/commons.js';
 
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
@@ -320,24 +282,28 @@
 					},
 					radar: {
 						// shape: 'circle',
-						indicator: [
-							{ name: 'Sales', max: 6500 },
-							{ name: 'Administration', max: 16000 },
-							{ name: 'Information Technology', max: 30000 },
+						indicator: [{
+								name: 'Sales',
+								max: 6500
+							},
+							{
+								name: 'Administration',
+								max: 16000
+							},
+							{
+								name: 'Information Technology',
+								max: 30000
+							},
 						],
 					},
-					series: [
-						{
-							name: 'Budget vs spending',
-							type: 'radar',
-							data: [
-								{
-									value: [6500, 16000, 30000],
-									// name: 'Allocated Budget'
-								},
-							],
-						},
-					],
+					series: [{
+						name: 'Budget vs spending',
+						type: 'radar',
+						data: [{
+							value: [6500, 16000, 30000],
+							// name: 'Allocated Budget'
+						}, ],
+					}, ],
 				},
 				// 门店id,
 				storeId: 0,
@@ -358,8 +324,7 @@
 				TabCur: 0,
 				miniTabCur: 0,
 				newslist: [],
-				addressList: [
-					{
+				addressList: [{
 						title: '小强回收',
 						latitude: 18.251298,
 						longitude: 109.506593,
@@ -416,14 +381,25 @@
 			this.getstoresstorelatelystore();
 			// #endif
 			// #ifdef APP-PLUS
+			let type = '';
+			uni.getSystemInfo({
+				success: function(res) {
+					if (res.osName == 'ios') {
+						type = 'wgs84'
+					} else {
+						type = 'gcj02'
+					}
+				}
+			});
 			uni.getLocation({
-				type: 'wgs84',
+				type: type,
 				geocode: true, //设置该参数为true可直接获取经纬度及城市信息
-				success: function (res) {
+				success: function(res) {
+					console.log(res, '22222222222222222222222');
 					that.latitude = res.latitude;
 					that.longitude = res.longitude;
 				},
-				fail: function (res) {
+				fail: function(res) {
 					uni.showToast({
 						title: '获取地址失败，将导致部分功能不可用',
 						icon: 'none',
@@ -473,7 +449,7 @@
 			getmodelprice() {
 				let that = this;
 				uni.getSystemInfo({
-					success: function (res) {
+					success: function(res) {
 						// console.log(res);
 						// console.log(res.model);
 						if (res.model == 'M2004J19C') {
@@ -539,7 +515,7 @@
 					latitude: info.latitude,
 					longitude: info.longitude,
 					address: info.title,
-					success: function () {
+					success: function() {
 						console.log('success');
 					},
 				});
@@ -555,7 +531,7 @@
 			WxloginFuc() {
 				let that = this;
 				wx.login({
-					success: function (res) {
+					success: function(res) {
 						console.log(res); //这里的返回值里面便包含code
 						let params = {
 							code: res.code,
@@ -572,7 +548,7 @@
 							}
 						});
 					},
-					fail: function (res) {
+					fail: function(res) {
 						console.log('登陆失败');
 					},
 				});
@@ -607,8 +583,8 @@
 							that.$u.toast('未找到该机型，请去分类寻找！');
 						} else {
 							uni.navigateTo({
-								url:
-									'../recycling/recycling-new?id=' + res.data.goods_info.id + '&cate_id=' + res.data.goods_info.cate_id,
+								url: '../recycling/recycling-new?id=' + res.data.goods_info.id + '&cate_id=' + res.data
+									.goods_info.cate_id,
 							});
 						}
 					}
@@ -640,12 +616,10 @@
 				// console.log('change', e)
 			},
 			newListFuc() {
-				this.newslist = [
-					{
+				this.newslist = [{
 						icon: 'icon-checktouploadgray',
 						name: '线上下单',
-						list: [
-							{
+						list: [{
 								title: '1.预估价格是最后成交价格么？',
 								view: '预估价格不是最后的成交价，最后成交价以机器经优闲集检测后报价为准。',
 							},
@@ -658,11 +632,9 @@
 					{
 						icon: 'icon-tubiao-22',
 						name: '上门/到店',
-						child: [
-							{
+						child: [{
 								name: '上门回收',
-								list: [
-									{
+								list: [{
 										title: '1. 提交订单最快多久可以上门？',
 										view: '取决于您下单时选择的时间段，具体上门时间上门人员会与您电话沟通确认。',
 									},
@@ -674,8 +646,7 @@
 							},
 							{
 								name: '门店回收',
-								list: [
-									{
+								list: [{
 										title: '1. 如何查看我的周边是否有门店？',
 										view: '您可在优闲集app/官网/小程序首页的【门店列表】中查看线下门店及具体地址。',
 									},
@@ -687,8 +658,7 @@
 							},
 							{
 								name: '快递回收',
-								list: [
-									{
+								list: [{
 										title: '1. 机器寄出后有什么保障？',
 										view: '在回收交付过程中因优闲集方面的原因导致用户旧机损坏，用户可直接进行投诉索赔，经核实后将立即进行赔付，我们将竭尽全力保障用户的合法权益。',
 									},
@@ -703,8 +673,7 @@
 					{
 						icon: 'icon-qualitypromise',
 						name: '专业质检',
-						list: [
-							{
+						list: [{
 								title: '1. 检测出机器情况与提交订单填写不同如何处理？',
 								view: '如优闲集检测后估价低于您提交订单时的估价，优闲集会通过以下方式和您进行确认：\n1） 快递回收：若检测末通过您可以到【我的】查看质检结果确认是否交易或保持电话畅通等待专员与您联系。\n 2） 上门/门店：若检测未通过，店员会与您当面确认质检结果确认是否交易。',
 							},
@@ -717,8 +686,7 @@
 					{
 						icon: 'icon-cashin',
 						name: '确认收款',
-						list: [
-							{
+						list: [{
 								title: '1.回收款多久可以到账？',
 								view: '物流回收：我们会在收到机器后24小时内进行检测，检测通过会在2小时内放款到您的钱包账户/微信/支付宝/银行卡；若检测未通过您可以到【我的】 查看质检结果确认是否交易。\n门店/上门回收：我们会在完成质检，确认支付后，会在当面转到您的钱包账户/微信/支付宝/银行卡。',
 							},
@@ -731,8 +699,7 @@
 					{
 						icon: 'icon-privacy',
 						name: '隐私清除',
-						list: [
-							{
+						list: [{
 								title: '1. 我的隐私数据泄露怎么办？如何赔付？',
 								view: '如因优闲集原因导致用户个人信息被泄露（限手机、平板、笔记本电脑），优闲集将按照用户产品回收价格的一百倍进行赔付 。',
 							},
@@ -813,24 +780,29 @@
 	/deep/ .picker-item {
 		line-height: 40px;
 	}
+
 	.echarts {
 		width: 100%;
 		height: 600rpx;
 	}
+
 	.popup-item-label {
 		padding-left: 10px;
 		padding-right: 10px;
 		height: 45px;
 		line-height: 45px;
+
 		view:nth-child(1) {
 			color: #888;
 			font-size: 17px;
 		}
+
 		view:nth-child(2) {
 			color: #007aff;
 			font-size: 17px;
 		}
 	}
+
 	.content {
 		padding: 0 20rpx 100rpx 20rpx;
 	}
@@ -846,15 +818,18 @@
 			color: #929292;
 			// padding: 20rpx 10rpx;
 			align-items: center;
+
 			.proces-content {
 				width: 97%;
 				position: absolute;
 				top: 30rpx;
 			}
+
 			.backImgs {
 				width: 726rpx;
 				height: 188rpx;
 			}
+
 			.model {
 				font-size: 28rpx;
 				color: #323232;
@@ -893,18 +868,21 @@
 	}
 
 	.stores-box {
-		.cu-card.article > .cu-item {
+		.cu-card.article>.cu-item {
 			padding-top: 20rpx;
 			padding-bottom: 20rpx;
+
 			.cate-box {
 				width: 100%;
 				align-items: center;
+
 				image {
 					width: 188rpx;
 					height: 188rpx;
 					border-radius: 20px;
 					background-color: #929292;
 				}
+
 				.btc {
 					width: 188rpx;
 					height: 60rpx;
@@ -912,6 +890,7 @@
 					border-radius: 15px;
 					text-align: center;
 				}
+
 				.scroll-view_H {
 					width: 100%;
 					height: 160rpx;
@@ -930,7 +909,7 @@
 			}
 		}
 
-		.cu-card.article > .cu-item .content > uni-image {
+		.cu-card.article>.cu-item .content>uni-image {
 			width: 200rpx;
 			height: 200rpx;
 			margin-left: 10px;
@@ -938,18 +917,18 @@
 			border: 1px solid #ccc;
 		}
 
-		.cu-card.article > .cu-item .title {
+		.cu-card.article>.cu-item .title {
 			padding: 20rpx 0 0 0;
 			line-height: 30rpx;
 			font-size: 30rpx;
 			color: #333;
 		}
 
-		.cu-card.article > .cu-item .content {
+		.cu-card.article>.cu-item .content {
 			padding: 0;
 		}
 
-		.cu-card.article > .cu-item .content .text-content {
+		.cu-card.article>.cu-item .content .text-content {
 			height: auto;
 			color: #333;
 			font-size: 20rpx;
@@ -957,7 +936,7 @@
 			line-height: 32rpx;
 		}
 
-		.cu-card.article > .cu-item .content .right {
+		.cu-card.article>.cu-item .content .right {
 			display: flex;
 			justfy-content: center;
 			align-items: center;
@@ -1085,46 +1064,55 @@
 			background-color: #ee5873;
 		}
 	}
+
 	.shangmen {
 		position: relative;
+
 		.img {
 			width: 90rpx;
 			width: 90rpx;
 		}
+
 		.text {
 			margin-top: 5rpx;
 			margin-left: 30rpx;
 		}
+
 		.right {
 			position: absolute;
 			right: 20rpx;
 			bottom: 50rpx;
 		}
 	}
+
 	.kuaidi {
 		position: relative;
+
 		.kuaidi-img {
 			width: 724rpx;
 			height: 466rpx;
 		}
+
 		.kuaidi-content {
 			width: 95%;
 			position: absolute;
 			top: 30rpx;
 		}
+
 		.title {
-			.big {
-			}
-			.small {
-			}
+			.big {}
+
+			.small {}
 		}
+
 		.youji {
 			padding-top: 8rpx;
 			margin-left: 7rpx;
 			margin-right: 7rpx;
 			flex-wrap: nowrap;
-			.basis-df {
-			}
+
+			.basis-df {}
+
 			.a,
 			.b {
 				margin-left: 7rpx;
@@ -1135,22 +1123,26 @@
 				position: relative;
 				box-shadow: 0px 0px 4px 0px rgba(221, 221, 221, 0.5);
 				border-radius: 6px;
+
 				.right {
 					position: absolute;
 					left: 28rpx;
 					bottom: 22rpx;
 				}
 			}
+
 			.shunfeng {
 				.img {
 					width: 90rpx;
 					height: 90rpx;
 				}
 			}
+
 			.ziji {
 				position: absolute;
 				right: 12rpx;
 				bottom: 16rpx;
+
 				.img {
 					width: 90rpx;
 					height: 90rpx;
@@ -1158,10 +1150,12 @@
 			}
 		}
 	}
+
 	.cu-list.grid.no-border {
 		padding-top: 0;
 		padding-bottom: 0;
 	}
+
 	.nav .cu-item {
 		height: 40rpx;
 		line-height: 40rpx;
@@ -1173,6 +1167,7 @@
 				font-size: 15px;
 			}
 		}
+
 		&__content {
 			&__text {
 				color: #8e8e8e;
@@ -1181,9 +1176,11 @@
 			}
 		}
 	}
+
 	/deep/ .u-cell__body {
 		padding: 10px 5px;
 	}
+
 	.duibi {
 		.img {
 			width: 100%;

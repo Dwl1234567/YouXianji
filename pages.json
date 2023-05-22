@@ -975,6 +975,13 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": true
 			}
+		}, //我的收藏
+		{
+			"path": "pages/my/collect",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
 		},
 		{
 			"path": "pages/my/coupon/list",

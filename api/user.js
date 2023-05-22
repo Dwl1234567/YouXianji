@@ -6,7 +6,7 @@ import request from "@/utils/request.js";
  * 
  */
 export function getRecycleUserinfo() {
-	return request.post('/get_userinfo',{});
+	return request.post('/get_userinfo', {});
 }
 
 /**
@@ -14,7 +14,7 @@ export function getRecycleUserinfo() {
  * 
  */
 export function getUserData() {
-	return request.post('/get_user_data',{});
+	return request.post('/get_user_data', {});
 }
 
 /**
@@ -22,7 +22,9 @@ export function getUserData() {
  * 
  */
 export function getarea() {
-	return request.get('/get_area',{},{'noLogin':true});
+	return request.get('/get_area', {}, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -30,7 +32,7 @@ export function getarea() {
  * 
  */
 export function addAddress(data) {
-	return request.post('/add_address',data);
+	return request.post('/add_address', data);
 }
 
 /**
@@ -38,7 +40,9 @@ export function addAddress(data) {
  * 
  */
 export function editAddress(data) {
-	return request.post('/edit_address',data,{'noLogin':false});
+	return request.post('/edit_address', data, {
+		'noLogin': false
+	});
 }
 
 /**
@@ -46,7 +50,9 @@ export function editAddress(data) {
  * 
  */
 export function addressList() {
-	return request.get('/address',{},{'noLogin':false});
+	return request.get('/address', {}, {
+		'noLogin': false
+	});
 }
 
 /**
@@ -54,7 +60,9 @@ export function addressList() {
  * 
  */
 export function getExchgoodsLog(data) {
-	return request.get('/get_exchgoods_log',data,{'noLogin':false});
+	return request.get('/get_exchgoods_log', data, {
+		'noLogin': false
+	});
 }
 
 /**
@@ -62,7 +70,9 @@ export function getExchgoodsLog(data) {
  * 
  */
 export function getMoneyLog(data) {
-	return request.get('/get_money_log',data,{'noLogin':false});
+	return request.get('/get_money_log', data, {
+		'noLogin': false
+	});
 }
 
 
@@ -71,7 +81,9 @@ export function getMoneyLog(data) {
  * 
  */
 export function getOrderDetail() {
-	return request.get('/get_order_detail',{},{'noLogin':false});
+	return request.get('/get_order_detail', {}, {
+		'noLogin': false
+	});
 }
 
 
@@ -80,7 +92,9 @@ export function getOrderDetail() {
  * 
  */
 export function handlePayPassword(data) {
-	return request.post('/handle_pay_password',data,{'noLogin':false});
+	return request.post('/handle_pay_password', data, {
+		'noLogin': false
+	});
 }
 
 
@@ -89,7 +103,9 @@ export function handlePayPassword(data) {
  * 
  */
 export function signExchMoney() {
-	return request.post('/sign_exch_money',{},{'noLogin':false});
+	return request.post('/sign_exch_money', {}, {
+		'noLogin': false
+	});
 }
 
 /**
@@ -97,7 +113,9 @@ export function signExchMoney() {
  * 
  */
 export function checkGainExch() {
-	return request.get('/check_gain_exch',{},{'noLogin':false});
+	return request.get('/check_gain_exch', {}, {
+		'noLogin': false
+	});
 }
 
 /**
@@ -105,7 +123,9 @@ export function checkGainExch() {
  * 
  */
 export function getTeamData() {
-	return request.get('/get_team_data',{},{'noLogin':false});
+	return request.get('/get_team_data', {}, {
+		'noLogin': false
+	});
 }
 
 
@@ -115,7 +135,7 @@ export function getTeamData() {
  * 
  */
 export function updateUserData(data) {
-	return request.post('/update_user_data',data);
+	return request.post('/update_user_data', data);
 }
 
 
@@ -124,7 +144,7 @@ export function updateUserData(data) {
  * 
  */
 export function handleDefaultBank(data) {
-	return request.post('/handle_default_bank',data);
+	return request.post('/handle_default_bank', data);
 }
 
 /**
@@ -132,7 +152,9 @@ export function handleDefaultBank(data) {
  * 
  */
 export function getBankList() {
-	return request.get('/get_bank_list',{},{'noLogin':false});
+	return request.get('/get_bank_list', {}, {
+		'noLogin': false
+	});
 }
 
 /**
@@ -140,7 +162,7 @@ export function getBankList() {
  * 
  */
 export function editPwd(data) {
-	return request.post('/edit_pwd',data);
+	return request.post('/edit_pwd', data);
 }
 
 /**
@@ -148,7 +170,7 @@ export function editPwd(data) {
  * 
  */
 export function delAddress(data) {
-	return request.post('/del_address',data);
+	return request.post('/del_address', data);
 }
 
 /**
@@ -156,7 +178,7 @@ export function delAddress(data) {
  * 
  */
 export function setDefaultAddress(data) {
-	return request.post('/set_default_address',data);
+	return request.post('/set_default_address', data);
 }
 
 
@@ -165,7 +187,9 @@ export function setDefaultAddress(data) {
  * 
  */
 export function userSpeedData() {
-	return request.post('/user_speed_data',{},{'noLogin':false});
+	return request.post('/user_speed_data', {}, {
+		'noLogin': false
+	});
 }
 
 /**
@@ -173,7 +197,7 @@ export function userSpeedData() {
  * 
  */
 export function userSpeedList(data) {
-	return request.post('/user_speed_list',data);
+	return request.post('/user_speed_list', data);
 }
 
 
@@ -183,7 +207,7 @@ export function userSpeedList(data) {
  * 
  */
 export function pwdCode(data) {
-	return request.post('/pwd_code',data);
+	return request.post('/pwd_code', data);
 }
 
 
@@ -192,7 +216,7 @@ export function pwdCode(data) {
  * 
  */
 export function deleteBank(data) {
-	return request.post('/delete_bank',data);
+	return request.post('/delete_bank', data);
 }
 
 /**
@@ -200,7 +224,7 @@ export function deleteBank(data) {
  * 
  */
 export function addUserBank(data) {
-	return request.post('/add_user_bank',data);
+	return request.post('/add_user_bank', data);
 }
 
 /**
@@ -208,7 +232,7 @@ export function addUserBank(data) {
  * 
  */
 export function express(data) {
-	return request.post('/express',data);
+	return request.post('/express', data);
 }
 
 
@@ -217,7 +241,7 @@ export function express(data) {
  * 
  */
 export function addIddata(data) {
-	return request.post('/add_iddata',data);
+	return request.post('/add_iddata', data);
 }
 
 /**
@@ -226,10 +250,10 @@ export function addIddata(data) {
  * 详情 help_detail
  */
 export function getHelpList(data) {
-	return request.get('/help_list',data);
+	return request.get('/help_list', data);
 }
 export function getHelpDetail(data) {
-	return request.get('/help_detail',data);
+	return request.get('/help_detail', data);
 }
 
 
@@ -239,7 +263,7 @@ export function getHelpDetail(data) {
  * 
  */
 export function userExchange(data) {
-	return request.post('/user_exchange',data);
+	return request.post('/user_exchange', data);
 }
 
 
@@ -248,7 +272,7 @@ export function userExchange(data) {
  * 
  */
 export function payCode(data) {
-	return request.post('/pay_code',data);
+	return request.post('/pay_code', data);
 }
 
 
@@ -257,7 +281,7 @@ export function payCode(data) {
  * 
  */
 export function applyCash(data) {
-	return request.post('/apply_cash',data);
+	return request.post('/apply_cash', data);
 }
 
 
@@ -268,7 +292,7 @@ export function applyCash(data) {
  * 
  */
 export function userset(data) {
-	return request.post('/userset',data);
+	return request.post('/userset', data);
 }
 
 /**
@@ -276,14 +300,14 @@ export function userset(data) {
  * 
  */
 export function userVisitlist(data) {
-	return request.post('/user_visitlist',data);
+	return request.post('/user_visitlist', data);
 }
 /**
  * 添加用户行为[足迹]
  * 
  */
 export function setuservisit(data) {
-	return request.post('/setuservisit',data);
+	return request.post('/setuservisit', data);
 }
 
 /**
@@ -291,7 +315,7 @@ export function setuservisit(data) {
  * 
  */
 export function kefuInitUser(data) {
-	return request.post('/kefu_init_user',data);
+	return request.post('/kefu_init_user', data);
 }
 
 
@@ -300,7 +324,7 @@ export function kefuInitUser(data) {
  * 
  */
 export function getKefuUserList(data) {
-	return request.post('/kefu_user_list',data);
+	return request.post('/kefu_user_list', data);
 }
 
 /**
@@ -308,7 +332,7 @@ export function getKefuUserList(data) {
  * 
  */
 export function kefuQiangdan(data) {
-	return request.post('/kefu_qiangdan',data);
+	return request.post('/kefu_qiangdan', data);
 }
 
 
@@ -317,6 +341,6 @@ export function kefuQiangdan(data) {
  * 获取用户信息 -- uxj
  * 
  */
-export function getUserInfo() {
-	return request.get('/yxj/app/user/getUserInfo');
+export function getUserInfo(data) {
+	return request.post('/yxj/app/user/getUserInfo', data);
 }

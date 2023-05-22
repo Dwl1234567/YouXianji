@@ -6,7 +6,9 @@ import request from '@/utils/request.js';
  *
  */
 export function sendCaptcha(data) {
-	return request.get('/sendCaptcha', data, { noLogin: true });
+	return request.get('/sendCaptcha', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -14,7 +16,9 @@ export function sendCaptcha(data) {
  *
  */
 export function login(data) {
-	return request.post('/yxj/app/user/login', data, { noLogin: true });
+	return request.post('/yxj/app/user/login', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -22,5 +26,7 @@ export function login(data) {
  *
  */
 export function userInfo(data) {
-	return request.get('/yxj/app/user/getUserInfo', data, { noLogin: true });
+	return request.post('/yxj/app/user/getUserInfo', data, {
+		noLogin: true
+	});
 }

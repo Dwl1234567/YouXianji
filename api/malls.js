@@ -165,5 +165,5 @@ export function secondGoodsFavorite(data) {
  *
  */
 export function secondGoodsFavoriteList(data) {
-	return request.post('/yxj/app/secondGoodsFavorite/list', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoodsFavorite/list', data, { noLogin: true });
 }

@@ -9,7 +9,9 @@ const store = new Vuex.Store({
 		// 可以有多个持久化实例
 		createPersistedState({
 			key: 'app_config_data', // 状态保存到本地的 key
-			paths: ['hasLogin', 'userInfo', 'cookie', 'token', 'roles'], // 要持久化的状态，在state里面取，如果有嵌套，可以  a.b.c
+			paths: ['hasLogin', 'userInfo', 'cookie', 'token', 'roles',
+				'address'
+			], // 要持久化的状态，在state里面取，如果有嵌套，可以  a.b.c
 			storage: {
 				// 存储方式定义
 				getItem: (key) => uni.getStorageSync(key), // 获取
@@ -35,6 +37,13 @@ const store = new Vuex.Store({
 			sorting_leader: false,
 			sorting_people: false,
 		},
+		address: {
+			longitude: null,
+			latitude: null,
+			country: null,
+			province: null,
+			city: null
+		}
 	},
 	mutations: {
 		login(state, provider) {
@@ -74,6 +83,15 @@ const store = new Vuex.Store({
 				key: 'token',
 				data: provider,
 			});
+		},
+		setAddress(state, provider) {
+			console.log(provider)
+			state.address.longitude = provider.longitude;
+			state.address.latitude = provider.latitude;
+			state.address.country = provider.address.country;
+			state.address.province = provider.address.province;
+			state.address.city = provider.address.city;
+			console.log(state.address)
 		},
 		setRoles(state, provider) {
 			if (provider === 'consumer') {

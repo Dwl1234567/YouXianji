@@ -69,9 +69,15 @@
 		ProductFuscreen,
 		ProductFulists,
 	} from '@/api/mall.js';
-	import { getIndexPrice } from '@/api/common.js';
-	import { kefuInitUser } from '@/api/user.js';
-	import { secondGoodsList } from '@/api/malls.js';
+	import {
+		getIndexPrice
+	} from '@/api/common.js';
+	import {
+		kefuInitUser
+	} from '@/api/user.js';
+	import {
+		secondGoodsList
+	} from '@/api/malls.js';
 	export default {
 		name: 'home',
 		components: {
@@ -147,9 +153,17 @@
 				},
 			};
 		},
+		onShow() {
+			this.$nextTick(() => {
+				let address = uni.getStorageSync('address');
+				console.log(address, 3333333333)
+			});
+		},
 		onLoad() {
+
 			let that = this;
 			let userInfo = uni.getStorageSync('userInfo');
+
 			if (userInfo) {
 				this.userInfo = userInfo;
 			}
@@ -159,7 +173,7 @@
 			this.goodsTabData.list = _home_data.goodsTab();
 
 			uni.getSystemInfo({
-				success: function (res) {
+				success: function(res) {
 					if (res.model) {
 						that.phoneModel = res.model;
 						that.phoneModelname = res.model;
@@ -216,7 +230,7 @@
 				// 允许从相机和相册扫码
 				uni.scanCode({
 					scanType: ['qrCode'], //条形码
-					success: function (res) {
+					success: function(res) {
 						// 微信小程序
 						if (res.errMsg == 'scanCode:ok') {
 							// 扫描到的信息
@@ -240,12 +254,10 @@
 					that.swiperInfo.list = res.data;
 				});
 				CategoryMenu({}).then((res) => {
-					let data = [
-						{
-							id: '0',
-							name: '首页',
-						},
-					];
+					let data = [{
+						id: '0',
+						name: '首页',
+					}, ];
 					data.push(...res.data);
 					that.headTab.list = data;
 				});
@@ -412,8 +424,8 @@
 			gridSortTap(e) {
 				// 点击品牌
 				uni.navigateTo({
-					url:
-						'/pages/home/sort_list?sid=' + e.data.id + '&bid=' + this.headTab.TabCatID + '&cid=' + e.data.category_id,
+					url: '/pages/home/sort_list?sid=' + e.data.id + '&bid=' + this.headTab.TabCatID + '&cid=' + e.data
+						.category_id,
 				});
 			},
 			goToTap() {
@@ -494,14 +506,17 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-evenly;
+
 		.products-item {
 			display: flex;
 			align-items: center;
+
 			image {
 				margin-right: 5px;
 				width: 20px;
 				height: 20px;
 			}
+
 			text {
 				font-family: PingFangSC-Regular;
 				font-size: 12px;
@@ -510,6 +525,7 @@
 			}
 		}
 	}
+
 	.head-search-box {
 		position: fixed;
 		width: 100%;
@@ -521,6 +537,7 @@
 
 		.search-box {
 			position: relative;
+
 			.search-form {
 				.sbtn {
 					height: 32px;
@@ -529,6 +546,7 @@
 					right: 37px;
 					background-image: linear-gradient(90deg, #ff6868 0%, #ea1515 100%);
 				}
+
 				text {
 					font-family: PingFangSC-Regular;
 					font-size: 17px;
@@ -538,6 +556,7 @@
 					left: 25px;
 				}
 			}
+
 			.cuIcon-scan {
 				font-size: 20px;
 				margin-right: 5px;
@@ -553,6 +572,7 @@
 					flex-basis: 90%;
 					width: 90%;
 					z-index: 1;
+
 					.nav {
 						padding-left: 10px;
 					}
@@ -586,6 +606,7 @@
 		top: 0;
 		display: none;
 		transition: 0s;
+
 		.swiper-background {
 			position: absolute;
 			height: 888rpx;
@@ -596,6 +617,7 @@
 			//transition: opacity .25s;
 		}
 	}
+
 	.swiper-background-box.show {
 		display: block;
 		transition: 0s;
@@ -648,9 +670,11 @@
 
 		.screen-swiper {
 			height: 262px;
+
 			uni-image {
 				border-radius: 6rpx;
 			}
+
 			.swiper-padding {
 				//padding: 0 25rpx;
 			}
@@ -737,14 +761,17 @@
 
 	.block {
 		height: 260px;
+
 		.video {
 			width: 100%;
 			height: 127px;
 			color: #0081ff;
+
 			image {
 				max-height: 127px;
 			}
 		}
+
 		.baojia-bar {
 			width: 100%;
 			height: 127px;
@@ -754,6 +781,7 @@
 			border-radius: 6px;
 			padding: 0 10rpx;
 			text-align: center;
+
 			.process-info {
 				//box-shadow: 0px 0px 10rpx 0px rgba(136, 136, 136, 0.5);
 				color: #929292;
@@ -799,6 +827,7 @@
 			}
 		}
 	}
+
 	.block-1,
 	.block-2 {
 		margin-left: 6rpx;

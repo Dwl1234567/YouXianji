@@ -5,10 +5,9 @@
 		        <view class="top_view">123</view>  
 		    </view>  -->
 		<!-- #endif -->
-		<view
-			class="background"
-			style="width:100vw;290px; background-image:radial-gradient(circle at 50% -26%, rgba(37,209,249,0.66) 0%, rgba(255,255,255,0.66) 90%);"
-		></view>
+		<view class="background"
+			style="width:100vw;290px; background-image:radial-gradient(circle at 50% -26%, rgba(37,209,249,0.66) 0%, rgba(255,255,255,0.66) 90%);">
+		</view>
 		<view class="head-box">
 			<!-- #ifdef MP -->
 			<!-- <image src="../../static/myBackground.png"></image> -->
@@ -22,12 +21,9 @@
 			</view>
 			<bar-title :isBack="false" :fixed="false" :bgColor="bgColor">
 				<block slot="right">
-					<button
-						class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12"
-						@tap="goToErp"
+					<button class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12" @tap="goToErp"
 						v-if="roles.store_admin || roles.store_employee || roles.sorting_leader"
-						style="box-shadow: 0px 2px 4px 0px rgba(181, 181, 181, 0.5)"
-					>
+						style="box-shadow: 0px 2px 4px 0px rgba(181, 181, 181, 0.5)">
 						工作模式
 						<!-- <text class="iconfont icon-nextpageorange margin-lr-xs"></text> -->
 					</button>
@@ -49,10 +45,8 @@
 					<!--已登陆-->
 					<view class="cu-list menu-avatar" v-else>
 						<view class="cu-item">
-							<view
-								class="cu-avatar radius-1-5 lg"
-								:style="{backgroundImage:'url('+ (userInfo.avatar ? userInfo.avatar : '/static/img/avatar/1.jpg') +')'}"
-							/>
+							<view class="cu-avatar radius-1-5 lg"
+								:style="{backgroundImage:'url('+ (userInfo.avatar ? userInfo.avatar : '/static/img/avatar/1.jpg') +')'}" />
 							<view class="content .text-xxl">
 								<view class="">
 									<text class="margin-right" v-if="userInfo.nickName">{{userInfo.nickName}}</text>
@@ -100,6 +94,11 @@
 								<view class="text-xxl text-color-black" v-else>{{userInfo.visitnum}}</view>
 								<text class="text-sm text-color-black text-500">足迹</text>
 							</view>
+							<view class="cu-item" @tap="collectTap">
+								<view class="text-xxl" v-if="login">-</view>
+								<view class="text-xxl text-color-black" v-else>{{userInfo.visitnum}}</view>
+								<text class="text-sm text-color-black text-500">收藏</text>
+							</view>
 							<view class="cu-item" @tap="sponsoredTap">
 								<view class="text-xxl" v-if="login">-</view>
 								<view class="text-xxl text-color-black" v-else>{{userInfo.hb_medal}}</view>
@@ -129,15 +128,9 @@
 				<view class="text-black text-xl text-bold padding-sm">我的交易</view>
 				<view class="margin-lr-sm bg-white nav-item">
 					<scroll-view scroll-x class="nav text-center">
-						<view
-							style="display: inline-flex"
-							class="cu-item flex text-center radius-6"
+						<view style="display: inline-flex" class="cu-item flex text-center radius-6"
 							:class="index==jiaoyicurrent?'text-color-yellow text-white cur':'bg-white'"
-							v-for="(item,index) in jiaoyilist"
-							:key="index"
-							@tap="sectionChange"
-							:data-id="index"
-						>
+							v-for="(item,index) in jiaoyilist" :key="index" @tap="sectionChange" :data-id="index">
 							<!-- <view class="flex-sub iconfont" :class="item.icon"></view> -->
 							<view class="flex-twice label text-center">{{item.label}}</view>
 							<!--<view class="flex justify-start">
@@ -298,8 +291,13 @@
 <script>
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
-	import { getUserInfo, kefuInitUser } from '@/api/user.js';
-	import { erpuserislogin } from '@/api/erpapi.js';
+	import {
+		getUserInfo,
+		kefuInitUser
+	} from '@/api/user.js';
+	import {
+		erpuserislogin
+	} from '@/api/erpapi.js';
 	import barTitle from '@/components/common/basics/bar-title';
 
 	import _my_data from '@/static/data/my.js'; //虚拟数据
@@ -321,8 +319,7 @@
 				userInfo: '',
 				index: 0,
 				scrollLeft: 0,
-				jiaoyilist: [
-					{
+				jiaoyilist: [{
 						label: '我卖出的',
 						icon: 'icon-whatisold',
 						value: 1,
@@ -344,7 +341,8 @@
 			this.toolsList = _my_data.toolsListData();
 		},
 		onShow() {
-			getUserInfo().then((res) => {
+			const data = Vue.prototype.$store.state.address
+			getUserInfo(data).then((res) => {
 				this.userInfo = res.data;
 			});
 			this.erpuserislogin();
@@ -367,7 +365,9 @@
 		},
 		onReady() {},
 		onPullDownRefresh() {
-			getUserInfo()
+			const data = Vue.prototype.$store.state.address
+			console.log(data, '33333')
+			getUserInfo(data)
 				.then((res) => {
 					this.userInfo = res.data;
 				})
@@ -378,15 +378,15 @@
 		methods: {
 			// 获取手机序列号
 			getIMEI() {
-				console.log('IMEI:' + plus.device.imei);
-				console.log('IMSI:' + plus.device.imsi);
-				console.log('设备型号:' + plus.device.model);
-				console.log('UUID:' + plus.device.uuid);
-				plus.device.getInfo({
-					success: function (e) {
-						console.log(JSON.stringify(e), 'IMEI');
-					},
-				});
+				// console.log('IMEI:' + plus.device.imei);
+				// console.log('IMSI:' + plus.device.imsi);
+				// console.log('设备型号:' + plus.device.model);
+				// console.log('UUID:' + plus.device.uuid);
+				// plus.device.getInfo({
+				// 	success: function(e) {
+				// 		console.log(JSON.stringify(e), 'IMEI');
+				// 	},
+				// });
 			},
 			// erp入口
 			erpuserislogin() {
@@ -430,6 +430,12 @@
 			footmarkTap() {
 				uni.navigateTo({
 					url: '/pages/my/footmark',
+				});
+			},
+			//收藏
+			collectTap() {
+				uni.navigateTo({
+					url: '/pages/my/collect',
 				});
 			},
 			//我买到的
@@ -516,6 +522,7 @@
 		position: relative;
 		z-index: 100;
 	}
+
 	.status_bar {
 		// height: var(--status-bar-height);
 		width: 100vw;
@@ -523,12 +530,14 @@
 		top: var(--status-bar-height) + -50rpx;
 		z-index: 100;
 		pointer-events: none;
+
 		// background-color: black;
 		image {
 			width: 100vw;
 			height: 633px;
 		}
 	}
+
 	.top_view {
 		height: var(--status-bar-height);
 		width: 100%;
@@ -537,22 +546,27 @@
 		top: 0;
 		z-index: 999;
 	}
+
 	.my-box {
 		width: 100%;
+
 		.nav-item {
 			height: 46px;
 			display: flex;
 			align-items: center;
 			padding: 0 5px;
 		}
+
 		.cu-list.grid {
 			background-color: #f9f9fb;
 		}
-		.cu-list.grid > .cu-item .icon {
+
+		.cu-list.grid>.cu-item .icon {
 			position: relative;
 			height: 75rpx;
 			height: 52rpx;
 		}
+
 		// display: none;
 		.head-box {
 			padding-top: 0;
@@ -573,13 +587,15 @@
 					}
 				}
 
-				.cu-list.menu-avatar > .cu-item {
+				.cu-list.menu-avatar>.cu-item {
 					background-color: inherit;
 					padding-left: 17px;
+
 					.cu-avatar {
 						left: 17px;
 						border-radius: 96upx;
 					}
+
 					.content {
 						width: calc(100% - 94.54rpx - 59.99rpx - 100rpx);
 
@@ -610,15 +626,17 @@
 					}
 				}
 
-				.cu-list.menu-avatar > .cu-item .content > view:first-child {
+				.cu-list.menu-avatar>.cu-item .content>view:first-child {
 					font-size: 40rpx;
 				}
-				.cu-list.menu-avatar > .cu-item .content .text-sm {
+
+				.cu-list.menu-avatar>.cu-item .content .text-sm {
 					font-size: 14px;
 					margin-top: 3px;
 					color: #929294;
 					font-weight: 400;
 				}
+
 				//简介少
 				.cu-list .bio.contents {
 					line-height: 50rpx;
@@ -635,27 +653,31 @@
 
 			.user-info-num-box {
 				.box {
+
 					// border-top: 1px solid #e3e3e3;
 					.cu-list {
 						padding-left: 21px;
 						display: flex;
 						align-items: center;
 						justify-content: flex-start;
+
 						.cu-item {
 							margin-left: 33px;
 							display: flex;
 							align-items: center;
 							flex-direction: column;
 						}
+
 						.cu-item:first-child {
 							margin-left: 0px;
 						}
 					}
+
 					.cu-list.grid.no-border {
 						padding: 0;
 					}
 
-					.cu-list.grid.no-border > .cu-item {
+					.cu-list.grid.no-border>.cu-item {
 						padding-top: 27.27rpx;
 						padding-bottom: 9.09rpx;
 					}
@@ -664,7 +686,7 @@
 						background-color: inherit;
 					}
 
-					.cu-list.grid > .cu-item text {
+					.cu-list.grid>.cu-item text {
 						font-size: 20rpx;
 						line-height: 27.27rpx;
 					}
@@ -693,6 +715,7 @@
 			position: relative;
 			z-index: 100;
 			padding: 0 20rpx 54.54rpx;
+
 			.nav {
 				.cu-item {
 					margin: 0;
@@ -700,10 +723,12 @@
 					padding: 0;
 					height: 36px;
 					line-height: 36px;
+
 					.iconfont {
 						//width:60rpx;
 						font-size: 70rpx;
 					}
+
 					.label {
 						font-size: 18px;
 						color: #101010;
@@ -711,6 +736,7 @@
 					}
 				}
 			}
+
 			.user-info-order-box {
 				border-radius: 18.18rpx;
 				position: relative;
@@ -720,7 +746,7 @@
 					background-color: #f9f9fb;
 				}
 
-				.cu-list.grid.no-border > .cu-item {
+				.cu-list.grid.no-border>.cu-item {
 					padding-bottom: 9.09rpx;
 				}
 
@@ -731,7 +757,7 @@
 				}
 			}
 
-			.cu-list.grid > .cu-item text {
+			.cu-list.grid>.cu-item text {
 				color: inherit;
 			}
 
