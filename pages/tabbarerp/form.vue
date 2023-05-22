@@ -4,7 +4,7 @@
 			<view class="title">标题</view>
 			<input placeholder="请输入产品标题" v-model="formList.title" name="input"></input>
 		</view>
-		
+
 		<view class="cu-bar bg-white">
 			<view class='action'>
 				<text class="title">序列号/IMEI</text>
@@ -99,7 +99,7 @@
 				<text class="text-lg">回收指导价：</text>
 				<text class="text-price text-lg">{{guidePrice}}</text>
 			</view>
-			
+
 		</view>
 		<view class="cu-form-group">
 			<view class="title">回收价</view>
@@ -119,13 +119,13 @@
 			<view class="title">成色</view>
 			<view>
 				<u-radio-group style="display: flex;" v-model="colorvalue" placement="row" @change="groupChange">
-					<u-radio :customStyle="{marginRight: '5px'}" :size="12" :labelSize="13" v-for="(item, index) in radiolist1" :key="index"
-						:label="item.name" :name="item.value" @change="radioChange">
+					<u-radio :customStyle="{marginRight: '5px'}" :size="12" :labelSize="13" v-for="(item, index) in radiolist1"
+						:key="index" :label="item.name" :name="item.value" @change="radioChange">
 					</u-radio>
 				</u-radio-group>
 			</view>
 		</view>
-		
+
 		<!--选择SKU 与仓库-->
 		<view class="cu-bar bg-white">
 			<view class='action'>
@@ -138,25 +138,27 @@
 				仓库
 			</view>
 			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == 0" @tap="checkHouseId(item.warehouseId)">
+				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId"
+					v-if="item.parentId == 0" @tap="checkHouseId(item.warehouseId)">
 					{{item.warehouseName}}
-				</view>	
-			</view>	
-			
+				</view>
+			</view>
+
 			<view class="">
 				分仓
 			</view>
 			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == parentId" @tap="checkHouseFenId(item.warehouseId)">
+				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId"
+					v-if="item.parentId == parentId" @tap="checkHouseFenId(item.warehouseId)">
 					{{item.warehouseName}}
-				</view>	
-			</view>	
-			
+				</view>
+			</view>
+
 		</view>
 		<!-- <view style="position: relative;">
 			<LiFilter :isType="0" :alias="['分类','品牌','系列','机型']" @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1" :isFixtop="false" ></LiFilter>
 		</view> -->
-		
+
 
 		<view class="cu-bar bg-white">
 			<view class='action'>
@@ -166,7 +168,7 @@
 		</view>
 		<view class="bg-white padding-lr">
 			<view class="cu-list grid col-3 no-border">
-				
+
 				<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
 					<view class="cu-item radius-2" :class="tabindex == tab_cur?'bg-red cur':''" @tap="tabSelect"
 						:data-id="tabindex" style="padding-bottom: 5px;">
@@ -181,21 +183,23 @@
 						<view class="h-td">备注</view>
 					</view>
 					<!-- <block v-for="(item,index) in nav_list" :key="index"> -->
-						<view class="process-box">
-							<view class="h-tr h-tr-2" v-for="(recyitem,recyindex) in qualityInfoList" :key="recyindex" v-if="recyitem.indexs == tab_cur+1">
-							  <view class="h-td" >
+					<view class="process-box">
+						<view class="h-tr h-tr-2" v-for="(recyitem,recyindex) in qualityInfoList" :key="recyindex"
+							v-if="recyitem.indexs == tab_cur+1">
+							<view class="h-td">
 								<view class="text-bold">
-								  {{recyitem.key}}
+									{{recyitem.key}}
 								</view>
 								<view class="">
-								  {{recyitem.value}}
+									{{recyitem.value}}
 								</view>
-							  </view>
-							  <view class="h-td">
-								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyindex)" :value="recyitem.remark"></input>
-							  </view>
+							</view>
+							<view class="h-td">
+								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyindex)"
+									:value="recyitem.remark"></input>
 							</view>
 						</view>
+					</view>
 					<!-- </block>  -->
 				</view>
 			</view>
@@ -209,11 +213,11 @@
 			<view class="title">是否分销</view>
 			<switch @change="SwitchB" :class="switchB?'checked':''" :checked="switchB?true:false"></switch>
 		</view>
-		<view class="cu-form-group" >
+		<view class="cu-form-group">
 			<view class="title">是否热销</view>
 			<switch @change="SwitchC" :class="switchC?'checked':''" :checked="switchC?true:false"></switch>
 		</view>
-		<view class="cu-form-group" >
+		<view class="cu-form-group">
 			<view class="title">是否特卖</view>
 			<switch @change="SwitchD" :class="switchD?'checked':''" :checked="switchD?true:false"></switch>
 		</view>
@@ -225,8 +229,8 @@
 				<button class="cu-btn bg-red margin-tb-sm lg" @click="erpclickattreditFuc">确定</button>
 			</view>
 		</view>
-		
-		
+
+
 		<!-- 相机相册选择 -->
 		<u-popup :show="checkimgshow" :round="8" mode="bottom" :closeOnClickOverlay="true">
 			<view>
@@ -251,7 +255,11 @@
 		erpProductGetBasicData,
 		erpclickattredit
 	} from "@/api/erpapi.js"
-	import { getInfoByRecycleOrderId, warehouseList, empCreateRecycleForm } from '@/api/erp.js'
+	import {
+		getInfoByRecycleOrderId,
+		warehouseList,
+		empCreateRecycleForm
+	} from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
 	//import SelectData from '@/components/RecyclingList/SelectData.vue';
@@ -272,24 +280,24 @@
 				qualityInfoList: [],
 				formList: [],
 				recycleOrderId: 0,
-				attrRemark:{},
+				attrRemark: {},
 				phoneImgArr: [],
 				addpicicon: "none",
 				modalName: null,
 				dataInfo: '',
 				goodstitle: '',
 				goodssn: '',
-				ActualreceiptsJson:'',//实收款json
-				weixinnum:'',
-				alipaynum:'', 
-				xianjinnum:'',  
-				dihuonum:'',
+				ActualreceiptsJson: '', //实收款json
+				weixinnum: '',
+				alipaynum: '',
+				xianjinnum: '',
+				dihuonum: '',
 				diaobojianum: '',
 				xiaoshoujianum: '',
-				ActualreceiptsAll:'',
-				guidePrice:0,//回收指导价格
+				ActualreceiptsAll: '',
+				guidePrice: 0, //回收指导价格
 				imgList: [],
-				checkimgshow:false,
+				checkimgshow: false,
 				colorvalue: 1,
 				radiolist1: [{
 						value: 1,
@@ -317,7 +325,7 @@
 				switchC: false,
 				switchD: false,
 				filterbasicInfo: '', //筛选数据
-				filterbasiclist:{},
+				filterbasiclist: {},
 				warehouse_id: '', //主仓库
 				partition_id: '', //分仓库
 				category_id: '',
@@ -327,8 +335,8 @@
 				// sales_price:'',//销售价
 				// peer_price:'',//调拨价
 				// cost_price:'',//成本价
-				editid:'',
-				imgParams:[],//图片
+				editid: '',
+				imgParams: [], //图片
 				tab_cur: 0,
 				nav_list: [
 					'物品信息',
@@ -410,11 +418,11 @@
 			},
 			// 选择仓库
 			checkHouseId(e) {
-			    this.parentId = e;	
+				this.parentId = e;
 			},
 			// 仓库列表
 			warehouseList() {
-			 	warehouseList().then(res => {
+				warehouseList().then(res => {
 					if (res.code == 200) {
 						this.warehouseLists = res.rows;
 					}
@@ -430,12 +438,12 @@
 			// 	});
 			// },
 			// 提交
-			erpclickattreditFuc(){
+			erpclickattreditFuc() {
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
 				let storeId = uni.getStorageSync('userinfo').storeId
 				let deviceLabel = uni.getStorageSync('goodsdesc')
 				let basicPriceId = uni.getStorageSync('basicPriceId');
-				let paramsData={
+				let paramsData = {
 					// deviceId: this.formList.deviceId,
 					deviceNo: this.goodssn,
 					deviceLabel: deviceLabel,
@@ -451,7 +459,7 @@
 					qualityInfo: JSON.stringify(uni.getStorageSync('Priceprams')),
 					qualityInfoList: JSON.stringify(this.qualityInfoList),
 					recycleGuidePrice: this.guidePrice,
-					modelId: this.modelId,
+					modelId: Number(this.modelId),
 					// recycleFormId: this.formList.recycleFormId,
 					title: this.formList.title,
 					storeId,
@@ -459,21 +467,21 @@
 				}
 				console.log(paramsData)
 				uni.setStorageSync('data', paramsData)
-						uni.removeStorageSync('goodsdesc')
-						uni.removeStorageSync('deviceId')
-						uni.removeStorageSync('qualityInfoList')
-						uni.removeStorageSync('qualityInfo')
-						uni.removeStorageSync('modelName')
-						uni.removeStorageSync('dataListNum')
-						uni.removeStorageSync('imgList')
-						uni.removeStorageSync('Pricepramitems')
-						uni.removeStorageSync('basicPriceId')
-						uni.removeStorageSync('Priceprams')
-						uni.removeStorageSync('recycleOrderId')
-						uni.removeStorageSync('createById')
-						uni.navigateTo({
-							url: '/pages/tabbarerp/push?tab=1'
-						})
+				uni.removeStorageSync('goodsdesc')
+				uni.removeStorageSync('deviceId')
+				uni.removeStorageSync('qualityInfoList')
+				uni.removeStorageSync('qualityInfo')
+				uni.removeStorageSync('modelName')
+				uni.removeStorageSync('dataListNum')
+				uni.removeStorageSync('imgList')
+				uni.removeStorageSync('Pricepramitems')
+				uni.removeStorageSync('basicPriceId')
+				uni.removeStorageSync('Priceprams')
+				uni.removeStorageSync('recycleOrderId')
+				uni.removeStorageSync('createById')
+				uni.navigateTo({
+					url: '/pages/tabbarerp/push?tab=1'
+				})
 				// empCreateRecycleForm(paramsData).then(res => {
 				// 	if (res.code == 200) {
 				// 		this.$u.toast('提交成功！')
@@ -513,24 +521,24 @@
 					let skuItem = {
 						title: '选择SKU', //排序头的名称
 						value: 'a',
-						alias:['分类','品牌','系列','机型'],
+						alias: ['分类', '品牌', '系列', '机型'],
 						type: 2, //类型，0：没有下拉选项，1：单项下拉列表，2：多项列表，如地区选择
 						data: skudata
 					};
 					let houseItem = {
 						title: '选择仓库', //排序头的名称
 						value: 'b',
-						alias:['仓库','分仓'],
+						alias: ['仓库', '分仓'],
 						type: 2, //类型，0：没有下拉选项，1：单项下拉列表，2：多项列表，如地区选择
 						data: housedata
 					};
 					tempdata.data.push(skuItem);
 					tempdata.data.push(houseItem);
 					this.filterbasiclist = tempdata;
-					console.log('filterbasiclist',this.filterbasiclist);
+					console.log('filterbasiclist', this.filterbasiclist);
 				})
 			},
-			
+
 			changebar(e) {
 				//console.log('----------change----------');
 				//console.log('changebar',e);
@@ -539,16 +547,16 @@
 				//console.log('----------select----------');
 				let selectType = e.root;
 				let selectedData = e.nodes;
-				if(selectType.value=='b'){ //仓库处理
-					if(selectedData.length>0){
+				if (selectType.value == 'b') { //仓库处理
+					if (selectedData.length > 0) {
 						this.warehouse_id = selectedData[0]['value'];
 					}
-					if(selectedData.length>1){
+					if (selectedData.length > 1) {
 						this.partition_id = selectedData[1]['value'];
 					}
-					 
-				}else{
-					switch(selectedData.length){
+
+				} else {
+					switch (selectedData.length) {
 						case 4:
 							this.category_id = selectedData[0]['value'];
 							this.brand_id = selectedData[1]['value'];
@@ -569,9 +577,9 @@
 							break;
 					}
 				}
-				
+
 			},
-			inputData(event,dataValue){
+			inputData(event, dataValue) {
 				this.qualityInfoList[dataValue].remark = event.target.value
 			},
 			groupChange(n) {
@@ -588,15 +596,15 @@
 					this.dataInfo = res.data;
 					this.goodstitle = res.data.name;
 					this.guidePrice = res.data.guide_price;
-					let attr_remark_value = res.data.attr_list??[];
-					this.goodsvalue = res.data.value??[];
-					attr_remark_value.forEach((item, i) =>{
-						this.attrRemark[item.key]='';
+					let attr_remark_value = res.data.attr_list ?? [];
+					this.goodsvalue = res.data.value ?? [];
+					attr_remark_value.forEach((item, i) => {
+						this.attrRemark[item.key] = '';
 					});
-					this.retrieveList[0] = res.data.value.base.list??[];
-					this.retrieveList[1] = res.data.value.colour.list??[];
-					this.retrieveList[2] = res.data.value.function.list??[];
-					console.log('retrieveList',this.retrieveList);
+					this.retrieveList[0] = res.data.value.base.list ?? [];
+					this.retrieveList[1] = res.data.value.colour.list ?? [];
+					this.retrieveList[2] = res.data.value.function.list ?? [];
+					console.log('retrieveList', this.retrieveList);
 				})
 			},
 			hideModal(e) {
@@ -653,7 +661,7 @@
 				let that = this;
 				that.uploadImgtype = type;
 				uni.navigateTo({
-					url:'/pages/idphoto/idphoto'
+					url: '/pages/idphoto/idphoto'
 				})
 			},
 			//设置图片
@@ -697,11 +705,17 @@
 				// console.log(that.imgParams);
 			},
 			// 实收款总计
-			ActualreceiptsAllFuc(){
+			ActualreceiptsAllFuc() {
 				// this.ActualreceiptsAll = 0;
 				// this.ReceivablesMoney = 0;
-				this.ActualreceiptsAll = Number(this.weixinnum) + Number(this.alipaynum) + Number(this.xianjinnum) + Number(this.dihuonum)
-				this.ActualreceiptsJson =JSON.stringify({wexin:Number(this.weixinnum),alipay:Number(this.alipaynum),xianjin:Number(this.xianjinnum),dihuo:Number(this.dihuonum)});
+				this.ActualreceiptsAll = Number(this.weixinnum) + Number(this.alipaynum) + Number(this.xianjinnum) + Number(this
+					.dihuonum)
+				this.ActualreceiptsJson = JSON.stringify({
+					wexin: Number(this.weixinnum),
+					alipay: Number(this.alipaynum),
+					xianjin: Number(this.xianjinnum),
+					dihuo: Number(this.dihuonum)
+				});
 				this.arrearsMoney = this.ReceivablesMoney - this.ActualreceiptsAll;
 			},
 			tabSelect(e) {
@@ -717,13 +731,14 @@
 </script>
 
 <style lang="scss">
-	.cangkuItem{
+	.cangkuItem {
 		height: 40rpx;
 		background: #afafb0;
 		line-height: 40rpx;
 		padding-left: 10rpx;
 		padding-right: 10rpx;
 	}
+
 	.cu-avatar {
 		background-color: #ccc;
 	}
@@ -751,32 +766,37 @@
 			margin-left: 10px;
 		}
 	}
-	.h-table .h-td{
-		display:inline-block;
+
+	.h-table .h-td {
+		display: inline-block;
 		text-align: center;
 	}
-	.cu-bar .action .cuIcon-title{
-		font-size:80rpx;
+
+	.cu-bar .action .cuIcon-title {
+		font-size: 80rpx;
 		line-height: 80rpx;
-		margin-right:0 !important;
+		margin-right: 0 !important;
 	}
+
 	.cu-bar .title,
 	.cu-form-group .title {
-		color:#111f3a;
+		color: #111f3a;
 		font-weight: bold;
 		white-space: nowrap;
 	}
-	
-	.pic{
+
+	.pic {
 		background-color: #fff;
-		.cu-avatar{
+
+		.cu-avatar {
 			border-radius: 30rpx;
 			background-color: #f2f1f6;
-			color:#afafb0;
-			font-size:1.2em;
-			.img{
-				width:100%;
-				height:100%;
+			color: #afafb0;
+			font-size: 1.2em;
+
+			.img {
+				width: 100%;
+				height: 100%;
 				//z-index:9999;
 				display: inline-flex;
 				text-align: center;
@@ -785,7 +805,8 @@
 			}
 		}
 	}
-	.hide{
-		display:none;
+
+	.hide {
+		display: none;
 	}
 </style>

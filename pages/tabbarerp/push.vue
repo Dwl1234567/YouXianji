@@ -21,12 +21,13 @@
 		<!--中间内容区域-->
 		<view class="zaiui-view-content">
 			<view class="" v-if="TabCur == 0">
-				
+
 				<view class="bg-white radius-6" style="padding-top: 58rpx;">
 					<scroll-view scroll-x class="nav bg-F0F0F0">
 						<view class="flex text-center">
-							<view class="cu-item flex-sub radius-6" style="height: 72rpx;line-height:72rpx;" :class="index==TabCur?'bg-reds cur':''"
-								v-for="(item,index) in typeListData" :key="index" @tap="tabSelect" :data-id="index">
+							<view class="cu-item flex-sub radius-6" style="height: 72rpx;line-height:72rpx;"
+								:class="index==TabCur?'bg-reds cur':''" v-for="(item,index) in typeListData" :key="index"
+								@tap="tabSelect" :data-id="index">
 								{{item.name}}
 							</view>
 						</view>
@@ -51,7 +52,7 @@
 									扫
 								</view>
 							</view>
-					
+
 							<view class="" @tap="selectSellTap">
 								<view class="cu-tag bg-red">
 									<text class="iconfont icon-choosebay text-white"></text>
@@ -62,12 +63,12 @@
 							</view>
 						</view>
 					</view>
-					
+
 					<view class="cu-list menu-avatar" v-if="!reorganizeId">
-						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''"
-							v-for="(item,index) in goodsList" :key="index" @touchstart="ListTouchStart"
-							@touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index">
-							<image class="cu-avatar lg" :src="$httpImage + item.modelPhoto" mode="widthFix"/>
+						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in goodsList"
+							:key="index" @touchstart="ListTouchStart" @touchmove="ListTouchMove" @touchend="ListTouchEnd"
+							:data-target="'move-box-' + index">
+							<image class="cu-avatar lg" :src="$httpImage + item.modelPhoto" mode="widthFix" />
 							<view class="content">
 								<view class="text-grey">{{item.modelName}}</view>
 								<view class="text-grey">序列号：{{item.deviceNo}}</view>
@@ -84,7 +85,7 @@
 					</view>
 					<view class="cu-form-group">
 						<view class="title">配件</view>
-						<view class="cu-capsule radius">			
+						<view class="cu-capsule radius">
 							<view class="" @tap="selectSellTaps">
 								<view class="cu-tag bg-red">
 									<text class="iconfont icon-choosebay text-white"></text>
@@ -96,10 +97,11 @@
 						</view>
 					</view>
 					<view class="cu-list menu-avatar">
-						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''"
-							v-for="(item,index) in house" :key="index" @touchstart="ListTouchStart"
-							@touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index" style="padding:3px">
-							<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ $httpImage + item.fittingsConfig.fittingsPhoto +')'}]">
+						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in house"
+							:key="index" @touchstart="ListTouchStart" @touchmove="ListTouchMove" @touchend="ListTouchEnd"
+							:data-target="'move-box-' + index" style="padding:3px">
+							<view class="cu-avatar lg"
+								:style="[{backgroundImage:'url('+ $httpImage + item.fittingsConfig.fittingsPhoto +')'}]">
 							</view>
 							<view class="content" style="display: flex;
     flex-direction: column;">
@@ -124,7 +126,7 @@
 						<view class="title">总价</view>
 						{{totalPrice}}元
 					</view>
-					
+
 					<view class="cu-form-group">
 						<view class="title">应收款</view>
 						<input placeholder="请输入收款金额" v-model="ReceivablesMoney" @input="changemoney"></input>
@@ -140,10 +142,11 @@
 							</view>
 						</view>
 					</view>
-					
+
 					<view class="cu-form-group">
 						<view class="title">是否挂单</view>
-						<switch  class='red' @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"  color="#e54d42"></switch>
+						<switch class='red' @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"
+							color="#e54d42"></switch>
 					</view>
 					<view class="guadan" :class="switchGD?'show':''">
 						<view class="cu-form-group">
@@ -154,7 +157,7 @@
 								</view>
 							</picker>
 						</view>
-					
+
 						<view class="cu-form-group">
 							<view class="title">本次欠款（计算）</view>
 							<input placeholder="欠款金额" v-model="arrearsMoney" disabled="" name="input"></input>
@@ -162,8 +165,8 @@
 						</view>
 					</view>
 					<view class="cu-form-group" style="border:2rpx solid #EEEEEE">
-						<textarea class="textarea" maxlength="-1" @input="textareaAInput"
-							placeholder="请输入备注信息"  v-model="remark" name="input"></textarea>
+						<textarea class="textarea" maxlength="-1" @input="textareaAInput" placeholder="请输入备注信息" v-model="remark"
+							name="input"></textarea>
 					</view>
 					<!--
 					<view class="cu-form-group">
@@ -177,14 +180,15 @@
 					</view>
 				</view>
 			</view>
-			
-			
+
+
 			<view class="" v-if="TabCur == 1">
-				<view class="bg-white radius-6"style="padding-top: 58rpx;">
+				<view class="bg-white radius-6" style="padding-top: 58rpx;">
 					<scroll-view scroll-x class="nav bg-F0F0F0">
 						<view class="flex text-center">
-							<view class="cu-item flex-sub radius-6" style="height: 72rpx;line-height:72rpx;" :class="index==TabCur?'bg-reds cur':''"
-								v-for="(item,index) in typeListData" :key="index" @tap="tabSelect" :data-id="index">
+							<view class="cu-item flex-sub radius-6" style="height: 72rpx;line-height:72rpx;"
+								:class="index==TabCur?'bg-reds cur':''" v-for="(item,index) in typeListData" :key="index"
+								@tap="tabSelect" :data-id="index">
 								{{item.name}}
 							</view>
 						</view>
@@ -210,9 +214,9 @@
 						</view>
 					</view>
 					<view class="cu-list menu-avatar">
-						<view class="cu-item"  :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in hsdangoodsList"
-						:key="index" @touchstart="ListTouchStart" @touchmove="ListTouchMove" @touchend="ListTouchEnd"
-						:data-target="'move-box-' + index" >
+						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''"
+							v-for="(item,index) in hsdangoodsList" :key="index" @touchstart="ListTouchStart"
+							@touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index">
 							<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ item.image +')'}]">
 							</view>
 							<view class="content">
@@ -244,24 +248,26 @@
 						</view>
 					</view>
 					<view class="cu-form-group" style="border:2rpx solid #EEEEEE">
-						<textarea class="textarea" maxlength="-1" @input="textareaAInput"
-							placeholder="请输入备注信息"  v-model="remark1" name="input"></textarea>
+						<textarea class="textarea" maxlength="-1" @input="textareaAInput" placeholder="请输入备注信息" v-model="remark1"
+							name="input"></textarea>
 					</view>
 					<!--<view class="cu-form-group">
 						<view class="title">备注</view>
 						<input placeholder="请输入备注" v-model="remark1" name="input"></input>
 					</view>-->
 				</view>
-				
+
 				<view class="orderview-footer-fixed">
 					<view class="flex">
-						<button class="cu-btn radius-4 margin-tb-xs lg text-400" @click="upbiaojiTap(0)" style="flex: 1; border: 1px solid rgba(235,25,25,1); color: #EB1919;">预制开单</button>
-						<button class="cu-btn bg-reds radius-4 margin-tb-xs lg text-400 margin-left-sm" @click="upbiaojiTap(1)" style="flex: 1;">确定开单</button>
+						<button class="cu-btn radius-4 margin-tb-xs lg text-400" @click="upbiaojiTap(0)"
+							style="flex: 1; border: 1px solid rgba(235,25,25,1); color: #EB1919;">预制开单</button>
+						<button class="cu-btn bg-reds radius-4 margin-tb-xs lg text-400 margin-left-sm" @click="upbiaojiTap(1)"
+							style="flex: 1;">确定开单</button>
 					</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<!--销售开单  收款填写-->
 		<view class="cu-modal" :class="modalName=='Modal'?'show':''">
 			<view class="cu-dialog">
@@ -274,16 +280,20 @@
 				<view class="padding-xl">
 					<view class="cu-list grid col-2">
 						<view class="cu-item bg-deepblue">
-							<input class="text-green text-lg" type="number" v-model="weixinnum" placeholder="微信" @input="ActualreceiptsAllFuc"></input>
+							<input class="text-green text-lg" type="number" v-model="weixinnum" placeholder="微信"
+								@input="ActualreceiptsAllFuc"></input>
 						</view>
 						<view class="cu-item bg-deepblue">
-							<input class="text-blue" type="number" v-model="alipaynum" placeholder="支付宝" @input="ActualreceiptsAllFuc"></input>
+							<input class="text-blue" type="number" v-model="alipaynum" placeholder="支付宝"
+								@input="ActualreceiptsAllFuc"></input>
 						</view>
 						<view class="cu-item bg-deepblue">
-							<input class="text-red" type="number" v-model="xianjinnum" placeholder="现金" @input="ActualreceiptsAllFuc"></input>
+							<input class="text-red" type="number" v-model="xianjinnum" placeholder="现金"
+								@input="ActualreceiptsAllFuc"></input>
 						</view>
 						<view class="cu-item bg-deepblue">
-							<input class="text-purple" type="number" v-model="dihuonum" placeholder="银行卡" @input="ActualreceiptsAllFuc"></input>
+							<input class="text-purple" type="number" v-model="dihuonum" placeholder="银行卡"
+								@input="ActualreceiptsAllFuc"></input>
 						</view>
 					</view>
 					<view class="margin-top">
@@ -300,7 +310,7 @@
 							</view>
 						</view>
 					</view>
-					
+
 					<view class="cu-form-group" v-if="imgList.length > 0">
 						<view class="grid col-3 grid-square flex-sub">
 							<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage"
@@ -315,7 +325,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<!--回收开单 付款填写-->
 		<view class="cu-modal" :class="modalName2=='Modal'?'show':''">
 			<view class="cu-dialog">
@@ -328,16 +338,20 @@
 				<view class="padding-xl">
 					<view class="cu-list grid col-2">
 						<view class="cu-item bg-deepblue">
-							<input class="text-green" type="number" v-model="hsweixinnum" placeholder="微信" @input="ActualreceiptsAllFuchs"></input>
+							<input class="text-green" type="number" v-model="hsweixinnum" placeholder="微信"
+								@input="ActualreceiptsAllFuchs"></input>
 						</view>
 						<view class="cu-item bg-deepblue">
-							<input class="text-blue" type="number" v-model="hsalipaynum" placeholder="支付宝" @input="ActualreceiptsAllFuchs"></input>
+							<input class="text-blue" type="number" v-model="hsalipaynum" placeholder="支付宝"
+								@input="ActualreceiptsAllFuchs"></input>
 						</view>
 						<view class="cu-item bg-deepblue">
-							<input class="text-red" type="number" v-model="hsxianjinnum" placeholder="现金" @input="ActualreceiptsAllFuchs"></input>
+							<input class="text-red" type="number" v-model="hsxianjinnum" placeholder="现金"
+								@input="ActualreceiptsAllFuchs"></input>
 						</view>
 						<view class="cu-item bg-deepblue">
-							<input class="text-purple" type="number" v-model="hsdihuonum" placeholder="抵货款" @input="ActualreceiptsAllFuchs"></input>
+							<input class="text-purple" type="number" v-model="hsdihuonum" placeholder="抵货款"
+								@input="ActualreceiptsAllFuchs"></input>
 						</view>
 					</view>
 					<!-- <view class="margin-top">
@@ -369,7 +383,7 @@
 						</view>
 					</view>
 				</view>
-				
+
 			</view>
 		</view>
 		<u-action-sheet :actions="upimageList" :closeOnClickAction="true" @close="closeUpimg" :cancelText="'取消'"
@@ -390,7 +404,8 @@
 		updatesingletransfer,
 		selladd,
 		erppurchaseclickattrview,
-		erppurchaseadd,erppurchaseclickattrview1
+		erppurchaseadd,
+		erppurchaseclickattrview1
 	} from "@/api/erpapi.js"
 	import {
 		fittingsForm,
@@ -425,26 +440,26 @@
 				modalName: null,
 				modalName2: null,
 				customerInfo: '',
-				goodsList: [],//销售单
-				hsgoodsList:[],//回收单
-				hsdangoodsList:[],//回收货品
-				outputmoney:0, //产值
-				ReceivablesMoney:0,//应收款
-				ActualreceiptsJson:'',//实收款json
-				weixinnum:'',
-				alipaynum:'', 
-				xianjinnum:'',  
-				dihuonum:'',
-				hsweixinnum:'',
-				hsalipaynum:'', 
-				hsxianjinnum:'',  
-				hsdihuonum:'',
-				ActualreceiptsAll:0,//实收款总计
-				arrearsMoney:0,//本次欠款 
-				imgList: [],//销售图片
-				imgList1: [],//回收图片
-				upgetimgList:[],//销售图片
-				upgetimgList1:[],//回收图片
+				goodsList: [], //销售单
+				hsgoodsList: [], //回收单
+				hsdangoodsList: [], //回收货品
+				outputmoney: 0, //产值
+				ReceivablesMoney: 0, //应收款
+				ActualreceiptsJson: '', //实收款json
+				weixinnum: '',
+				alipaynum: '',
+				xianjinnum: '',
+				dihuonum: '',
+				hsweixinnum: '',
+				hsalipaynum: '',
+				hsxianjinnum: '',
+				hsdihuonum: '',
+				ActualreceiptsAll: 0, //实收款总计
+				arrearsMoney: 0, //本次欠款 
+				imgList: [], //销售图片
+				imgList1: [], //回收图片
+				upgetimgList: [], //销售图片
+				upgetimgList1: [], //回收图片
 				showupimage: false,
 				upimageList: [{
 						name: '拍照',
@@ -455,14 +470,14 @@
 						value: 2,
 					}
 				],
-				remark:'',//备注
-				remark1:'',//回收备注
-				putendtime:'2022-02-02',//挂单时间
-				hsgoods_id:'',
-				hsActualreceiptsAll:'',//回收已填写金额
-				hsarrearsMoney:'',//回收剩余款
-				hsyinggaiMoney:'',//回收应付款
-				hsReceivablesMoney:''
+				remark: '', //备注
+				remark1: '', //回收备注
+				putendtime: '2022-02-02', //挂单时间
+				hsgoods_id: '',
+				hsActualreceiptsAll: '', //回收已填写金额
+				hsarrearsMoney: '', //回收剩余款
+				hsyinggaiMoney: '', //回收应付款
+				hsReceivablesMoney: ''
 			}
 		},
 		onHide() {
@@ -518,10 +533,10 @@
 			this.house = uni.getStorageSync('updatehouse')
 			if (this.house) {
 				this.house.map(item => {
-					this.totalPrice =  Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+					this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
 				})
 			}
-			
+
 		},
 		methods: {
 			selectReoragnizeSellInfo(id) {
@@ -533,43 +548,55 @@
 						this.recycleFormId = res.data.recycleFormId
 						this.totalPrice = res.data.costPrice;
 						this.house.map(item => {
-							this.totalPrice =  Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+							this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
 						})
 					}
 				})
 			},
 			// 截止挂单时间
-			DateChange(e){
+			DateChange(e) {
 				console.log(e);
 				let data = e.detail.value;
 			},
 			// 应收款
-			changemoney(){
+			changemoney() {
 				this.arrearsMoney = this.ReceivablesMoney - this.ActualreceiptsAll;
 			},
 			// 实收款总计
-			ActualreceiptsAllFuc(){
+			ActualreceiptsAllFuc() {
 				// this.ActualreceiptsAll = 0;
 				// this.ReceivablesMoney = 0;
-				this.ActualreceiptsAll = Number(this.weixinnum) + Number(this.alipaynum) + Number(this.xianjinnum) + Number(this.dihuonum)
-				this.ActualreceiptsJson =JSON.stringify({wexin:Number(this.weixinnum),alipay:Number(this.alipaynum),xianjin:Number(this.xianjinnum),dihuo:Number(this.dihuonum)});
+				this.ActualreceiptsAll = Number(this.weixinnum) + Number(this.alipaynum) + Number(this.xianjinnum) + Number(this
+					.dihuonum)
+				this.ActualreceiptsJson = JSON.stringify({
+					wexin: Number(this.weixinnum),
+					alipay: Number(this.alipaynum),
+					xianjin: Number(this.xianjinnum),
+					dihuo: Number(this.dihuonum)
+				});
 				this.arrearsMoney = this.ReceivablesMoney - this.ActualreceiptsAll;
 			},
 			// 回收价格
-			ActualreceiptsAllFuchs(){
+			ActualreceiptsAllFuchs() {
 				// 合计
-				this.hsActualreceiptsAll = Number(this.hsweixinnum) + Number(this.hsalipaynum) + Number(this.hsxianjinnum) + Number(this.hsdihuonum)
+				this.hsActualreceiptsAll = Number(this.hsweixinnum) + Number(this.hsalipaynum) + Number(this.hsxianjinnum) +
+					Number(this.hsdihuonum)
 				// json
-				this.hsActualreceiptsJson =JSON.stringify({wexin:Number(this.hsweixinnum),alipay:Number(this.hsalipaynum),xianjin:Number(this.hsxianjinnum),dihuo:Number(this.hsdihuonum)});
+				this.hsActualreceiptsJson = JSON.stringify({
+					wexin: Number(this.hsweixinnum),
+					alipay: Number(this.hsalipaynum),
+					xianjin: Number(this.hsxianjinnum),
+					dihuo: Number(this.hsdihuonum)
+				});
 				// 欠款
 				this.hsarrearsMoney = Number(this.hsyinggaiMoney) - Number(this.hsActualreceiptsAll);
-				
+
 			},
 			delectTap(index) {
-				this.goodsList.splice(index,1);
+				this.goodsList.splice(index, 1);
 			},
 			delectTap1(index) {
-				this.hsgoodsList.splice(index,1);
+				this.hsgoodsList.splice(index, 1);
 			},
 			erppurchaseclickattrviewFuc(id) {
 				let that = this;
@@ -584,50 +611,50 @@
 			},
 			getValue(list) {
 				console.log(list, 'B页面传递的数据')
-				if(list && list.sn_id){
+				if (list && list.sn_id) {
 					//判断该sn_id 是否已选择
 					let snList = this.goodsList;
 					let snFlag = 0;
-					if(snList.length>0){
-						for(var i=0;i<snList.length;i++){
-							if(snList[i]['sn_id']==list.sn_id){
+					if (snList.length > 0) {
+						for (var i = 0; i < snList.length; i++) {
+							if (snList[i]['sn_id'] == list.sn_id) {
 								snFlag = 1;
 							}
 						}
 					}
-					if(snFlag==1){
+					if (snFlag == 1) {
 						console.log('该产品已有了');
-						return ;
+						return;
 					}
 					this.sn_id = list.sn_id;
 					this.getoncegoods();
 				}
-				if(list && list.hsgoods_id){
+				if (list && list.hsgoods_id) {
 					this.hsgoods_id = list.hsgoods_id;
 					this.erppurchaseclickattrviewFuc(list.hsgoods_id);
 				}
 			},
 			getDiyValue(list) {
 				console.log(list, '未上架机型B页面传递的数据')
-				if(list && list.sn_id){
+				if (list && list.sn_id) {
 					//判断该sn_id 是否已选择
 					let snList = this.goodsList;
 					let snFlag = 0;
-					if(snList.length>0){
-						for(var i=0;i<snList.length;i++){
-							if(snList[i]['sn_id']==list.sn_id){
+					if (snList.length > 0) {
+						for (var i = 0; i < snList.length; i++) {
+							if (snList[i]['sn_id'] == list.sn_id) {
 								snFlag = 1;
 							}
 						}
 					}
-					if(snFlag==1){
+					if (snFlag == 1) {
 						console.log('该产品已有了');
-						return ;
+						return;
 					}
 					this.sn_id = list.sn_id;
 					this.getoncegoods();
 				}
-				if(list && list.hsgoods_id){
+				if (list && list.hsgoods_id) {
 					this.hsgoods_id = list.hsgoods_id;
 					this.erppurchaseclickattrviewFuc(list.hsgoods_id);
 				}
@@ -640,7 +667,7 @@
 					that.ReceivablesMoney = 0;
 					that.outputmoney = 0;
 					this.goodsList.push(res.data);
-					this.goodsList.map((item,index)=>{
+					this.goodsList.map((item, index) => {
 						that.outputmoney += Number(item.sales_price);
 					})
 					that.ReceivablesMoney = that.outputmoney;
@@ -710,7 +737,7 @@
 			selectRecycleTap() {
 				uni.navigateTo({
 					url: '/pages/tabbarerp/classify'
-					
+
 				})
 			},
 			// ListTouch触摸开始
@@ -772,12 +799,12 @@
 				}
 			},
 			// 使用拍照功能
-			opencamare(){
+			opencamare() {
 				let that = this;
 				let uplength = 9;
-				if(that.TabCur){
+				if (that.TabCur) {
 					uplength = 9 - Number(that.imgList1.length);
-				}else{
+				} else {
 					uplength = 9 - Number(that.imgList.length);
 				}
 				uni.chooseImage({
@@ -785,7 +812,7 @@
 					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['camera'], //从相册选择
 					success: (res) => {
-						if(that.TabCur){
+						if (that.TabCur) {
 							if (that.imgList1.length != 0) {
 								that.imgList1 = that.imgList1.concat(res.tempFilePaths)
 							} else {
@@ -800,19 +827,19 @@
 						}
 						console.log(that.imgList);
 					},
-					complete:function(){
+					complete: function() {
 						that.checkimgshow = false;
 					}
-					
+
 				});
 			},
 			// 使用相册功能
-			openpictrue(){
+			openpictrue() {
 				let that = this;
 				let uplength = 9;
-				if(that.TabCur){
+				if (that.TabCur) {
 					uplength = 9 - Number(that.imgList1.length);
-				}else{
+				} else {
 					uplength = 9 - Number(that.imgList.length);
 				}
 				console.log(uplength);
@@ -821,7 +848,7 @@
 					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
-						if(that.TabCur){
+						if (that.TabCur) {
 							if (that.imgList1.length != 0) {
 								that.imgList1 = that.imgList1.concat(res.tempFilePaths)
 							} else {
@@ -836,7 +863,7 @@
 						}
 						console.log(that.imgList);
 					},
-					complete:function(){
+					complete: function() {
 						that.checkimgshow = false;
 					}
 				});
@@ -858,7 +885,7 @@
 						console.log(this.imgList);
 					}
 				});
-				
+
 			},
 			// 销售上传图片开单
 			unploadImg(list, type) {
@@ -879,33 +906,30 @@
 				empCreateRecycleForm(paramsData).then(res => {
 					if (res.code === 200) {
 						this.$u.toast('开单成功');
-						
 						uni.removeStorageSync('data')
 					}
 				})
 			},
 			upbiaojiTap(type) {
-				
+
 				let promisearr = this.imgList1.map(item => {
 					return raiseUpload(item)
 				})
 				let imagesList = []
-				Promise.all(promisearr).then((res)=>{
-					// console.log(res);
+				Promise.all(promisearr).then((res) => {
 					console.log(res)
-					// imagesList.push(res[0].fileName)
 					res.map(itemm => {
 						imagesList.push(itemm.fileName)
 					})
 				}).finally(() => {
-					this.unploadImg(imagesList.join(','),type)
+					this.unploadImg(imagesList.join(','), type)
 				})
 			},
 			// 上传分享图片
-			upShareimg(){
+			upShareimg() {
 				let that = this;
 				console.log(that.TabCur)
-				if(that.TabCur == 0){
+				if (that.TabCur == 0) {
 					// if(!that.customerInfo.id){
 					// 	return that.$u.toast('请选择客户');
 					// }
@@ -916,52 +940,52 @@
 					// 	return that.$u.toast('请上传付款凭证');
 					// }
 					let promisearr = [];
-					that.imgList.forEach((item,index)=>{
+					that.imgList.forEach((item, index) => {
 						console.log(item)
-						if(item.indexOf('shousifang') == -1){
+						if (item.indexOf('shousifang') == -1) {
 							promisearr.push(raiseUpload(item));
-						}else{
+						} else {
 							that.upgetimgList.push(item);
 						}
 					})
-					
-					Promise.all(promisearr).then((res)=>{
-						// console.log(res);
-						res.forEach((iii)=>{
-							that.upgetimgList.push(iii.data.imgurl);
+
+					Promise.all(promisearr).then((res) => {
+							// console.log(res);
+							res.forEach((iii) => {
+								that.upgetimgList.push(iii.data.imgurl);
+							})
 						})
-					})
-					.finally(() => {
-						that.deliveryTap();
-					})
-				}else if(that.TabCur == 1){
+						.finally(() => {
+							that.deliveryTap();
+						})
+				} else if (that.TabCur == 1) {
 					// if(that.goodsList.length <= 0){
 					// 	return that.$u.toast('请录入货品');
 					// }
 					// if(that.imgList.length <= 0){
 					// 	return that.$u.toast('请上传付款凭证');
 					// }
-					
+
 					let promisearr = [];
-					that.imgList1.forEach((item,index)=>{
-						if(item.indexOf('shousifang') == -1){
+					that.imgList1.forEach((item, index) => {
+						if (item.indexOf('shousifang') == -1) {
 							promisearr.push(raiseUpload(item));
-						}else{
+						} else {
 							that.upgetimgList1.push(item);
 						}
 					})
-					
-					Promise.all(promisearr).then((res)=>{
-						// console.log(res);
-						res.forEach((iii)=>{
-							that.upgetimgList1.push(iii.data.imgurl);
+
+					Promise.all(promisearr).then((res) => {
+							// console.log(res);
+							res.forEach((iii) => {
+								that.upgetimgList1.push(iii.data.imgurl);
+							})
 						})
-					})
-					.finally(() => {
-						that.deliveryTap1();
-					})
+						.finally(() => {
+							that.deliveryTap1();
+						})
 				}
-				
+
 			},
 			DelImg(e) {
 				let that = this;
@@ -978,9 +1002,9 @@
 			// 销售开单
 			deliveryTap() {
 				let that = this;
-				let ids = that.goodsList.map((item,index)=>{
-						return item.sn_id;
-					})
+				let ids = that.goodsList.map((item, index) => {
+					return item.sn_id;
+				})
 				let sellFormFittingsList = this.house.map(item => {
 					return {
 						fittingsName: item.fittingsConfig.fittingsName,
@@ -993,19 +1017,19 @@
 				const storeId = uni.getStorageSync('userinfo').storeId
 				fittingsForm({
 					totalPrice: that.totalPrice, // 总成本价
-					clienterId:that.customerInfo.id, // 客户id
-					costPrice:that.costPrice, // 成本
+					clienterId: that.customerInfo.id, // 客户id
+					costPrice: that.costPrice, // 成本
 					deviceId: that.deviceId, // 设备id
 					recycleFormId: that.recycleFormId, // 回收单id
 					qualityInfoId: that.qualityInfoId, // 设备质量信息id
-					accountReceived:that.ReceivablesMoney, // 应收款
-					remark:that.remark,
+					accountReceived: that.ReceivablesMoney, // 应收款
+					remark: that.remark,
 					fundsReceived: String(that.ActualreceiptsAll), // 实收款
 					wxPaymentPrice: that.weixinnum, // 微信付款金额
 					zfbPaymentPrice: that.alipaynum, // 支付宝金额
 					bankCardPrice: that.dihuonum, // 银行卡金额
 					cashPaymentPrice: that.xianjinnum, // 现金金额
-					pendingOrder:that.switchA ? '1' : '0', // 是否挂单
+					pendingOrder: that.switchA ? '1' : '0', // 是否挂单
 					sellFormFittingsList, // 配件
 					storeId
 				}).then(res => {
@@ -1023,23 +1047,23 @@
 			// 回收开单
 			deliveryTap1() {
 				let that = this;
-				let  money= 0;
-				let  clickattr_ids= [];
-				this.hsdangoodsList.map((item,index)=>{
+				let money = 0;
+				let clickattr_ids = [];
+				this.hsdangoodsList.map((item, index) => {
 					money = Number(money) + Number(item.cost_price)
 					clickattr_ids.push(item.id);
 				})
 				let paramstData = {
-					type:2,
-					client_id:this.customerInfo?this.customerInfo.id:'',
-					images:this.upgetimgList1,
-					nums:this.hsdangoodsList.length,
-					money:money,
-					paytype:this.hsActualreceiptsJson,
-					clickattr_ids:clickattr_ids.join(','),
-					remark:this.remark1,
+					type: 2,
+					client_id: this.customerInfo ? this.customerInfo.id : '',
+					images: this.upgetimgList1,
+					nums: this.hsdangoodsList.length,
+					money: money,
+					paytype: this.hsActualreceiptsJson,
+					clickattr_ids: clickattr_ids.join(','),
+					remark: this.remark1,
 				}
-				erppurchaseadd(paramstData).then(res=>{
+				erppurchaseadd(paramstData).then(res => {
 					that.$u.toast('回收开单成功');
 					setTimeout(() => {
 						location.reload()
@@ -1051,9 +1075,10 @@
 </script>
 
 <style lang="scss" scoped>
-	page{
+	page {
 		background: #F0F0F0;
 	}
+
 	.push-box {
 		position: relative;
 		min-height: 50vh;
@@ -1079,7 +1104,7 @@
 
 			padding: var(--status-bar-height) 27.27rpx 0 27.27rpx;
 			align-items: center;
-			
+
 			.zaiui-bar-box {
 				position: relative;
 				width: 100%;
@@ -1094,22 +1119,27 @@
 				}
 			}
 		}
-		.cu-avatar{
-				left: 12px !important;
-				border-top: 0.5px solid #eee;
-			}
-		.cu-list.menu-avatar>.cu-item>.cu-avatar.lg{
+
+		.cu-avatar {
+			left: 12px !important;
+			border-top: 0.5px solid #eee;
+		}
+
+		.cu-list.menu-avatar>.cu-item>.cu-avatar.lg {
 			width: 60px;
 			height: 60px;
 		}
+
 		.cu-list.menu-avatar>.cu-item .content {
-		    left: 90px;
-		    width: calc(100% - 100px);
+			left: 90px;
+			width: calc(100% - 100px);
 		}
-		.cu-list{
+
+		.cu-list {
 			// border-top: 0.5px solid #eee !important;
 			border-bottom: 0.5px solid #eee !important;
 		}
+
 		.zaiui-seat-height {
 			width: 100%;
 
@@ -1124,9 +1154,11 @@
 
 		.zaiui-view-content {
 			padding: 0 27.27rpx 160rpx;
-			.cu-form-group{
+
+			.cu-form-group {
 				background-color: unset;
 			}
+
 			.img-goods {
 				font-variant: small-caps;
 				margin: 0;
@@ -1148,6 +1180,7 @@
 			}
 		}
 	}
+
 	.text_8 {
 		overflow-wrap: break-word;
 		color: rgba(16, 16, 16, 1);
@@ -1158,7 +1191,7 @@
 		white-space: nowrap;
 		line-height: 15px;
 	}
-	
+
 	.text_9 {
 		overflow-wrap: break-word;
 		color: rgba(142, 142, 142, 1);
@@ -1169,13 +1202,15 @@
 		line-height: 13px;
 		margin: 8px 67px 0 0;
 	}
-	.nav{
+
+	.nav {
 		width: 90%;
-	    margin: 0 auto;
+		margin: 0 auto;
 		background: #F9F9FB;
 		border-radius: 6px;
 		padding: 5px;
 	}
+
 	.guadan {
 		display: none;
 	}
@@ -1198,13 +1233,16 @@
 			height: 48rpx;
 		}
 	}
-	.cu-modal{
+
+	.cu-modal {
 		z-index: 99;
 	}
-	.cu-list.grid>.cu-item:after{
-		border:1px solid #fff;
-		box-sizing:unset;
+
+	.cu-list.grid>.cu-item:after {
+		border: 1px solid #fff;
+		box-sizing: unset;
 	}
+
 	.orderview-footer-fixed {
 		margin-top: 100rpx;
 		width: 100%;

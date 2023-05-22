@@ -163,8 +163,9 @@
 							this.$store.commit('setToken', res.token);
 							if (data) {
 								setTimeout(() => {
-									this.$store.commit('setAddress', data);
 									this.getUserInfo();
+									this.$store.commit('setAddress', data);
+									console.log(2222222)
 								}, 1200)
 							}
 							// console.log(uni.getStorageSync('url'), 'uni.getStorageSync();');
@@ -191,7 +192,7 @@
 			getUserInfo() {
 				const data = Vue.prototype.$store.state.address
 				userInfo(data).then((res) => {
-					console.log(res, 33333333);
+					console.log(res, 444444);
 					var roles = res.data.roles;
 					roles.map((item) => {
 						if (item.roleKey === 'consumer') {

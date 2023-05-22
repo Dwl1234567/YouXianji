@@ -1,5 +1,3 @@
-
-
 import request from "@/utils/request.js";
 
 /**
@@ -7,7 +5,9 @@ import request from "@/utils/request.js";
  * 
  */
 export function getProvinceList() {
-	return request.get('/yxj/app/common/getProvinceList',{'noLogin':true});
+	return request.get('/yxj/app/common/getProvinceList', {
+		'noLogin': true
+	});
 }
 
 /**
@@ -15,7 +15,9 @@ export function getProvinceList() {
  * 
  */
 export function getAreaByPid(data) {
-	return request.get('/yxj/app/common/getAreaByPid/' + data,{'noLogin':true});
+	return request.get('/yxj/app/common/getAreaByPid/' + data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -23,7 +25,9 @@ export function getAreaByPid(data) {
  * 
  */
 export function saveUserAddress(data) {
-	return request.post('/yxj/app/user/saveUserAddress' , data,{'noLogin':true});
+	return request.post('/yxj/app/user/saveUserAddress', data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -31,7 +35,9 @@ export function saveUserAddress(data) {
  * 
  */
 export function selectUserAddressList(data) {
-	return request.get('/yxj/app/user/selectUserAddressList' ,{'noLogin':true});
+	return request.get('/yxj/app/user/selectUserAddressList', {
+		'noLogin': true
+	});
 }
 
 /**
@@ -39,7 +45,9 @@ export function selectUserAddressList(data) {
  * 
  */
 export function deleteUserAddress(data) {
-	return request.get('/yxj/app/user/deleteUserAddress/' + data ,{'noLogin':true});
+	return request.get('/yxj/app/user/deleteUserAddress/' + data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -47,7 +55,9 @@ export function deleteUserAddress(data) {
  * 
  */
 export function getNearestStoreList(data) {
-	return request.get('/yxj/app/common/getNearestStoreList' , data ,{'noLogin':true});
+	return request.get('/yxj/app/common/getNearestStoreList', data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -55,7 +65,9 @@ export function getNearestStoreList(data) {
  * 
  */
 export function userAccountList(data) {
-	return request.get('/yxj/app/userAccount/list' ,{'noLogin':true});
+	return request.get('/yxj/app/userAccount/list', {
+		'noLogin': true
+	});
 }
 
 /**
@@ -63,7 +75,9 @@ export function userAccountList(data) {
  * 
  */
 export function addUserAccount(data) {
-	return request.post('/yxj/app/userAccount' ,data, {'noLogin':true});
+	return request.post('/yxj/app/userAccount', data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -71,7 +85,9 @@ export function addUserAccount(data) {
  * 
  */
 export function userAccountDetail(data) {
-	return request.get('/yxj/app/userAccount/' + data, {'noLogin':true});
+	return request.get('/yxj/app/userAccount/' + data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -79,7 +95,9 @@ export function userAccountDetail(data) {
  * 
  */
 export function editUserAccount(data) {
-	return request.put('/yxj/app/userAccount' , data, {'noLogin':true});
+	return request.put('/yxj/app/userAccount', data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -87,7 +105,9 @@ export function editUserAccount(data) {
  * 
  */
 export function delectUserAccount(data) {
-	return request.delete('/yxj/app/userAccount/' + data, {'noLogin':true});
+	return request.delete('/yxj/app/userAccount/' + data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -95,7 +115,9 @@ export function delectUserAccount(data) {
  * 
  */
 export function defaltUserAccount(data) {
-	return request.get('/yxj/app/userAccount/setDefault?accountId=' + data, {'noLogin':true});
+	return request.get('/yxj/app/userAccount/setDefault?accountId=' + data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -103,7 +125,9 @@ export function defaltUserAccount(data) {
  * 
  */
 export function idCardVerification(data) {
-	return request.post('/yxj/app/common/idCardVerification' , data, {'noLogin':true});
+	return request.post('/yxj/app/common/idCardVerification', data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -111,7 +135,9 @@ export function idCardVerification(data) {
  * 
  */
 export function selectRecycleOrderList(data) {
-	return request.get('/yxj/app/recycle/selectRecycleOrderList' , data, {'noLogin':true});
+	return request.get('/yxj/app/recycle/selectRecycleOrderList', data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -119,7 +145,9 @@ export function selectRecycleOrderList(data) {
  * 
  */
 export function selectReceiptList(data) {
-	return request.get('/yxj/app/recycle/selectReceiptList' , data, {'noLogin':true});
+	return request.get('/yxj/app/recycle/selectReceiptList', data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -127,7 +155,9 @@ export function selectReceiptList(data) {
  * 
  */
 export function selectReceiptDetail(data) {
-	return request.get('/yxj/app/recycle/selectReceiptDetail/' + data, {'noLogin':true});
+	return request.get('/yxj/app/recycle/selectReceiptDetail/' + data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -135,7 +165,9 @@ export function selectReceiptDetail(data) {
  * 
  */
 export function agreeReceipt(data) {
-	return request.get('/yxj/app/recycle/agreeReceipt/' + data, {'noLogin':true});
+	return request.get('/yxj/app/recycle/agreeReceipt/' + data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -143,7 +175,9 @@ export function agreeReceipt(data) {
  * 
  */
 export function refuseReceipt(data) {
-	return request.get('/yxj/app/recycle/refuseReceipt/' + data, {'noLogin':true});
+	return request.get('/yxj/app/recycle/refuseReceipt/' + data, {
+		'noLogin': true
+	});
 }
 
 /**
@@ -151,5 +185,17 @@ export function refuseReceipt(data) {
  * 
  */
 export function selectRecycleOrderSellList(data) {
-	return request.post('/yxj/app/recycle/selectRecycleOrderSellList' , data,{'noLogin':true});
+	return request.post('/yxj/app/recycle/selectRecycleOrderSellList', data, {
+		'noLogin': true
+	});
+}
+
+/**
+ * 获取会员等级规则列表
+ * 
+ */
+export function selectMemberLevelRuleList(data) {
+	return request.get('/yxj/app/userMemberInfo/selectMemberLevelRuleList', data, {
+		'noLogin': true
+	});
 }

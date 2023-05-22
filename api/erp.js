@@ -6,7 +6,9 @@ import request from '@/utils/request.js';
  *
  */
 export function selectRecycleOrderList(data) {
-	return request.post('/yxj/app/recycle/empSelectRecycleOrderList', data, { noLogin: true });
+	return request.post('/yxj/app/recycle/empSelectRecycleOrderList', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -14,7 +16,9 @@ export function selectRecycleOrderList(data) {
  *
  */
 export function empRobRecycleOrder(data) {
-	return request.get('/yxj/app/recycle/empRobRecycleOrder/' + data, { noLogin: true });
+	return request.get('/yxj/app/recycle/empRobRecycleOrder/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -22,7 +26,9 @@ export function empRobRecycleOrder(data) {
  *
  */
 export function empSelectRecycleOrderDetail(data) {
-	return request.get('/yxj/app/recycle/empSelectRecycleOrderDetail/' + data, { noLogin: true });
+	return request.get('/yxj/app/recycle/empSelectRecycleOrderDetail/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -30,7 +36,9 @@ export function empSelectRecycleOrderDetail(data) {
  *
  */
 export function empConfirmPayment(data) {
-	return request.post('/yxj/app/recycle/empConfirmPayment', data, { noLogin: true });
+	return request.post('/yxj/app/recycle/empConfirmPayment', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -38,7 +46,9 @@ export function empConfirmPayment(data) {
  *
  */
 export function empConfirmReturn(data) {
-	return request.post('/yxj/app/recycle/empConfirmReturn', data, { noLogin: true });
+	return request.post('/yxj/app/recycle/empConfirmReturn', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -46,7 +56,9 @@ export function empConfirmReturn(data) {
  *
  */
 export function employeeClient(data) {
-	return request.post('/yxj/app/employeeClient', data, { noLogin: true });
+	return request.post('/yxj/app/employeeClient', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -54,7 +66,9 @@ export function employeeClient(data) {
  *
  */
 export function employeeClientList(data) {
-	return request.get('/yxj/app/employeeClient/list', data, { noLogin: true });
+	return request.get('/yxj/app/employeeClient/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -62,7 +76,9 @@ export function employeeClientList(data) {
  *
  */
 export function warehouseList(data) {
-	return request.get('/yxj/app/warehouse/list', data, { noLogin: true });
+	return request.get('/yxj/app/warehouse/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -70,7 +86,9 @@ export function warehouseList(data) {
  *
  */
 export function addWarehouse(data) {
-	return request.post('/yxj/app/warehouse', data, { noLogin: true });
+	return request.post('/yxj/app/warehouse', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -78,7 +96,9 @@ export function addWarehouse(data) {
  *
  */
 export function empAgreeOrder(data) {
-	return request.get('/yxj/app/recycle/empAgreeOrder/' + data, { noLogin: true });
+	return request.get('/yxj/app/recycle/empAgreeOrder/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -86,7 +106,9 @@ export function empAgreeOrder(data) {
  *
  */
 export function getInfoByRecycleOrderId(data) {
-	return request.get('/yxj/app/recycleForm/getInfoByRecycleOrderId/' + data, { noLogin: true });
+	return request.get('/yxj/app/recycleForm/getInfoByRecycleOrderId/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -94,7 +116,9 @@ export function getInfoByRecycleOrderId(data) {
  *
  */
 export function updateDeviceNo(data) {
-	return request.post('/yxj/app/recycle/updateDeviceNo', data, { noLogin: true });
+	return request.post('/yxj/app/recycle/updateDeviceNo', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -102,7 +126,9 @@ export function updateDeviceNo(data) {
  *
  */
 export function empCreateRecycleForm(data) {
-	return request.post('/yxj/app/recycleForm/empCreateRecycleForm', data, { noLogin: true });
+	return request.post('/yxj/app/recycleForm/empCreateRecycleForm', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -110,7 +136,9 @@ export function empCreateRecycleForm(data) {
  *
  */
 export function leaderSelectRecycleForm(data) {
-	return request.get('/yxj/app/recycleForm/leaderSelectRecycleForm', data, { noLogin: true });
+	return request.get('/yxj/app/recycleForm/leaderSelectRecycleForm', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -118,7 +146,9 @@ export function leaderSelectRecycleForm(data) {
  *
  */
 export function empSelectRecycleForm(data) {
-	return request.get('/yxj/app/recycleForm/empSelectRecycleForm', data, { noLogin: true });
+	return request.get('/yxj/app/recycleForm/empSelectRecycleForm', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -126,7 +156,9 @@ export function empSelectRecycleForm(data) {
  *
  */
 export function sortingList(data) {
-	return request.post('/yxj/app/sorting/list', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -134,7 +166,9 @@ export function sortingList(data) {
  *
  */
 export function getOperatingCenter(data) {
-	return request.get('/yxj/app/common/getOperatingCenter/' + data, { noLogin: true });
+	return request.get('/yxj/app/common/getOperatingCenter/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -142,7 +176,9 @@ export function getOperatingCenter(data) {
  *
  */
 export function addInspectDevice(data) {
-	return request.post('/yxj/app/sorting/inspectDevice', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/inspectDevice', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -150,7 +186,9 @@ export function addInspectDevice(data) {
  *
  */
 export function receiveInspectDevice(data) {
-	return request.get('/yxj/app/sorting/receiveInspectDevice/' + data, { noLogin: true });
+	return request.get('/yxj/app/sorting/receiveInspectDevice/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -158,7 +196,9 @@ export function receiveInspectDevice(data) {
  *
  */
 export function getSortingPeoples(data) {
-	return request.get('/yxj/app/common/getSortingPeoples', data, { noLogin: true });
+	return request.get('/yxj/app/common/getSortingPeoples', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -166,7 +206,9 @@ export function getSortingPeoples(data) {
  *
  */
 export function distributionSortingTask(data) {
-	return request.post('/yxj/app/sorting/distributionSortingTask', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/distributionSortingTask', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -174,7 +216,9 @@ export function distributionSortingTask(data) {
  *
  */
 export function empGetDeviceQuality(data) {
-	return request.get('/yxj/app/sorting/empGetDeviceQuality/' + data, { noLogin: true });
+	return request.get('/yxj/app/sorting/empGetDeviceQuality/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -182,7 +226,9 @@ export function empGetDeviceQuality(data) {
  *
  */
 export function empUpdateDeviceQuality(data) {
-	return request.post('/yxj/app/sorting/empUpdateDeviceQuality', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/empUpdateDeviceQuality', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -190,7 +236,9 @@ export function empUpdateDeviceQuality(data) {
  *
  */
 export function empGetStoreInfo(data) {
-	return request.get('/yxj/app/sorting/empGetStoreInfo/' + data, { noLogin: true });
+	return request.get('/yxj/app/sorting/empGetStoreInfo/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -198,7 +246,9 @@ export function empGetStoreInfo(data) {
  *
  */
 export function empReturnStore(data) {
-	return request.post('/yxj/app/sorting/empReturnStore', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/empReturnStore', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -206,7 +256,9 @@ export function empReturnStore(data) {
  *
  */
 export function storeAdminConfirm(data) {
-	return request.get('/yxj/app/sorting/storeAdminConfirm/' + data, { noLogin: true });
+	return request.get('/yxj/app/sorting/storeAdminConfirm/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -214,7 +266,9 @@ export function storeAdminConfirm(data) {
  *
  */
 export function storeAdminUndersellApprove(data) {
-	return request.post('/yxj/app/sorting/storeAdminUndersellApprove', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/storeAdminUndersellApprove', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -222,7 +276,9 @@ export function storeAdminUndersellApprove(data) {
  *
  */
 export function empUploadUndersellVoucher(data) {
-	return request.post('/yxj/app/sorting/empUploadUndersellVoucher', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/empUploadUndersellVoucher', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -230,14 +286,18 @@ export function empUploadUndersellVoucher(data) {
  *
  */
 export function storeAdminMaintainApprove(data) {
-	return request.post('/yxj/app/sorting/storeAdminMaintainApprove', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/storeAdminMaintainApprove', data, {
+		noLogin: true
+	});
 }
 /**
  * 分拣员上传维修凭证
  *
  */
 export function empUploadMaintainVoucher(data) {
-	return request.post('/yxj/app/sorting/empUploadMaintainVoucher', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/empUploadMaintainVoucher', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -245,7 +305,9 @@ export function empUploadMaintainVoucher(data) {
  *
  */
 export function storeAdminSelectHandleType(data) {
-	return request.post('/yxj/app/sorting/storeAdminSelectHandleType', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/storeAdminSelectHandleType', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -253,7 +315,9 @@ export function storeAdminSelectHandleType(data) {
  *
  */
 export function empMaintainFail(data) {
-	return request.post('/yxj/app/sorting/empMaintainFail', data, { noLogin: true });
+	return request.post('/yxj/app/sorting/empMaintainFail', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -261,7 +325,9 @@ export function empMaintainFail(data) {
  *
  */
 export function selectReoragnizeList(data) {
-	return request.get('/yxj/app/reoragnize/selectReoragnizeList/' + data, { noLogin: true });
+	return request.get('/yxj/app/reoragnize/selectReoragnizeList/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -269,7 +335,9 @@ export function selectReoragnizeList(data) {
  *
  */
 export function putaway(data) {
-	return request.get('/yxj/app/reoragnize/putaway/' + data, { noLogin: true });
+	return request.get('/yxj/app/reoragnize/putaway/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -277,7 +345,9 @@ export function putaway(data) {
  *
  */
 export function undersell(data) {
-	return request.get('/yxj/app/reoragnize/undersell/' + data, { noLogin: true });
+	return request.get('/yxj/app/reoragnize/undersell/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -285,7 +355,9 @@ export function undersell(data) {
  *
  */
 export function storeAdminApproveList(data) {
-	return request.get('/yxj/app/recycleForm/storeAdminApproveList', data, { noLogin: true });
+	return request.get('/yxj/app/recycleForm/storeAdminApproveList', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -293,7 +365,9 @@ export function storeAdminApproveList(data) {
  *
  */
 export function empApproveRecycleForm(data) {
-	return request.post('/yxj/app/recycleForm/empApproveRecycleForm', data, { noLogin: true });
+	return request.post('/yxj/app/recycleForm/empApproveRecycleForm', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -301,7 +375,9 @@ export function empApproveRecycleForm(data) {
  *
  */
 export function supplierList(data) {
-	return request.get('/yxj/app/supplier/list', data, { noLogin: true });
+	return request.get('/yxj/app/supplier/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -309,7 +385,9 @@ export function supplierList(data) {
  *
  */
 export function addsupplier(data) {
-	return request.post('/yxj/app/supplier', data, { noLogin: true });
+	return request.post('/yxj/app/supplier', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -317,7 +395,9 @@ export function addsupplier(data) {
  *
  */
 export function fittingsOrderList(data) {
-	return request.get('/yxj/app/fittingsOrder/list', data, { noLogin: true });
+	return request.get('/yxj/app/fittingsOrder/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -325,14 +405,18 @@ export function fittingsOrderList(data) {
  *
  */
 export function fittingsConfigList(data) {
-	return request.get('/yxj/platform/fittingsConfig/list', data, { noLogin: true });
+	return request.get('/yxj/platform/fittingsConfig/list', data, {
+		noLogin: true
+	});
 }
 /**
  * 新增门店配件订单
  *
  */
 export function fittingsOrder(data) {
-	return request.post('/yxj/app/fittingsOrder', data, { noLogin: true });
+	return request.post('/yxj/app/fittingsOrder', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -340,7 +424,9 @@ export function fittingsOrder(data) {
  *
  */
 export function fittingsOrders(data) {
-	return request.put('/yxj/app/fittingsOrder', data, { noLogin: true });
+	return request.put('/yxj/app/fittingsOrder', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -348,7 +434,9 @@ export function fittingsOrders(data) {
  *
  */
 export function confirmWarehousing(data) {
-	return request.post('/yxj/app/fittingsOrder/confirmWarehousing', data, { noLogin: true });
+	return request.post('/yxj/app/fittingsOrder/confirmWarehousing', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -356,7 +444,9 @@ export function confirmWarehousing(data) {
  *
  */
 export function selectTopWarehouseList(data) {
-	return request.get('/yxj/app/fittings/selectTopWarehouseList', data, { noLogin: true });
+	return request.get('/yxj/app/fittings/selectTopWarehouseList', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -364,7 +454,9 @@ export function selectTopWarehouseList(data) {
  *
  */
 export function fittingsList(data) {
-	return request.get('/yxj/app/fittings/list', data, { noLogin: true });
+	return request.get('/yxj/app/fittings/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -372,7 +464,9 @@ export function fittingsList(data) {
  *
  */
 export function fittingsForm(data) {
-	return request.post('/yxj/app/fittingsForm', data, { noLogin: true });
+	return request.post('/yxj/app/fittingsForm', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -380,7 +474,9 @@ export function fittingsForm(data) {
  *
  */
 export function selectReoragnizeSellInfo(data) {
-	return request.get('/yxj/app/fittingsForm/selectReoragnizeSellInfo/' + data, { noLogin: true });
+	return request.get('/yxj/app/fittingsForm/selectReoragnizeSellInfo/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -388,7 +484,9 @@ export function selectReoragnizeSellInfo(data) {
  *
  */
 export function selectStaySellFormList(data) {
-	return request.get('/yxj/app/fittingsForm/selectStaySellFormList', data, { noLogin: true });
+	return request.get('/yxj/app/fittingsForm/selectStaySellFormList', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -396,7 +494,9 @@ export function selectStaySellFormList(data) {
  *
  */
 export function selectSellFormList(data) {
-	return request.get('/yxj/app/fittingsForm/selectSellFormList', data, { noLogin: true });
+	return request.get('/yxj/app/fittingsForm/selectSellFormList', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -404,7 +504,9 @@ export function selectSellFormList(data) {
  *
  */
 export function selectSellFormDetail(data) {
-	return request.get('/yxj/app/fittingsForm/selectSellFormDetail', data, { noLogin: true });
+	return request.get('/yxj/app/fittingsForm/selectSellFormDetail', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -412,7 +514,9 @@ export function selectSellFormDetail(data) {
  *
  */
 export function getAdjustPriceList(data) {
-	return request.get('/yxj/app/adjustPrice/getAdjustPriceList', data, { noLogin: true });
+	return request.get('/yxj/app/adjustPrice/getAdjustPriceList', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -420,7 +524,9 @@ export function getAdjustPriceList(data) {
  *
  */
 export function adjustPrice(data) {
-	return request.post('/yxj/app/adjustPrice/adjustPrice', data, { noLogin: true });
+	return request.post('/yxj/app/adjustPrice/adjustPrice', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -428,7 +534,9 @@ export function adjustPrice(data) {
  *
  */
 export function adjustPriceList(data) {
-	return request.get('/yxj/app/adjustPrice/list', data, { noLogin: true });
+	return request.get('/yxj/app/adjustPrice/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -436,7 +544,9 @@ export function adjustPriceList(data) {
  *
  */
 export function empSelectList(data) {
-	return request.get('/yxj/app/shoppingOrder/empSelectList', data, { noLogin: true });
+	return request.get('/yxj/app/shoppingOrder/empSelectList', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -444,7 +554,9 @@ export function empSelectList(data) {
  *
  */
 export function sellerShipments(data) {
-	return request.post('/yxj/app/shoppingOrder/sellerShipments', data, { noLogin: true });
+	return request.post('/yxj/app/shoppingOrder/sellerShipments', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -452,7 +564,9 @@ export function sellerShipments(data) {
  *
  */
 export function refuseReasonList(data) {
-	return request.get('/yxj/app/secondGoodsReturn/refuseReasonList', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoodsReturn/refuseReasonList', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -460,7 +574,9 @@ export function refuseReasonList(data) {
  *
  */
 export function agreeReturn(data) {
-	return request.get('/yxj/app/secondGoodsReturn/agreeReturn', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoodsReturn/agreeReturn', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -468,7 +584,9 @@ export function agreeReturn(data) {
  *
  */
 export function selectReturnReason(data) {
-	return request.get('/yxj/app/secondGoodsReturn/selectReturnReason', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoodsReturn/selectReturnReason', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -476,5 +594,17 @@ export function selectReturnReason(data) {
  *
  */
 export function uploadAfterSaleVoucher(data) {
-	return request.post('//yxj/app/secondGoodsReturn/uploadAfterSaleVoucher', data, { noLogin: true });
+	return request.post('/yxj/app/secondGoodsReturn/uploadAfterSaleVoucher', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 店员抢销售单
+ *
+ */
+export function empRobShoppingOrder(data) {
+	return request.get('/yxj/app/shoppingOrder/empRobShoppingOrder', data, {
+		noLogin: true
+	});
 }

@@ -8,11 +8,8 @@
 						<view class="image-text_1 flex-row justify-between">
 							<text class="text-group_1">{{item.secondHandGoods.storeName}}</text>
 						</view>
-						<image
-							class="icon_2"
-							referrerpolicy="no-referrer"
-							src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng76a69ec8d984edf3b54d04b77768e328ebb05626d86c986f26777b8490007c8e"
-						/>
+						<image class="icon_2" referrerpolicy="no-referrer"
+							src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng76a69ec8d984edf3b54d04b77768e328ebb05626d86c986f26777b8490007c8e" />
 						<!-- <text class="text_3">等待买家付款</text> -->
 					</view>
 					<view class="group_4 flex-row justify-between">
@@ -33,7 +30,12 @@
 						<text class="text_10">¥</text>
 						<text class="text_11">{{item.secondHandGoods.sellPrice}}</text>
 					</view>
-					<view class="group_7 flex-row justify-between">
+					<view class="group_7 flex-row justify-between" v-if="!item.sellPeople">
+						<button class="button_1 flex-col" @click="onClick_2(item)">
+							<text class="text_12">接入</text>
+						</button>
+					</view>
+					<view class="group_7 flex-row justify-between" v-else>
 						<button class="button_1 flex-col" @click="onClick_1(item)">
 							<text class="text_12">填写物流单号</text>
 						</button>
@@ -67,7 +69,11 @@
 </template>
 
 <script>
-	import { empSelectList, sellerShipments } from '@/api/erp.js';
+	import {
+		empSelectList,
+		sellerShipments,
+		empRobShoppingOrder
+	} from '@/api/erp.js';
 	export default {
 		data() {
 			return {
@@ -84,6 +90,21 @@
 			this.empSelectList();
 		},
 		methods: {
+			// 接入
+			onClick_2(item) {
+				empRobShoppingOrder({
+					orderId: item.orderId
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '接入成功',
+						});
+						this.pageNum = 1;
+						this.empSelectList();
+					}
+				})
+			},
 			// 填写运单号
 			sellerShipments() {
 				sellerShipments({
@@ -150,8 +171,10 @@
 
 <style lang="scss">
 	@import '/static/common.css';
+
 	.yunShow-top {
 		padding: 26rpx 28rpx 28rpx 28rpx;
+
 		.yunShow-title {
 			font-size: 36rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
@@ -160,31 +183,37 @@
 			text-align: center;
 		}
 	}
+
 	.yunShow-item {
 		display: flex;
 		align-items: center;
 		margin-top: 22rpx;
+
 		.left {
 			font-size: 31rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #232323;
 		}
+
 		.select {
 			flex: 1;
 			margin-left: 11.45rpx;
 		}
+
 		.input {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 		}
+
 		.inputAddress {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 			flex: 1;
 			padding: 9rpx 11rpx;
+
 			.copy {
 				width: 141rpx;
 				height: 53rpx;
@@ -200,8 +229,10 @@
 			}
 		}
 	}
+
 	.yunShow-bottom {
 		display: flex;
+
 		view {
 			width: 267rpx;
 			height: 99rpx;
@@ -215,6 +246,7 @@
 			color: #232323;
 		}
 	}
+
 	.box_2 {
 		background-color: rgba(240, 240, 240, 1);
 		padding: 13px;
@@ -400,6 +432,7 @@
 		margin-right: 28rpx;
 		margin-top: 17rpx;
 		justify-content: flex-end;
+
 		button {
 			margin-left: 28rpx;
 		}
