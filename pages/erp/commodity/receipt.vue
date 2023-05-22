@@ -8,11 +8,8 @@
 						<view class="image-text_1 flex-row justify-between">
 							<text class="text-group_1">{{item.secondHandGoods.storeName}}</text>
 						</view>
-						<image
-							class="icon_2"
-							referrerpolicy="no-referrer"
-							src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng76a69ec8d984edf3b54d04b77768e328ebb05626d86c986f26777b8490007c8e"
-						/>
+						<image class="icon_2" referrerpolicy="no-referrer"
+							src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng76a69ec8d984edf3b54d04b77768e328ebb05626d86c986f26777b8490007c8e" />
 					</view>
 					<view class="group_4 flex-row justify-between">
 						<view class="image-text_2 flex-row justify-between">
@@ -66,7 +63,10 @@
 </template>
 
 <script>
-	import { empSelectList, sellerShipments } from '@/api/erp.js';
+	import {
+		empSelectList,
+		sellerShipments
+	} from '@/api/erp.js';
 	export default {
 		data() {
 			return {
@@ -149,8 +149,10 @@
 
 <style lang="scss">
 	@import '/static/common.css';
+
 	.yunShow-top {
 		padding: 26rpx 28rpx 28rpx 28rpx;
+
 		.yunShow-title {
 			font-size: 36rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
@@ -159,31 +161,37 @@
 			text-align: center;
 		}
 	}
+
 	.yunShow-item {
 		display: flex;
 		align-items: center;
 		margin-top: 22rpx;
+
 		.left {
 			font-size: 31rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #232323;
 		}
+
 		.select {
 			flex: 1;
 			margin-left: 11.45rpx;
 		}
+
 		.input {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 		}
+
 		.inputAddress {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 			flex: 1;
 			padding: 9rpx 11rpx;
+
 			.copy {
 				width: 141rpx;
 				height: 53rpx;
@@ -199,8 +207,10 @@
 			}
 		}
 	}
+
 	.yunShow-bottom {
 		display: flex;
+
 		view {
 			width: 267rpx;
 			height: 99rpx;
@@ -214,6 +224,7 @@
 			color: #232323;
 		}
 	}
+
 	.box_2 {
 		background-color: rgba(240, 240, 240, 1);
 		padding: 13px;
@@ -273,7 +284,6 @@
 	}
 
 	.group_4 {
-		width: 342px;
 		margin: 10px 15px 0 9px;
 	}
 
@@ -399,6 +409,7 @@
 		margin-right: 28rpx;
 		margin-top: 17rpx;
 		justify-content: flex-end;
+
 		button {
 			margin-left: 28rpx;
 		}
@@ -421,6 +432,7 @@
 	}
 
 	.button_2 {
+		margin-left: 15rpx;
 		background-image: linear-gradient(90deg, rgba(255, 104, 104, 1) 0, rgba(234, 21, 21, 1) 100%);
 		border-radius: 15px;
 		padding: 5px 9px 4px 12px;

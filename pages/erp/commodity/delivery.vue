@@ -306,7 +306,6 @@
 	}
 
 	.group_4 {
-		width: 342px;
 		margin: 10px 15px 0 9px;
 	}
 
@@ -455,6 +454,7 @@
 	}
 
 	.button_2 {
+		margin-left: 15rpx;
 		background-image: linear-gradient(90deg, rgba(255, 104, 104, 1) 0, rgba(234, 21, 21, 1) 100%);
 		border-radius: 15px;
 		padding: 5px 9px 4px 12px;

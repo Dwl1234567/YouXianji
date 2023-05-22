@@ -37,6 +37,38 @@
 			<view class="cu-bar solid-bottom">
 				<view class="action">
 					<text class="cuIcon-titles text-orange"></text>
+					回收代办
+				</view>
+			</view>
+			<view class="cu-list grid col-4 no-border">
+				<view class="cu-item" @tap="goRecycleList(1)">
+					<view class="iconfont icon-cashorange text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>待处理</text>
+				</view>
+				<view class="cu-item" @tap="goRecycleList(2)">
+					<view class="iconfont icon-cashorange text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>已处理</text>
+				</view>
+				<view class="cu-item" @tap="goRecycleList(3)">
+					<view class="iconfont icon-cashorange text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>待退回</text>
+				</view>
+				<view class="cu-item" @tap="goRecycleList(4)">
+					<view class="iconfont icon-cashorange text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>已退回</text>
+				</view>
+			</view>
+			<view class="cu-bar solid-bottom">
+				<view class="action">
+					<text class="cuIcon-titles text-orange"></text>
 					待办事项
 				</view>
 			</view>
@@ -96,12 +128,6 @@
 					</view>
 					<text>待上门</text>
 				</view>
-				<view class="cu-item" @tap="localTaps">
-					<view class="iconfont icon-tubiao-64 text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
-					</view>
-					<text>回收列表</text>
-				</view>
 				<view class="cu-item" @tap="maintenance">
 					<view class="iconfont icon-tubiao-64 text-red">
 						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
@@ -131,9 +157,7 @@
 				-->
 			</view>
 			<view class="flex margin-top-xs" style="position: relative" v-for="(items,key) in entraMenu" :key="key">
-				<view
-					class="flex-wrap margin-left"
-					style="
+				<view class="flex-wrap margin-left" style="
 						position: absolute;
 						bottom: 10rpx;
 						text-align: center;
@@ -142,21 +166,13 @@
 						line-height: 60rpx;
 						padding: 5rpx 0;
 						border-right: 2px solid #ec6e57;
-					"
-				>
+					">
 					<text class="text-bold text-deepblue">{{items.name}}</text>
 				</view>
-				<view
-					class="flex-wrap cu-list grid col-5 no-border"
-					style="margin-left: 90rpx; margin-top: 0; padding: 5rpx 20rpx"
-				>
-					<view
-						class="cu-item"
-						v-for="(item,index) in items.children"
-						:key="index"
-						v-if="index<5"
-						style="padding-bottom: 0"
-					>
+				<view class="flex-wrap cu-list grid col-5 no-border"
+					style="margin-left: 90rpx; margin-top: 0; padding: 5rpx 20rpx">
+					<view class="cu-item" v-for="(item,index) in items.children" :key="index" v-if="index<5"
+						style="padding-bottom: 0">
 						<view @tap="goTap(key,index)">
 							<!--
 							<view class="text-xxl text-black">
@@ -178,14 +194,8 @@
 				<view @click="show = false">取消</view>
 				<view @click="kefuQiangdan">完成</view>
 			</view>
-			<picker-view
-				indicator-style="height: 40px;line-height: 40px;"
-				style="height: 200px; text-align: center"
-				class="mpvue-picker-view"
-				:value="pickerValue"
-				@change="pickerChange"
-				indicator-class="itemadd"
-			>
+			<picker-view indicator-style="height: 40px;line-height: 40px;" style="height: 200px; text-align: center"
+				class="mpvue-picker-view" :value="pickerValue" @change="pickerChange" indicator-class="itemadd">
 				<block>
 					<picker-view-column>
 						<div class="picker-item" v-for="(item,index) in kefuList" :key="index">{{item.nickname}}</div>
@@ -205,9 +215,19 @@
 	import footerTabbar from './components/footer-tabbar.vue';
 	import barTitle from '@/components/common/basics/bar-title';
 
-	import { erpUserAuth, getAccountData, erpuserbacklog } from '@/api/erpapi.js';
-	import { addNowDay, gethoursInfo } from '@/utils/pub.js';
-	import { getKefuUserList, kefuQiangdan } from '@/api/user.js';
+	import {
+		erpUserAuth,
+		getAccountData,
+		erpuserbacklog
+	} from '@/api/erpapi.js';
+	import {
+		addNowDay,
+		gethoursInfo
+	} from '@/utils/pub.js';
+	import {
+		getKefuUserList,
+		kefuQiangdan
+	} from '@/api/user.js';
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		name: 'home',
@@ -237,11 +257,9 @@
 			/*
 			 * 加载快捷菜单
 			 */
-			this.entraMenu = [
-				{
+			this.entraMenu = [{
 					name: '业务',
-					children: [
-						{
+					children: [{
 							cuIcon: 'icon-recyclelist',
 							color: 'red',
 							badge: 0,
@@ -275,8 +293,7 @@
 				},
 				{
 					name: '库存',
-					children: [
-						{
+					children: [{
 							cuIcon: 'icon-checksheet',
 							color: 'red',
 							badge: 0,
@@ -310,8 +327,7 @@
 				},
 				{
 					name: '本店',
-					children: [
-						{
+					children: [{
 							cuIcon: 'icon-buyaccessory',
 							color: 'red',
 							badge: 0,
@@ -345,8 +361,7 @@
 				},
 				{
 					name: '财务',
-					children: [
-						{
+					children: [{
 							cuIcon: 'icon-banlance',
 							color: 'red',
 							badge: 0,
@@ -438,6 +453,12 @@
 			this.erpuserbacklogFuc();
 		},
 		methods: {
+			// 回收
+			goRecycleList(e) {
+				uni.navigateTo({
+					url: '/pages/erp/recycleList/index?type=' + e,
+				});
+			},
 			async kefuQiangdan() {
 				const res = await kefuQiangdan({
 					csr_id: uni.getStorageSync('userInfo').user_id + '|csr',
@@ -560,12 +581,6 @@
 					url: '/pages/erp/purchase/tasklocal',
 				});
 			},
-			//待上门
-			localTaps() {
-				uni.navigateTo({
-					url: '/pages/erp/recycleList/index',
-				});
-			},
 			goTap(key, index) {
 				var pageurl = '/pages/erp/';
 				if (key == 0) {
@@ -681,27 +696,34 @@
 	/deep/ .picker-item {
 		line-height: 40px;
 	}
+
 	.popup-item-label {
 		padding-left: 10px;
 		padding-right: 10px;
 		height: 45px;
 		line-height: 45px;
+
 		view:nth-child(1) {
 			color: #888;
 			font-size: 17px;
 		}
+
 		view:nth-child(2) {
 			color: #007aff;
 			font-size: 17px;
 		}
 	}
+
 	.home-box {
+
 		// display: none;
 		.cu-bar {
 			min-height: 60rpx;
 		}
+
 		.cu-list.grid.no-border {
 			padding: 10rpx;
+
 			.cu-item {
 				padding: 10rpx 0;
 			}
@@ -711,19 +733,23 @@
 	.home-box.show {
 		display: block;
 	}
-	.grid.col-6 > uni-view {
+
+	.grid.col-6>uni-view {
 		width: 16.666%;
 	}
+
 	.flex-wrap {
 		.cu-item {
 			width: auto;
 			margin-left: 20rpx;
 		}
 	}
-	.cu-list.grid > .cu-item {
+
+	.cu-list.grid>.cu-item {
 		uni-text {
 			margin-top: 0;
 		}
+
 		.icon {
 			height: 60rpx;
 			height: 60rpx;

@@ -336,7 +336,6 @@
 		},
 		onLoad() {
 			this.roles = Vue.prototype.$store.state.roles;
-			console.log(this.roles, '222222');
 			//加载虚拟数据
 			this.toolsList = _my_data.toolsListData();
 		},
@@ -346,10 +345,12 @@
 				this.userInfo = res.data;
 			});
 			this.erpuserislogin();
+			// #ifdef APP-PLUS
 			this.$nextTick(() => {
 				plus.navigator.setStatusBarStyle('dark');
 				var ss = plus.navigator.getStatusBarStyle();
 			});
+			// #endif
 		},
 		mounted() {
 			this.getIMEI();
@@ -358,15 +359,16 @@
 				scrollTop: 0,
 				duration: 0,
 			});
+			// #ifdef APP-PLUS
 			this.$nextTick(() => {
 				plus.navigator.setStatusBarStyle('dark');
 				var ss = plus.navigator.getStatusBarStyle();
 			});
+			// #endif
 		},
 		onReady() {},
 		onPullDownRefresh() {
 			const data = Vue.prototype.$store.state.address
-			console.log(data, '33333')
 			getUserInfo(data)
 				.then((res) => {
 					this.userInfo = res.data;
@@ -390,18 +392,17 @@
 			},
 			// erp入口
 			erpuserislogin() {
-				let that = this;
-				erpuserislogin().then((res) => {
-					if (res.code == 1) {
-						that.is_company = 1;
-					}
-				});
+				// let that = this;
+				// erpuserislogin().then((res) => {
+				// 	if (res.code == 1) {
+				// 		that.is_company = 1;
+				// 	}
+				// });
 			},
 			sectionChange(e) {
 				//this.jiaoyicurrent = index;
 				let index = e.currentTarget.dataset.id;
 				this.jiaoyicurrent = index;
-				console.log(this.jiaoyicurrent);
 				uni.pageScrollTo({
 					scrollTop: 0,
 					duration: 0,
@@ -468,7 +469,6 @@
 				});
 			},
 			gridTap(item) {
-				// console.log(item);
 				if (item.name == '设置') {
 					this.setupTap();
 				} else {
@@ -493,15 +493,12 @@
 				});
 			},
 			goToErp() {
-				console.log('去ERP');
 				uni.navigateTo({
 					url: '/pages/tabbarerp/home',
 				});
 			},
 			async kefuInitUser() {
-				console.log(this.userInfo, '222222');
 				const isNew = uni.getStorageSync('isNew');
-				console.log(isNew);
 				const res = await kefuInitUser({
 					userId: this.userInfo.userId,
 					isNew,
@@ -511,7 +508,6 @@
 			// 联系客服
 			btnClick() {
 				this.kefuInitUser();
-				console.log('球被点击');
 			},
 		},
 	};

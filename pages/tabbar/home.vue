@@ -217,7 +217,6 @@
 		},
 		methods: {
 			checkView(e) {
-				console.log(e);
 				if (e === 'new') {
 					this.newViews = true;
 				} else {
@@ -266,14 +265,12 @@
 			},
 			// 获取产品列表
 			getProduct() {
-				console.log(222);
 				let that = this;
 				let params = {
 					firstFlag: this.firstFlag,
 				};
 				secondGoodsList(params)
 					.then((res) => {
-						console.log(res);
 						let data = res.data;
 						that.goodsData.push(...data);
 						this.firstFlag = false;
@@ -439,14 +436,11 @@
 				uni.navigateTo({
 					url: '/pages/goods/reward',
 				});
-				console.log('图片被点击');
 			},
 			closeTap() {
 				this.modalShow = false;
-				console.log('点击了关闭');
 			},
 			sortVueTap() {
-				console.log('点击了分类');
 				uni.navigateTo({
 					url: '/pages/home/sort',
 				});
@@ -457,7 +451,6 @@
 				});
 			},
 			videoTap() {
-				console.log('点击了短视频');
 				uni.navigateTo({
 					url: '/pages/home/video',
 				});

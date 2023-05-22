@@ -42,7 +42,7 @@ function baseRequest(url, method, data, {
 }) {
 	let Url = HTTP_REQUEST_URL,
 		header = HEADER;
-		
+
 	// if (!noAuth) {
 	// 	// 未登陆进入这里
 	// 	//登录过期自动登录
@@ -56,20 +56,18 @@ function baseRequest(url, method, data, {
 	let token = Vue.prototype.$store.state.token;
 	let cookie = Vue.prototype.$store.state.cookie;
 	let storeInfo = uni.getStorageSync('store_info');
-	
+
 	// if(storeInfo){
 	// 	storeInfo = JSON.parse(storeInfo);
 	// 	if(!noStore){
 	// 		data['store_id'] = storeInfo.store_id;
 	// 	}
 	// }
-	if(token){
+	if (token) {
 		header['Authorization'] = token;
-		// data['company_id'] = 1;
-		// data['token'] = 'ee868c42fb67e981cbcc2fdc0d7ca877';
 	}
-	
-	if(cookie){
+
+	if (cookie) {
 		header['cookie'] = cookie;
 	}
 	return new Promise((reslove, reject) => {
@@ -85,38 +83,38 @@ function baseRequest(url, method, data, {
 			data: data || {},
 			success: (res) => {
 				// #ifdef APP-PLUS
-				console.log("接口地址->",Url + url);
-				console.log("请求参数->",data);
-				console.log("成功返回->",res);
+				console.log("接口地址->", Url + url);
+				console.log("请求参数->", data);
+				console.log("成功返回->", res);
 				// #endif
-				
+
 				let code = res.data.code; //code 200 成功 0 失败
 				if (noVerify)
 					reslove(res.data, res);
 				else if (code == 200)
 					reslove(res.data, res);
-				else if (code == 4001){
+				else if (code == 4001) {
 					reslove(res.data, res);
 					// uni.showToast({
 					// 	icon:'none',
 					// 	title: res.data.msg
 					// });
 					toLogin();
-				} else if (code == 402){
+				} else if (code == 402) {
 					reslove(res.data, res);
 					uni.navigateTo({
 						url: '/pages/common/login/login',
 					});
 				} else
-					// uni.showToast({
-					// 	icon:'none',
-					// 	title: res.data.msg
-					// });
-					reject(res.data.msg || '系统错误');
+					uni.showToast({
+						icon: 'none',
+						title: res.data.msg
+					});
+				reject(res.data.msg || '系统错误');
 			},
 			fail: (err) => {
-				console.log("接口地址->",Url + url);
-				console.log("失败返回->",err);
+				console.log("接口地址->", Url + url);
+				console.log("失败返回->", err);
 				let data = {
 					mag: '请求失败',
 					status: 1 //1没网
@@ -127,7 +125,7 @@ function baseRequest(url, method, data, {
 				// #ifndef APP-PLUS
 				reject('请求失败');
 				// #endif
-				
+
 				if (err.errMsg && err.errMsg.search('似乎已断开与互联网的连接') > -1) {
 					uni.showToast({
 						icon: 'error',

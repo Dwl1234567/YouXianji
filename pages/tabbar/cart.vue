@@ -22,24 +22,18 @@
 
 		<view class="cart-list-view" v-for="(item, index) in cartList" :key="item.cart_id">
 			<!-- 列表 -->
-			<view
-				class="cart-list bg-white margin-sm"
-				style="
+			<view class="cart-list bg-white margin-sm" style="
 					border-radius: 11rpx;
 					display: flex;
 					justify-items: center;
 					align-items: center;
 					padding-left: 20rpx;
 					position: relative;
-				"
-			>
+				">
 				<block>
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
-					<view
-						class="cart-item"
-						:class="{'b-b': index!==cartList.length-1}"
-						@click="navTo(`/pages/product/product?id=${item.product_id}&flash=0`)"
-					>
+					<view class="cart-item" :class="{'b-b': index!==cartList.length-1}"
+						@click="navTo(`/pages/product/product?id=${item.product_id}&flash=0`)">
 						<view class="image-wrapper">
 							<image :src="$httpImage + item.goodsInfo.frontPhoto" class="loaded" mode="aspectFill"></image>
 							<!-- 							<view
@@ -80,15 +74,11 @@
 
 		<!--占位底部距离-->
 		<view class="cu-tabbar-height" />
-		<view>123</view>
 		<!-- 底部菜单栏 -->
 		<view class="action-section bg-white">
 			<view class="checkbox">
-				<image
-					:src="allChoose?'/static/selected.png':'/static/select.png'"
-					mode="aspectFit"
-					@click="checkall('all')"
-				></image>
+				<image :src="allChoose?'/static/selected.png':'/static/select.png'" mode="aspectFit" @click="checkall('all')">
+				</image>
 			</view>
 			<view class="total-box">
 				<view class="text-red">
@@ -120,9 +110,20 @@
 	import uniNumberBox from '@/components/uni-number-box.vue';
 	import _my_cart_data from '@/static/data/my_cart.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
-	import { CartIndex, CartAdd, CartDelete, CartNumberChange, CartChooseChange } from '@/api/mall.js';
-	import { shoppingCartList, shoppingOrder } from '@/api/malls.js';
-	import { mapState } from 'vuex';
+	import {
+		CartIndex,
+		CartAdd,
+		CartDelete,
+		CartNumberChange,
+		CartChooseChange
+	} from '@/api/mall.js';
+	import {
+		shoppingCartList,
+		shoppingOrder
+	} from '@/api/malls.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		name: 'cart',
 		components: {
@@ -142,6 +143,9 @@
 				cartList: [],
 				state: 'load',
 			};
+		},
+		onShow() {
+			this.getCart();
 		},
 		onLoad() {
 			uni.startPullDownRefresh({});
@@ -196,12 +200,11 @@
 			},
 			async getCart() {
 				let login = await this.$api.checkLogin();
-				console.log(login);
 				if (login) {
 					shoppingCartList({
-						pageSize: 100000,
-						pageNum: 1,
-					})
+							pageSize: 100000,
+							pageNum: 1,
+						})
 						.then((res) => {
 							let data = res.rows;
 							data.map((item) => {
@@ -308,7 +311,10 @@
 				// let result = await this.$api.request('/cart/number_change?id=' + cart_id, 'GET', {
 				// 	number: newNumber
 				// }, false);
-				CartNumberChange({ id: cart_id, number: newNumber })
+				CartNumberChange({
+						id: cart_id,
+						number: newNumber
+					})
 					.then((res) => {})
 					.catch((err) => {
 						this.cartList[data.index].number = oldNumber;
@@ -351,7 +357,7 @@
 					});
 					let that = this;
 					if (data) {
-						setTimeout(function () {
+						setTimeout(function() {
 							that.state = 'load';
 							that.cartList = [];
 							that.getCart();
@@ -382,17 +388,21 @@
 			},
 			//创建订单
 			createOrder() {
+				let isTrue = true;
 				uni.setStorageSync('cartList', this.cartList);
 				const shoppingOrderItemList = [];
 				this.cartList.map((item) => {
 					if (item.disabled) {
-						shoppingOrderItemList.push({ goodsId: item.goodsInfo.goodsId, cartId: item.cartId });
+						isTrue = false
+						shoppingOrderItemList.push({
+							goodsId: item.goodsInfo.goodsId,
+							cartId: item.cartId
+						});
 					}
 				});
-				console.log({
-					totalPrice: this.total,
-					shoppingOrderItemList,
-				});
+				if (isTrue) {
+					return
+				}
 				shoppingOrder({
 					totalPrice: this.total,
 					shoppingOrderItemList,
@@ -460,29 +470,36 @@
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
 	@import '@/uni_modules/mpb-ui/shop/my_cart.scss';
+
 	.cart-box {
 		// display: none;
 	}
+
 	page {
 		background: #f0f0f0;
 	}
+
 	.cart-box.show {
 		display: block;
 	}
+
 	.radio {
 		width: 38rpx;
 		height: 38rpx;
 		border-radius: 38rpx;
 		border: 2rpx solid #cecece;
 	}
+
 	.radio-red {
 		background-color: #ff3a31;
 	}
+
 	.step {
 		position: absolute;
 		bottom: 0px;
 		right: 0px;
 	}
+
 	.container {
 		padding-bottom: 134upx;
 
@@ -518,16 +535,19 @@
 			}
 		}
 	}
+
 	/* 购物车列表项 */
 	.cart-item {
 		display: flex;
 		position: relative;
 		width: 100%;
 		padding: 30upx 20upx 30upx 14upx;
+
 		.clamp {
 			height: auto !important;
 			white-space: unset;
 		}
+
 		.image-wrapper {
 			width: 180upx;
 			height: 180upx;
@@ -562,6 +582,7 @@
 				height: 40upx;
 				line-height: 40upx;
 			}
+
 			.price {
 				font-size: $font-base + 2upx;
 				color: #ec6e57;
@@ -575,6 +596,7 @@
 				height: 50upx;
 				line-height: 50upx;
 			}
+
 			.uni-numbox {
 				left: unset;
 				right: -60upx;
@@ -601,6 +623,7 @@
 			margin-bottom: 32upx;
 		}
 	}
+
 	/* 底部栏 */
 	.action-section {
 		/* #ifdef H5 */
@@ -673,6 +696,7 @@
 			font-size: $font-base + 2upx;
 		}
 	}
+
 	/* 复选框选中状态 */
 	.action-section .checkbox.checked,
 	.cart-item .checkbox.checked {

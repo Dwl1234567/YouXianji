@@ -42,7 +42,10 @@
 			<!--用户数据-->
 			<view class="padding-xs bg-white user-info-order-box">
 				<view class="text-black text-lg text-bold padding-top-xl"></view>
-				<view class="cu-list grid col-5 no-border">
+				<view class="cu-title" style="padding-left: 22rpx;">
+					商城代办
+				</view>
+				<view class="cu-list grid col-4 no-border">
 					<view class="cu-item" @tap="payment">
 						<view class="iconfont icon-cashorange text-red">
 							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
@@ -67,6 +70,40 @@
 						</view>
 						<text>退款/售后</text>
 					</view>
+				</view>
+				<view class="cu-title" style="padding-left: 22rpx;margin-top: 18rpx">
+					回收待办
+				</view>
+				<view class="cu-list grid col-4 no-border">
+					<view class="cu-item" @tap="goRecycleList(1)">
+						<view class="iconfont icon-cashorange text-red">
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
+						<text>待处理</text>
+					</view>
+					<view class="cu-item" @tap="goRecycleList(2)">
+						<view class="iconfont icon-cashorange text-red">
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
+						<text>已处理</text>
+					</view>
+					<view class="cu-item" @tap="goRecycleList(3)">
+						<view class="iconfont icon-cashorange text-red">
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
+						<text>待退回</text>
+					</view>
+					<view class="cu-item" @tap="goRecycleList(4)">
+						<view class="iconfont icon-cashorange text-red">
+							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						</view>
+						<text>已退回</text>
+					</view>
+				</view>
+				<view class="cu-title" style="padding-left: 22rpx;margin-top: 18rpx">
+					门店待办
+				</view>
+				<view class="cu-list grid col-5 no-border">
 					<view class="cu-item" @tap="taskPriceTap">
 						<view class="iconfont icon-cashorange text-red">
 							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
@@ -160,8 +197,12 @@
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
 	import barTitle from '@/components/common/basics/bar-title';
-	import { erpuserbacklog } from '@/api/erpapi.js';
-	import { getKefuUserList } from '@/api/user.js';
+	import {
+		erpuserbacklog
+	} from '@/api/erpapi.js';
+	import {
+		getKefuUserList
+	} from '@/api/user.js';
 	import _my_data from '@/static/data/my.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
@@ -186,6 +227,12 @@
 			this.erpuserbacklogFuc();
 		},
 		methods: {
+			// 回收
+			goRecycleList(e) {
+				uni.navigateTo({
+					url: '/pages/erp/recycleList/index?type=' + e,
+				});
+			},
 			// 获取待办数据
 			erpuserbacklogFuc() {
 				erpuserbacklog({}).then((res) => {
@@ -324,33 +371,54 @@
 		top: 0px;
 		left: 0px;
 	}
+
+	.cu-title {
+		color: rgba(16, 16, 16, 1);
+		font-size: 18px;
+		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		white-space: nowrap;
+		line-height: 25px;
+		margin-right: 250px;
+	}
+
 	.my-box {
 		width: 100%;
+
 		// display: none;
 		.head-box {
 			padding-top: 0;
 			padding-bottom: 72.72rpx;
+
 			.user-info-box {
 				/* #ifdef MP */
 				padding-top: calc(var(--status-bar-height) + 50rpx);
+
 				/* #endif */
 				.login-user-view {
 					position: relative;
 					text-align: center;
+
 					.login-user-avatar-view {
 						position: relative;
 						margin-bottom: 18.18rpx;
 					}
 				}
-				.cu-list.menu-avatar > .cu-item {
+
+				.cu-list.menu-avatar>.cu-item {
 					background-color: inherit;
+
 					.content {
 						width: calc(100% - 94.54rpx - 59.99rpx - 20rpx);
+
 						.text-white-bg {
 							color: #e8e8e8;
+
 							.text-border-x {
 								margin-right: 25.45rpx;
 								position: relative;
+
 								&:after {
 									position: absolute;
 									background: #dddddd;
@@ -363,33 +431,40 @@
 							}
 						}
 					}
+
 					&:after {
 						width: 0;
 						height: 0;
 						border-bottom: 0;
 					}
 				}
-				.cu-list.menu-avatar > .cu-item .content > view:first-child {
+
+				.cu-list.menu-avatar>.cu-item .content>view:first-child {
 					font-size: 34.54rpx;
 				}
 			}
+
 			.user-info-num-box {
 				.cu-list.grid.no-border {
 					padding: 0;
 				}
-				.cu-list.grid.no-border > .cu-item {
+
+				.cu-list.grid.no-border>.cu-item {
 					padding-top: 27.27rpx;
 					padding-bottom: 9.09rpx;
 				}
+
 				.cu-list.grid {
 					background-color: inherit;
 				}
-				.cu-list.grid > .cu-item text {
+
+				.cu-list.grid>.cu-item text {
 					color: #e8e8e8;
 					font-size: 20rpx;
 					line-height: 27.27rpx;
 				}
 			}
+
 			.user-info-tip-box {
 				position: relative;
 				margin: 18.18rpx 27.27rpx;
@@ -397,9 +472,11 @@
 				padding: 18.18rpx 27.27rpx;
 				background: #ea8d8d;
 				background-image: linear-gradient(45deg, #f7615f, #f553b3);
+
 				.text-cut {
 					padding-right: 45.45rpx;
 				}
+
 				.icon {
 					position: absolute;
 					right: 27.27rpx;
@@ -407,40 +484,51 @@
 				}
 			}
 		}
+
 		.view-content {
 			padding: 0 27.27rpx 54.54rpx;
 			margin-top: -63.63rpx;
+
 			.user-info-order-box {
 				position: relative;
 				background-color: white;
 				border-radius: 18.18rpx;
 				box-shadow: 0px 0px 4px 0px rgba(159, 159, 159, 0.5);
+
 				.cu-list.grid.no-border {
 					padding: 0;
 				}
-				.cu-list.grid.no-border > .cu-item {
+
+				.cu-list.grid.no-border>.cu-item {
 					padding-bottom: 9.09rpx;
 				}
 			}
-			.cu-list.grid > .cu-item text {
+
+			.cu-list.grid>.cu-item text {
 				color: inherit;
 			}
+
 			.user-info-money-box {
 				border-radius: 18.18rpx;
+
 				.money-col {
 					padding: 0 9.09rpx 9.09rpx;
+
 					.money-item {
 						position: relative;
 						padding: 9.09rpx;
+
 						.money-item-view {
 							border: 1.81rpx solid #f3f2f3;
 							border-radius: 18.18rpx;
 							position: relative;
 							padding: 9.09rpx;
+
 							.cu-avatar {
 								position: absolute;
 								left: 9.09rpx;
 							}
+
 							.money-content {
 								position: relative;
 								margin-left: 109.09rpx;
@@ -451,13 +539,17 @@
 					}
 				}
 			}
+
 			.user-info-tools-box {
 				border-radius: 18.18rpx;
+
 				.tools-view {
 					position: relative;
+
 					.tools-title {
 						padding-right: 81.81rpx;
 					}
+
 					.tools-right {
 						position: absolute;
 						right: 9.09rpx;
@@ -467,10 +559,12 @@
 			}
 		}
 	}
+
 	.my-box.show {
 		display: block;
 	}
-	.grid.col-6 > uni-view {
+
+	.grid.col-6>uni-view {
 		width: 16.666%;
 	}
 </style>

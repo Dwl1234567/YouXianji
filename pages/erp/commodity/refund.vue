@@ -8,11 +8,8 @@
 						<view class="image-text_1 flex-row justify-between">
 							<text class="text-group_1">{{item.secondHandGoods.storeName}}</text>
 						</view>
-						<image
-							class="icon_2"
-							referrerpolicy="no-referrer"
-							src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng76a69ec8d984edf3b54d04b77768e328ebb05626d86c986f26777b8490007c8e"
-						/>
+						<image class="icon_2" referrerpolicy="no-referrer"
+							src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng76a69ec8d984edf3b54d04b77768e328ebb05626d86c986f26777b8490007c8e" />
 					</view>
 					<view class="group_4 flex-row justify-between">
 						<view class="image-text_2 flex-row justify-between">
@@ -65,10 +62,8 @@
 							<text>{{item.dictLabel}}</text>
 						</view>
 						<view class="right">
-							<image
-								:src="isWx ==item.dictCode ? '/static/checkYuan.png' : '/static/yuan.png'"
-								@tap="checkWx(item)"
-							></image>
+							<image :src="isWx ==item.dictCode ? '/static/checkYuan.png' : '/static/yuan.png'" @tap="checkWx(item)">
+							</image>
 						</view>
 					</view>
 				</view>
@@ -78,14 +73,8 @@
 		<u-popup :show="returnShow" mode="bottom" @close="close" @open="open" zIndex="888" overlayStyle="z-index: 888">
 			<view class="prop">
 				<view class="tab upload">上传图片</view>
-				<u-upload
-					:fileList="fileList2"
-					@afterRead="afterRead"
-					@delete="deletePic"
-					name="2"
-					multiple
-					:maxCount="3"
-				></u-upload>
+				<u-upload :fileList="fileList2" @afterRead="afterRead" @delete="deletePic" name="2" multiple
+					:maxCount="3"></u-upload>
 				<view class="querenbutton" @tap="uploadAfterSaleVoucher">确认</view>
 			</view>
 		</u-popup>
@@ -95,14 +84,8 @@
 				<view class="tab">退款说明</view>
 				<u--textarea v-model="returnList.context" placeholder="请输入内容" class="textarea"></u--textarea>
 				<view class="tab upload">上传图片</view>
-				<u-upload
-					:fileList="fileList1"
-					@afterRead="afterRead"
-					@delete="deletePic"
-					name="1"
-					multiple
-					:maxCount="3"
-				></u-upload>
+				<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+					:maxCount="3"></u-upload>
 				<!-- <view class="querenbutton" @tap="secondGoodsReturn">确认</view> -->
 			</view>
 		</u-popup>
@@ -333,9 +316,11 @@
 
 <style lang="scss">
 	@import '/static/common.css';
+
 	.image-view-img {
 		z-index: 1000000 !important;
 	}
+
 	.querenbutton {
 		background: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%);
 		border-radius: 13rpx 13rpx 13rpx 11rpx;
@@ -347,26 +332,31 @@
 		line-height: 84rpx;
 		text-align: center;
 	}
+
 	.pay {
 		margin: 20rpx;
 		background: #ffffff;
 		border-radius: 11rpx;
 		padding: 30rpx 0rpx;
 	}
+
 	.zfbPay {
 		margin-top: 34rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
 		.left {
 			display: flex;
 			align-items: center;
+
 			image {
 				width: 57rpx;
 				height: 57rpx;
 				margin-right: 11rpx;
 			}
 		}
+
 		.right {
 			image {
 				width: 38rpx;
@@ -374,20 +364,24 @@
 			}
 		}
 	}
+
 	.wxPay {
 		margin-bottom: 34rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
 		.left {
 			display: flex;
 			align-items: center;
+
 			image {
 				width: 57rpx;
 				height: 57rpx;
 				margin-right: 11rpx;
 			}
 		}
+
 		.right {
 			image {
 				width: 38rpx;
@@ -395,8 +389,10 @@
 			}
 		}
 	}
+
 	.prop {
 		padding: 34rpx 47rpx 120rpx 47rpx;
+
 		.title {
 			font-size: 34rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
@@ -405,6 +401,7 @@
 			line-height: 48rpx;
 			text-align: center;
 		}
+
 		.textarea {
 			height: 155rpx !important;
 			border: 2rpx solid #d8d8d8;
@@ -412,12 +409,15 @@
 			margin-top: 28rpx;
 			margin-bottom: 43rpx;
 		}
+
 		.upload {
 			margin-bottom: 28rpx;
 		}
 	}
+
 	.yunShow-top {
 		padding: 26rpx 28rpx 28rpx 28rpx;
+
 		.yunShow-title {
 			font-size: 36rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
@@ -426,31 +426,37 @@
 			text-align: center;
 		}
 	}
+
 	.yunShow-item {
 		display: flex;
 		align-items: center;
 		margin-top: 22rpx;
+
 		.left {
 			font-size: 31rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #232323;
 		}
+
 		.select {
 			flex: 1;
 			margin-left: 11.45rpx;
 		}
+
 		.input {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 		}
+
 		.inputAddress {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 			flex: 1;
 			padding: 9rpx 11rpx;
+
 			.copy {
 				width: 141rpx;
 				height: 53rpx;
@@ -466,8 +472,10 @@
 			}
 		}
 	}
+
 	.yunShow-bottom {
 		display: flex;
+
 		view {
 			width: 267rpx;
 			height: 99rpx;
@@ -481,6 +489,7 @@
 			color: #232323;
 		}
 	}
+
 	.box_2 {
 		background-color: rgba(240, 240, 240, 1);
 		padding: 13px;
@@ -540,7 +549,6 @@
 	}
 
 	.group_4 {
-		width: 342px;
 		margin: 10px 15px 0 9px;
 	}
 
@@ -667,6 +675,7 @@
 		margin-right: 28rpx;
 		margin-top: 17rpx;
 		justify-content: flex-end;
+
 		button {
 			margin-left: 28rpx;
 		}
@@ -689,6 +698,7 @@
 	}
 
 	.button_2 {
+		margin-left: 15rpx;
 		background-image: linear-gradient(90deg, rgba(255, 104, 104, 1) 0, rgba(234, 21, 21, 1) 100%);
 		border-radius: 15px;
 		padding: 5px 9px 4px 12px;

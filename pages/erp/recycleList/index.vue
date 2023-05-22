@@ -6,7 +6,7 @@
 			</block>
 		</bar-title>
 		<view class="group_1 flex-row">
-			<view class="block_1 flex-col">
+			<!-- <view class="block_1 flex-col">
 				<view class="tabs_1 flex-col">
 					<view class="text-wrapper_1 flex-row justify-between">
 						<text :class="tab === 1 ?'text_3':'text_4'" @tap="checkTab(1)">待处理</text>
@@ -18,7 +18,7 @@
 						<view class="box_1 flex-col"></view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 			<view class="block_3 flex-col">
 				<view class="group_2 flex-col" v-for="item in recycleList">
 					<view class="text-wrapper_2 flex-row justify-between">
@@ -54,37 +54,19 @@
 						<button class="button_2 flex-col" @click="onClick_2(item)" v-if="!item.receiver">
 							<text class="text_16">接入</text>
 						</button>
-						<button
-							class="button_3 flex-col"
-							v-if="item.orderStatus == 1"
-						>
+						<button class="button_3 flex-col" v-if="item.orderStatus == 1">
 							<text class="text_17">待确认</text>
 						</button>
-						<button
-							class="button_3 flex-col"
-							@tap="payShows(item.recycleOrderId)"
-							v-else-if="item.orderStatus == 2"
-						>
+						<button class="button_3 flex-col" @tap="payShows(item.recycleOrderId)" v-else-if="item.orderStatus == 2">
 							<text class="text_17">去付款</text>
 						</button>
-						<button
-							class="button_3 flex-col"
-							v-else-if="item.orderStatus == 3"
-							@tap="kaidan(item)"
-						>
+						<button class="button_3 flex-col" v-else-if="item.orderStatus == 3" @tap="kaidan(item)">
 							<text class="text_17">开单</text>
 						</button>
-						<button
-							class="button_3 flex-col"
-							@tap="goBack(item.recycleOrderId)"
-							v-else-if="item.orderStatus == 4"
-						>
+						<button class="button_3 flex-col" @tap="goBack(item.recycleOrderId)" v-else-if="item.orderStatus == 4">
 							<text class="text_17">确认退回</text>
 						</button>
-						<button
-							class="button_3 flex-col"
-							v-else-if="item.orderStatus == 5"
-						>
+						<button class="button_3 flex-col" v-else-if="item.orderStatus == 5">
 							<text class="text_17">退回中</text>
 						</button>
 						<button class="button_3 flex-col" @tap="goDetail(item.recycleOrderId)" v-else>
@@ -107,16 +89,20 @@
 						<view class="padding-xl">
 							<view class="cu-list grid col-2">
 								<view class="cu-item bg-deepblue">
-									<input class="text-green text-lg" type="number" v-model="weixinnum" placeholder="微信" @input="ActualreceiptsAllFuc"></input>
+									<input class="text-green text-lg" type="number" v-model="weixinnum" placeholder="微信"
+										@input="ActualreceiptsAllFuc"></input>
 								</view>
 								<view class="cu-item bg-deepblue">
-									<input class="text-blue" type="number" v-model="alipaynum" placeholder="支付宝" @input="ActualreceiptsAllFuc"></input>
+									<input class="text-blue" type="number" v-model="alipaynum" placeholder="支付宝"
+										@input="ActualreceiptsAllFuc"></input>
 								</view>
 								<view class="cu-item bg-deepblue">
-									<input class="text-red" type="number" v-model="xianjinnum" placeholder="现金" @input="ActualreceiptsAllFuc"></input>
+									<input class="text-red" type="number" v-model="xianjinnum" placeholder="现金"
+										@input="ActualreceiptsAllFuc"></input>
 								</view>
 								<view class="cu-item bg-deepblue">
-									<input class="text-purple" type="number" v-model="dihuonum" placeholder="抵货款" @input="ActualreceiptsAllFuc"></input>
+									<input class="text-purple" type="number" v-model="dihuonum" placeholder="抵货款"
+										@input="ActualreceiptsAllFuc"></input>
 								</view>
 							</view>
 							<view class="margin-top">
@@ -133,7 +119,7 @@
 									</view>
 								</view>
 							</view>
-							
+
 							<view class="cu-form-group" v-if="imgList1.length > 0">
 								<view class="grid col-3 grid-square flex-sub">
 									<view class="bg-img" v-for="(item,index) in imgList1" :key="index" @tap="ViewImage"
@@ -155,36 +141,41 @@
 		</u-popup>
 		<u-popup :show="goBackShow" mode="center">
 			<view class="box_5 flex-col">
-			        <view class="text-wrapper_5">
-			          <text class="text_177">物流信息</text>
-			          <text class="text_18">填写</text>
-			        </view>
-			        <view class="section_4 flex-row justify-between">
-			          <text class="text_19">快递公司</text>
-			          <view class="dropdown_1 flex-row justify-between">
-			            <u-input type="text" v-model="returnPostComp"/>
-			          </view>
-			        </view>
-			        <view class="section_5 flex-row justify-between">
-			          <text class="text_21">快递单号</text>
-			          <view class="dropdown_1 flex-col justify-between">
-			            <u-input type="text" style="height: 19px;" v-model="returnPostNo"/>
-			          </view>
-			        </view>
-			        <view class="section_6 flex-col"></view>
-			        <view class="section_7 flex-row justify-between">
-			          <text class="text_233" @tap="goBackShow = fasle">取消</text>
-			          <view class="group_55 flex-col"></view>
-			          <text class="text_244" @tap="goBackFir">确定</text>
-			        </view>
-			      </view>
+				<view class="text-wrapper_5">
+					<text class="text_177">物流信息</text>
+					<text class="text_18">填写</text>
+				</view>
+				<view class="section_4 flex-row justify-between">
+					<text class="text_19">快递公司</text>
+					<view class="dropdown_1 flex-row justify-between">
+						<u-input type="text" v-model="returnPostComp" />
+					</view>
+				</view>
+				<view class="section_5 flex-row justify-between">
+					<text class="text_21">快递单号</text>
+					<view class="dropdown_1 flex-col justify-between">
+						<u-input type="text" style="height: 19px;" v-model="returnPostNo" />
+					</view>
+				</view>
+				<view class="section_6 flex-col"></view>
+				<view class="section_7 flex-row justify-between">
+					<text class="text_233" @tap="goBackShow = fasle">取消</text>
+					<view class="group_55 flex-col"></view>
+					<text class="text_244" @tap="goBackFir">确定</text>
+				</view>
+			</view>
 		</u-popup>
 		<u-action-sheet :actions="upimageList" :closeOnClickAction="true" @close="closeUpimg" :cancelText="'取消'"
 			@select="selectUpimg" :show="showupimage"></u-action-sheet>
 	</view>
 </template>
 <script>
-	import { selectRecycleOrderList, empRobRecycleOrder, empConfirmPayment, empConfirmReturn } from '@/api/erp.js';
+	import {
+		selectRecycleOrderList,
+		empRobRecycleOrder,
+		empConfirmPayment,
+		empConfirmReturn
+	} from '@/api/erp.js';
 	import {
 		raiseUpload
 	} from "@/api/upload.js";
@@ -206,13 +197,13 @@
 					}
 				],
 				showupimage: false,
-				imgList: [],//销售图片
-				imgList1:[],
-				weixinnum:'',
-				alipaynum:'', 
-				xianjinnum:'',  
-				dihuonum:'',
-				ActualreceiptsAll:0,//实收款总计
+				imgList: [], //销售图片
+				imgList1: [],
+				weixinnum: '',
+				alipaynum: '',
+				xianjinnum: '',
+				dihuonum: '',
+				ActualreceiptsAll: 0, //实收款总计
 				switchGD: false,
 				// 快递公司
 				returnPostComp: '',
@@ -225,18 +216,14 @@
 				payShow: false,
 				goBackShow: false,
 				constants: {},
-				loopData0: [
-					{
-						lanhuimage0:
-							'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
+				loopData0: [{
+						lanhuimage0: 'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
 					},
 					{
-						lanhuimage0:
-							'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
+						lanhuimage0: 'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
 					},
 					{
-						lanhuimage0:
-							'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
+						lanhuimage0: 'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
 					},
 				],
 				tab: 1,
@@ -249,7 +236,8 @@
 				},
 			};
 		},
-		onLoad() {
+		onLoad(option) {
+			this.tab = option.type;
 			this.selectRecycleOrderList();
 		},
 		// 触底加载新页面
@@ -263,7 +251,8 @@
 			// 开单
 			kaidan(item) {
 				uni.navigateTo({
-					url: '/pages/erp/diandianUnpload/diandianUnpload?recycleOrderId='+ item.recycleOrderId + '&modelId=' + item.modelId
+					url: '/pages/erp/diandianUnpload/diandianUnpload?recycleOrderId=' + item.recycleOrderId + '&modelId=' +
+						item.modelId
 				})
 			},
 			selectUpimg(e) {
@@ -288,12 +277,12 @@
 				// })
 			},
 			// 使用拍照功能
-			opencamare(){
+			opencamare() {
 				let that = this;
 				let uplength = 9;
-				if(that.TabCur){
+				if (that.TabCur) {
 					uplength = 9 - Number(that.imgList1.length);
-				}else{
+				} else {
 					uplength = 9 - Number(that.imgList.length);
 				}
 				uni.chooseImage({
@@ -301,7 +290,7 @@
 					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['camera'], //从相册选择
 					success: (res) => {
-						if(that.TabCur){
+						if (that.TabCur) {
 							if (that.imgList1.length != 0) {
 								that.imgList1 = that.imgList1.concat(res.tempFilePaths)
 							} else {
@@ -316,19 +305,19 @@
 						}
 						console.log(that.imgList);
 					},
-					complete:function(){
+					complete: function() {
 						that.checkimgshow = false;
 					}
-					
+
 				});
 			},
 			// 使用相册功能
-			openpictrue(){
+			openpictrue() {
 				let that = this;
 				let uplength = 9;
-				if(that.TabCur){
+				if (that.TabCur) {
 					uplength = 9 - Number(that.imgList1.length);
-				}else{
+				} else {
 					uplength = 9 - Number(that.imgList.length);
 				}
 				console.log(uplength);
@@ -338,7 +327,7 @@
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
 						console.log(res)
-						if(that.TabCur){
+						if (that.TabCur) {
 							if (that.imgList1.length != 0) {
 								that.imgList1 = that.imgList1.concat(res.tempFilePaths)
 							} else {
@@ -353,7 +342,7 @@
 						}
 						console.log(that.imgList);
 					},
-					complete:function(){
+					complete: function() {
 						that.checkimgshow = false;
 					}
 				});
@@ -366,11 +355,17 @@
 				this.showupimage = false;
 			},
 			// 实收款总计
-			ActualreceiptsAllFuc(){
+			ActualreceiptsAllFuc() {
 				// this.ActualreceiptsAll = 0;
 				// this.ReceivablesMoney = 0;
-				this.ActualreceiptsAll = Number(this.weixinnum) + Number(this.alipaynum) + Number(this.xianjinnum) + Number(this.dihuonum)
-				this.ActualreceiptsJson =JSON.stringify({wexin:Number(this.weixinnum),alipay:Number(this.alipaynum),xianjin:Number(this.xianjinnum),dihuo:Number(this.dihuonum)});
+				this.ActualreceiptsAll = Number(this.weixinnum) + Number(this.alipaynum) + Number(this.xianjinnum) + Number(this
+					.dihuonum)
+				this.ActualreceiptsJson = JSON.stringify({
+					wexin: Number(this.weixinnum),
+					alipay: Number(this.alipaynum),
+					xianjin: Number(this.xianjinnum),
+					dihuo: Number(this.dihuonum)
+				});
 				this.arrearsMoney = this.ReceivablesMoney - this.ActualreceiptsAll;
 			},
 			// 退回接口
@@ -398,6 +393,15 @@
 
 			// 获取回收订单列表
 			selectRecycleOrderList(isReach = false) {
+				if (this.tab == 1) {
+					this.queryPage.orderStatusList = ['0'];
+				} else if (this.tab == 2) {
+					this.queryPage.orderStatusList = ['1', '2', '3', '7'];
+				} else if (this.tab == 3) {
+					this.queryPage.orderStatusList = ['4', '5'];
+				} else {
+					this.queryPage.orderStatusList = ['6'];
+				}
 				selectRecycleOrderList(this.queryPage).then((res) => {
 					if (isReach) {
 						this.recycleList = this.recycleList.concat(res.rows);
@@ -438,7 +442,7 @@
 					return raiseUpload(item)
 				})
 				let imagesList = []
-				Promise.all(promisearr).then((res)=>{
+				Promise.all(promisearr).then((res) => {
 					// console.log(res);
 					console.log(res)
 					// imagesList.push(res[0].fileName)
@@ -448,24 +452,24 @@
 				}).finally(() => {
 					this.push(imagesList.join(','))
 				})
-				
+
 				// setTimeout(this.push(), 1000)
-				
+
 			},
 			push(list) {
-			    empConfirmPayment({
-			    	'recycleOrderId': this.recycleOrderId,
-			    	"wxPaymentPrice": this.weixinnum,
-			    	"zfbPaymentPrice":this.alipaynum,
-			    	"bankCardPrice": this.dihuonum,
-			    	"cashPaymentPrice":this.xianjinnum,
-			    	'paymentVoucher': list,
-			    }).then((res) => {
-			    	if (res.code == 200) {
-			    		this.selectRecycleOrderList();
-			    		this.payShow = false;
-			    	}
-			    })	
+				empConfirmPayment({
+					'recycleOrderId': this.recycleOrderId,
+					"wxPaymentPrice": this.weixinnum,
+					"zfbPaymentPrice": this.alipaynum,
+					"bankCardPrice": this.dihuonum,
+					"cashPaymentPrice": this.xianjinnum,
+					'paymentVoucher': list,
+				}).then((res) => {
+					if (res.code == 200) {
+						this.selectRecycleOrderList();
+						this.payShow = false;
+					}
+				})
 			},
 			onClick_2(item) {
 				this.empRobRecycleOrder(item.recycleOrderId);
@@ -479,10 +483,12 @@
 <style lang="css">
 	@import './common.css';
 	@import './index.rpx.css';
-	page{
-	  background-color: rgba(240, 240, 240, 1);
+
+	page {
+		background-color: rgba(240, 240, 240, 1);
 	}
-	.block_3{
+
+	.block_3 {
 		width: 100vw;
 	}
 </style>
