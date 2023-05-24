@@ -171,21 +171,18 @@
 				</view>
 				<view class="flex-wrap cu-list grid col-5 no-border"
 					style="margin-left: 90rpx; margin-top: 0; padding: 5rpx 20rpx">
-					<view class="cu-item" v-for="(item,index) in items.children" :key="index" v-if="index<5"
-						style="padding-bottom: 0">
-						<view @tap="goTap(key,index)">
-							<!--
-							<view class="text-xxl text-black">
-								<image class="icon" :src="'/static/erp/icon/'+ item.cuIcon + '.png'" mode="heightFix"></image>
-								<view class="cu-tag badge" v-if="item.badge!=0">{{item.badge}}</view>
+					<scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 85vw;text-align: left;">
+						<view class="cu-item" v-for="(item,index) in items.children" :key="index"
+							style="padding-bottom: 0; display: inline-block;text-align: center;">
+							<view @tap="goTap(key,index)">
+								<view :class="['iconfont ' + item.cuIcon,item.color?'text-' +item.color:'text-gray']">
+									<view class="cu-tag badge" v-if="item.badge!=0">{{item.badge}}</view>
+								</view>
+								<text :class="[item.color?'text-' +item.color:'text-gray']">{{item.name}}</text>
 							</view>
-							-->
-							<view :class="['iconfont ' + item.cuIcon,item.color?'text-' +item.color:'text-gray']">
-								<view class="cu-tag badge" v-if="item.badge!=0">{{item.badge}}</view>
-							</view>
-							<text :class="[item.color?'text-' +item.color:'text-gray']">{{item.name}}</text>
 						</view>
-					</view>
+					</scroll-view>
+
 				</view>
 			</view>
 		</view>
@@ -282,6 +279,18 @@
 							color: 'red',
 							badge: 0,
 							name: '上门回收',
+						},
+						{
+							cuIcon: 'icon-refund',
+							color: 'red',
+							badge: 0,
+							name: '退款登记',
+						},
+						{
+							cuIcon: 'icon-refund',
+							color: 'red',
+							badge: 0,
+							name: '退款登记',
 						},
 						{
 							cuIcon: 'icon-refund',
@@ -695,6 +704,11 @@
 <style lang="scss" scoped>
 	/deep/ .picker-item {
 		line-height: 40px;
+	}
+
+	.scroll-view_H {
+		white-space: nowrap;
+		display: flex;
 	}
 
 	.popup-item-label {

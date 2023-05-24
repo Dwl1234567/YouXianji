@@ -170,11 +170,12 @@
 				next_level: 0, //我的下个等级|默认展示等级
 				cardCur: 0, //选中的键
 				dataInfo: '',
-				dataList: []
+				dataList: [],
+				ruleId: 0,
 			}
 		},
 		onLoad: function(options) {
-			this.next_level = options.next_level;
+			this.ruleId = options.ruleId;
 			//this.agentusermyleveltaskyesFuc(this.next_level);
 		},
 		onShow() {
@@ -204,13 +205,17 @@
 			// 等级列表
 			agentUserLevellistFuc() {
 				selectMemberLevelRuleList({}).then(res => {
-					res.data.map(item => {
+					let ind = 0;
+					res.data.map((item, index) => {
 						item.ancestorDifference = ((item.ancestorDifference / item.ancestorNum) * 100) + '%'
 						item.validAncestorDifference = ((item.validAncestorDifference / item.validAncestorNum) * 100) + '%'
+						if (item.ruleId == this.ruleId) {
+							ind = index
+						}
 						return item
 					})
 					this.dataList = res.data;
-					this.dataInfo = this.dataList[0]
+					this.dataInfo = this.dataList[ind]
 					//this.user_level = res.data.user_level;
 				});
 			},

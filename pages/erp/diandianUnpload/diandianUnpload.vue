@@ -8,11 +8,8 @@
 			<view class="header">
 				<!--{{PhoneName}}-->
 				<view class="goods-list-view">
-					<view
-						v-if="goods_info.image"
-						class="cu-avatar lg radius"
-						:style="[{backgroundImage:'url('+ goods_info.image +')'}]"
-					/>
+					<view v-if="goods_info.image" class="cu-avatar lg radius"
+						:style="[{backgroundImage:'url('+ goods_info.image +')'}]" />
 					<view class="goods-info-view">
 						<view class="text-black text-cut name">{{goods_info.name}}</view>
 						<view class="tags">{{goodsdesc}}</view>
@@ -61,12 +58,8 @@
 					<SelectDataFirst title="机器SKU" :checklist="item" @itemclick="moneyFucs"></SelectDataFirst>
 					<!-- {{basicPrice}} -->
 				</scroll-view>
-				<scroll-view
-					v-for="(recyitem,recyindex) in retrieveList[index]"
-					:key="recyindex"
-					scroll-y="true"
-					class="scroll-Y"
-				>
+				<scroll-view v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex" scroll-y="true"
+					class="scroll-Y">
 					<!-- {{recyitem}} -->
 					<SelectData :title="recyitem.name" :checklist="recyitem.value" @itemclick="moneyFuc"></SelectData>
 					<!-- {{recyitem}} -->
@@ -85,7 +78,8 @@
 				:customStyle="{height:'88rpx',borderRadius:'30rpx',color:'#ffffff',backgroundColor:'#e54d42'}"
 				@tap="deliveryTap"></u-button>
 		</view>
-		--></view>
+		-->
+	</view>
 </template>
 
 <script>
@@ -95,12 +89,20 @@
 	// 	GodsgoodsPrice,
 	// 	getUserMobile
 	// } from "@/api/common.js";
-	import { getPriceTemplateByModel } from '@/api/retrieve.js';
-	import { getInfoByRecycleOrderId } from '@/api/erp.js';
+	import {
+		getPriceTemplateByModel
+	} from '@/api/retrieve.js';
+	import {
+		getInfoByRecycleOrderId
+	} from '@/api/erp.js';
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
 	import SelectDataFirst from '@/components/RecyclingList/SelectDataFirst.vue';
-	import { openQyKefu } from '@/utils/util.js';
-	import { mapState } from 'vuex';
+	import {
+		openQyKefu
+	} from '@/utils/util.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		components: {
 			SelectDataFirst,
@@ -296,13 +298,12 @@
 							title: '提示',
 							content: err,
 							showCancel: false,
-							success: function (res) {
+							success: function(res) {
 								if (res.confirm) {
 									uni.navigateBack({
 										delta: -1,
 									});
-								} else if (res.cancel) {
-								}
+								} else if (res.cancel) {}
 							},
 						});
 					});
@@ -346,7 +347,7 @@
 						});
 					});
 				}
-				const basicPriceId = uni.getStorageSync('basicPriceId');
+				console.log(this.basicPriceId)
 				that.basicPrice[0].map((item, index) => {
 					if (item.priceId == this.basicPriceId) {
 						item.checked = true;
@@ -366,8 +367,7 @@
 			// 获取报价
 			getGodsgoodsPrice() {
 				uni.navigateTo({
-					url:
-						'form?type=' +
+					url: 'form?type=' +
 						this.type +
 						'&goodsId=' +
 						this.goodsId +
@@ -380,19 +380,18 @@
 			//去发货
 			async deliveryTap() {
 				uni.navigateTo({
-					url:
-						'/pages/erp/purchase/add/select_recycleform?forecastMoney=' +
+					url: '/pages/erp/purchase/add/select_recycleform?forecastMoney=' +
 						this.forecastMoney +
 						'&recycleOrderId=' +
 						this.recycleOrderId,
 				});
 			},
-			upper: function (e) {},
-			lower: function (e) {},
-			scroll: function (e) {
+			upper: function(e) {},
+			lower: function(e) {},
+			scroll: function(e) {
 				this.old.scrollTop = e.detail.scrollTop;
 			},
-			goTop: function (e) {
+			goTop: function(e) {
 				this.scrollTop = this.old.scrollTop;
 				this.$nextTick(() => {
 					this.scrollTop = 0;
@@ -424,7 +423,7 @@
 					// e.detail.encryptedData //加密的用户信息
 					// e.detail.iv //加密算法的初始向量时要用到
 					uni.checkSession({
-						success: function () {
+						success: function() {
 							let usertoken = uni.getStorageSync('UID');
 							let parmas = {
 								user_token: usertoken,
@@ -441,7 +440,7 @@
 								}
 							});
 						},
-						fail: function (err) {
+						fail: function(err) {
 							uni.login({
 								success(res) {
 									let usertoken = uni.getStorageSync('UID');

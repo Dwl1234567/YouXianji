@@ -405,9 +405,7 @@
 						icon: 'none',
 					});
 				},
-				complete() {
-					that.getstoresstorelatelystore();
-				},
+				complete() {},
 			});
 			// #endif
 		},

@@ -486,7 +486,7 @@
 		}
 
 		.view-content {
-			padding: 0 27.27rpx 54.54rpx;
+			padding: 0 27.27rpx 100rpx;
 			margin-top: -63.63rpx;
 
 			.user-info-order-box {

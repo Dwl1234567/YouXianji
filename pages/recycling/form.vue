@@ -5,8 +5,8 @@
 			<block slot="content">提交订单</block>
 		</bar-title> -->
 		<view class="cu-list grid col-3 no-border padding-lr-sm">
-			<view class="cu-item radius-2" :class="index==TabCur?'text-color-yellow cur':''" v-for="(item,index) in cuIconList" :key="index"
-				@tap="tabSelect" :data-id="index">
+			<view class="cu-item radius-2" :class="index==TabCur?'text-color-yellow cur':''"
+				v-for="(item,index) in cuIconList" :key="index" @tap="tabSelect" :data-id="index">
 				<text class='text-bold' :class="index==TabCur?'text-white':'text-' + item.color">{{item.name}}</text>
 			</view>
 		</view>
@@ -14,7 +14,8 @@
 			<!--顺丰上门-->
 			<view class="cu-form-group" v-if="TabCur==0 || TabCur==2">
 				<view class="title">取件地址</view>
-				<view class="picker" v-if="takeAddress.length == 0" @click="$u.route('/pages/my/address/addressManage?type=add')">
+				<view class="picker" v-if="takeAddress.length == 0"
+					@click="$u.route('/pages/my/address/addressManage?type=add')">
 					还未设置收货地址，点击去设置~
 				</view>
 				<picker v-else @change="AddressChange" :value="index.address" range-key="detailAddress" :range="takeAddress">
@@ -79,7 +80,7 @@
 					<view class="goods-list-view">
 						<!-- <view class="cu-avatar radius" v-if="photo"
 							:style="[{backgroundImage:'url('+ photo +')'}]" /> -->
-							<image :src="$httpImage + photo" mode="aspectFit" class="cu-avatar lg radius"></image>
+						<image :src="$httpImage + photo" mode="aspectFit" class="cu-avatar lg radius"></image>
 						<view class="goods-info-view">
 							<view class="text-black text-cut name">{{modelName}} </view>
 							<view class="tag-view">
@@ -143,8 +144,8 @@
 					</text>
 				</view>
 			</view>
-			
-			
+
+
 			<view class="cu-bar bg-white">
 				<view class='action'>
 					<!-- <text class='cuIcon-title text-red'></text> -->
@@ -153,102 +154,126 @@
 				</view>
 			</view>
 			<view class="pic padding flex justify-between align-center">
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[0] ?  addpicicon : 'url('+ http + phoneImgArr[0]+')' }">
-					<view class="img"  @tap="viewImg(phoneImgArr,0)">
+				<view class='cu-avatar xl radius'
+					:style="{'background-image': !phoneImgArr[0] ?  addpicicon : 'url('+ http + phoneImgArr[0]+')' }">
+					<view class="img" @tap="viewImg(phoneImgArr,0)">
 						<text class="text">正面</text>
-					</view>
-					<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[0] ? '#111f3a':'#dd514c'}"  @tap="uploadImg(0)">
-						<view :class="phoneImgArr[0] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+						<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[0] ? '#111f3a':'#dd514c'}"
+							@tap="uploadImg(0)">
+							<view :class="phoneImgArr[0] ? 'translate45':''">
+								<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+							</view>
 						</view>
 					</view>
+
 					<!-- <u-upload :action="action" :file-list="fileList" ></u-upload> -->
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[1] ?  addpicicon : 'url('+ http +phoneImgArr[1]+')' }">
-					<view class="img"  @tap="viewImg(phoneImgArr,1)">
+				<view class='cu-avatar xl radius'
+					:style="{'background-image': !phoneImgArr[1] ?  addpicicon : 'url('+ http +phoneImgArr[1]+')' }">
+					<view class="img" @tap="viewImg(phoneImgArr,1)">
 						<text class="text">
 							背面
 						</text>
-					</view>
-					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[1] ? '#111f3a':'#dd514c'}"  @tap="uploadImg(1)">
-						<view :class="phoneImgArr[1] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+						<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[1] ? '#111f3a':'#dd514c'}"
+							@tap="uploadImg(1)">
+							<view :class="phoneImgArr[1] ? 'translate45':''">
+								<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+							</view>
 						</view>
 					</view>
+
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[2] ?  addpicicon : 'url('+ http +phoneImgArr[2]+')' }">
-					<view class="img"  @tap="viewImg(phoneImgArr,2)">
+				<view class='cu-avatar xl radius'
+					:style="{'background-image': !phoneImgArr[2] ?  addpicicon : 'url('+ http +phoneImgArr[2]+')' }">
+					<view class="img" @tap="viewImg(phoneImgArr,2)">
 						<text class="text">
 							顶面
 						</text>
-					</view>
-					<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[2] ? '#111f3a':'#dd514c'}" @tap="uploadImg(2)" >
-						<view :class="phoneImgArr[2] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+						<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[2] ? '#111f3a':'#dd514c'}"
+							@tap="uploadImg(2)">
+							<view :class="phoneImgArr[2] ? 'translate45':''">
+								<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+							</view>
 						</view>
 					</view>
+
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[3] ?  addpicicon : 'url('+ http +phoneImgArr[3]+')' }">
-					<view class="img"  @tap="viewImg(phoneImgArr,3)">
+				<view class='cu-avatar xl radius'
+					:style="{'background-image': !phoneImgArr[3] ?  addpicicon : 'url('+ http +phoneImgArr[3]+')' }">
+					<view class="img" @tap="viewImg(phoneImgArr,3)">
 						<text class="text">
 							底面
 						</text>
-					</view>
-					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[3] ? '#111f3a':'#dd514c'}" @tap="uploadImg(3)">
-						<view :class="phoneImgArr[3] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+						<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[3] ? '#111f3a':'#dd514c'}"
+							@tap="uploadImg(3)">
+							<view :class="phoneImgArr[3] ? 'translate45':''">
+								<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+							</view>
 						</view>
 					</view>
+
 				</view>
 			</view>
 			<view class="pic padding flex justify-between align-center">
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[4] ?  addpicicon : 'url('+ http +phoneImgArr[4]+')' }">
-					<view class="img"  @tap="viewImg(phoneImgArr,4)">
+				<view class='cu-avatar xl radius'
+					:style="{'background-image': !phoneImgArr[4] ?  addpicicon : 'url('+ http +phoneImgArr[4]+')' }">
+					<view class="img" @tap="viewImg(phoneImgArr,4)">
 						<text class="text">
 							左侧
 						</text>
-					</view>
-					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[4] ? '#111f3a':'#dd514c'}" @tap="uploadImg(4)">
-						<view :class="phoneImgArr[4] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+						<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[4] ? '#111f3a':'#dd514c'}"
+							@tap="uploadImg(4)">
+							<view :class="phoneImgArr[4] ? 'translate45':''">
+								<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+							</view>
 						</view>
 					</view>
+
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[5] ?  addpicicon : 'url('+ http +phoneImgArr[5]+')' }">
-					<view class="img"  @tap="viewImg(phoneImgArr,5)">
+				<view class='cu-avatar xl radius'
+					:style="{'background-image': !phoneImgArr[5] ?  addpicicon : 'url('+ http +phoneImgArr[5]+')' }">
+					<view class="img" @tap="viewImg(phoneImgArr,5)">
 						<text class="text">
 							右侧
 						</text>
-					</view>
-					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[5] ? '#111f3a':'#dd514c'}" @tap="uploadImg(5)">
-						<view :class="phoneImgArr[5] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+						<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[5] ? '#111f3a':'#dd514c'}"
+							@tap="uploadImg(5)">
+							<view :class="phoneImgArr[5] ? 'translate45':''">
+								<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+							</view>
 						</view>
 					</view>
+
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[6] ?  addpicicon : 'url('+ http +phoneImgArr[6]+')' }">
-					<view class="img"  @tap="viewImg(phoneImgArr,6)">
+				<view class='cu-avatar xl radius'
+					:style="{'background-image': !phoneImgArr[6] ?  addpicicon : 'url('+ http +phoneImgArr[6]+')' }">
+					<view class="img" @tap="viewImg(phoneImgArr,6)">
 						<text class="text">
 							摄像头
 						</text>
-					</view>
-					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[6] ? '#111f3a':'#dd514c'}" @tap="uploadImg(6)">
-						<view :class="phoneImgArr[6] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+						<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[6] ? '#111f3a':'#dd514c'}"
+							@tap="uploadImg(6)">
+							<view :class="phoneImgArr[6] ? 'translate45':''">
+								<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+							</view>
 						</view>
 					</view>
+
 				</view>
-				<view class='cu-avatar xl radius' :style="{'background-image': !phoneImgArr[7] ?  addpicicon : 'url('+ http +phoneImgArr[7]+')' }">
-					<view class="img"  @tap="viewImg(phoneImgArr,7)">
+				<view class='cu-avatar xl radius'
+					:style="{'background-image': !phoneImgArr[7] ?  addpicicon : 'url('+ http +phoneImgArr[7]+')' }">
+					<view class="img" @tap="viewImg(phoneImgArr,7)">
 						<text class="text">
 							其他
 						</text>
-					</view>
-					<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[7] ? '#111f3a':'#dd514c'}" @tap="uploadImg(7)">
-						<view :class="phoneImgArr[7] ? 'translate45':''">
-							<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+						<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[7] ? '#111f3a':'#dd514c'}"
+							@tap="uploadImg(7)">
+							<view :class="phoneImgArr[7] ? 'translate45':''">
+								<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+							</view>
 						</view>
 					</view>
+
 				</view>
 			</view>
 
@@ -324,7 +349,7 @@
 				},
 				timeIndex: [0, 0],
 				phoneImgArr: [],
-				addpicicon:"none",
+				addpicicon: "none",
 				pImgDeleteStatus: false,
 				TabCur: 0,
 				modalName: null,
@@ -355,16 +380,16 @@
 				goodsId: '',
 				goodsInfo: '',
 				cartInfo: [],
-				platformInfo:'',
-				checkimgshow:false,
-				imgParams:[],
-				uploadImgtype:'',
+				platformInfo: '',
+				checkimgshow: false,
+				imgParams: [],
+				uploadImgtype: '',
 				Pricepramitems: [],
 				Priceprams: [],
-				textareaAValue:'' ,//用户备注
-				jjname:'',//寄件名
-				jjphone:'',//寄件手机
-				jjdanhao:''//寄件单号
+				textareaAValue: '', //用户备注
+				jjname: '', //寄件名
+				jjphone: '', //寄件手机
+				jjdanhao: '' //寄件单号
 			}
 		},
 		onLoad(option) {
@@ -384,26 +409,27 @@
 			// this.addBasicOrderFuc();
 		},
 		onShow() {
+			console.log(2222)
 			this.getUserAddressFuc();
 			this.getBankListFuc();
 		},
 		methods: {
 			// 获取门店收获地址
 			selectStoreAddress() {
-				selectStoreAddress(uni.getStorageSync('storeId')).then(res =>{
+				selectStoreAddress(uni.getStorageSync('storeId')).then(res => {
 					if (res.code == 200) {
 						this.storeAddress = res.data;
 					}
 				})
 			},
 			// 复制
-			copyfuc(){
+			copyfuc() {
 				let that = this;
 				uni.setClipboardData({
-				    data: that.storeAddress,
-				    success: function () {
-				        console.log('success');
-				    }
+					data: that.storeAddress,
+					success: function() {
+						console.log('success');
+					}
 				});
 			},
 			// 初始化取货时间
@@ -416,17 +442,17 @@
 					if (i == 0) {
 						that.takeTime[0].push({
 							value: addNowDay(0, 0) + "(今天)",
-							keyy:addNowDay(0, 0)
+							keyy: addNowDay(0, 0)
 						});
 					} else if (i == 1) {
 						that.takeTime[0].push({
 							value: addNowDay(0, 1) + "(明天)",
-							keyy:addNowDay(0, 1)
+							keyy: addNowDay(0, 1)
 						});
 					} else if (i == 2) {
 						that.takeTime[0].push({
 							value: addNowDay(0, 2) + "(后天)",
-							keyy:addNowDay(0, 2)
+							keyy: addNowDay(0, 2)
 						});
 					}
 				}
@@ -444,19 +470,19 @@
 				let hourlist = [];
 				if (index == 0) {
 					hourlist = gethoursInfo(0);
-					that.takeTime[1] = hourlist.filter((item,index)=>{
+					that.takeTime[1] = hourlist.filter((item, index) => {
 						return item
 					})
 				} else {
 					hourlist = gethoursInfo(1);
-					that.takeTime[1] = hourlist.filter((item,index)=>{
+					that.takeTime[1] = hourlist.filter((item, index) => {
 						return item
 					})
 				}
 				this.$forceUpdate()
 			},
 			// 使用拍照功能
-			opencamare(){
+			opencamare() {
 				let that = this;
 				uni.chooseImage({
 					count: 1, //默认9
@@ -469,13 +495,13 @@
 							that.imgParams.push(res.data.imgurl);
 						})
 					},
-					complete:function(){
+					complete: function() {
 						that.checkimgshow = false;
 					}
 				});
 			},
 			// 使用相册功能
-			openpictrue(){
+			openpictrue() {
 				let that = this;
 				uni.chooseImage({
 					count: 1, //默认9
@@ -488,46 +514,47 @@
 							that.imgParams.push(res.data.imgurl);
 						})
 					},
-					complete:function(){
+					complete: function() {
 						that.checkimgshow = false;
 					}
 				});
 			},
 			//查看图片
-			viewImg(url,index){
+			viewImg(url, index) {
 				//需要分割url并去除空数组
-				if(url){
+				if (url) {
 					const urll = url.map(item => {
 						return this.$httpImage + item
 					})
-					if(url[index]){
+					if (url[index]) {
 						uni.previewImage({
 							current: index,
 							urls: urll
 						})
 					}
-				}else{
-				}
+				} else {}
 			},
 			uploadImg(type) {
 				if (!this.phoneImgArr[type]) {
 					let that = this;
 					that.uploadImgtype = type;
 					uni.navigateTo({
-						url:'/pages/idphoto/idphoto'
+						url: '/pages/idphoto/idphoto'
 					})
 				} else {
 					this.deleteImg(type)
 				}
-				
+
 			},
 			//设置图片
 			setImage(e) {
 				let that = this;
 				//显示在页面
+				console.log(e.path, 33333)
 				let Imgdata = [];
 				Imgdata.push(e.path);
 				upload(Imgdata).then(res => {
+					console.log(res, 333333)
 					that.$set(that.phoneImgArr, that.uploadImgtype, res.fileName);
 					that.imgParams.push(res.fileName);
 				})
@@ -592,9 +619,10 @@
 				})
 			},
 			// 获取银行列表
-			getBankListFuc(){
+			getBankListFuc() {
 				let that = this;
-				userAccountList().then(res=>{
+				console.log(222)
+				userAccountList().then(res => {
 					if (res.code == 200) {
 						that.paylist = res.rows;
 						if (that.paylist.length > 0) {
@@ -603,7 +631,7 @@
 						that.paylist.forEach((item, index) => {
 							item['bankinfo'] = item.bank_name + '-' + item.bank_card;
 						})
-						
+
 					}
 				})
 			},
@@ -617,50 +645,51 @@
 				let puttakeTime = '';
 				let deviceLabel = uni.getStorageSync('goodsdesc')
 				let storeId = uni.getStorageSync('storeId')
-				if((that.TabCur == 0 || that.TabCur == 2) && that.timeIndex[0] == -1 && that.timeIndex[1] == -1){
+				if ((that.TabCur == 0 || that.TabCur == 2) && that.timeIndex[0] == -1 && that.timeIndex[1] == -1) {
 					return that.$u.toast('请选择上门取件时间');
-				}else if((that.TabCur == 0 || that.TabCur == 2) && that.takeTime[1][0].value == '请预约明天的时间吧～'){
+				} else if ((that.TabCur == 0 || that.TabCur == 2) && that.takeTime[1][0].value == '请预约明天的时间吧～') {
 					return that.$u.toast('请选择明天的时间吧~');
-				}else{
-					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy+' '+that.takeTime[1][0].value.split('~')[0] + ':00';
+				} else {
+					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy + ' ' + that.takeTime[1][0].value.split('~')[0] + ':00';
 				}
-				if((that.TabCur == 0 || that.TabCur == 2) && that.index.address == -1){
+				if ((that.TabCur == 0 || that.TabCur == 2) && that.index.address == -1) {
 					return that.$u.toast('请选择一个地址！');
 				}
 				if (that.TabCur == 2) {
-					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy+' '+that.takeTime[1][0].value.split('~')[0] + ':00' + '~' + that.takeTime[1][0].value.split('~')[1] + ':00';
+					puttakeTime = that.takeTime[0][that.timeIndex[0]].keyy + ' ' + that.takeTime[1][0].value.split('~')[0] +
+						':00' + '~' + that.takeTime[1][0].value.split('~')[1] + ':00';
 				}
-				if(that.TabCur == 1){
-					if(!that.jjname){
+				if (that.TabCur == 1) {
+					if (!that.jjname) {
 						return that.$u.toast('请填写姓名！');
 					}
-					if(!that.jjphone){
+					if (!that.jjphone) {
 						return that.$u.toast('请填写手机号！');
 					}
 					if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(that.jjphone)) {
 						return that.$u.toast('请输入正确的手机号码');
 					}
-					if(!that.jjdanhao){
+					if (!that.jjdanhao) {
 						return that.$u.toast('请填写顺丰单号！');
 					}
 				}
 				//顺丰参数
-				if(that.TabCur == 0){
+				if (that.TabCur == 0) {
 					var express_name = '顺丰快递';
 				}
 				//自寄参数
-				if(that.TabCur == 1){
+				if (that.TabCur == 1) {
 					var express_name = '';
 				}
 				//同城上门参数
-				if(that.TabCur == 2){
+				if (that.TabCur == 2) {
 					var express_name = '同城上门';
 				}
 				let params = {
 					'basicPriceId': Number(that.priceId),
 					'deviceLabel': deviceLabel,
 					'modelName': that.modelName,
-					'qualityInfo':JSON.stringify(that.Priceprams),
+					'qualityInfo': JSON.stringify(that.Priceprams),
 					'qualityInfoList': JSON.stringify(that.Pricepramitems),
 					'orderPostType': that.TabCur,
 					'consigneeAddress': that.TabCur !== 2 ? that.storeAddress : '',
@@ -678,7 +707,7 @@
 					"topPhoto": that.phoneImgArr[2],
 					"bottomPhoto": that.phoneImgArr[3],
 					"leftPhoto": that.phoneImgArr[4],
-				  "rightPhoto": that.phoneImgArr[5],
+					"rightPhoto": that.phoneImgArr[5],
 					"cameraPhoto": that.phoneImgArr[6],
 					"otherPhoto": that.phoneImgArr[7],
 					'storeId': storeId,
@@ -686,7 +715,7 @@
 				}
 				console.log(params)
 				createRecycleOrder(params).then(res => {
-					if(res.code == 200){
+					if (res.code == 200) {
 						that.$u.toast('提交订单成功');
 						uni.navigateTo({
 							url: "/pages/order/recycle/list"
@@ -828,7 +857,7 @@
 			.title {
 				position: relative;
 				padding-right: 181.81rpx;
-				
+
 			}
 
 			.text-right {
@@ -862,29 +891,34 @@
 			margin-left: 10px;
 		}
 	}
-	
-	.cu-bar .action .cuIcon-title{
-		font-size:80rpx;
+
+	.cu-bar .action .cuIcon-title {
+		font-size: 80rpx;
 		line-height: 80rpx;
-		margin-right:0 !important;
+		margin-right: 0 !important;
 	}
-	.cu-bar .title, 
+
+	.cu-bar .title,
 	.cu-form-group .title {
-		color:#111f3a;
+		color: #111f3a;
 		font-weight: bold;
 		white-space: nowrap;
 	}
-	.pic{
+
+	.pic {
 		background-color: #fff;
-		.cu-avatar{
-			border-radius: 30rpx;
+
+		.cu-avatar {
+			// border-radius: 30rpx;
 			background-color: #f2f1f6;
-			color:#afafb0;
-			font-size:1.2em;
-			.img{
-				width:100%;
-				height:100%;
-				//z-index:9999;
+			color: #afafb0;
+			font-size: 1.2em;
+
+			.img {
+				width: 100%;
+				height: 100%;
+				position: relative;
+				overflow: hidden;
 				display: inline-flex;
 				text-align: center;
 				justify-content: center;
@@ -892,7 +926,8 @@
 			}
 		}
 	}
-	.hide{
-		display:none;
+
+	.hide {
+		display: none;
 	}
 </style>

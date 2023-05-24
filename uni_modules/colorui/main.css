@@ -617,7 +617,7 @@ radio.white.checked .uni-radio-input {
 /* ==================
           按钮
  ==================== */
-.cu-btns{
+.cu-btns {
 	background: #FFEBEB;
 	height: 54rpx;
 	padding: 0px 10px;
@@ -629,6 +629,7 @@ radio.white.checked .uni-radio-input {
 	margin-left: initial;
 	margin-right: initial;
 }
+
 .cu-btn {
 	position: relative;
 	border: 0upx;
@@ -850,14 +851,16 @@ button.cuIcon.lg {
 }
 
 .cu-tag.badge {
-	border-radius: 200upx;
+	border-radius: 100upx;
 	position: absolute;
 	top: -10upx;
-	right: -10upx;
+	right: -8upx;
 	font-size: 20upx;
 	padding: 0 10upx;
 	height: 28upx;
+	width: 28upx;
 	color: #ffffff;
+	align-items: flex-end;
 }
 
 .cu-tag.badge:not([class*="bg-"]) {
@@ -1314,12 +1317,13 @@ button.cuIcon.lg {
 	transform: scale(.5);
 	transform-origin: 0 0;
 	pointer-events: none
-	
 }
+
 .cu-list.menu-avatar>.cu-item:last-child:after,
-.cu-list.menu>.cu-item:last-child:after{
+.cu-list.menu>.cu-item:last-child:after {
 	border-bottom: 0;
 }
+
 .cu-list.menu>.cu-item.grayscale {
 	background-color: #f5f5f5
 }
@@ -1638,7 +1642,7 @@ button.cuIcon.lg {
 
 .cu-bar .search-form {
 	background-color: white;
-	border: 1px solid rgba(253,76,76,1);
+	border: 1px solid rgba(253, 76, 76, 1);
 	line-height: 36px;
 	height: 36px;
 	font-size: 24upx;
@@ -1660,7 +1664,7 @@ button.cuIcon.lg {
 	line-height: 64upx;
 	font-size: 26upx;
 	background-color: transparent;
-	
+
 	border-radius: 18px;
 }
 
@@ -2508,11 +2512,13 @@ button.cuIcon.lg {
 .cu-modal.drawer-modal.show .cu-dialog {
 	transform: translateX(0%);
 }
-.cu-modal .cu-dialog>.cu-bar:first-child .action{
-  min-width: 100rpx;
-  margin-right: 0;
-  min-height: 100rpx;
+
+.cu-modal .cu-dialog>.cu-bar:first-child .action {
+	min-width: 100rpx;
+	margin-right: 0;
+	min-height: 100rpx;
 }
+
 /* ==================
          轮播
  ==================== */
@@ -2942,11 +2948,13 @@ scroll-view.cu-steps .cu-item {
 	position: relative;
 	overflow: hidden;
 }
+
 .grid.grid-square>view.bg-img image {
 	width: 100%;
 	height: 100%;
 	position: absolute;
 }
+
 .grid.col-1.grid-square>view {
 	padding-bottom: 100%;
 	height: 0;
@@ -2983,9 +2991,11 @@ scroll-view.cu-steps .cu-item {
 .grid.col-5.grid-square>view:nth-child(5n) {
 	margin-right: 0;
 }
-view{
+
+view {
 	display: block
 }
+
 .grid.col-1>view {
 	width: 100%;
 }
@@ -3011,9 +3021,11 @@ view{
 .margin-0 {
 	margin: 0;
 }
+
 .margin-mini {
 	margin: 6upx;
 }
+
 .margin-xs {
 	margin: 10upx;
 }
@@ -3033,6 +3045,7 @@ view{
 .margin-xl {
 	margin: 50upx;
 }
+
 .margin-top-xxs {
 	margin-top: 8upx;
 }
@@ -3419,10 +3432,12 @@ view{
 .lines-white::after {
 	border-color: #ffffff;
 }
+
 .bg-reds {
-	background-image:  linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+	background-image: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
 	color: white;
 }
+
 .bg-FFEBEB {
 	background-color: #FFEBEB;
 	color: #ffffff;
@@ -3492,7 +3507,7 @@ view{
 	background-color: #f0f0f0;
 	color: #333333;
 }
-	
+
 .bg-F9F9FB {
 	background-color: #F9F9FB;
 	color: #101010;
@@ -3511,20 +3526,24 @@ view{
 	color: #ffffff;
 }
 
-.bg-242730{
+.bg-242730 {
 	background-color: #242730;
 	color: white
 }
+
 .bg-white {
 	background-color: #ffffff;
 	color: #333333;
 }
-.radius-6{
+
+.radius-6 {
 	border-radius: 6px;
 }
-.radius-12{
+
+.radius-12 {
 	border-radius: 12px;
 }
+
 .bg-shadeTop {
 	background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.01));
 	color: #ffffff;
@@ -3819,6 +3838,7 @@ view{
 .text-xxxl {
 	font-size: 64upx;
 }
+
 .text-sl {
 	font-size: 80upx;
 }
@@ -3838,22 +3858,25 @@ view{
 .text-abc {
 	text-transform: Lowercase;
 }
-	
+
 .text-color-black {
 	color: #101010;
 }
-.text-yellow{
-	
-}
+
+.text-yellow {}
+
 .text-color-yellow {
 	background-image: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%) !important;
 }
-.text-500{
+
+.text-500 {
 	font-weight: 500;
 }
-.text-400{
+
+.text-400 {
 	font-weight: 400;
 }
+
 .text-price::before {
 	content: "¥";
 	font-size: 80%;

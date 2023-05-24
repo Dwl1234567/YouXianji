@@ -14,7 +14,9 @@
 					canvasId: 'qrcode',
 					size: 354,
 					margin: 10,
-					text: ''
+					text: {
+						way: 2
+					}
 				}
 			}
 		},

@@ -106,11 +106,11 @@ function baseRequest(url, method, data, {
 						url: '/pages/common/login/login',
 					});
 				} else
-					uni.showToast({
-						icon: 'none',
-						title: res.data.msg
-					});
-				reject(res.data.msg || '系统错误');
+					// uni.showToast({
+					// 	icon: 'none',
+					// 	title: res.data.msg
+					// });
+					reject(res.data.msg || '系统错误');
 			},
 			fail: (err) => {
 				console.log("接口地址->", Url + url);

@@ -608,3 +608,13 @@ export function empRobShoppingOrder(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 获取门店杂费，回收佣金配置信息
+ *
+ */
+export function getStoreOnlineCostConfig(data) {
+	return request.get('/yxj/app/recycleForm/getStoreOnlineCostConfig', data, {
+		noLogin: true
+	});
+}

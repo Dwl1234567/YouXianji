@@ -41,7 +41,7 @@
 						<view class="banner-swiper-box">
 							<swiper class="screen-swiper" circular autoplay @change="bannerSwiper">
 								<swiper-item v-for="(item,index) in product.images_text" :key="index">
-									<image class="img" :src="item" mode="aspectFill" />
+									<image class="img" :src="$httpImage + item" mode="aspectFill" />
 								</swiper-item>
 							</swiper>
 							<!--页码-->
@@ -382,10 +382,8 @@
 						<!--商品信息-->
 						<view class="cu-list menu-avatar">
 							<view class="cu-item">
-								<view
-									class="cu-avatar radius lg"
-									style="background-image: url(/static/delect_images/home/goods/1.png)"
-								/>
+								<view class="cu-avatar radius lg"
+									style="background-image: url(/static/delect_images/home/goods/1.png)" />
 								<view class="content">
 									<view class="text-price-view">
 										<text class="text-price text-FF3A31 margin-right-xs text-sl" style="font-family: DINCondensed-Bold">
@@ -409,14 +407,9 @@
 							<view class="select-item" v-for="(item,index) in specList" :key="index">
 								<view class="text-black text-500">{{item.name}}</view>
 								<view class="select-btn">
-									<text
-										v-for="(childItem, childIndex) in specChildList"
-										v-if="childItem.pid === item.id"
-										:key="childIndex"
-										class="cu-btn light"
-										:class="{selected: childItem.selected}"
-										@click="selectSpec(childIndex, childItem.pid)"
-									>
+									<text v-for="(childItem, childIndex) in specChildList" v-if="childItem.pid === item.id"
+										:key="childIndex" class="cu-btn light" :class="{selected: childItem.selected}"
+										@click="selectSpec(childIndex, childItem.pid)">
 										{{childItem.name}}
 									</text>
 									<!-- <button class="cu-btn light bg-red">深空灰色</button> -->
@@ -439,11 +432,31 @@
 
 <script>
 	import Vue from 'vue';
-	import { goodsdetail, bindingUser } from '@/api/common.js';
-	import { shoppingCart, secondGoodsFootprint, secondGoodsFavorite, secondGoods } from '@/api/malls.js';
+	import {
+		bindDistributionRelation,
+		bindDistributionBrowse
+	} from '@/api/malls.js'
+	import {
+		goodsdetail,
+		bindingUser
+	} from '@/api/common.js';
+	import {
+		shoppingCart,
+		secondGoodsFootprint,
+		secondGoodsFavorite,
+		secondGoods
+	} from '@/api/malls.js';
 	import qrcode from './qrcode';
-	import { ProductDetail, FlashProductDetail, ProductEvaluate, CartAdd, OrderCreate } from '@/api/mall.js';
-	import { setuservisit } from '@/api/user.js';
+	import {
+		ProductDetail,
+		FlashProductDetail,
+		ProductEvaluate,
+		CartAdd,
+		OrderCreate
+	} from '@/api/mall.js';
+	import {
+		setuservisit
+	} from '@/api/user.js';
 	import html2canvas from 'html2canvas';
 	import barTitle from '@/components/common/basics/bar-title';
 	import shareImages from '@/components/hj-placard/shareImages.vue';
@@ -497,8 +510,7 @@
 					opacityTop: 200,
 					offsetAd: 130,
 					offsetIos: 135,
-					nodeList: [
-						{
+					nodeList: [{
 							id: 'shangpinBlock',
 							top: 0,
 						},
@@ -549,17 +561,22 @@
 			const pages = getCurrentPages();
 			const currentPage = pages[pages.length - 1];
 			// 获取当前user信息
-			let userInfo = Vue.prototype.$store.state.userInfo;
+			let userInfo = uni.getStorageSync('userinfo');
 			this.userInfo = userInfo;
 			// 设置二维码信息
-			this.qrUrl = `/` + currentPage.route + `?id=` + options.id + `&nameId=` + userInfo.user_id;
+			const aa = {
+				way: 1,
+				url: `/` + currentPage.route + `?id=` + options.id + `&nameId=` + userInfo.userId
+			}
+			this.qrUrl = JSON.stringify(aa)
+			// this.bindingProduct()
 			// 首页扫码进入后 未登陆状态跳转登陆页面
 			if (options.nameId) {
 				uni.setStorageSync('url', `/` + currentPage.route + `?id=` + options.id + `&nameId=` + options.nameId);
 				uni.setStorageSync('nameId', options.nameId);
 				this.$api.checkLogin();
-				if (userInfo.token) {
-					this.bindingUser(options.nameId);
+				if (userInfo.userId) {
+					this.bindingProduct(options.nameId);
 					this.datas = '1';
 				}
 			}
@@ -594,13 +611,13 @@
 			formatRichText(html) {
 				//控制小程序中图片大小
 				if (html) {
-					let newContent = html.replace(/<img[^>]*>/gi, function (match, capture) {
+					let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
 						match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
 						match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
 						match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
 						return match;
 					});
-					newContent = newContent.replace(/style="[^"]+"/gi, function (match, capture) {
+					newContent = newContent.replace(/style="[^"]+"/gi, function(match, capture) {
 						match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
 						return match;
 					});
@@ -626,7 +643,7 @@
 				.selectAll('#pinglunBlock, #canshuBlock, #xiangqingBlock')
 				.boundingClientRect((data) => {
 					let that = this;
-					data.forEach(function (item) {
+					data.forEach(function(item) {
 						if (item.id == 'pinglunBlock') {
 							that.scrollConf.nodeList[1].top = item.top;
 						}
@@ -665,8 +682,29 @@
 			// 获取详情
 			secondGoods() {
 				secondGoods(this.goodsId).then((res) => {
+					let images_text = []
 					if (res.code === 200) {
-						this.goodsList = res.data;
+						if (res.data.frontPhoto) {
+							images_text.push(res.data.frontPhoto)
+						} else if (res.data.backPhoto) {
+							images_text.push(res.data.backPhoto)
+						} else if (res.data.topPhoto) {
+							images_text.push(res.data.topPhoto)
+						} else if (res.data.bottomPhoto) {
+							images_text.push(res.data.bottomPhoto)
+						} else if (res.data.leftPhoto) {
+							images_text.push(res.data.leftPhoto)
+						} else if (res.data.rightPhoto) {
+							images_text.push(res.data.rightPhoto)
+						} else if (res.data.cameraPhoto) {
+							images_text.push(res.data.cameraPhoto)
+						} else if (res.data.otherPhoto) {
+							images_text.push(res.data.otherPhoto)
+						}
+						console.log(images_text)
+						this.product = res.data;
+						this.product.images_text = images_text;
+						this.onCanvas();
 					}
 				});
 			},
@@ -696,8 +734,14 @@
 				// 	this.bottomModal = false;
 				// }
 			},
-			async bindingUser(item) {
-				const res = await bindingUser({ userId: item, downId: this.userInfo.user_id, type: 'lowernum' });
+			bindingProduct(item) {
+				bindDistributionBrowse({
+					sharePeople: Number(item),
+					goodsId: this.goodsId
+				}).
+				then(res => {
+					console.log(res, '3333333')
+				})
 			},
 			async onCanvas() {
 				qrcode
@@ -713,13 +757,16 @@
 						errorCorrectLevel: qrcode.errorCorrectLevel.H,
 					})
 					.then((res) => {});
-				const userInfo = Vue.prototype.$store.state.userInfo;
+				console.log(22222222)
+				// const userInfo = Vue.prototype.$store.state.userInfo;
 				const ctx = uni.createCanvasContext('img1', this);
 				const ctx2 = uni.createCanvasContext('img2', this);
 				ctx.fillRect(0, 0, 324, 324);
 				ctx2.fillRect(0, 0, 40, 40);
-				ctx.drawImage(this.product.images_text[0], 0, 0, 324, 324);
-				ctx2.drawImage(this.userInfo.avatar, 0, 0, 40, 40);
+				const image = this.$httpImage + this.product.images_text[0]
+				console.log(image, '222222')
+				ctx.drawImage(image, 0, 0, 324, 324);
+				// ctx2.drawImage(this.userInfo.avatar, 0, 0, 40, 40);
 				let pic = await this.setTime(ctx);
 				let pic2 = await this.setTime(ctx2);
 				this.$emit('success', pic);
@@ -738,8 +785,7 @@
 			getNewPic() {
 				return new Promise((resolve, errs) => {
 					setTimeout(() => {
-						uni.canvasToTempFilePath(
-							{
+						uni.canvasToTempFilePath({
 								canvasId: 'img1',
 								quality: 1,
 								complete: (res) => {
@@ -759,8 +805,7 @@
 			getNewPic2() {
 				return new Promise((resolve, errs) => {
 					setTimeout(() => {
-						uni.canvasToTempFilePath(
-							{
+						uni.canvasToTempFilePath({
 								canvasId: 'img2',
 								quality: 1,
 								complete: (res) => {
@@ -792,18 +837,17 @@
 					const bitmap = new plus.nativeObj.Bitmap('test');
 					bitmap.loadBase64Data(
 						base64,
-						function () {
+						function() {
 							const url = '_doc/' + new Date().getTime() + '.png'; // url为时间戳命名方式
 							bitmap.save(
-								url,
-								{
+								url, {
 									overwrite: true, // 是否覆盖
 									// quality: 'quality'  // 图片清晰度
 								},
 								(i) => {
 									uni.saveImageToPhotosAlbum({
 										filePath: i.target,
-										success: function () {
+										success: function() {
 											// uni.hideLoading()
 											// uni.showToast({
 											// 	title: '图片保存成功',
@@ -814,6 +858,7 @@
 													url: imgurl[i], // 图片地址
 													methods: 'GET',
 													success: (res) => {
+														console.log(res)
 														var tempFilePath = res.tempFilePath; // 这里拿到后端返回的图片路径
 														uni.saveImageToPhotosAlbum({
 															// 然后调用这个方法
@@ -932,7 +977,7 @@
 						.then((res) => {
 							let product = res.data;
 							if (!product) {
-								setTimeout(function () {
+								setTimeout(function() {
 									uni.navigateBack();
 								}, 3000);
 								return;
@@ -1132,7 +1177,7 @@
 					});
 					uni.saveImageToPhotosAlbum({
 						filePath: this.imageData,
-						success: function () {
+						success: function() {
 							console.log('save success');
 						},
 					});
@@ -1161,20 +1206,20 @@
 			// 发送数据到逻辑层
 			emitData(e, ownerVm) {
 
-					const dom = document.getElementById('qrcodes')
-					html2canvas(dom, {
-						width: dom.clientWidth, //dom 原始宽度
-						height: dom.clientHeight,
-						scrollY: 0, // html2canvas默认绘制视图内的页面，需要把scrollY，scrollX设置为0
-						scrollX: 0,
-						dpi:300,
-						backgroundColor: "transparent",
-						useCORS: true, //支持跨域，但好像没什么用‘
-						allowTaint: true
-					}).then((canvas) => {
-						// 将生产的canvas转为base64图片3
-						ownerVm.callMethod('receiveRenderData', canvas.toDataURL('image/png'))
-					});
+				const dom = document.getElementById('qrcodes')
+				html2canvas(dom, {
+					width: dom.clientWidth, //dom 原始宽度
+					height: dom.clientHeight,
+					scrollY: 0, // html2canvas默认绘制视图内的页面，需要把scrollY，scrollX设置为0
+					scrollX: 0,
+					dpi: 300,
+					backgroundColor: "transparent",
+					useCORS: true, //支持跨域，但好像没什么用‘
+					allowTaint: true
+				}).then((canvas) => {
+					// 将生产的canvas转为base64图片3
+					ownerVm.callMethod('receiveRenderData', canvas.toDataURL('image/png'))
+				});
 
 
 			}
@@ -1189,40 +1234,49 @@
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
 	@import '@/uni_modules/mpb-ui/shop/goods.scss';
+
 	page {
 		background: #f0f0f0;
 	}
+
 	.xiangqingH {
 		position: relative;
 		top: calc(0px - var(--status-bar-height) - 104rpx) !important;
 	}
+
 	.text-color-yellows {
 		background-image: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%) !important;
 		border-radius: 22px !important;
 	}
+
 	.cu-avatar.lg {
 		width: 136rpx;
 		height: 136rpx;
 	}
+
 	.menu-avatar {
 		height: 136rpx;
 		margin-top: 19px;
 	}
+
 	.select-item {
 		border: none !important;
 	}
+
 	.modal-content {
 		.cu-btn {
 			background: #f0f0f0;
 			border-radius: 6px;
 			border: none !important;
 		}
+
 		.selected {
 			background: #ffebeb !important;
 			border: 1px solid rgba(255, 58, 49, 1) !important;
 			border-radius: 6px !important;
 		}
 	}
+
 	.background-q {
 		width: 100%;
 		height: 100%;
@@ -1233,10 +1287,12 @@
 		opacity: 0;
 		outline: 0;
 		pointer-events: none;
+
 		&.show {
 			opacity: 1;
 		}
 	}
+
 	#qrcodes {
 		width: 324px;
 		height: 468px;
@@ -1246,10 +1302,12 @@
 		top: calc(50% - 206px);
 		left: calc(50% - 162px);
 		z-index: 99999;
+
 		#img {
 			width: 324px;
 			height: 268px;
 		}
+
 		.text {
 			width: 159px;
 			position: absolute;
@@ -1260,6 +1318,7 @@
 			color: #101010;
 			font-weight: 500;
 		}
+
 		.price {
 			position: absolute;
 			right: 19px;
@@ -1269,11 +1328,13 @@
 			color: #ff2f0f;
 			font-weight: 500;
 		}
+
 		#qrcode {
 			position: absolute;
 			right: 20px;
 			bottom: 9px;
 		}
+
 		.head {
 			width: 40px;
 			height: 40px;
@@ -1282,11 +1343,13 @@
 			position: absolute;
 			left: 30px;
 			bottom: 20px;
+
 			img {
 				width: 40px;
 				height: 40px;
 			}
 		}
+
 		.name {
 			position: absolute;
 			bottom: 30px;
@@ -1297,10 +1360,12 @@
 			font-weight: 400;
 		}
 	}
+
 	.selected {
 		color: #e54d42;
 		background-color: #fadbd9;
 	}
+
 	/*
 	.nav{
 		background-color: #fff;
@@ -1325,6 +1390,7 @@
 		top: calc(var(--status-bar-height) + 161rpx);
 		/* #endif */
 	}
+
 	.hide {
 		display: none;
 	}

@@ -89,27 +89,18 @@
 							</view>
 						</scroll-view>
 					</view>
-					<view
-						class="text-wrapper_15 flex-row justify-between"
-						v-for="item in qualityInfoList"
-						v-if="item.indexs == 1 && tab === 1"
-					>
+					<view class="text-wrapper_15 flex-row justify-between" v-for="item in qualityInfoList"
+						v-if="item.indexs == 1 && tab === 1">
 						<text class="text_39">{{item.key}}</text>
 						<text class="text_40">{{item.value}}</text>
 					</view>
-					<view
-						class="text-wrapper_15 flex-row justify-between"
-						v-for="item in qualityInfoList"
-						v-if="item.indexs == 2 && tab === 2"
-					>
+					<view class="text-wrapper_15 flex-row justify-between" v-for="item in qualityInfoList"
+						v-if="item.indexs == 2 && tab === 2">
 						<text class="text_39">{{item.key}}</text>
 						<text class="text_40">{{item.value}}</text>
 					</view>
-					<view
-						class="text-wrapper_15 flex-row justify-between"
-						v-for="item in qualityInfoList"
-						v-if="item.indexs == 3 && tab === 3"
-					>
+					<view class="text-wrapper_15 flex-row justify-between" v-for="item in qualityInfoList"
+						v-if="item.indexs == 3 && tab === 3">
 						<text class="text_39">{{item.key}}</text>
 						<text class="text_40">{{item.value}}</text>
 					</view>
@@ -125,19 +116,17 @@
 			</view>
 		</view>
 		<uni-popup ref="inputDialog" type="dialog">
-			<uni-popup-dialog
-				ref="inputClose"
-				mode="input"
-				title="请确认序列号"
-				:value="deviceNo"
-				placeholder="请填写序列号"
-				@confirm="dialogInputConfirm"
-			></uni-popup-dialog>
+			<uni-popup-dialog ref="inputClose" mode="input" title="请确认序列号" :value="deviceNo" placeholder="请填写序列号"
+				@confirm="dialogInputConfirm"></uni-popup-dialog>
 		</uni-popup>
 	</view>
 </template>
 <script>
-	import { empSelectRecycleOrderDetail, empAgreeOrder, updateDeviceNo } from '@/api/erp.js';
+	import {
+		empSelectRecycleOrderDetail,
+		empAgreeOrder,
+		updateDeviceNo
+	} from '@/api/erp.js';
 	export default {
 		data() {
 			return {
@@ -157,26 +146,20 @@
 				// 用户邮寄信息
 				recycleOrder: [],
 				recycleOrderId: 0,
-				loopData0: [
-					{
-						lanhuBg1:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/f78e421e38be4ea8bd4af6fa7779b882_mergeImage.png)',
+				loopData0: [{
+						lanhuBg1: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/f78e421e38be4ea8bd4af6fa7779b882_mergeImage.png)',
 					},
 					{
-						lanhuBg1:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/14aea857490a4b259f35cf82746dfdca_mergeImage.png)',
+						lanhuBg1: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/14aea857490a4b259f35cf82746dfdca_mergeImage.png)',
 					},
 					{
-						lanhuBg1:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/e2e8a2632cda49dfbff42acf404dfb3d_mergeImage.png)',
+						lanhuBg1: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/e2e8a2632cda49dfbff42acf404dfb3d_mergeImage.png)',
 					},
 					{
-						lanhuBg1:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/17e730d9e90146c4b47b3eedda9c64ea_mergeImage.png)',
+						lanhuBg1: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/17e730d9e90146c4b47b3eedda9c64ea_mergeImage.png)',
 					},
 					{
-						lanhuBg1:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/e0db6ed3d17040c28582d784a76c148b_mergeImage.png)',
+						lanhuBg1: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/e0db6ed3d17040c28582d784a76c148b_mergeImage.png)',
 					},
 				],
 				constants: {},
@@ -198,13 +181,16 @@
 							urls: url,
 						});
 					}
-				} else {
-				}
+				} else {}
 			},
 			empSelectRecycleOrderDetail(recycleOrderId) {
 				empSelectRecycleOrderDetail(recycleOrderId).then((res) => {
 					if (res.code == 200) {
-						const { logisticsInfo, qualityInfo, recycleOrder } = res.data;
+						const {
+							logisticsInfo,
+							qualityInfo,
+							recycleOrder
+						} = res.data;
 						this.recycleOrder = recycleOrder;
 						// 判断邮寄信息是否查询成功
 						if (logisticsInfo.code == 200) {
@@ -261,7 +247,7 @@
 				const text = this.recycleOrder.userAccount.accountNo;
 				uni.setClipboardData({
 					data: text,
-					success: function () {},
+					success: function() {},
 				});
 			},
 			checkTab(e) {
@@ -279,8 +265,7 @@
 					if (res.code === 200) {
 						if (this.editType == 1) {
 							uni.navigateTo({
-								url:
-									'/pages/erp/recycleList/recycling-new?modelId=' +
+								url: '/pages/erp/recycleList/recycling-new?modelId=' +
 									this.recycleOrder.modelId +
 									'&modelPhoto=' +
 									this.recycleOrder.modelPhoto,
@@ -289,7 +274,7 @@
 							empAgreeOrder(this.recycleOrderId).then((res) => {
 								if (res.code == 200) {
 									uni.navigateTo({
-										url: '/pages/erp/recycleList/index',
+										url: '/pages/erp/recycleList/index?type=2',
 									});
 								}
 							});
@@ -311,21 +296,26 @@
 <style lang="css">
 	@import './common.css';
 	@import './index.rpx.css';
+
 	.page-section-spacing {
 		margin-top: 60rpx;
 	}
+
 	.scroll-view_H {
 		white-space: nowrap;
 	}
+
 	.scroll-view-item {
 		height: 300rpx;
 	}
+
 	.scroll-view-item_H {
 		margin-left: 20rpx;
 		display: inline-block;
 		/* width: 100%; */
 		/* height: 300rpx; */
 	}
+
 	.scroll-view-item_H:first-child {
 		margin-left: 0px;
 	}

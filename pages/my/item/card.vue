@@ -11,9 +11,8 @@
 		<view class="">
 			<image class="shareimg" v-if="canvasImages" :src="canvasImages" mode="widthFix" @error="changeerror">
 			</image>
-			<shareImages ref="canvas" :canvasWidth="canvasWidth" :canvasHeight="canvasHeight"
-				:shareTitle="shareTitle" :goodsTitle="goodsTitle" :shareImage="shareImage" :qrSize="qrSize"
-				:qrUrl="qrUrl" @success="shareSuccess">
+			<shareImages ref="canvas" :canvasWidth="canvasWidth" :canvasHeight="canvasHeight" :shareTitle="shareTitle"
+				:goodsTitle="goodsTitle" :shareImage="shareImage" :qrSize="qrSize" :qrUrl="qrUrl" @success="shareSuccess">
 			</shareImages>
 			<view class="button">
 				<!--<button :disabled="canvasImages == '' ? false : true" type="primary" @click="createsShareImage">生成海报</button>-->
@@ -45,11 +44,18 @@
 				goodsTitle: '', // 商品宣传标题
 				shareImage: '/static/item/bg.jpg', // 背景图片
 				qrSize: 100, // 二维码大小
-				qrUrl: "https://www.shousifang.cn/register.html?code=", // 生成二维码的链接
+				qrUrl: '2', // 生成二维码的链接
 				invatecode: ''
 			}
 		},
+		onshow() {
+			this.qrUrl = '2'
+		},
 		onLoad() {
+			this.qrUrl = JSON.stringify({
+				way: 2,
+				parentId: uni.getStorageSync('userinfo').userId
+			})
 			// let localshareImage = uni.getStorageSync('sharebgimg');
 			// if(localshareImage){
 			// 	this.shareImage = localshareImage;
@@ -63,9 +69,6 @@
 			});
 			//海报生成运行方法
 			let canvasImages = uni.getStorageSync('canvasImages');
-			// uni.clearStorage('canvasImages');
-			// console.log('121212');
-			// console.log(canvasImages);
 			if (!canvasImages) {
 				this.createsShareImage();
 			} else {
@@ -77,8 +80,8 @@
 			// 图片错误
 			changeerror: function(e) {
 				console.error('image发生error事件，携带值为' + e.detail.errMsg)
-				
-				this.$nextTick(()=>{
+
+				this.$nextTick(() => {
 					this.createsShareImage();
 				})
 			},

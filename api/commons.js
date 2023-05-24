@@ -199,3 +199,93 @@ export function selectMemberLevelRuleList(data) {
 		'noLogin': true
 	});
 }
+
+/**
+ * 获取会员等级规则列表
+ * 
+ */
+export function getDistributionIncomeInfo(data) {
+	return request.get('/yxj/app/distributionIncome/getDistributionIncomeInfo', data, {
+		'noLogin': true
+	});
+}
+
+/**
+ * 增分销佣金提现
+ * 
+ */
+export function withdraw(data) {
+	return request.post('/yxj/app/distributionIncome/withdraw', data, {
+		'noLogin': true
+	});
+}
+
+
+/**
+ * 查询提现记录
+ * 
+ */
+export function withdrawList(data) {
+	return request.get('/yxj/app/distributionIncome/withdrawList', data, {
+		'noLogin': true
+	});
+}
+/**
+ * 查询分销佣金收入列表
+ * 
+ */
+export function distributionIncomeList(data) {
+	return request.get('/yxj/app/distributionIncome/list', data, {
+		'noLogin': true
+	});
+}
+
+/**
+ * 查询总佣金收入和支出
+ * 
+ */
+export function selectTotal(data) {
+	return request.get('/yxj/app/distributionIncome/selectTotal', data, {
+		'noLogin': true
+	});
+}
+
+/**
+ * 查询浏览记录列表
+ * 
+ */
+export function selectDistributionBrowseList(data) {
+	return request.get('/yxj/app/distributionIncome/selectDistributionBrowseList', data, {
+		'noLogin': true
+	});
+}
+
+/**
+ * 查询绑定关系列表
+ * 
+ */
+export function selectDistributionRelationList(data) {
+	return request.get('/yxj/app/distributionIncome/selectDistributionRelationList', data, {
+		'noLogin': true
+	});
+}
+
+/**
+ * 查询收益排行
+ * 
+ */
+export function selectDistributionIncomeRank(data) {
+	return request.get('/yxj/app/distributionIncome/selectDistributionIncomeRank', data, {
+		'noLogin': true
+	});
+}
+
+/**
+ * 查询我的排名信息
+ * 
+ */
+export function selectMyRankInfo(data) {
+	return request.get('/yxj/app/distributionIncome/selectMyRankInfo', data, {
+		'noLogin': true
+	});
+}

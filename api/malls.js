@@ -6,7 +6,9 @@ import request from '@/utils/request.js';
  *
  */
 export function secondGoodsList(data) {
-	return request.get('/yxj/app/secondGoods/getRandomGoods', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoods/getRandomGoods', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -14,7 +16,9 @@ export function secondGoodsList(data) {
  *
  */
 export function secondGoods(data) {
-	return request.get('/yxj/app/secondGoods/' + data, { noLogin: true });
+	return request.get('/yxj/app/secondGoods/' + data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -22,7 +26,9 @@ export function secondGoods(data) {
  *
  */
 export function shoppingCart(data) {
-	return request.post('/yxj/app/shoppingCart', data, { noLogin: true });
+	return request.post('/yxj/app/shoppingCart', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -30,14 +36,18 @@ export function shoppingCart(data) {
  *
  */
 export function shoppingCartList(data) {
-	return request.get('/yxj/app/shoppingCart/list', data, { noLogin: true });
+	return request.get('/yxj/app/shoppingCart/list', data, {
+		noLogin: true
+	});
 }
 /**
  * 查看默认地址
  *
  */
 export function getDefaultAddress(data) {
-	return request.get('/yxj/app/user/getDefaultAddress', data, { noLogin: true });
+	return request.get('/yxj/app/user/getDefaultAddress', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -45,7 +55,9 @@ export function getDefaultAddress(data) {
  *
  */
 export function secondGoodsLists(data) {
-	return request.get('/yxj/app/secondGoods/list', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoods/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -53,7 +65,9 @@ export function secondGoodsLists(data) {
  *
  */
 export function shoppingOrder(data) {
-	return request.post('/yxj/app/shoppingOrder', data, { noLogin: true });
+	return request.post('/yxj/app/shoppingOrder', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -61,7 +75,9 @@ export function shoppingOrder(data) {
  *
  */
 export function shoppingOrderList(data) {
-	return request.get('/yxj/app/shoppingOrder/list', data, { noLogin: true });
+	return request.get('/yxj/app/shoppingOrder/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -69,7 +85,9 @@ export function shoppingOrderList(data) {
  *
  */
 export function initiatePayment(data) {
-	return request.post('/yxj/app/shoppingOrder/initiatePayment', data, { noLogin: true });
+	return request.post('/yxj/app/shoppingOrder/initiatePayment', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -77,7 +95,9 @@ export function initiatePayment(data) {
  *
  */
 export function secondGoodsFootprint(data) {
-	return request.post('/yxj/app/secondGoodsFootprint', data, { noLogin: true });
+	return request.post('/yxj/app/secondGoodsFootprint', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -85,7 +105,9 @@ export function secondGoodsFootprint(data) {
  *
  */
 export function secondGoodsFootprintList(data) {
-	return request.get('/yxj/app/secondGoodsFootprint/list', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoodsFootprint/list', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -93,7 +115,9 @@ export function secondGoodsFootprintList(data) {
  *
  */
 export function cancelOrder(data) {
-	return request.get('/yxj/app/shoppingOrder/cancelOrder', data, { noLogin: true });
+	return request.get('/yxj/app/shoppingOrder/cancelOrder', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -101,7 +125,9 @@ export function cancelOrder(data) {
  *
  */
 export function continuePayment(data) {
-	return request.post('/yxj/app/shoppingOrder/continuePayment', data, { noLogin: true });
+	return request.post('/yxj/app/shoppingOrder/continuePayment', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -109,7 +135,9 @@ export function continuePayment(data) {
  *
  */
 export function clientConfirm(data) {
-	return request.get('/yxj/app/shoppingOrder/clientConfirm', data, { noLogin: true });
+	return request.get('/yxj/app/shoppingOrder/clientConfirm', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -117,7 +145,9 @@ export function clientConfirm(data) {
  *
  */
 export function shoppingOrderEvaluate(data) {
-	return request.post('/yxj/app/shoppingOrderEvaluate', data, { noLogin: true });
+	return request.post('/yxj/app/shoppingOrderEvaluate', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -125,7 +155,9 @@ export function shoppingOrderEvaluate(data) {
  *
  */
 export function secondGoodsReturn(data) {
-	return request.post('/yxj/app/secondGoodsReturn', data, { noLogin: true });
+	return request.post('/yxj/app/secondGoodsReturn', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -133,7 +165,9 @@ export function secondGoodsReturn(data) {
  *
  */
 export function clientReturn(data) {
-	return request.post('/yxj/app/shoppingOrder/clientReturn', data, { noLogin: true });
+	return request.post('/yxj/app/shoppingOrder/clientReturn', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -141,7 +175,9 @@ export function clientReturn(data) {
  *
  */
 export function clientRefund(data) {
-	return request.get('/yxj/app/shoppingOrder/clientRefund', data, { noLogin: true });
+	return request.get('/yxj/app/shoppingOrder/clientRefund', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -149,7 +185,9 @@ export function clientRefund(data) {
  *
  */
 export function selectNewest(data) {
-	return request.get('/yxj/app/secondGoodsReturn/selectNewest', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoodsReturn/selectNewest', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -157,7 +195,9 @@ export function selectNewest(data) {
  *
  */
 export function secondGoodsFavorite(data) {
-	return request.post('/yxj/app/secondGoodsFavorite', data, { noLogin: true });
+	return request.post('/yxj/app/secondGoodsFavorite', data, {
+		noLogin: true
+	});
 }
 
 /**
@@ -165,5 +205,27 @@ export function secondGoodsFavorite(data) {
  *
  */
 export function secondGoodsFavoriteList(data) {
-	return request.get('/yxj/app/secondGoodsFavorite/list', data, { noLogin: true });
+	return request.get('/yxj/app/secondGoodsFavorite/list', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 绑定分销关系接口
+ *
+ */
+export function bindDistributionRelation(data) {
+	return request.post('/yxj/app/distributionIncome/bindDistributionRelation', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 绑定分销产品浏览关系
+ *
+ */
+export function bindDistributionBrowse(data) {
+	return request.get('/yxj/app/distributionIncome/bindDistributionBrowse', data, {
+		noLogin: true
+	});
 }

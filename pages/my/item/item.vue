@@ -31,49 +31,87 @@
 						<view class="jl">提现记录 ></view>
 					</navigator>
 				</view> -->
-				<view class="commission">
-					<view class="top">
-						<view class="left">
-							<view class="title">
-								当前佣金（元）
-							</view>
-							<view class="number">
-								{{dataInfo.fee || 0}}
-							</view>
+			<view class="commission">
+				<view class="top">
+					<view class="left">
+						<view class="title">
+							当前佣金（元）
 						</view>
-						<view class="right text-center">
-							<navigator url="/pages/my/item/tixian_list">
-								<view class="jl">提现记录</view>
-							</navigator>
+						<view class="number">
+							{{dataInfo.totalIncome || 0}}
 						</view>
 					</view>
-					<view class="bottom">
-						<view class="left">
-							<view class="title">昨日收益</view>
-							<view class="number">{{dataInfo.yesterfee || 0}}</view>
-						</view>
-						<view class="right">
-							<view class="title">累计已提</view>
-							<view class="number">{{dataInfo.tixianmoney || 0}}</view>
-						</view>
+					<view class="right text-center">
+						<navigator url="/pages/my/item/tixian_list">
+							<view class="jl">提现记录</view>
+						</navigator>
 					</view>
 				</view>
-				<view class="tixian" @click="jump_cash">
-					立即提现
+				<view class="bottom">
+					<view class="left">
+						<view class="title">昨日收益</view>
+						<view class="number">{{dataInfo.yestodayTotalIncome || 0}}</view>
+					</view>
+					<view class="right">
+						<view class="title">累计已提</view>
+						<view class="number">{{dataInfo.totalWithDraw || 0}}</view>
+					</view>
 				</view>
-			
-			<view class="level margin-tb-xl" :style="{backgroundImage: 'url('+ dataInfo.userlevelimage +')', backgroundSize: '100%', backgroundRepeat: 'no-repeat'}">
+			</view>
+			<view class="tixian" @click="jump_cash(dataInfo.totalIncome)">
+				立即提现
+			</view>
+
+			<view class="level margin-tb-xl" v-if="dataInfo.userMemberInfo"
+				:style="{backgroundImage: 'url('+ $httpImage + dataInfo.userMemberInfo.indexPhoto +')', backgroundSize: '100%', backgroundRepeat: 'no-repeat'}">
 				<view class=" margin-top-xxs text-center text-xxl text-bold text-white">
-					普通会员
+					{{dataInfo.userMemberInfo.levelName}}
 				</view>
 				<!-- <image :src="dataInfo.userlevelimage" mode="aspectFill" class="radius-3" style="height:428upx"></image> -->
 				<view class="margin-top-xxs text-center text-lg text-white margin-bottom">
 					距离下一级还需
 				</view>
-				<view  class="margin-bottom-sm progress margin-top" v-for="(item1,index1) in dataInfo.next_level_list" :key="index1">
+				<block>
+					<view class="text-white text-sm text-center">
+						<view class="">下级数</view>
+						<!-- <view class="">{{item1.yesnum}}/{{item1.number}}人</view> -->
+					</view>
+					<view class="flex margin-top-xxs">
+						<view class="cu-progress round">
+							<view class="bg-red"
+								:style="{width: dataInfo.userMemberInfo.ancestorDifference ? dataInfo.userMemberInfo.ancestorDifference :''}">
+							</view>
+						</view>
+						<!-- <text class="margin-left-sm cuIcon-roundcheckfill" :class="item1.finish_rate=='100%'?'text-red':'text-lightgrey'"></text> -->
+					</view>
+					<view class="flex justify-between margin-bottom-xs text-white text-sm">
+						<view>0</view>
+						<view>{{dataInfo.userMemberInfo.ancestorNum}}</view>
+					</view>
+				</block>
+				<block>
+					<view class="text-white text-sm text-center">
+						<view class="">有效下级数</view>
+						<!-- <view class="">{{item1.yesnum}}/{{item1.number}}人</view> -->
+					</view>
+					<view class="flex margin-top-xxs">
+						<view class="cu-progress round">
+							<view class="bg-red"
+								:style="{width: dataInfo.userMemberInfo.validAncestorDifference ? dataInfo.userMemberInfo.validAncestorDifference :''}">
+							</view>
+						</view>
+						<!-- <text class="margin-left-sm cuIcon-roundcheckfill" :class="item1.finish_rate=='100%'?'text-red':'text-lightgrey'"></text> -->
+					</view>
+					<view class="flex justify-between margin-bottom-xs text-white text-sm">
+						<view>0</view>
+						<view>{{dataInfo.userMemberInfo.validAncestorNum}}</view>
+					</view>
+				</block>
+				<view class="margin-bottom-sm progress margin-top" v-for="(item1,index1) in dataInfo.next_level_list"
+					:key="index1">
 					<view class="">
 						<view class="text-white text-sm text-center">
-							{{item1.real_name}} 
+							{{item1.real_name}}
 							<!-- <text class="text-xs">{{item1.is_must==1?'务必达成':'满足其一'}}</text> -->
 						</view>
 						<!-- <view class="">{{item1.yesnum}}/{{item1.number}}人</view> -->
@@ -89,7 +127,7 @@
 						<view>{{item1.number}}</view>
 					</view>
 				</view>
-				<view class="shengji"  @click="jump_level">
+				<view class="shengji" @click="jump_level">
 					<view class="btn text-color-yellow text-center radius-6 text-white text-sm">立即升级</view>
 				</view>
 			</view>
@@ -98,7 +136,7 @@
 					<navigator :url="item.url" style="height: 100%;">
 						<view class="tubiao">
 							<!-- <img class="img" :src="item.img"></img> -->
-							<image class="img":src="item.img" mode="widthFix"></image>
+							<image class="img" :src="item.img" mode="widthFix"></image>
 						</view>
 						<view class="tt">
 							<view class="text">{{item.title}}</view>
@@ -116,7 +154,9 @@
 		agentIndex
 	} from "@/api/agent.js"
 	import barTitle from '@/components/common/basics/bar-title';
-
+	import {
+		getDistributionIncomeInfo
+	} from '@/api/commons.js'
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		components: {
@@ -145,14 +185,15 @@
 						url: "/pages/my/item/user_rank"
 					},
 				],
-				dataInfo:''
+				dataInfo: ''
 			}
 		},
 		onLoad() {
-			
+
 		},
 		onShow() {
-			this.agentIndexFuc();
+			this.getDistributionIncomeInfo()
+			// this.agentIndexFuc();
 		},
 		onReady() {
 			_tool.setBarColor(true);
@@ -165,26 +206,39 @@
 			this.agentIndexFuc();
 		},
 		methods: {
-			// 获取分销概况
-			agentIndexFuc(){
-				agentIndex({}).then(res=>{
-					if(res.code == 1){
-						this.dataInfo = res.data;
+			// 获取分销信息
+			getDistributionIncomeInfo() {
+				getDistributionIncomeInfo().then(res => {
+					if (res.code === 200) {
+						res.data.userMemberInfo.ancestorDifference = ((res.data.userMemberInfo.ancestorDifference / res.data
+							.userMemberInfo.ancestorNum) * 100) + '%'
+						res.data.userMemberInfo.validAncestorDifference = ((res.data.userMemberInfo.validAncestorDifference /
+							res.data
+							.userMemberInfo.validAncestorNum) * 100) + '%'
+						this.dataInfo = res.data
 					}
 				})
-				.finally(()=>{
-					uni.stopPullDownRefresh()
-				})
 			},
-			jump_cash() {
+			// 获取分销概况
+			agentIndexFuc() {
+				agentIndex({}).then(res => {
+						if (res.code == 1) {
+							this.dataInfo = res.data;
+						}
+					})
+					.finally(() => {
+						uni.stopPullDownRefresh()
+					})
+			},
+			jump_cash(totalIncome) {
 				uni.navigateTo({
-					url: '/pages/my/item/tixian_add1',
+					url: '/pages/my/item/tixian_add1?totalIncome=' + totalIncome,
 				});
 			},
 			jump_level() {
-				let next_level = this.dataInfo.next_level
+				let ruleId = this.dataInfo.userMemberInfo.ruleId
 				uni.navigateTo({
-					url: '/pages/my/item/level_list?next_level='+next_level,
+					url: '/pages/my/item/level_list?ruleId=' + ruleId,
 				});
 			},
 			getDataList() {
@@ -215,34 +269,40 @@
 </script>
 
 <style lang="scss">
-	page{
+	page {
 		background: #F0F0F0;
 	}
+
 	.reseller {
 		min-height: 100vh;
 		font-size: 14px;
 		padding: 30rpx;
-		.commission{
+
+		.commission {
 			padding: 40rpx 52rpx;
+
 			.top {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				padding-bottom: 23px;
-				border-bottom: 0.5px solid rgba(96,42,11,1);
-				.title{
+				border-bottom: 0.5px solid rgba(96, 42, 11, 1);
+
+				.title {
 					font-size: 12px;
 					color: #913B00;
 					font-weight: 500;
 				}
-				.number{
+
+				.number {
 					margin-top: 7px;
 					font-family: DINAlternate-Bold;
 					font-size: 38px;
 					color: #833200;
 					font-weight: 700;
 				}
-				.right{
+
+				.right {
 					background-image: linear-gradient(180deg, #FFDAA6 0%, #EEAA5A 85%);
 					border-radius: 17px;
 					width: 74px;
@@ -254,31 +314,36 @@
 					font-weight: 600;
 				}
 			}
-			.bottom{
+
+			.bottom {
 				padding-top: 17px;
 				display: flex;
 				justify-content: flex-start;
 				align-items: center;
-				.title{
+
+				.title {
 					font-family: PingFangSC-Regular;
 					font-size: 12px;
 					color: #833200;
 					font-weight: 400;
 				}
-				.number{
+
+				.number {
 					margin-top: 4px;
 					font-family: DINAlternate-Bold;
 					font-size: 24px;
 					color: #833200;
 					font-weight: 700;
 				}
-				.right{
+
+				.right {
 					margin-left: 117px;
 				}
 			}
-			
+
 		}
-		.tixian{
+
+		.tixian {
 			width: 100%;
 			height: 50px;
 			line-height: 50px;
@@ -288,7 +353,7 @@
 			color: #683E15;
 			font-weight: 500;
 			background: #FFC784;
-			box-shadow: 0px 2px 4px 0px rgba(204,134,53,1);
+			box-shadow: 0px 2px 4px 0px rgba(204, 134, 53, 1);
 			border-radius: 0px 0px 6px 6px;
 		}
 
@@ -302,15 +367,19 @@
 		.icon {
 			display: flex;
 			flex-wrap: wrap;
-			.ico:nth-child(2n){
+
+			.ico:nth-child(2n) {
 				border-left: 1px #D8D8D8 solid;
 			}
-			.ico:nth-child(1){
+
+			.ico:nth-child(1) {
 				border-bottom: 1px #D8D8D8 solid;
 			}
-			.ico:nth-child(2){
+
+			.ico:nth-child(2) {
 				border-bottom: 1px #D8D8D8 solid;
 			}
+
 			.ico {
 				border: 1px solid #C0C0C0;
 				width: 49%;
@@ -349,12 +418,14 @@
 			text-align: center;
 			padding: 30rpx;
 			margin-top: 34rpx;
-			.shengji{
+
+			.shengji {
 				display: flex;
 				justify-content: center;
+
 				.btn {
 					text-align: center;
-					padding:5rpx 10rpx;
+					padding: 5rpx 10rpx;
 					width: 55%;
 					height: 58rpx;
 					background: #FFC784 !important;
@@ -363,13 +434,16 @@
 				}
 			}
 		}
-		.progress{
+
+		.progress {
 			width: 444rpx;
 			margin: 0 auto;
-			.cu-progress{
+
+			.cu-progress {
 				height: 12rpx;
 			}
 		}
+
 		.kong {
 			height: 100px;
 		}

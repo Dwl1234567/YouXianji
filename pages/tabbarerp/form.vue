@@ -113,6 +113,10 @@
 			<view class="title">销售价</view>
 			<input placeholder="请输入销售价" v-model="xiaoshoujianum" name="input"></input>
 		</view>
+		<view class="cu-form-group">
+			<view class="title">组合成本</view>
+			<input placeholder="请输入组合成本" v-model="combinationPrice" name="input" disabled="true"></input>
+		</view>
 
 		<!--点点单-->
 		<view class="cu-form-group">
@@ -138,8 +142,9 @@
 				仓库
 			</view>
 			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId"
-					v-if="item.parentId == 0" @tap="checkHouseId(item.warehouseId)">
+				<view class="cangkuItem margin-left-sm" :class="parentId == item.warehouseId ? 'camgkuCheck' : ''"
+					v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == 0"
+					@tap="checkHouseId(item.warehouseId)">
 					{{item.warehouseName}}
 				</view>
 			</view>
@@ -148,8 +153,9 @@
 				分仓
 			</view>
 			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId"
-					v-if="item.parentId == parentId" @tap="checkHouseFenId(item.warehouseId)">
+				<view class="cangkuItem margin-left-sm" :class="warehouseId == item.warehouseId ? 'camgkuCheck' : ''"
+					v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == parentId"
+					@tap="checkHouseFenId(item.warehouseId)">
 					{{item.warehouseName}}
 				</view>
 			</view>
@@ -168,13 +174,15 @@
 		</view>
 		<view class="bg-white padding-lr">
 			<view class="cu-list grid col-3 no-border">
+				<scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 95vw;text-align: left;">
+					<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
+						<view class="cu-item radius-2 shuxing" :class="tabindex == tab_cur?'bg-red cur':''" @tap="tabSelect"
+							:data-id="tabindex" style="padding-bottom: 5px;display: inline-block;">
+							<view class=''>{{tabitem}}</view>
+						</view>
+					</block>
+				</scroll-view>
 
-				<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
-					<view class="cu-item radius-2" :class="tabindex == tab_cur?'bg-red cur':''" @tap="tabSelect"
-						:data-id="tabindex" style="padding-bottom: 5px;">
-						<view class='text-bold' :class="tabindex == tab_cur?'text-white':'text-red'">{{tabitem}}</view>
-					</view>
-				</block>
 				<view style="height: 10px;"></view>
 				<!--选项列表111-->
 				<view class="h-table" style="width: 100%;">
@@ -258,7 +266,8 @@
 	import {
 		getInfoByRecycleOrderId,
 		warehouseList,
-		empCreateRecycleForm
+		empCreateRecycleForm,
+		getStoreOnlineCostConfig
 	} from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
@@ -272,6 +281,8 @@
 		},
 		data() {
 			return {
+				combinationPrice: '',
+				online: {},
 				isDistribution: false,
 				modelId: 0,
 				warehouseId: null,
@@ -356,6 +367,7 @@
 			this.guidePrice = options.forecastMoney;
 			this.qualityInfoList = uni.getStorageSync('Pricepramitems')
 			this.warehouseList()
+			this.getStoreOnlineCostConfig()
 		},
 		watch: {
 			xiaoshoujianum() {
@@ -370,6 +382,13 @@
 			ActualreceiptsAll() {
 				const fenxiao = Number(this.xiaoshoujianum) * 0.03;
 				const chengben = (Number(this.xiaoshoujianum) - Number(this.ActualreceiptsAll)) / 2;
+				const {
+					pettyExpenses,
+					platformEachPhoneRecyclePrice,
+					recycleRatio
+				} = this.online
+				// 组合成本 =  回收价 + 杂费
+				this.combinationPrice = Number(this.ActualreceiptsAll) + pettyExpenses
 				if (chengben > fenxiao) {
 					this.isDistribution = true
 				} else {
@@ -388,6 +407,14 @@
 			});
 		},
 		methods: {
+			// 获取门店杂费
+			getStoreOnlineCostConfig() {
+				getStoreOnlineCostConfig().then(res => {
+					if (res.code === 200) {
+						this.online = res.data
+					}
+				})
+			},
 			SwitchB(e) {
 				this.switchB = e.detail.value
 				if (this.switchB) {
@@ -422,22 +449,16 @@
 			},
 			// 仓库列表
 			warehouseList() {
-				warehouseList().then(res => {
+				warehouseList({
+					pageNum: 1,
+					pageSize: 100000
+				}).then(res => {
 					if (res.code == 200) {
 						this.warehouseLists = res.rows;
+						this.parentId = res.rows[0].warehouseId
 					}
 				})
 			},
-			// 查看详情
-			// getInfoByRecycleOrderId() {
-			//     getInfoByRecycleOrderId(this.recycleOrderId).then(res => {
-			// 		this.formList = res.data;
-			// 		this.goodssn = res.data.deviceNo;
-			// 		this.ActualreceiptsAll = res.data.recyclePrice;
-			// 		this.qualityInfoList = JSON.parse(res.data.qualityInfoList);
-			// 	});
-			// },
-			// 提交
 			erpclickattreditFuc() {
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
 				let storeId = uni.getStorageSync('userinfo').storeId
@@ -463,7 +484,8 @@
 					// recycleFormId: this.formList.recycleFormId,
 					title: this.formList.title,
 					storeId,
-					basicPriceId
+					basicPriceId,
+					combinationPrice: this.combinationPrice
 				}
 				console.log(paramsData)
 				uni.setStorageSync('data', paramsData)
@@ -731,12 +753,60 @@
 </script>
 
 <style lang="scss">
+	.scroll-view_H {
+		white-space: nowrap;
+		display: flex;
+	}
+
+	.cur {
+		background: linear-gradient(90deg, #FF6868 0%, #EA1515 100%) !important;
+		color: #FFFFFF !important;
+	}
+
+	.shuxing {
+		margin-right: 20rpx;
+		width: 197rpx;
+		height: 53rpx;
+		background: #D8D8D8;
+		color: #101010;
+		border-radius: 11rpx;
+		line-height: 53rpx;
+		text-align: center;
+		font-size: 27rpx;
+		font-weight: 400;
+		font-family: PingFangSC-Regular, PingFang SC;
+	}
+
+	.camgkuCheck {
+		background: #FFE6E6 !important;
+		border-radius: 11rpx;
+		border: 1rpx solid #FD4C4C;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #FD4C4C !important;
+		line-height: 61rpx;
+	}
+
+	.canngku {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
 	.cangkuItem {
-		height: 40rpx;
-		background: #afafb0;
-		line-height: 40rpx;
-		padding-left: 10rpx;
-		padding-right: 10rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #101010;
+		line-height: 61rpx;
+		margin-bottom: 20.99rpx;
+		min-width: 155rpx;
+		height: 59rpx;
+		background: #F0F0F0;
+		border: 1rpx solid #F0F0F0;
+		text-align: center;
+		border-radius: 11rpx;
+		line-height: 61rpx;
+		padding-left: 26rpx;
+		padding-right: 26rpx;
 	}
 
 	.cu-avatar {

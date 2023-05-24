@@ -164,7 +164,7 @@
 							if (data) {
 								setTimeout(() => {
 									this.getUserInfo();
-									this.$store.commit('login', res.data);
+									this.$store.commit('login', );
 									this.$store.commit('setAddress', data);
 									console.log(2222222)
 								}, 1200)
