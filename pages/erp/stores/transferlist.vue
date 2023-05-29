@@ -4,17 +4,20 @@
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">调拨列表</block>
 		</bar-title>
-		
+
 		<scroll-view scroll-x class="bg-white nav text-center text-xl">
-			<view class="cu-item padding-lr-sm " :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect" data-id="1" style="position:relative">
+			<view class="cu-item padding-lr-sm " :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="1" style="position:relative">
 				待处理
 				<view class="tab-dot bg-white"></view>
 			</view>
-			<view class="cu-item padding-lr-sm" :class="2==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect" data-id="2" style="position:relative">
+			<view class="cu-item padding-lr-sm" :class="2==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="2" style="position:relative">
 				已接受
 				<view class="tab-dot bg-white"></view>
 			</view>
-			<view class="cu-item padding-lr-sm" :class="3==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect" data-id="3" style="position:relative">
+			<view class="cu-item padding-lr-sm" :class="3==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="3" style="position:relative">
 				已拒绝
 				<view class="tab-dot bg-white"></view>
 			</view>
@@ -24,10 +27,13 @@
 				<view class="content">
 					<image :src="item.image" mode="aspectFill"></image>
 					<view class="desc">
-						<view class="title"><view class="text-cut">{{item.title}}</view></view>
+						<view class="title">
+							<view class="text-cut">{{item.title}}</view>
+						</view>
 						<view class="text-xs">
 							<view class="flex justify-between">
-								<view class="">序列号：{{item.sn}} <!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>--></view>
+								<view class="">序列号：{{item.sn}}
+									<!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>--></view>
 								<view class="">调拨时间：{{item.createtime}}</view>
 							</view>
 							<view class="flex justify-between">
@@ -52,7 +58,7 @@
 						<view class="cu-btn round margin-xs bg-deepblue text-bold sm" @tap="allotTop(item,2)">
 							<text>拒绝</text>
 						</view>
-						<view class="cu-btn round margin-xs bg-red text-bold sm"  @tap="allotTop(item,1)">
+						<view class="cu-btn round margin-xs bg-red text-bold sm" @tap="allotTop(item,1)">
 							<text>同意</text>
 						</view>
 					</view>
@@ -84,10 +90,13 @@
 				<view class="content">
 					<image :src="item.image" mode="aspectFill"></image>
 					<view class="desc">
-						<view class="title"><view class="text-cut">{{item.title}}</view></view>
+						<view class="title">
+							<view class="text-cut">{{item.title}}</view>
+						</view>
 						<view class="text-xs">
 							<view class="flex justify-between">
-								<view class="">序列号：{{item.sn}} <!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>--></view>
+								<view class="">序列号：{{item.sn}}
+									<!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>--></view>
 								<view class="">调拨时间：{{item.createtime}}</view>
 							</view>
 							<view class="flex justify-between">
@@ -123,10 +132,13 @@
 				<view class="content">
 					<image :src="item.image" mode="aspectFill"></image>
 					<view class="desc">
-						<view class="title"><view class="text-cut">{{item.title}}</view></view>
+						<view class="title">
+							<view class="text-cut">{{item.title}}</view>
+						</view>
 						<view class="text-xs">
 							<view class="flex justify-between">
-								<view class="">序列号：{{item.sn}} <!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>--></view>
+								<view class="">序列号：{{item.sn}}
+									<!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>--></view>
 								<view class="">调拨时间：{{item.createtime}}</view>
 							</view>
 							<view class="flex justify-between">
@@ -174,7 +186,7 @@
 		updatesingletransfer
 	} from "@/api/erpapi.js";
 	import barTitle from '@/components/common/basics/bar-title';
-	import _tool from '@/utils/tools.js';	//工具函数
+	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		components: {
 			barTitle
@@ -188,27 +200,27 @@
 				dataList: [],
 				dataList1: [],
 				dataList2: [],
-				storeId:'',
+				storeId: '',
 				queryInfo: {
 					page: 1,
 					pagesize: 10,
-					company_id:1,
-					store_id:0,
-					allot_status:1,
+					company_id: 1,
+					store_id: 0,
+					allot_status: 1,
 				},
 				queryInfo1: {
 					page: 1,
 					pagesize: 10,
-					company_id:1,
-					store_id:0,
-					allot_status:2,
+					company_id: 1,
+					store_id: 0,
+					allot_status: 2,
 				},
 				queryInfo2: {
 					page: 1,
 					pagesize: 10,
-					company_id:1,
-					store_id:0,
-					allot_status:3,
+					company_id: 1,
+					store_id: 0,
+					allot_status: 3,
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				loadmore1: 'more', //more 还有数据   noMore 无数据
@@ -219,8 +231,8 @@
 					"contentnomore": "暂无更多数据。"
 				},
 				modalName: null,
-				refuseRemark:'',//拒绝原因
-				checkInfo:'',//选中拒绝的信息
+				refuseRemark: '', //拒绝原因
+				checkInfo: '', //选中拒绝的信息
 			}
 		},
 		onLoad() {
@@ -233,56 +245,55 @@
 		onReady() {
 			_tool.setBarColor(true);
 			uni.pageScrollTo({
-			    scrollTop: 0,
-			    duration: 0
+				scrollTop: 0,
+				duration: 0
 			});
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
-			if(this.TabCur == 1){
+			if (this.TabCur == 1) {
 				this.queryInfo.page = 1; //重置分页页码
-			}else if(this.TabCur == 2){
+			} else if (this.TabCur == 2) {
 				this.queryInfo1.page = 1; //重置分页页码
-			}else{
+			} else {
 				this.queryInfo2.page = 1; //重置分页页码
 			}
 			this.getDataList();
-			
+
 		},
 		onReachBottom() {
-			if(this.TabCur == 1){
+			if (this.TabCur == 1) {
 				if (this.loadmore == 'noMore') return
 				this.queryInfo.page += 1;
 				this.ifBottomRefresh = true
 				this.getDataList();
-			}else if(this.TabCur == 2){
+			} else if (this.TabCur == 2) {
 				if (this.loadmore1 == 'noMore') return
 				this.queryInfo1.page += 1;
 				this.ifBottomRefresh1 = true
 				this.getDataList();
-			}else{
+			} else {
 				if (this.loadmore2 == 'noMore') return
 				this.queryInfo2.page += 1;
 				this.ifBottomRefresh2 = true
 				this.getDataList();
 			}
-			
+
 		},
 		methods: {
-			copy(value){
+			copy(value) {
 				uni.setClipboardData({
 					data: value
 				});
 			},
 			tabSelect(e) {
 				// console.log(e);
-				if(this.TabCur != e.currentTarget.dataset.id){
+				if (this.TabCur != e.currentTarget.dataset.id) {
 					// 进入页面刷新
 					uni.startPullDownRefresh();
 				}
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-				
 			},
 			getDataList() {
 				let that = this;
@@ -292,7 +303,7 @@
 						let data = res.data.data;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
-							if(that.TabCur == 1){
+							if (that.TabCur == 1) {
 								if (that.ifBottomRefresh) {
 									that.dataList = that.dataList.concat(data)
 								} else {
@@ -300,7 +311,7 @@
 								}
 								that.ifBottomRefresh = false
 								that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
-							}else if(that.TabCur == 2){
+							} else if (that.TabCur == 2) {
 								if (that.ifBottomRefresh1) {
 									that.dataList1 = that.dataList1.concat(data)
 								} else {
@@ -308,7 +319,7 @@
 								}
 								that.ifBottomRefresh1 = false
 								that.loadmore1 = res.data.total == that.dataList1.length ? 'noMore' : 'more'
-							}else{
+							} else {
 								if (that.ifBottomRefresh2) {
 									that.dataList2 = that.dataList2.concat(data)
 								} else {
@@ -323,46 +334,46 @@
 						uni.stopPullDownRefresh();
 					})
 			},
-			allotTop(info,type){
+			allotTop(info, type) {
 				let that = this;
-				if(info){
+				if (info) {
 					this.checkInfo = info;
-				}else{
+				} else {
 					that.$u.toast('暂无数据，请刷新页面');
 					return false;
 				}
-				if(type == 1){ //同意
+				if (type == 1) { //同意
 					console.log('同意直接提交');
 					updatesingletransfer({
-						allot_id:info.id,
-						allot_status:2,
-					}).then(res=>{
+						allot_id: info.id,
+						allot_status: 2,
+					}).then(res => {
 						that.$u.toast(res.msg);
 						uni.startPullDownRefresh({
-							
+
 						})
 					})
-				}else if(type == 3){
+				} else if (type == 3) {
 					console.log('拒绝后弹窗提交');
-					if(!that.refuseRemark){
+					if (!that.refuseRemark) {
 						return uni.showToast({
-							title:'请输入拒绝原因!',
-							icon:"none"
+							title: '请输入拒绝原因!',
+							icon: "none"
 						});
 					}
 					updatesingletransfer({
-						allot_id:this.checkInfo.id,
-						allot_status:3,
-						remarks:this.refuseRemark
-					}).then(res=>{
-						that.$u.toast(res.msg);
-						
-					})
-					.finally(()=>{
-						uni.startPullDownRefresh({})
-						this.modalName = null
-					})
-				}else{
+							allot_id: this.checkInfo.id,
+							allot_status: 3,
+							remarks: this.refuseRemark
+						}).then(res => {
+							that.$u.toast(res.msg);
+
+						})
+						.finally(() => {
+							uni.startPullDownRefresh({})
+							this.modalName = null
+						})
+				} else {
 					this.modalName = 'Modal'
 				}
 			},
@@ -377,10 +388,11 @@
 </script>
 
 <style lang="scss">
-	page{
+	page {
 		background: #F0F0F0;
 	}
-	.cur{
+
+	.cur {
 		.tab-dot {
 			position: absolute;
 			height: 3px !important;
@@ -393,25 +405,30 @@
 			background-image: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
 		}
 	}
+
 	.cu-card.article>.cu-item {
-		padding-bottom:0;
-		.title{
-			padding:0 0 20rpx 0;
+		padding-bottom: 0;
+
+		.title {
+			padding: 0 0 20rpx 0;
 		}
-		.content{
-			uni-image{
-				width:4.8em;
-				height:4.8em;
-				margin-right:10rpx;
+
+		.content {
+			uni-image {
+				width: 4.8em;
+				height: 4.8em;
+				margin-right: 10rpx;
 			}
 		}
 	}
-	.border{
-		height:2.4em;
-		line-height:2.4em;
-		border:1px solid #e1e1e1;
+
+	.border {
+		height: 2.4em;
+		line-height: 2.4em;
+		border: 1px solid #e1e1e1;
 	}
-	.cu-modal{
+
+	.cu-modal {
 		z-index: 99;
 	}
 </style>

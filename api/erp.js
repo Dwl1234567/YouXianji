@@ -628,3 +628,23 @@ export function selectStoreGoods(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 查询建议库存统计数据
+ *
+ */
+export function selectSuggestInventoryCount(data) {
+	return request.get('/yxj/app/common/selectSuggestInventoryCount', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询建议库存统计数据
+ *
+ */
+export function selectModelSellRankCount(data) {
+	return request.get('/yxj/app/common/selectModelSellRankCount', data, {
+		noLogin: true
+	});
+}

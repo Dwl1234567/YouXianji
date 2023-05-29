@@ -366,6 +366,12 @@
 							badge: 0,
 							name: '配件仓库',
 						},
+						{
+							cuIcon: 'icon-announce',
+							color: 'red',
+							badge: 0,
+							name: '智能库存',
+						},
 					],
 				},
 				{
@@ -655,6 +661,11 @@
 					}
 					if (index == 4) {
 						var value = 'shop/storehouse';
+						// this.getKefuUserList();
+						// this.show = true;
+					}
+					if (index == 5) {
+						var value = 'stock/index';
 						// this.getKefuUserList();
 						// this.show = true;
 					}

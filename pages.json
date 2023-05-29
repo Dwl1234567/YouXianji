@@ -1333,6 +1333,15 @@
 				// "navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			//门店商品列表
+			"path": "pages/erp/stock/index",
+			"style": {
+				"enablePullDownRefresh": false, //开启下拉刷新
+				"navigationStyle": "custom"
+				// "navigationBarTitleText": "智能库存"
+			}
 		}
 	],
 	"tabBar": {
