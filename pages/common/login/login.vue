@@ -45,6 +45,7 @@
 		login,
 		userInfo
 	} from '@/api/login.js';
+	import Config from "./config.js"; // 本地配置数据
 	import {
 		mapMutations
 	} from 'vuex';
@@ -60,6 +61,17 @@
 	export default {
 		data() {
 			return {
+				ws: {
+					SocketTask: null,
+					Timer: null, // 计时器
+					ErrorMsg: [], // 发送失败的消息
+					MaxRetryCount: 3, // 最大重连次数
+					CurrentRetryCount: 0,
+					socketOpen: false,
+					pageHideCloseWs: true, // 是否在页面hide时关闭链接，兼容预览图片的情况
+					unloadCloseWs: false // ws关闭状态码兼容性不好，手动标记页面卸载关闭ws链接
+				},
+				config: [],
 				title: '欢迎来到优闲集', //填写logo或者app名称，也可以用：欢迎回来，看您需求
 				tdesc: '',
 				second: 60, //默认60秒
@@ -165,8 +177,8 @@
 								setTimeout(() => {
 									this.getUserInfo();
 									this.$store.commit('login', );
+									this.load()
 									this.$store.commit('setAddress', data);
-									console.log(2222222)
 								}, 1200)
 							}
 							// console.log(uni.getStorageSync('url'), 'uni.getStorageSync();');
@@ -185,6 +197,57 @@
 					.catch((err) => {
 						uni.$u.toast(err.msg);
 					});
+			},
+			// 初始化链接
+			load: function() {
+				var that = this
+				that.connect_socket();
+			},
+			// 地址重组器
+			build_url: function(type = 'ws', res_path) {
+				var that = this
+				var protocol = Config.https_switch ? 'https://' : 'http://';
+				// var token = that.tokenList.kefu_token ? '&token=' + that.tokenList.kefu_token : '';
+				var token = uni.getStorageSync('token')
+				var encryptionStr = new Buffer(token).toString('base64');
+				var buildObj = {
+					// + '/?modulename=index' + token +
+					// 	kefu_tourists_token).replace(
+					// 	/\|/g, '~');
+					ws: () => {
+						protocol = parseInt(that.config.wss_switch) == 1 ? 'wss://' : 'ws://';
+						// console.log(protocol + '192.168.2.36:8080' + '/websocket/118');
+						return (protocol + '192.168.2.36:8080' + '/websocket/' + encryptionStr)
+					},
+					initialize: () => {
+						return protocol + Config.baseURL + '/addons/kefu/index/initialize?modulename=index';
+					},
+					upload: () => {
+						// return that.config.upload.uploadurl + '?modulename=index' + token + kefu_tourists_token;
+					},
+					storage_notify: () => {
+						// 云存储notify，未实现，能获取的文件信息太少。
+						return protocol + Config.baseURL + '/addons/' + type + '/index/notify';
+					},
+					message_prompt: () => {
+						if (that.config.upload.cdnurl) {
+							return that.config.upload.cdnurl + that.config.ringing;
+						}
+						return protocol + Config.baseURL + that.config.ringing;
+					},
+					res: () => {
+						if (that.config.__CDN__) {
+							return that.config.__CDN__ + '/assets/addons/kefu' + res_path;
+						}
+						return protocol + Config.baseURL + '/assets/addons/kefu' + res_path;
+					},
+					default: () => {
+						return protocol + Config.baseURL;
+					}
+				};
+
+				let action = buildObj[type] || buildObj['default']
+				return action.call(this)
 			},
 			codeChange(text) {
 				this.tips = text;
@@ -210,6 +273,121 @@
 					});
 					uni.setStorageSync('userinfo', res.data);
 					this.$store.commit('setUserInfo', res.data);
+				});
+			},
+			// 建立链接
+			connect_socket: function() {
+				var that = this
+
+				if (this.ws.SocketTask && this.ws.socketOpen) {
+					console.log('无需链接')
+					return;
+				}
+
+				// console.log(encryptionStr, '123123');
+				// 开始链接
+				that.ws.SocketTask = uni.connectSocket({
+					url: this.build_url('ws'),
+					header: {
+						'content-type': 'application/json',
+						'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjlmZTE1MWI5LTA0MDctNGQwOS05YTk1LTlkYmI3ODlmOGMzMyJ9.mAGKWkPNl1et1XXgUxKiSx8y8NvnS7XYiCCzihYIGt1Y0miwTLIP7OdxOvgC_pvreGiYTG0EyGDj1BW7Y_RM_Q'
+					},
+					complete: res => {}
+				});
+
+				// 链接打开
+				uni.onSocketOpen(function(res) {
+					console.log('链接已打开')
+					uni.setStorageSync('receiverId', null)
+					that.ws.socketOpen = true
+					that.ws.CurrentRetryCount = 0;
+					// 重新发送所有出错的消息
+					for (let i in that.ws.ErrorMsg) {
+						that.ws_send(that.ws.ErrorMsg[i]);
+					}
+					that.ws.ErrorMsg = [];
+					that.errorTips = '';
+
+					if (that.ws.Timer != null) {
+						clearInterval(that.ws.Timer);
+					}
+
+					that.ws.Timer = setInterval(that.ws_send, 28000); //定时发送心跳
+				});
+
+				// 收到消息
+				uni.onSocketMessage(function(res) {
+					let msg = JSON.parse(res.data)
+					console.log(msg.code === 200)
+					if (msg.code === 200) {
+						if (msg.data && msg.data.messageType == 1) {
+							uni.setStorageSync('receiverId', msg.data.senderId)
+							const datas = {
+								datetime: '刚刚',
+								data: [{
+									contextType: msg.data.contextType,
+									message: msg.data.context,
+									sender: 'you',
+									senderName: msg.data.senderName
+								}]
+							}
+							that.setMessageList(datas)
+							that.messageList.push(datas)
+							that.scrollToBottom()
+						}
+						if (msg.data && msg.data.messageType == 3) {
+							// that.messageList.push(msg.data.pageHideCloseWs)
+							let datas = {
+								datetime: '',
+								data: []
+							}
+							msg.data.historyList.map(item => {
+								let items = {
+									contextType: item.contextType,
+									message: item.context,
+									sender: uni.getStorageSync('userinfo').userId === item.senderId ? 'me' : 'you',
+									senderName: item.senderName
+								}
+								datas.data.push(items);
+							})
+							that.messageList.push(datas);
+							that.scrollToBottom()
+						}
+					}
+
+					// let actions = that.domsg()
+					// let action = actions[msg.msgtype] || actions['default']
+					// action.call(this, msg)
+				})
+
+				// 出错
+				uni.onSocketError(function(res) {
+					that.ws.socketOpen = false;
+					that.errorTips = 'WebSocket 发生错误!'
+					console.log('链接出错', res)
+				});
+
+				// 链接关闭
+				uni.onSocketClose(function(res) {
+					// 工具上是1000，真机上测试是10000
+					console.log('链接已关闭', res)
+					that.ws.socketOpen = false;
+
+					if (that.ws.Timer != null) {
+						clearInterval(that.ws.Timer);
+					}
+
+					if (that.errorTips.indexOf('重连') === -1) {
+						that.errorTips = '网络链接已断开!';
+					}
+
+					if (res.code == 1000 || res.code == 10000 || that.ws.unloadCloseWs) {
+						return;
+					}
+
+					if (that.ws.MaxRetryCount) {
+						that.ws.Timer = setInterval(that.retry_websocket, 3000); //每3秒重新连接一次
+					}
 				});
 			},
 			//获取短信验证码

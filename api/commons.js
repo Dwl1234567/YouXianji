@@ -289,3 +289,13 @@ export function selectMyRankInfo(data) {
 		'noLogin': true
 	});
 }
+
+/**
+ * 查询订单列表
+ * 
+ */
+export function shoppingOrderList(data) {
+	return request.get('/yxj/app/shoppingOrder/list', data, {
+		'noLogin': true
+	});
+}

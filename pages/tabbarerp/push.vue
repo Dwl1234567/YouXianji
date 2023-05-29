@@ -32,15 +32,7 @@
 							</view>
 						</view>
 					</scroll-view>
-					<view class="cu-form-group">
-						<view class="title">客户</view>
-						<view class="cu-capsule radius" @tap="customerTap">
-							<view class="">
-								{{customerInfo.clientName ? customerInfo.clientName :'请选择客户'}}
-								<text class="cuIcon-right"></text>
-							</view>
-						</view>
-					</view>
+
 					<view class="cu-form-group" v-if="!reorganizeId">
 						<view class="title">货品</view>
 						<view class="cu-capsule radius">
@@ -123,6 +115,15 @@
 						</view>
 					</view>
 					<view class="cu-form-group">
+						<view class="title">客户</view>
+						<view class="cu-capsule radius" @tap="customerTap">
+							<view class="">
+								{{customerInfo.clientName ? customerInfo.clientName :'请选择客户'}}
+								<text class="cuIcon-right"></text>
+							</view>
+						</view>
+					</view>
+					<view class="cu-form-group">
 						<view class="title">总价</view>
 						{{totalPrice}}元
 					</view>
@@ -193,15 +194,7 @@
 							</view>
 						</view>
 					</scroll-view>
-					<view class="cu-form-group client">
-						<view class="title">客户</view>
-						<view class="cu-capsule radius" @tap="customerTap">
-							<view class="picker">
-								{{customerInfo.clientName ? customerInfo.clientName :'请选择客户'}}
-								<text class="lg cuIcon-right text-grey"></text>
-							</view>
-						</view>
-					</view>
+
 					<view class="cu-form-group">
 						<view class="title">货品</view>
 						<view class="cu-capsule radius" @tap="selectRecycleTap">
@@ -229,6 +222,15 @@
 							</view>
 							<view class="move">
 								<view class="bg-red" @tap="delectTap(index)">删除</view>
+							</view>
+						</view>
+					</view>
+					<view class="cu-form-group client">
+						<view class="title">客户</view>
+						<view class="cu-capsule radius" @tap="customerTap">
+							<view class="picker">
+								{{customerInfo.clientName ? customerInfo.clientName :'请选择客户'}}
+								<text class="lg cuIcon-right text-grey"></text>
 							</view>
 						</view>
 					</view>

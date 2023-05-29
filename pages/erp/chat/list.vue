@@ -1,31 +1,19 @@
 <template>
 	<view>
-		<view class="margin bg-white radius-4" v-for="(item,index) in dataList" :key="index" @click="godetail(index)">
-			<view class="cu-list menu-avatar">
-				<view v-for="(item1,index1) in item" :key="index1" class="cu-item arrow" :class="item1.sender_identity == '1'?'kefu':''">
-					<view class="cu-avatar round lg" :style="[{backgroundImage:'url('+ item1.avatar +')'}]">
-					</view>
-					<view class="content padding-tb-sm">
-						<view class="text-grey">
-							{{item1.name}}
-							<view class="cu-tag round bg-red sm" v-if="item1.sender_identity == '0'">客户</view>
-							<view class="cu-tag round bg-green sm" v-else>客服</view>
-						</view>
-						<view class="text-gray text-sm flex">
-							<rich-text :nodes="item1.message"></rich-text>
-						</view>
-						<view class="text-grey text-xs">{{item1.createtime}}</view>
-					</view>
-					<view class="action">
-						<view class="cu-tag round bg-grey sm" v-if="item1.status == 0">未读</view>
-						<view class="cu-tag round bg-grey sm" v-else>已读</view>
-					</view>
+		<view class="bg-white box" v-for="(item,index) in messagesUserList" :key="index" @click="godetail(item)"
+			style="border-bottom: 1px solid #D8D8D8;">
+			<view class="box-item">
+				<image :src="$httpImage + item.avatar"></image>
+				<view class="box-text">
+					<view>{{item.nickName}}</view>
+					<view>{{item.context}}</view>
 				</view>
 
 			</view>
+
 		</view>
-		<!-- 下拉加载提示 -->
-		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
+	</view>
+	<!-- 下拉加载提示 -->
 	</view>
 </template>
 
@@ -36,7 +24,7 @@
 	export default {
 		data() {
 			return {
-				dataList: [],
+				messagesUserList: [],
 				queryInfo: {
 					page: 1,
 					pagesize: 10,
@@ -47,53 +35,47 @@
 					"contentrefresh": "加载中...",
 					"contentnomore": "暂无更多数据。"
 				},
-				ifBottomRefresh: false,
+				ifBottomRefresh: true,
 			};
 		},
 		onLoad() {
 			//加载虚拟数据
-			this.$nextTick(() => {
-				uni.startPullDownRefresh({})
+		},
+		onPullDownRefresh() {},
+		onReachBottom() {},
+		onShow() {
+			// console.log(123)
+			// this.sendFirst();
+			let that = this
+			that.sendFirst();
+			uni.onSocketMessage(function(res) {
+				let msg = JSON.parse(res.data)
+				if (msg.code === 200) {
+					if (msg.data && msg.data.messageType == 4) {
+						that.messagesUserList = []
+						msg.data.messagesUserList.map(item => {
+							that.messagesUserList.push(item)
+						})
+					}
+				}
 			})
 		},
-		onPullDownRefresh() {
-			this.queryInfo.page = 1; //重置分页页码
-			this.getDataList();
-		},
-		onReachBottom() {
-			if (this.loadmore == 'noMore') return
-			this.queryInfo.page += 1;
-			this.ifBottomRefresh = true
-			this.getDataList();
-		},
 		methods: {
-			// 获取列表
-			getDataList() {
-				let that = this;
-				let paramsData = {
-					...that.queryInfo
+			// 初始化获取消息
+			sendFirst() {
+				const message = {
+					messageType: '5',
+					storeId: uni.getStorageSync('userinfo').storeId,
+					senderId: uni.getStorageSync('userinfo').userId
 				}
-				erpchatlist(paramsData).then(res => {
-						let data = res.data.list;
-						if (data) {
-							//判断是触底加载还是第一次进入页面的加载
-							if (that.ifBottomRefresh) {
-								that.dataList = that.dataList.concat(data)
-							} else {
-								that.dataList = data
-							}
-							that.ifBottomRefresh = false
-							that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
-
-						}
-					})
-					.finally(() => {
-						uni.stopPullDownRefresh();
-					})
+				console.log(222)
+				uni.sendSocketMessage({
+					data: JSON.stringify(message)
+				});
 			},
-			godetail(index){
+			godetail(index) {
 				uni.navigateTo({
-					url:'/pages/erp/chat/view?id='+index
+					url: '/pages/erp/chat/chatAdmin?senderId=' + index.senderId
 				})
 			}
 		}
@@ -103,6 +85,39 @@
 <style scoped lang="scss">
 	page {
 		padding-bottom: 100upx;
+	}
+
+	.box {}
+
+	.box-item {
+		padding: 36rpx 28rpx;
+		display: flex;
+		align-items: center;
+
+		image {
+			width: 97rpx;
+			height: 97rpx;
+			border-radius: 97rpx;
+			margin-right: 30rpx
+		}
+
+		.box-text {
+			view:nth-child(1) {
+				font-size: 31rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #101010;
+				line-height: 42rpx;
+			}
+
+			view:nth-child(2) {
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #8E8E8E;
+				line-height: 34rpx;
+			}
+		}
 	}
 
 	.cu-list.menu-avatar>.cu-item.kefu {

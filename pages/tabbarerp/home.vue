@@ -43,13 +43,13 @@
 			<view class="cu-list grid col-4 no-border">
 				<view class="cu-item" @tap="goRecycleList(1)">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.RECYCLE_PENDING!=0">{{loginfo.RECYCLE_PENDING || 0}}</view>
 					</view>
 					<text>待处理</text>
 				</view>
 				<view class="cu-item" @tap="goRecycleList(2)">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.RECYCLE_PROCESSED!=0">{{loginfo.RECYCLE_PROCESSED || 0}}</view>
 					</view>
 					<text>已处理</text>
 				</view>
@@ -211,7 +211,7 @@
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
 	import barTitle from '@/components/common/basics/bar-title';
-
+	import Vue from 'vue';
 	import {
 		erpUserAuth,
 		getAccountData,
@@ -459,9 +459,22 @@
 		},
 		onPullDownRefresh() {},
 		onShow() {
-			this.erpuserbacklogFuc();
+			this.loginfo = Vue.prototype.$store.state.business
+			this.sendFirst();
 		},
 		methods: {
+			// 初始化获取消息
+			sendFirst() {
+				console.log(222233333)
+				const message = {
+					messageType: '6',
+					storeId: uni.getStorageSync('userinfo').storeId,
+					senderId: uni.getStorageSync('userinfo').userId
+				}
+				// uni.sendSocketMessage({
+				// 	data: JSON.stringify(message)
+				// });
+			},
 			// 回收
 			goRecycleList(e) {
 				uni.navigateTo({
@@ -514,11 +527,11 @@
 				console.log(res);
 			},
 			// 获取待办数据
-			erpuserbacklogFuc() {
-				erpuserbacklog({}).then((res) => {
-					this.loginfo = res.data;
-				});
-			},
+			// erpuserbacklogFuc() {
+			// 	erpuserbacklog({}).then((res) => {
+			// 		this.loginfo = res.data;
+			// 	});
+			// },
 			// 获取权限
 			erpUserAuth() {
 				erpUserAuth({}).then((res) => {

@@ -10,7 +10,7 @@ const store = new Vuex.Store({
 		createPersistedState({
 			key: 'app_config_data', // 状态保存到本地的 key
 			paths: ['hasLogin', 'userInfo', 'cookie', 'token', 'roles',
-				'address'
+				'address', 'business'
 			], // 要持久化的状态，在state里面取，如果有嵌套，可以  a.b.c
 			storage: {
 				// 存储方式定义
@@ -36,6 +36,10 @@ const store = new Vuex.Store({
 			platform_admin: false,
 			sorting_leader: false,
 			sorting_people: false,
+		},
+		business: {
+			RECYCLE_PENDING: 0,
+			RECYCLE_PROCESSED: 0
 		},
 		address: {
 			longitude: null,
@@ -75,13 +79,18 @@ const store = new Vuex.Store({
 			});
 		},
 		setAddress(state, provider) {
-			console.log(provider)
 			state.address.longitude = provider.longitude;
 			state.address.latitude = provider.latitude;
 			state.address.country = provider.address.country;
 			state.address.province = provider.address.province;
 			state.address.city = provider.address.city;
-			console.log(state.address)
+		},
+		setBusiness(state, provider) {
+			if (provider.businessType === 'RECYCLE_PENDING') {
+				state.business.RECYCLE_PENDING = provider.number;
+			} else if (provider.businessType === 'RECYCLE_PROCESSED') {
+				state.business.RECYCLE_PROCESSED = provider.number;
+			}
 		},
 		setRoles(state, provider) {
 			if (provider === 'consumer') {

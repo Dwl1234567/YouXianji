@@ -16,27 +16,27 @@
 			</block>-->
 		</bar-title>
 		<view class="kefu_container">
-			<view v-if="errorTips" class="error_tips">{{errorTips}}</view>
-			<view v-if="config.announcement && errorTips == ''" class="notice">{{config.announcement}}<text @tap="close_notice"
-				 class="close_notice">不再显示</text></view>
+			<!-- <view v-if="errorTips" class="error_tips">{{errorTips}}</view> -->
+			<view v-if="config.announcement && errorTips == ''" class="notice">{{config.announcement}}<text
+					@tap="close_notice" class="close_notice">不再显示</text></view>
 
 			<!--留言板-->
 			<view v-if="showLeaveMessage" class="leave_message">
 				<form method="get" action="">
 					<view class="form-group">
 						<label for="c-name" class="control-label">姓名</label>
-						<input type="text" @input="leave_message" name="name" :value="leaveMessage.name" class="form-control" id="c-name"
-						 placeholder="请输入您的姓名">
+						<input type="text" @input="leave_message" name="name" :value="leaveMessage.name" class="form-control"
+							id="c-name" placeholder="请输入您的姓名">
 					</view>
 					<view class="form-group">
 						<label for="c-contact" class="control-label">联系方式</label>
-						<input type="text" @input="leave_message" name="contact" :value="leaveMessage.contact" class="form-control" id="c-contact"
-						 placeholder="请输入手机/QQ/微信号">
+						<input type="text" @input="leave_message" name="contact" :value="leaveMessage.contact" class="form-control"
+							id="c-contact" placeholder="请输入手机/QQ/微信号">
 					</view>
 					<view class="form-group">
 						<label for="c-message" class="control-label">留言内容</label>
-						<textarea rows="5" @input="leave_message" name="message" :value="leaveMessage.message" class="form-control" id="c-message"
-						 placeholder="遇到的问题、所需服务、产品等，我们将尽快与您取得联系"></textarea>
+						<textarea rows="5" @input="leave_message" name="message" :value="leaveMessage.message" class="form-control"
+							id="c-message" placeholder="遇到的问题、所需服务、产品等，我们将尽快与您取得联系"></textarea>
 					</view>
 					<button @tap="post_leave_message" type="button" class="leave_success">确认留言</button>
 				</form>
@@ -45,77 +45,131 @@
 
 			<!-- 主界面 -->
 			<!-- #ifdef H5 -->
-			<view class="content_wrapper" v-if="!showLeaveMessage" :style="{height:'calc(100vh - var(--window-top) - ' + writeBottom + 'px)'}">
+			<view class="content_wrapper" v-if="!showLeaveMessage"
+				:style="{height:'calc(100vh - var(--window-top) - ' + writeBottom + 'px)'}">
 				<!-- #endif -->
 				<!-- #ifndef H5 -->
 				<view class="content_wrapper" v-if="!showLeaveMessage" :style="{height:'calc(100vh - ' + writeBottom + 'px)'}">
 					<!-- #endif -->
 					<view :style="{height:'calc(100% - ' + wrapperHeight + 'px)'}" class="chat_wrapper">
 						<scroll-view @scrolltoupper="wrapper_scrolltoupper" id="kefu_scroll" @tap="tap_scroll_view" :scroll-y="true"
-						 :scroll-with-animation="kefu_scroll_with_animation" :scroll-top="scrollTop">
-						 
-						 
-						<view id="scroll-view-content">
-						    <view class="status" @tap="showHistory" v-if="isHistory"><text>点击查看历史记录</text></view>
-							<block v-for="(item, index) in messageList" :key="index">
-								<!-- <view class="status"><text>{{item.datetime}}</text></view> -->
-								<block v-for="message in item.data" :key="message.id">
-									
-									<!-- <view v-if="message.contextType == 3" class="status">{{message.contextType == 3}} {{message.message}}</view> -->
-									
-									<view class="view">
-										<view :class="message.sender == 'me' ? 'mes':'yous'">{{message.senderName}}</view>
-										<view v-if="message.contextType != 1" class="bubble" :class="message.sender == 'me' ? 'me':'you'">
-										
-											<!-- 除了商品/订单卡片和图片，其他的都使用富文本 -->
-											<!-- <jyf-parser @imgtap="message_img_preview" :tag-style="{img:'width:60px;height:60px;'}" v-if="message.message_type == 0"
+							:scroll-with-animation="kefu_scroll_with_animation" :scroll-top="scrollTop">
+
+
+							<view id="scroll-view-content">
+								<view class="status" @tap="showHistory" v-if="isHistory"><text>点击查看历史记录</text></view>
+								<block v-for="(item, index) in messageList">
+									<!-- <view class="status"><text>{{item.datetime}}</text></view> -->
+									<block v-for="(message,indexs) in item.data">
+										<!-- <view v-if="message.contextType == 3" class="status">{{message.contextType == 3}} {{message.message}}</view> -->
+
+										<view class="views">
+											<view :class="message.sender == 'me' ? 'mes':'yous'" v-if="message.contextType == 3">
+												{{message.nickName}}
+											</view>
+											<view v-if="message.contextType ==  3" class="bubble"
+												:class="message.sender == 'me' ? 'me':'you'">
+
+												<!-- 除了商品/订单卡片和图片，其他的都使用富文本 -->
+												<!-- <jyf-parser @imgtap="message_img_preview" :tag-style="{img:'width:60px;height:60px;'}" v-if="message.message_type == 0"
 											 :html="message.message"></jyf-parser> -->
-											 <!-- {{message}} -->
-											 <view v-if="message.contextType == 3">{{message.message}}</view>
-										
-											<jyf-parser v-if="message.message_type == 2" :html="'<a target=_blank href=' + message.message + '>' + message.message + '</a>'"></jyf-parser>
-											<image @tap="preview_img(message.message)" v-if="message.message_type == 1" :src="message.message" mode="widthFix"></image>
-										
-											<view v-if="message.message_type == 4 || message.message_type == 5" class="project_item">
-												<image :src="message.message.logo"></image>
-												<view class="project_item_body">
-													<view class="project_item_title">{{message.message.subject}}22</view>
-													<view v-if="message.message.note" class="project_item_note">{{message.message.note}}</view>
-													<view class="project_item_price">
-														<text v-if="message.message.price">￥{{message.message.price}}</text>
-														<text v-if="message.message.number">x{{message.message.number}}</text>
+												<!-- {{message}} -->
+												<view v-if="message.contextType == 3">{{message.context}}</view>
+
+												<jyf-parser v-if="message.message_type == 2"
+													:html="'<a target=_blank href=' + message.message + '>' + message.message + '</a>'"></jyf-parser>
+												<image @tap="preview_img(message.message)" v-if="message.message_type == 1"
+													:src="message.message" mode="widthFix"></image>
+
+												<view v-if="message.message_type == 4 || message.message_type == 5" class="project_item">
+													<image :src="message.message.logo"></image>
+													<view class="project_item_body">
+														<view class="project_item_title">{{message.message.subject}}22</view>
+														<view v-if="message.message.note" class="project_item_note">{{message.message.note}}</view>
+														<view class="project_item_price">
+															<text v-if="message.message.price">￥{{message.message.price}}</text>
+															<text v-if="message.message.number">x{{message.message.number}}</text>
+														</view>
+													</view>
+												</view>
+
+												<view v-if="message.sender == 'me' && message.status <= 1" class="kefu_message_status"
+													:class="(message.status == 0 ? '':' kf-text-grey')">{{message.status == 0 ? '未读':'已读'}}</view>
+												<view v-if="message.sender == 'me' && message.status == 3"
+													class="kefu_message_status kf-text-red">失败</view>
+
+											</view>
+											<view v-if="message.contextType == 1">
+												<view class="shop">
+													<view class="shopImage">
+														<image :src="$httpImage + message.context.secondHandGoods.frontPhoto"></image>
+													</view>
+													<view class="shopText">
+														<view class="title">
+															{{message.context.secondHandGoods.title}}
+														</view>
+														<view class="basePriceLabel">
+															{{message.context.secondHandGoods.basePriceLabel}}
+														</view>
+														<view class="sellPrice">
+															¥{{message.context.secondHandGoods.sellPrice}}
+														</view>
 													</view>
 												</view>
 											</view>
-										
-											<view v-if="message.sender == 'me' && message.status <= 1" class="kefu_message_status" :class="(message.status == 0 ? '':' kf-text-grey')">{{message.status == 0 ? '未读':'已读'}}</view>
-											<view v-if="message.sender == 'me' && message.status == 3" class="kefu_message_status kf-text-red">失败</view>
-										
+											<view v-if="message.contextType == 2">
+												<view class="shop">
+													<view class="shopImage">
+														<image :src="$httpImage + message.context.frontPhoto"></image>
+													</view>
+													<view class="shopText">
+														<view class="title">
+															{{message.context.title}}
+														</view>
+														<view class="basePriceLabel">
+															{{message.context.basePriceLabel}}
+														</view>
+														<view class="sellPrice">
+															¥{{message.context.sellPrice}}
+														</view>
+													</view>
+												</view>
+											</view>
 										</view>
-									</view>
-									
+
+									</block>
 								</block>
-							</block>
-						</view>
-						
-							
+							</view>
+
+
 
 						</scroll-view>
 					</view>
 
 					<!-- 消息输入 -->
 					<view class="write" :style="{bottom: writeBottom + 'px'}">
-						<view class="widget_textarea">
-							<textarea :adjust-position="false" :show-confirm-bar="false" :fixed="true" :focus="kefuMessageFocus"
-							 :auto-height="true" maxlength="-1" @blur="kefu_message_blur" @input="textarea_input" :cursor-spacing="14"
-							 @focus="textarea_focus" :value="kefuMessage" class="kefu_message"></textarea>
+						<view style="display: flex; align-items: center;">
+							<view class="widget_textarea">
+								<textarea :adjust-position="false" :show-confirm-bar="false" :fixed="true" :focus="kefuMessageFocus"
+									:auto-height="true" maxlength="-1" @blur="kefu_message_blur" @input="textarea_input"
+									:cursor-spacing="14" @focus="textarea_focus" :value="kefuMessage" class="kefu_message"></textarea>
+							</view>
+							<view class="write_right" :style="{flex:showSendButton ? 3:2}">
+								<i v-if="config.toolbar && config.toolbar.expression"
+									:style="{background: 'url(' + config.toolbar.expression.icon_image + ') no-repeat','background-size':'100% 100%'}"
+									class="toolbar_icon smiley" @tap="show_tool('smiley')"></i>
+								<button class="send_btn" @tap="send_message(kefuMessage, 0, receiverId)" hover-class="send_btn_hover"
+									v-if="showSendButton">发送</button>
+								<view v-if="!showSendButton" class="jiahao" @tap="selectModelshow">
+									<image src="@/static/qietu.png" mode="" class="jia"></image>
+								</view>
+							</view>
 						</view>
-						<view class="write_right" :style="{flex:showSendButton ? 3:2}">
-							<i v-if="config.toolbar && config.toolbar.expression" :style="{background: 'url(' + config.toolbar.expression.icon_image + ') no-repeat','background-size':'100% 100%'}"
-							 class="toolbar_icon smiley" @tap="show_tool('smiley')"></i>
-							<button class="send_btn" @tap="send_message(kefuMessage, 0, receiverId)" hover-class="send_btn_hover" v-if="showSendButton">发送</button>
-							<i class="toolbar_icon attach" :style="{background: 'url(' + attachBackground + ') no-repeat','background-size':'100% 100%'}"
-							 @tap="show_tool('more')" v-if="!showSendButton && attachBackground"></i>
+
+						<view class="list">
+							<view class="list-dingdan" @tap="selectModelshows">
+								<image src="@/static/fasongdingdan.png"></image>
+							</view>
 						</view>
 					</view>
 					<view v-if="showTool" class="footer_div">
@@ -126,11 +180,13 @@
 						<!-- 表情end -->
 						<!-- 更多 -->
 						<view v-if="showTool == 'more'" class="toolbar">
-							<view @tap="show_select_model('order')" v-if="config.toolbar && config.toolbar.order" class="toolbar_item">
+							<view @tap="show_select_model('order')" v-if="config.toolbar && config.toolbar.order"
+								class="toolbar_item">
 								<image :src="config.toolbar.order.icon_image"></image>
 								<view>{{config.toolbar.order.title}}</view>
 							</view>
-							<view @tap="show_select_model('goods')" v-if="config.toolbar && config.toolbar.goods" class="toolbar_item">
+							<view @tap="show_select_model('goods')" v-if="config.toolbar && config.toolbar.goods"
+								class="toolbar_item">
 								<image :src="config.toolbar.goods.icon_image"></image>
 								<view>{{config.toolbar.goods.title}}</view>
 							</view>
@@ -147,22 +203,24 @@
 				<view v-if="selectModel" class="select_model">
 					<view @tap="show_select_model(false)" class="close_select">关闭</view>
 					<view class="project_list">
-						<radio-group v-if="selectModelData.length > 0" @change="select_done">
-							<label v-for="(item, index) in selectModelData" :key="index" class="project_item">
-								<image :src="item.logo"></image>
-								<view class="project_item_body">
-									<view class="project_item_title">{{item.subject}}</view>
-									<view v-if="item.order_number" class="project_item_note text-xs">订单号:{{item.order_number}}</view>
-									<!--<view v-if="item.note" class="project_item_note">{{item.note}}</view>-->
-									<view class="project_item_price">
-										<text v-if="item.price">￥{{item.price}}</text>
-										<text v-if="item.number">x{{item.number}}</text>
+						<scroll-view :scroll-y="true">
+							<view v-for="(item, index) in storeGoodsList" :key="index" class="shop" @tap="sendCard(item)">
+								<view class="shopImage">
+									<image :src="$httpImage + item.frontPhoto"></image>
+								</view>
+								<view class="shopText">
+									<view class="title">
+										{{item.title}}
+									</view>
+									<view class="basePriceLabel">
+										{{item.basePriceLabel}}
+									</view>
+									<view class="sellPrice">
+										¥{{item.sellPrice}}
 									</view>
 								</view>
-								<radio :value="index.toString()" :checked="false" />
-							</label>
-						</radio-group>
-						<view class="select_model_no_data" v-if="selectModelData.length <= 0"><text>没有更多记录了...</text></view>
+							</view>
+						</scroll-view>
 					</view>
 				</view>
 
@@ -175,6 +233,9 @@
 	import barTitle from '@/components/common/basics/bar-title';
 	import Config from "./config.js"; // 本地配置数据
 	import jyfParser from "@/components/jyf-parser/jyf-parser"; // 富文本解析
+	import {
+		selectStoreGoods
+	} from "@/api/erp.js"
 	var token = ''; // 用户身份标识
 	var fixedCsr = ''; // 指定客服
 	var innerAudioContext = null;
@@ -185,6 +246,7 @@
 		},
 		data() {
 			return {
+				senderId: 0,
 				isHistory: true,
 				receiverId: null,
 				leaveMessage: {
@@ -220,17 +282,23 @@
 				errorTips: '链接中...',
 				selectModel: false,
 				selectModelData: [],
-				writeBottom: 0,
+				writeBottom: -100,
 				kefu_scroll_top: 0,
 				kefu_scroll_with_animation: true,
 				record_scroll_height: 0,
 				navigation_bar_title: '',
 				scrollTop: 0,
-				scrollViewHeight: 300
+				scrollViewHeight: 400,
+				pageLoad: {
+					pageNum: 1,
+					pageSize: 10
+				},
+				storeGoodsList: []
 			}
 		},
 		onLoad(opt) {
-
+			this.senderId = opt.senderId
+			this.showHistory()
 			// token = opt.token ? opt.token : token
 			let usertoken = Vue.prototype.$store.state.userInfo.token;
 			token = usertoken;
@@ -242,6 +310,47 @@
 			// #endif
 		},
 		onShow() {
+			let that = this
+			that.selectStoreGoods()
+			uni.onSocketMessage(function(res) {
+				let msg = JSON.parse(res.data)
+				if (msg.code === 200) {
+					if (msg.data && msg.data.messageType == 1) {
+						uni.setStorageSync('receiverId', msg.data.senderId)
+						console.log(JSON.parse(msg.data.context))
+						const datas = {
+							datetime: '刚刚',
+							data: [{
+								contextType: msg.data.contextType,
+								context: JSON.parse(msg.data.context),
+								sender: 'you',
+								nickName: msg.data.nickName
+							}]
+						}
+						that.setMessageList(datas)
+						that.messageList.push(datas)
+						that.scrollToBottom()
+					}
+					if (msg.data && msg.data.messageType == 3) {
+						// that.messageList.push(msg.data.pageHideCloseWs)
+						let datas = {
+							datetime: '',
+							data: []
+						}
+						msg.data.historyList.map(item => {
+							if (item.contextType == 3) {
+								item.sender = uni.getStorageSync('userinfo').userId === item.senderId ? 'me' : 'you',
+									datas.data.push(item);
+							} else if (item.contextType == 1) {
+								item.context = JSON.parse(item.context)
+								datas.data.push(item);
+							}
+						})
+						that.messageList.push(datas);
+						that.scrollToBottom()
+					}
+				}
+			})
 			if (!this.ws.pageHideCloseWs) {
 				this.ws.pageHideCloseWs = true;
 			}
@@ -265,22 +374,64 @@
 			}
 		},
 		methods: {
-			scrollToBottom(){
-				this.$nextTick(()=>{
-					uni.createSelectorQuery().in(this).select('#scroll-view-content').boundingClientRect((res)=>{
-						let top = res.height-this.scrollViewHeight;
-						if(top>0){
-							this.scrollTop=top;
+			// 获取商品列表
+			selectStoreGoods() {
+				selectStoreGoods(this.pageLoad).then(res => {
+					if (res.code === 200) {
+						this.storeGoodsList = res.rows
+					}
+				})
+			},
+			// 发送卡片消息
+			sendCard(item) {
+				let that = this
+				var senderId = uni.getStorageSync('userinfo').userId
+				var nickName = uni.getStorageSync('userinfo').nickName
+				var receiverId = uni.getStorageSync('receiverId')
+				let load_message = {
+					senderId,
+					storeId: uni.getStorageSync('storeId'),
+					receiverId,
+					context: JSON.stringify(item),
+					contextType: '2',
+				}
+				const data = {
+					datetime: '刚刚',
+					data: [{
+						contextType: 2,
+						context: item,
+					}]
+				}
+				that.ws_send(load_message);
+				that.messageList.push(data);
+				console.log(that.messageList)
+				this.selectModel = false
+				that.scrollToBottom()
+			},
+			// 打开产品弹框
+			selectModelshows() {
+				this.selectModel = true
+			},
+			// 打开产品弹框
+			selectModelshow() {
+				// this.selectModel = true
+				this.writeBottom = 0
+			},
+			scrollToBottom() {
+				this.$nextTick(() => {
+					uni.createSelectorQuery().in(this).select('#scroll-view-content').boundingClientRect((res) => {
+						let top = res.height - this.scrollViewHeight;
+						if (top > 0) {
+							this.scrollTop = top;
 						}
 					}).exec()
 				})
 			},
 			showHistory() {
-				var senderId = uni.getStorageSync('userinfo').userId
 				const data = {
 					isHistory: '1',
-					storeId: 5,
-					senderId
+					storeId: uni.getStorageSync('userinfo').storeId,
+					senderId: this.senderId
 				}
 				this.ws_send(data);
 				this.isHistory = false
@@ -290,105 +441,97 @@
 				var that = this
 				var kefu_tourists_token = '';
 				// 链接ws
-				that.connect_socket();
+				// that.connect_socket();
 				// 初始化请求
-				try {
-					var kefu_tourists_token = uni.getStorageSync('kefu_tourists_token');
-					if (!kefu_tourists_token) {
-						kefu_tourists_token = ''
-					}
-				} catch (e) {
-					console.error(e)
-				}
 
-				uni.request({
-					
-					url: that.build_url('ws'),
-					// data: {
-					// 	token: token,
-					// 	kefu_tourists_token: kefu_tourists_token,
-					// 	fixed_csr: fixedCsr
-					// },
-					// success: (res) => {
-					// 	if (res.data.code == 1) {
+				// uni.request({
 
-					// 		// 保存游客token
-					// 		if (res.data.data.token_list.kefu_tourists_token) {
-					// 			try {
-					// 				uni.setStorageSync('kefu_tourists_token', res.data.data.token_list.kefu_tourists_token);
-					// 			} catch (e) {
-					// 				console.error(e)
-					// 			}
-					// 		}
+				// 	url: that.build_url('ws'),
+				// data: {
+				// 	token: token,
+				// 	kefu_tourists_token: kefu_tourists_token,
+				// 	fixed_csr: fixedCsr
+				// },
+				// success: (res) => {
+				// 	if (res.data.code == 1) {
 
-					// 		// 公告
-					// 		var kefu_notice = ''
-					// 		try {
-					// 			kefu_notice = uni.getStorageSync('kefu_notice');
-					// 		} catch (e) {
-					// 			console.log(e)
-					// 		}
-					// 		if (kefu_notice == res.data.data.config.announcement) {
-					// 			res.data.data.config.announcement = '';
-					// 		}
+				// 		// 保存游客token
+				// 		if (res.data.data.token_list.kefu_tourists_token) {
+				// 			try {
+				// 				uni.setStorageSync('kefu_tourists_token', res.data.data.token_list.kefu_tourists_token);
+				// 			} catch (e) {
+				// 				console.error(e)
+				// 			}
+				// 		}
 
-					// 		// 配置
-					// 		that.config = res.data.data.config;
-					// 		that.tokenList = res.data.data.token_list;
+				// 		// 公告
+				// 		var kefu_notice = ''
+				// 		try {
+				// 			kefu_notice = uni.getStorageSync('kefu_notice');
+				// 		} catch (e) {
+				// 			console.log(e)
+				// 		}
+				// 		if (kefu_notice == res.data.data.config.announcement) {
+				// 			res.data.data.config.announcement = '';
+				// 		}
 
-					// 		// 来信提示音初始化
-					// 		innerAudioContext = uni.createInnerAudioContext();
-					// 		innerAudioContext.src = that.build_url('message_prompt');
+				// 		// 配置
+				// 		that.config = res.data.data.config;
+				// 		that.tokenList = res.data.data.token_list;
 
-					// 		// 新消息提示
-					// 		if (res.data.data.new_msg) {
-					// 			that.new_message_prompt()
-					// 		}
+				// 		// 来信提示音初始化
+				// 		innerAudioContext = uni.createInnerAudioContext();
+				// 		innerAudioContext.src = that.build_url('message_prompt');
 
-					// 		// 初始化表情
-					// 		var protocol = Config.https_switch ? 'https://' : 'http://';
-					// 		var expression = {};
-					// 		for (let i in Config.expression) {
-					// 			expression[i] = {
-					// 				'src': protocol + Config.baseURL + '/assets/addons/kefu/img' + Config.expression[i].src,
-					// 				'title': Config.expression[i].title
-					// 			};
-					// 		}
-					// 		that.expressionData = expression;
+				// 		// 新消息提示
+				// 		if (res.data.data.new_msg) {
+				// 			that.new_message_prompt()
+				// 		}
 
-					// 		// 杂项资源
-					// 		that.attachBackground = that.build_url('res', '/img/more.png');
+				// 		// 初始化表情
+				// 		var protocol = Config.https_switch ? 'https://' : 'http://';
+				// 		var expression = {};
+				// 		for (let i in Config.expression) {
+				// 			expression[i] = {
+				// 				'src': protocol + Config.baseURL + '/assets/addons/kefu/img' + Config.expression[i].src,
+				// 				'title': Config.expression[i].title
+				// 			};
+				// 		}
+				// 		that.expressionData = expression;
 
-					// 		// 链接ws
-					// 		that.connect_socket();
-					// 	} else {
-					// 		uni.showModal({
-					// 			content: res.data.msg,
-					// 			showCancel: false,
-					// 			success: res => {
-					// 				if (res.confirm) {
-					// 					uni.navigateBack({
-					// 						delta: 1
-					// 					});
-					// 				}
-					// 			}
-					// 		})
-					// 	}
-					// },
-					// fail: res => {
-					// 	uni.showModal({
-					// 		title: '温馨提示',
-					// 		content: '在线客服初始化失败,请重试~',
-					// 		showCancel: false
-					// 	})
-					// 	that.errorTips = '初始化失败';
-					// }
-				});
+				// 		// 杂项资源
+				// 		that.attachBackground = that.build_url('res', '/img/more.png');
+
+				// 		// 链接ws
+				// 		that.connect_socket();
+				// 	} else {
+				// 		uni.showModal({
+				// 			content: res.data.msg,
+				// 			showCancel: false,
+				// 			success: res => {
+				// 				if (res.confirm) {
+				// 					uni.navigateBack({
+				// 						delta: 1
+				// 					});
+				// 				}
+				// 			}
+				// 		})
+				// 	}
+				// },
+				// fail: res => {
+				// 	uni.showModal({
+				// 		title: '温馨提示',
+				// 		content: '在线客服初始化失败,请重试~',
+				// 		showCancel: false
+				// 	})
+				// 	that.errorTips = '初始化失败';
+				// }
+				// });
 			},
 			switch_show_tool: function(value) {
 				if (!value) {
 					this.showTool = false;
-					this.writeBottom = 0;
+					this.writeBottom = -100;
 				} else {
 					this.showTool = value;
 					this.writeBottom = 170;
@@ -480,12 +623,12 @@
 			upload_file: function() {
 				var that = this
 				that.ws.pageHideCloseWs = false; // 页面hide不关闭链接
-				
+
 				that.ws_send({
 					c: 'Message',
 					a: 'getUploadMultipart'
 				});
-				
+
 				uni.chooseImage({
 					success: res => {
 						const tempFilePaths = res.tempFilePaths;
@@ -547,7 +690,7 @@
 					console.log('无需链接')
 					return;
 				}
-				
+
 				// console.log(encryptionStr, '123123');
 				// 开始链接
 				that.ws.SocketTask = uni.connectSocket({
@@ -581,27 +724,25 @@
 
 				// 收到消息
 				uni.onSocketMessage(function(res) {
+					console.log()
 					let msg = JSON.parse(res.data)
-					console.log(msg.code === 200)
 					if (msg.code === 200) {
 						if (msg.data && msg.data.messageType == 1) {
 							uni.setStorageSync('receiverId', msg.data.senderId)
 							const datas = {
 								datetime: '刚刚',
-								data: [
-									{
-										contextType: msg.data.contextType,
-										message: msg.data.context,
-										sender: 'you',
-										senderName: msg.data.senderName
-									}
-								]
+								data: [{
+									contextType: msg.data.contextType,
+									message: msg.data.context,
+									sender: 'you',
+									senderName: msg.data.senderName
+								}]
 							}
 							that.setMessageList(datas)
 							that.messageList.push(datas)
 							that.scrollToBottom()
 						}
-						if (msg.data && msg.data.messageType == 3) { 
+						if (msg.data && msg.data.messageType == 3) {
 							// that.messageList.push(msg.data.pageHideCloseWs)
 							let datas = {
 								datetime: '',
@@ -610,7 +751,7 @@
 							msg.data.historyList.map(item => {
 								let items = {
 									contextType: item.contextType,
-									message : item.context,
+									message: item.context,
 									sender: uni.getStorageSync('userinfo').userId === item.senderId ? 'me' : 'you',
 									senderName: item.senderName
 								}
@@ -620,10 +761,6 @@
 							that.scrollToBottom()
 						}
 					}
-					
-					// let actions = that.domsg()
-					// let action = actions[msg.msgtype] || actions['default']
-					// action.call(this, msg)
 				})
 
 				// 出错
@@ -678,20 +815,15 @@
 			// 发送ws消息
 			ws_send: function(message) {
 				var that = this
-				// if (!message) {
-				// 	message = {
-				// 		c: 'Message',
-				// 		a: 'ping'
-				// 	};
+				uni.sendSocketMessage({
+					data: JSON.stringify(message)
+				});
+				// if (that.ws.SocketTask && that.ws.socketOpen) {
+
+				// } else {
+				// 	console.log('消息发送出错', message, that.ws.SocketTask, that.ws.socketOpen)
+				// 	that.ws.ErrorMsg.push(message);
 				// }
-				if (that.ws.SocketTask && that.ws.socketOpen) {
-					uni.sendSocketMessage({
-						data: JSON.stringify(message)
-					});
-				} else {
-					console.log('消息发送出错', message, that.ws.SocketTask, that.ws.socketOpen)
-					that.ws.ErrorMsg.push(message);
-				}
 			},
 			send_message: function(message, message_type) {
 				var that = this
@@ -704,13 +836,13 @@
 					return;
 				}
 				// 检查 websocket 是否连接
-				if (!that.ws.SocketTask || !that.ws.socketOpen) {
-					uni.showToast({
-						title: '网络链接异常，请稍后重试~',
-						icon: 'none'
-					})
-					return;
-				}
+				// if (!that.ws.SocketTask || !that.ws.socketOpen) {
+				// 	uni.showToast({
+				// 		title: '网络链接异常，请稍后重试~',
+				// 		icon: 'none'
+				// 	})
+				// 	return;
+				// }
 
 				// if (!that.sessionId) {
 				// 	uni.showToast({
@@ -720,46 +852,31 @@
 				// 	return;
 				// }
 
-				// if (message_type == 0) {
+				if (message_type == 0) {
 
-				// 	// 处理链接
-				// 	message = that.parseUrl(message);
+					// 处理链接
+					message = that.parseUrl(message);
 
-				// 	// 处理表情
-				// 	var reg = /\[(.+?)\]/g; // [] 中括号
-				// 	var reg_match = message.match(reg);
+					// 处理表情
+					var reg = /\[(.+?)\]/g; // [] 中括号
+					var reg_match = message.match(reg);
 
-				// 	if (reg_match) {
+					if (reg_match) {
 
-				// 		for (let i in reg_match) {
-				// 			var emoji_item = that.find_emoji(reg_match[i]);
-				// 			message = message.replace(emoji_item.title, that.build_chat_img(emoji_item.src, '', 'emoji'));
-				// 		}
-				// 	}
+						for (let i in reg_match) {
+							var emoji_item = that.find_emoji(reg_match[i]);
+							message = message.replace(emoji_item.title, that.build_chat_img(emoji_item.src, '', 'emoji'));
+						}
+					}
 
-				// }
-				
+				}
+
 				var senderId = uni.getStorageSync('userinfo').userId
 				var nickName = uni.getStorageSync('userinfo').nickName
-				var receiverId = uni.getStorageSync('receiverId')
-				// console.log(that.messageList[that.messageList.length - 1])
-				// let message_data = that.messageList[that.messageList.length - 1].data;
-				// var message_id = parseInt(message_data[message_data.length - 1].id) + 1;
-				// var message_id = new Date().getTime() + that.sessionId + Math.floor(Math.random() * 10000);
-				// var load_message = {
-				// 	c: 'Message',
-				// 	a: 'sendMessage',
-				// 	data: {
-				// 		message: message,
-				// 		message_type: message_type,
-				// 		// session_id: that.sessionId,
-				// 		// modulename: 'index',
-				// 		// message_id: message_id
-				// 	}
-				// };
+				var receiverId = Number(this.senderId)
 				let load_message = {
 					senderId,
-					storeId: 5,
+					storeId: uni.getStorageSync('userinfo').storeId,
 					receiverId,
 					context: message,
 					contextType: '3',
@@ -769,9 +886,9 @@
 					datetime: '刚刚',
 					data: [{
 						contextType: 3,
-						message: message,
+						context: message,
 						sender: 'me',
-						senderName: nickName
+						nickName: nickName
 					}]
 				}
 				this.messageList.push(data);
@@ -975,10 +1092,11 @@
 							var messageListIndex = that.messageList.length - 1
 							msg.data.id = msg.data.record_id
 							if (that.messageList[messageListIndex].datetime == '刚刚') {
-								that.messageList[messageListIndex].data = that.messageList[messageListIndex].data.concat(that.format_message(
-									[
-										msg.data
-									]))
+								that.messageList[messageListIndex].data = that.messageList[messageListIndex].data.concat(that
+									.format_message(
+										[
+											msg.data
+										]))
 							} else {
 								that.messageList = that.messageList.concat({
 									datetime: '刚刚',
@@ -1103,7 +1221,8 @@
 				var that = this
 				var protocol = Config.https_switch ? 'https://' : 'http://';
 				// var token = that.tokenList.kefu_token ? '&token=' + that.tokenList.kefu_token : '';
-				var kefu_tourists_token = that.tokenList.kefu_tourists_token ? '&kefu_tourists_token=' + that.tokenList.kefu_tourists_token :
+				var kefu_tourists_token = that.tokenList.kefu_tourists_token ? '&kefu_tourists_token=' + that.tokenList
+					.kefu_tourists_token :
 					'';
 				var token = uni.getStorageSync('token')
 				var encryptionStr = new Buffer(token).toString('base64');
@@ -1215,7 +1334,7 @@
 				var that = this
 				this.showTool = false;
 				that.scroll_into_footer(0, 99993)
-				that.writeBottom = e.detail.height ? e.detail.height : 0;
+				that.writeBottom = e.detail.height ? e.detail.height : -100;
 			},
 			// 输入框输入
 			textarea_input: function(e) {
@@ -1255,7 +1374,7 @@
 				var that = this
 				that.kefuMessageFocus = false;
 				if (!that.showTool) {
-					that.writeBottom = 0;
+					that.writeBottom = -100;
 				}
 
 				if (parseInt(that.config.input_status_display) == 0) {
@@ -1298,7 +1417,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	* {
 		padding: 0;
 		margin: 0;
@@ -1306,6 +1425,69 @@
 
 	page {
 		overflow: hidden;
+	}
+
+	.jiahao {
+		width: 65rpx;
+		height: 65rpx;
+		background: #FFFFFF;
+		border-radius: 11rpx;
+		padding: 17rpx;
+
+		.jia {
+
+			width: 17px;
+			height: 17px;
+			text-align: center;
+			line-height: 65rpx;
+		}
+	}
+
+	.shop {
+		display: flex;
+		border: 1px solid #D8D8D8;
+		border-radius: 11rpx;
+		margin: 15rpx 26rpx;
+		padding: 24rpx 17rpx;
+
+		.shopText {
+			.title {
+				font-size: 29rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #101010;
+				line-height: 29rpx;
+			}
+
+			.basePriceLabel {
+				margin-top: 15rpx;
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #8E8E8E;
+				line-height: 25rpx;
+			}
+
+			.sellPrice {
+				margin-top: 47rpx;
+				font-size: 34rpx;
+				font-family: PingFangSC-Semibold, PingFang SC;
+				font-weight: 600;
+				color: #FF2A24;
+				line-height: 34rpx;
+			}
+		}
+	}
+
+	.shopImage {
+		image {
+			width: 151rpx;
+			height: 151rpx;
+		}
+	}
+
+	#scroll-view-content {
+		padding-bottom: 250rpx
 	}
 
 	.kefu_container {
@@ -1378,7 +1560,7 @@
 		padding: 16rpx 8rpx 16rpx 16rpx;
 		margin-bottom: 16rpx;
 	}
-	
+
 	.bubble .project_item {
 		margin-bottom: 0rpx;
 	}
@@ -1515,19 +1697,27 @@
 		word-wrap: break-word;
 		word-break: break-all;
 	}
+
+	.views {
+		overflow: hidden
+	}
+
 	.chat_wrapper .view {
 		overflow: hidden
 	}
-	.chat_wrapper .mes{
+
+	.chat_wrapper .mes {
 		float: right;
 		margin-right: 28rpx;
 		color: gray
 	}
-	.chat_wrapper .yous{
+
+	.chat_wrapper .yous {
 		float: left;
 		margin-left: 28rpx;
 		color: gray
 	}
+
 	.chat_wrapper .bubble.you {
 		float: left;
 		margin-right: 20rpx;
@@ -1571,14 +1761,32 @@
 		height: 120rpx;
 	}
 
+	.list {
+		padding: 43rpx 38rpx;
+
+		.list-dingdan {
+			width: 120rpx;
+			height: 118rpx;
+			background: #FFFFFF;
+			border-radius: 11rpx;
+
+			padding: 32rpx;
+
+			image {
+				width: 49rpx;
+				height: 61rpx;
+			}
+		}
+	}
+
 	.content_wrapper .write {
 		box-sizing: border-box;
 		background-color: #f7f7f7;
 		box-shadow: 0 -2rpx 0 #e5e5e5;
 		width: 100%;
 		padding: 8rpx 12rpx;
-		display: flex;
-		align-items: center;
+		// display: flex;
+		// align-items: center;
 		position: fixed;
 		bottom: 0rpx;
 	}

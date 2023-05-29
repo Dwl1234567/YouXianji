@@ -618,3 +618,13 @@ export function getStoreOnlineCostConfig(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 获取门店商品列表
+ *
+ */
+export function selectStoreGoods(data) {
+	return request.get('/yxj/app/secondGoods/selectStoreGoods', data, {
+		noLogin: true
+	});
+}
