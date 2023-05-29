@@ -648,3 +648,63 @@ export function selectModelSellRankCount(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 新增门店盘点任务
+ *
+ */
+export function storeCheckTask(data) {
+	return request.post('/yxj/app/storeCheckTask', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店员工
+ *
+ */
+export function selectStoreUsers(data) {
+	return request.get('/yxj/app/common/selectStoreUsers', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店盘点任务列表
+ *
+ */
+export function storeCheckTaskList(data) {
+	return request.get('/yxj/app/storeCheckTask/list', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 店长结束按钮
+ *
+ */
+export function endTask(data) {
+	return request.get('/yxj/app/storeCheckTask/endTask', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店盘点任务明细列表
+ *
+ */
+export function storeCheckItemList(data) {
+	return request.get('/yxj/app/storeCheckItem/list', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 上传盘点凭证
+ *
+ */
+export function uploadCheckVoucher(data) {
+	return request.post('/yxj/app/storeCheckItem/uploadCheckVoucher', data, {
+		noLogin: true
+	});
+}

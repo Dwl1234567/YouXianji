@@ -261,9 +261,9 @@
 
 				<view class="orderview-footer-fixed">
 					<view class="flex">
-						<button class="cu-btn radius-4 margin-tb-xs lg text-400" @click="upbiaojiTap(0)"
+						<button class="cu-btn radius-4 margin-tb-xs lg text-400" @click="upbiaojiTap(1)"
 							style="flex: 1; border: 1px solid rgba(235,25,25,1); color: #EB1919;">预制开单</button>
-						<button class="cu-btn bg-reds radius-4 margin-tb-xs lg text-400 margin-left-sm" @click="upbiaojiTap(1)"
+						<button class="cu-btn bg-reds radius-4 margin-tb-xs lg text-400 margin-left-sm" @click="upbiaojiTap(0)"
 							style="flex: 1;">确定开单</button>
 					</view>
 				</view>

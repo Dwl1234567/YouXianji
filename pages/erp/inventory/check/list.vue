@@ -4,7 +4,7 @@
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">盘点列表</block>
 		</bar-title>
-		
+
 		<scroll-view scroll-x class="bg-white nav text-center">
 			<view class="cu-item" :class="0==TabCur?'text-red cur':''" @tap="tabSelect" data-id="0">
 				正在进行
@@ -12,16 +12,20 @@
 			<view class="cu-item" :class="1==TabCur?'text-red cur':''" @tap="tabSelect" data-id="1">
 				往期盘点
 			</view>
+			<view class="cu-item" :class="2==TabCur?'text-red cur':''" @tap="tabSelect" data-id="2">
+				异常盘点
+			</view>
 		</scroll-view>
 		<view class="cu-list menu" v-if="0==TabCur">
-			<view class="cu-item arrow margin-lr-sm margin-top-xs radius-2" v-for="(item,index) in dataList" :key="index" @tap="tabGoods(item)">
+			<view class="arrow" v-for="(item,index) in dataList" :key="index" @tap="tabGoods(item)">
 				<view class="content">
-					<text class="text-grey">{{item.remark}}</text>
+					<text class="text-grey title">{{item.warehouseName}}</text>
 				</view>
 				<view class="action">
-				  <view class=""><text class="text-grey text-sm">{{item.createtime}}</text></view>
-				  <view class=""><text class="text-grey text-sm">{{item.endtime}}</text></view>
+					<view class=""><text class="text-grey text-sm text">发布时间{{item.startTime}}</text></view>
+					<view class=""><text class="text-grey text-sm text">截止时间{{item.endTime}}</text></view>
 				</view>
+				<view class="over" @tap="endTask(item.checkTaskId)">结束</view>
 			</view>
 			<!-- 下拉加载提示 -->
 			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -32,22 +36,36 @@
 					<text class="text-grey">{{item.remark}}</text>
 				</view>
 				<view class="action">
-				  <view class=""><text class="text-grey text-sm">{{item.createtime}}</text></view>
-				  <view class=""><text class="text-grey text-sm">{{item.endtime}}</text></view>
+					<view class=""><text class="text-grey text-sm">{{item.createtime}}</text></view>
+					<view class=""><text class="text-grey text-sm">{{item.endtime}}</text></view>
 				</view>
 			</view>
 			<!-- 下拉加载提示 -->
 			<uni-load-more :status="loadmore1" :contentText="contentText"></uni-load-more>
+		</view>
+		<view class="cu-list menu" v-if="2==TabCur">
+			<view class="arrow" v-for="(item,index) in dataList2" :key="index" @tap="tabGoods(item)">
+				<view class="content">
+					<text class="text-grey title">{{item.warehouseName}}</text>
+				</view>
+				<view class="action">
+					<view class=""><text class="text-grey text-sm text">发布时间{{item.startTime}}</text></view>
+					<view class=""><text class="text-grey text-sm text">截止时间{{item.endTime}}</text></view>
+				</view>
+			</view>
+			<!-- 下拉加载提示 -->
+			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 		</view>
 	</view>
 </template>
 
 <script>
 	import {
-		erpcheckgetlist
-	} from "@/api/erpapi.js";
+		storeCheckTaskList,
+		endTask
+	} from "@/api/erp.js";
 	import barTitle from '@/components/common/basics/bar-title';
-	import _tool from '@/utils/tools.js';	//工具函数
+	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		components: {
 			barTitle
@@ -58,6 +76,7 @@
 				ifBottomRefresh: false,
 				dataList: [],
 				dataList1: [],
+				dataList2: [],
 				queryInfo: {
 					page: 1,
 					pagesize: 10,
@@ -66,8 +85,13 @@
 					page: 1,
 					pagesize: 10,
 				},
+				queryInfo2: {
+					page: 1,
+					pagesize: 10,
+				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				loadmore1: 'more', //more 还有数据   noMore 无数据
+				loadmore2: 'more', //more 还有数据   noMore 无数据
 				contentText: {
 					"contentdown": "加载更多数据",
 					"contentrefresh": "加载中...",
@@ -84,74 +108,95 @@
 		onReady() {
 			_tool.setBarColor(true);
 			uni.pageScrollTo({
-			    scrollTop: 0,
-			    duration: 0
+				scrollTop: 0,
+				duration: 0
 			});
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
-			if(this.TabCur == 0){
+			if (this.TabCur == 0) {
 				this.queryInfo.page = 1; //重置分页页码
-			}else{
+			} else {
 				this.queryInfo1.page = 1; //重置分页页码
 			}
 			this.getDataList();
-			
+
 		},
 		onReachBottom() {
-			if(this.TabCur == 0){
+			if (this.TabCur == 0) {
 				if (this.loadmore == 'noMore') return
 				this.queryInfo.page += 1;
 				this.ifBottomRefresh = true
 				this.getDataList();
-			}else{
+			} else {
 				if (this.loadmore1 == 'noMore') return
 				this.queryInfo1.page += 1;
 				this.ifBottomRefresh1 = true
 				this.getDataList();
 			}
-			
+
 		},
 		methods: {
+			// 结束按钮
+			endTask(e) {
+				endTask({
+					checkTaskId: e
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							icon: 'none',
+							title: '操作成功',
+						});
+					}
+				})
+			},
 			tabSelect(e) {
 				// console.log(e);
-				if(this.TabCur != e.currentTarget.dataset.id){
+				if (this.TabCur != e.currentTarget.dataset.id) {
 					// 进入页面刷新
 					uni.startPullDownRefresh();
 				}
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-				
+
 			},
 			tabGoods(info) {
 				uni.navigateTo({
-					url: "/pages/erp/inventory/check/goods?checkId="+info.id
+					url: "/pages/erp/inventory/check/goods?checkTaskId=" + info.checkTaskId
 				});
 			},
 			getDataList() {
 				let that = this;
 				let paramsData = that.TabCur == 0 ? that.queryInfo : that.queryInfo1;
-				paramsData.check_status = that.TabCur;
-				erpcheckgetlist(paramsData).then(res => {
-						let data = res.data.data;
+				paramsData.checkTaskStatus = that.TabCur;
+				storeCheckTaskList(paramsData).then(res => {
+						let data = res.rows;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
-							if(that.TabCur == 0){
+							if (that.TabCur == 0) {
 								if (that.ifBottomRefresh) {
 									that.dataList = that.dataList.concat(data)
 								} else {
 									that.dataList = data
 								}
 								that.ifBottomRefresh = false
-								that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
-							}else if(that.TabCur == 1){
+								that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
+							} else if (that.TabCur == 1) {
 								if (that.ifBottomRefresh) {
 									that.dataList1 = that.dataList1.concat(data)
 								} else {
 									that.dataList1 = data
 								}
 								that.ifBottomRefresh1 = false
-								that.loadmore1 = res.data.total == that.dataList1.length ? 'noMore' : 'more'
+								that.loadmore1 = res.total == that.dataList1.length ? 'noMore' : 'more'
+							} else if (that.TabCur == 2) {
+								if (that.ifBottomRefresh) {
+									that.dataList2 = that.dataList2.concat(data)
+								} else {
+									that.dataList2 = data
+								}
+								that.ifBottomRefresh2 = false
+								that.loadmore2 = res.total == that.dataList2.length ? 'noMore' : 'more'
 							}
 						}
 					})
@@ -164,6 +209,62 @@
 </script>
 
 <style lang="scss">
-	.cu-list.menu>.cu-item{
+	page {
+		background: #F0F0F0;
 	}
+
+	.menu {
+		padding: 26rpx;
+	}
+
+	.arrow {
+		background: #FFFFFF;
+		border-radius: 11rpx;
+		padding: 45rpx 38rpx;
+		padding-bottom: 80rpx;
+
+		.content {
+			margin-bottom: 34rpx
+		}
+
+		.action {
+			view {
+				margin-bottom: 19rpx;
+			}
+		}
+
+		.title {
+			font-size: 29rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #101010;
+			line-height: 29rpx;
+
+		}
+
+		.text {
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #8E8E8E;
+			line-height: 25rpx;
+
+		}
+
+		.over {
+			float: right;
+			height: 55rpx;
+			display: inline-block;
+			padding: 0rpx 47rpx;
+			background: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+			border-radius: 29rpx;
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #FFFFFF;
+			line-height: 55rpx;
+		}
+	}
+
+	.cu-list.menu>.cu-item {}
 </style>
