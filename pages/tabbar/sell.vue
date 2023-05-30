@@ -381,6 +381,7 @@
 			this.getstoresstorelatelystore();
 			// #endif
 			// #ifdef APP-PLUS
+			this.getstoresstorelatelystore();
 			let type = '';
 			uni.getSystemInfo({
 				success: function(res) {
@@ -391,6 +392,7 @@
 					}
 				}
 			});
+			console.log(type, 22222)
 			uni.getLocation({
 				type: type,
 				geocode: true, //设置该参数为true可直接获取经纬度及城市信息

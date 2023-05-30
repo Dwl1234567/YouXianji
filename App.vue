@@ -81,10 +81,14 @@
 		},
 		onShow: function() {
 			let that = this
-			let time = null
-			let open = false
+			let ws = {
+				time: null,
+				open: false,
+				SocketTask: null,
+				ErrorMsg: []
+			}
 			// 建立链接
-			uni.connectSocket({
+			ws.SocketTask = uni.connectSocket({
 				url: this.build_url('ws'),
 				header: {
 					'content-type': 'application/json',
@@ -95,15 +99,18 @@
 				},
 				complete: res => {}
 			});
+			console.log(ws)
 			uni.onSocketOpen(function(res) {
-				open = true;
+				ws.open = true;
+				that.$store.commit('setWs', ws);
 				console.log('WebSocket连接已打开！');
-				time = setInterval(that.ws_send, 10000); //定时发送心跳
+				ws.time = setInterval(that.ws_send, 10000); //定时发送心跳
 			});
 			uni.onSocketError(function(res) {
-				open = false
+				ws.open = false
+				that.$store.commit('setWs', ws);
 				console.log('WebSocket连接打开失败，请检查！');
-				if (!open) {
+				if (!ws.open) {
 					that.connect_socket()
 				}
 			});
@@ -121,12 +128,6 @@
 
 				}
 			});
-			// uni.onSocketClose(function(res) {
-			// 	console.log('链接已关闭', res)
-			// 	setInterval(() => {
-			// 		that.connect_socket()
-			// 	}, 3000); //每3秒重新连接一次
-			// })
 
 		},
 		onHide: function() {

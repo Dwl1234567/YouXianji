@@ -42,11 +42,11 @@
 					</view>
 					<view class="group_8 flex-row justify-between">
 						<view class="text-wrapper_10 flex-col">
-							<text class="text_30">收件人信息</text>
+							<text class="text_30" v-if="!recycleOrder.postType">收件人信息</text>
 							<text class="text_31">备注</text>
 						</view>
 						<view class="text-group_2 flex-col">
-							<text class="text_32">{{recycleOrder.consigneeAddress}}</text>
+							<text class="text_32" v-if="!recycleOrder.postType">{{recycleOrder.consigneeAddress}}</text>
 							<text class="text_33">{{recycleOrder.remark}}</text>
 						</view>
 					</view>

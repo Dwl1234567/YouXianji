@@ -297,6 +297,8 @@
 			}
 		},
 		onLoad(opt) {
+			this.ws = Vue.prototype.$store.state.ws
+			console.log(this.ws.open)
 			this.senderId = opt.senderId
 			this.showHistory()
 			// token = opt.token ? opt.token : token
@@ -309,15 +311,18 @@
 			this.load()
 			// #endif
 		},
+		// computed() {
+		// 	console.log(Vue.prototype.$store.state.ws)
+		// },
 		onShow() {
 			let that = this
 			that.selectStoreGoods()
+			// 接收消息
 			uni.onSocketMessage(function(res) {
 				let msg = JSON.parse(res.data)
 				if (msg.code === 200) {
 					if (msg.data && msg.data.messageType == 1) {
 						uni.setStorageSync('receiverId', msg.data.senderId)
-						console.log(JSON.parse(msg.data.context))
 						const datas = {
 							datetime: '刚刚',
 							data: [{
@@ -349,8 +354,18 @@
 						that.messageList.push(datas);
 						that.scrollToBottom()
 					}
+				} else if (res.code === 500) {
+					uni.showToast({
+						title: '系统异常',
+						icon: 'none'
+					})
 				}
 			})
+			uni.onSocketError(function(res) {
+				this.ws.open = false
+				that.$store.commit('setWs', ws);
+				console.log('WebSocket连接打开失败，请检查！');
+			});
 			if (!this.ws.pageHideCloseWs) {
 				this.ws.pageHideCloseWs = true;
 			}
@@ -815,19 +830,17 @@
 			// 发送ws消息
 			ws_send: function(message) {
 				var that = this
-				uni.sendSocketMessage({
-					data: JSON.stringify(message)
-				});
-				// if (that.ws.SocketTask && that.ws.socketOpen) {
-
-				// } else {
-				// 	console.log('消息发送出错', message, that.ws.SocketTask, that.ws.socketOpen)
-				// 	that.ws.ErrorMsg.push(message);
-				// }
+				if (that.ws.open) {
+					uni.sendSocketMessage({
+						data: JSON.stringify(message)
+					});
+				} else {
+					console.log('消息发送出错', message, )
+					that.ws.ErrorMsg.push(message);
+				}
 			},
 			send_message: function(message, message_type) {
 				var that = this
-				console.log(that.sessionId);
 				if (message == '') {
 					uni.showToast({
 						title: '请输入消息内容',
@@ -836,21 +849,13 @@
 					return;
 				}
 				// 检查 websocket 是否连接
-				// if (!that.ws.SocketTask || !that.ws.socketOpen) {
-				// 	uni.showToast({
-				// 		title: '网络链接异常，请稍后重试~',
-				// 		icon: 'none'
-				// 	})
-				// 	return;
-				// }
-
-				// if (!that.sessionId) {
-				// 	uni.showToast({
-				// 		title: '初始化未完成(会话获取失败)~',
-				// 		icon: 'none'
-				// 	})
-				// 	return;
-				// }
+				if (!that.ws.open) {
+					uni.showToast({
+						title: '网络链接异常，请稍后重试~',
+						icon: 'none'
+					})
+					return;
+				}
 
 				if (message_type == 0) {
 
@@ -893,29 +898,6 @@
 				}
 				this.messageList.push(data);
 				this.scrollToBottom()
-				// var data = {
-				// 	id: message_id,
-				// 	status: 2, // 标记待发送状态
-				// 	sender: 'me',
-				// 	message: (message_type == 1 || message_type == 2) ? that.config.upload.cdnurl + message : message,
-				// 	message_type: message_type
-				// }
-
-				// var messageListIndex = that.messageList.length - 1
-				// if (that.messageList[messageListIndex] && that.messageList[messageListIndex].datetime == '刚刚') {
-				// 	that.messageList[messageListIndex].data = that.messageList[messageListIndex].data.concat(that.format_message([
-				// 		data
-				// 	]))
-				// } else {
-				// 	that.messageList = that.messageList.concat({
-				// 		datetime: '刚刚',
-				// 		data: that.format_message([data])
-				// 	});
-				// }
-
-				// that.kefuMessage = ''
-				// that.kefu_message_change();
-				// that.scroll_into_footer(200, 99992)
 			},
 			find_emoji: function(emoji_title) {
 				for (let i in this.expressionData) {

@@ -10,7 +10,7 @@ const store = new Vuex.Store({
 		createPersistedState({
 			key: 'app_config_data', // 状态保存到本地的 key
 			paths: ['hasLogin', 'userInfo', 'cookie', 'token', 'roles',
-				'address', 'business'
+				'address', 'business', 'ws'
 			], // 要持久化的状态，在state里面取，如果有嵌套，可以  a.b.c
 			storage: {
 				// 存储方式定义
@@ -47,9 +47,13 @@ const store = new Vuex.Store({
 			country: null,
 			province: null,
 			city: null
-		}
+		},
+		ws: {}
 	},
 	mutations: {
+		setWs(state, provider) {
+			state.ws = provider;
+		},
 		login(state, provider) {
 			state.hasLogin = true;
 		},

@@ -860,7 +860,6 @@ button.cuIcon.lg {
 	height: 28upx;
 	width: 28upx;
 	color: #ffffff;
-	align-items: flex-end;
 }
 
 .cu-tag.badge:not([class*="bg-"]) {

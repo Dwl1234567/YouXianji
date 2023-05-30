@@ -22,7 +22,7 @@
 			<bar-title :isBack="false" :fixed="false" :bgColor="bgColor">
 				<block slot="right">
 					<button class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12" @tap="goToErp"
-						v-if="roles.store_admin || roles.store_employee || roles.sorting_leader"
+						v-if="roles.store_admin || roles.store_employee || roles.sorting_leader || roles.sorting_people"
 						style="box-shadow: 0px 2px 4px 0px rgba(181, 181, 181, 0.5)">
 						工作模式
 						<!-- <text class="iconfont icon-nextpageorange margin-lr-xs"></text> -->

@@ -124,7 +124,7 @@
 						</view>
 					</view>
 					<view class="cu-form-group">
-						<view class="title">总价</view>
+						<view class="title">总成本价</view>
 						{{totalPrice}}元
 					</view>
 
@@ -924,6 +924,7 @@
 						imagesList.push(itemm.fileName)
 					})
 				}).finally(() => {
+					console.log(imagesList.join(','))
 					this.unploadImg(imagesList.join(','), type)
 				})
 			},
@@ -941,25 +942,30 @@
 					// if(that.imgList.length <= 0 && !that.switchA){
 					// 	return that.$u.toast('请上传付款凭证');
 					// }
-					let promisearr = [];
-					that.imgList.forEach((item, index) => {
-						console.log(item)
-						if (item.indexOf('shousifang') == -1) {
-							promisearr.push(raiseUpload(item));
-						} else {
-							that.upgetimgList.push(item);
-						}
-					})
 
+					// let promisearr = [];
+					// that.imgList.forEach((item, index) => {
+					// 	console.log(item)
+					// 	if (item.indexOf('shousifang') == -1) {
+					// 		console.log(123)
+					// 		promisearr.push(raiseUpload(item));
+					// 	} else {
+					// 		console.log(222)
+					// 		that.upgetimgList.push(item);
+					// 	}
+					// })
+
+					let promisearr = this.imgList.map(item => {
+						return raiseUpload(item)
+					})
+					let imagesList = []
 					Promise.all(promisearr).then((res) => {
-							// console.log(res);
-							res.forEach((iii) => {
-								that.upgetimgList.push(iii.data.imgurl);
-							})
+						res.map(itemm => {
+							imagesList.push(itemm.fileName)
 						})
-						.finally(() => {
-							that.deliveryTap();
-						})
+					}).finally(() => {
+						this.deliveryTap(imagesList.join(','))
+					})
 				} else if (that.TabCur == 1) {
 					// if(that.goodsList.length <= 0){
 					// 	return that.$u.toast('请录入货品');
@@ -1002,22 +1008,28 @@
 				})
 			},
 			// 销售开单
-			deliveryTap() {
+			deliveryTap(list) {
+				console.log(list)
 				let that = this;
 				let ids = that.goodsList.map((item, index) => {
 					return item.sn_id;
 				})
-				let sellFormFittingsList = this.house.map(item => {
-					return {
-						fittingsName: item.fittingsConfig.fittingsName,
-						fittingsId: item.fittingsId,
-						fittingsNumber: item.value,
-						fittingsCostPrice: item.fittingsCostPrice,
-						fittingsSellPrice: item.fittingsSellPrice
-					}
-				})
+				let sellFormFittingsList = []
+				if (this.house) {
+					this.house.map(item => {
+						sellFormFittingsList.push({
+							fittingsName: item.fittingsConfig.fittingsName,
+							fittingsId: item.fittingsId,
+							fittingsNumber: item.value,
+							fittingsCostPrice: item.fittingsCostPrice,
+							fittingsSellPrice: item.fittingsSellPrice
+						})
+
+					})
+				}
 				const storeId = uni.getStorageSync('userinfo').storeId
 				fittingsForm({
+					sellVoucher: list, // 销售凭证
 					totalPrice: that.totalPrice, // 总成本价
 					clienterId: that.customerInfo.id, // 客户id
 					costPrice: that.costPrice, // 成本

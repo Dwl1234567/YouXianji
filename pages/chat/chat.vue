@@ -372,6 +372,9 @@
 				uni.closeSocket();
 			}
 		},
+		computed() {
+			console.log(Vue.prototype.$store.state.ws)
+		},
 		methods: {
 			// 发送卡片消息
 			sendCard(item) {
@@ -888,11 +891,12 @@
 				var receiverId = uni.getStorageSync('receiverId')
 				let load_message = {
 					senderId,
-					storeId: uni.getStorageSync('storeId'),
+					storeId: uni.getStorageSync(' '),
 					receiverId,
 					context: message,
 					contextType: '3',
 				}
+				console.log(load_message)
 				that.ws_send(load_message);
 				const data = {
 					datetime: '刚刚',

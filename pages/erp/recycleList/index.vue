@@ -43,10 +43,10 @@
 								<text class="text_14">顺丰上门</text>
 							</button>
 							<view class="button_1 flex-col" v-if="item.postType == 1">
-								<text class="text_13">同城上门</text>
+								<text class="text_13">自行邮寄</text>
 							</view>
 							<view class="tag_3 flex-col" v-if="item.postType == 2">
-								<text class="text_15">自行邮寄</text>
+								<text class="text_15">同城上门</text>
 							</view>
 						</view>
 					</view>
