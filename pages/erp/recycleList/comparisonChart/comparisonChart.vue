@@ -66,13 +66,8 @@
             <br />
             （4）
           </text> -->
-					<view
-						id="echarts"
-						class="echarts"
-						@click="echarts.onClick"
-						:prop="optionData"
-						:change:prop="echarts.updateEcharts"
-					></view>
+					<view id="echarts" class="echarts" @click="echarts.onClick" :prop="optionData"
+						:change:prop="echarts.updateEcharts"></view>
 				</view>
 				<text class="paragraph_4">
 					本机价格影响因素
@@ -93,11 +88,8 @@
 							</view>
 						</scroll-view>
 					</view>
-					<image
-						class="image_5"
-						referrerpolicy="no-referrer"
-						src="/static/lanhu_zhijianbaogaoduibitu/326f64c9428b49b7be6a6dde77919c89_mergeImage.png"
-					/>
+					<image class="image_5" referrerpolicy="no-referrer"
+						src="/static/lanhu_zhijianbaogaoduibitu/326f64c9428b49b7be6a6dde77919c89_mergeImage.png" />
 				</view>
 				<text class="text_27">本机质检报告</text>
 				<view class="box_8 flex-row">
@@ -110,19 +102,12 @@
 						<text class="text_31">物品信息</text>
 					</view>
 					<text class="text_32">图片</text>
-					<image
-						class="icon_1"
-						referrerpolicy="no-referrer"
-						src="/static/lanhu_zhijianbaogaoduibitu/SketchPnga597ec45a52edbf114174b4311c090dc456df8afc59303b9e27a69ef8117cd6a.png"
-					/>
+					<image class="icon_1" referrerpolicy="no-referrer"
+						src="/static/lanhu_zhijianbaogaoduibitu/SketchPnga597ec45a52edbf114174b4311c090dc456df8afc59303b9e27a69ef8117cd6a.png" />
 				</view>
 				<view class="box_9 flex-col">
-					<view
-						class="section_3 flex-row justify-between"
-						v-for="(item, index) in Pricepramitems"
-						v-if="item.indexs === 1"
-						:key="index"
-					>
+					<view class="section_3 flex-row justify-between" v-for="(item, index) in Pricepramitems"
+						v-if="item.indexs === 1" :key="index">
 						<view class="text-group_4 flex-col">
 							<text class="text_33">{{qualityInfoList[index].key}}</text>
 							<text class="text_34">{{qualityInfoList[index].value}}</text>
@@ -134,19 +119,15 @@
 						<view class="box_10 flex-col">
 							<view v-if="checkInformation(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
 								<!-- {{$httpImage +phoneImgArr[index].photo}} -->
-								<view
-									class="cu-avatar xl radius"
-									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }"
-								>
+								<view class="cu-avatar xl radius"
+									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
 									<view class="img" @tap="viewImg(phoneImgArr,index)">
 										<text class="text"></text>
 									</view>
 									<!-- {{phoneImgArr[index].photo == ''}} -->
-									<view
-										class="cu-tag badge"
+									<view class="cu-tag badge"
 										:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
-										@tap="uploadImg(index)"
-									>
+										@tap="uploadImg(index)">
 										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
 											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 										</view>
@@ -158,18 +139,12 @@
 				</view>
 				<view class="box_14 flex-row justify-between">
 					<text class="text_53">成色情况</text>
-					<image
-						class="icon_2"
-						referrerpolicy="no-referrer"
-						src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png"
-					/>
+					<image class="icon_2" referrerpolicy="no-referrer"
+						src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png" />
 				</view>
 				<view class="box_9 flex-col">
-					<view
-						class="section_3 flex-row justify-between"
-						v-for="(item, index) in qualityInfoList"
-						v-if="item.indexs == 2"
-					>
+					<view class="section_3 flex-row justify-between" v-for="(item, index) in qualityInfoList"
+						v-if="item.indexs == 2">
 						<view class="text-group_4 flex-col">
 							<text class="text_33">{{qualityInfoList[index].key}}</text>
 							<text class="text_34">{{qualityInfoList[index].value}}</text>
@@ -180,19 +155,15 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
-								<view
-									class="cu-avatar xl radius"
-									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }"
-								>
+								<view class="cu-avatar xl radius"
+									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
 									<view class="img" @tap="viewImg(phoneImgArr,index)">
 										<text class="text"></text>
 									</view>
 									<!-- {{phoneImgArr[index].photo == ''}} -->
-									<view
-										class="cu-tag badge"
+									<view class="cu-tag badge"
 										:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
-										@tap="uploadImg(index)"
-									>
+										@tap="uploadImg(index)">
 										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
 											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 										</view>
@@ -204,18 +175,12 @@
 				</view>
 				<view class="box_14 flex-row justify-between">
 					<text class="text_53">功能情况</text>
-					<image
-						class="icon_2"
-						referrerpolicy="no-referrer"
-						src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png"
-					/>
+					<image class="icon_2" referrerpolicy="no-referrer"
+						src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png" />
 				</view>
 				<view class="box_9 flex-col">
-					<view
-						class="section_3 flex-row justify-between"
-						v-for="(item, index) in qualityInfoList"
-						v-if="item.indexs == 3"
-					>
+					<view class="section_3 flex-row justify-between" v-for="(item, index) in qualityInfoList"
+						v-if="item.indexs == 3">
 						<view class="text-group_4 flex-col">
 							<text class="text_33">{{qualityInfoList[index].key}}</text>
 							<text class="text_34">{{qualityInfoList[index].value}}</text>
@@ -226,19 +191,15 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
-								<view
-									class="cu-avatar xl radius"
-									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }"
-								>
+								<view class="cu-avatar xl radius"
+									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
 									<view class="img" @tap="viewImg(phoneImgArr,index)">
 										<text class="text"></text>
 									</view>
 									<!-- {{phoneImgArr[index].photo == ''}} -->
-									<view
-										class="cu-tag badge"
+									<view class="cu-tag badge"
 										:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
-										@tap="uploadImg(index)"
-									>
+										@tap="uploadImg(index)">
 										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
 											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 										</view>
@@ -250,18 +211,12 @@
 				</view>
 				<view class="box_14 flex-row justify-between">
 					<text class="text_53">维修情况</text>
-					<image
-						class="icon_2"
-						referrerpolicy="no-referrer"
-						src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png"
-					/>
+					<image class="icon_2" referrerpolicy="no-referrer"
+						src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png" />
 				</view>
 				<view class="box_9 flex-col">
-					<view
-						class="section_3 flex-row justify-between"
-						v-for="(item, index) in Pricepramitems"
-						v-if="item.indexs == 4"
-					>
+					<view class="section_3 flex-row justify-between" v-for="(item, index) in Pricepramitems"
+						v-if="item.indexs == 4">
 						<view class="text-group_4 flex-col">
 							<text class="text_33">{{qualityInfoList[index].key}}</text>
 							<text class="text_34">{{qualityInfoList[index].value}}</text>
@@ -272,19 +227,15 @@
 						</view>
 						<view class="box_10 flex-col">
 							<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
-								<view
-									class="cu-avatar xl radius"
-									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }"
-								>
+								<view class="cu-avatar xl radius"
+									:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
 									<view class="img" @tap="viewImg(phoneImgArr,index)">
 										<text class="text"></text>
 									</view>
 									<!-- {{phoneImgArr[index].photo == ''}} -->
-									<view
-										class="cu-tag badge"
+									<view class="cu-tag badge"
 										:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
-										@tap="uploadImg(index)"
-									>
+										@tap="uploadImg(index)">
 										<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
 											<u-icon name="plus" color="#ffffff" size="10"></u-icon>
 										</view>
@@ -304,8 +255,12 @@
 	</view>
 </template>
 <script>
-	import { upload } from '@/api/upload.js';
-	import { empCreateReceipt } from '@/api/retrieve.js';
+	import {
+		upload
+	} from '@/api/upload.js';
+	import {
+		empCreateReceipt
+	} from '@/api/retrieve.js';
 	export default {
 		data() {
 			return {
@@ -319,31 +274,30 @@
 				receiptPrice: null,
 				data: [1, 2, 3],
 				phoneImgArr: [],
-				loopData0: [
-					{
-						lanhuBg0:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/1a7ec9be42154e8e848d643e6e0fa0ad_mergeImage.png)',
+				loopData0: [{
+						lanhuBg0: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/1a7ec9be42154e8e848d643e6e0fa0ad_mergeImage.png)',
 					},
 					{
-						lanhuBg0:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/b5e20fdd1ebd476c95ec163fed246fe7_mergeImage.png)',
+						lanhuBg0: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/b5e20fdd1ebd476c95ec163fed246fe7_mergeImage.png)',
 					},
 					{
-						lanhuBg0:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/654b8b702c9f4a648e8ecdd2b6601137_mergeImage.png)',
+						lanhuBg0: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/654b8b702c9f4a648e8ecdd2b6601137_mergeImage.png)',
 					},
 					{
-						lanhuBg0:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/c9e497210c7f49c29a3f0e089004fcca_mergeImage.png)',
+						lanhuBg0: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/c9e497210c7f49c29a3f0e089004fcca_mergeImage.png)',
 					},
 					{
-						lanhuBg0:
-							'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/d2072cb6a71c48058875a07e9c3c8fe4_mergeImage.png)',
+						lanhuBg0: 'url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/d2072cb6a71c48058875a07e9c3c8fe4_mergeImage.png)',
 					},
 				],
-				loopData1: [
-					{ lanhutext0: '屏幕显示', lanhutext1: '显示色差' },
-					{ lanhutext0: '屏幕显示', lanhutext1: '显示色差' },
+				loopData1: [{
+						lanhutext0: '屏幕显示',
+						lanhutext1: '显示色差'
+					},
+					{
+						lanhutext0: '屏幕显示',
+						lanhutext1: '显示色差'
+					},
 				],
 				constants: {},
 				Pricepramitems: [],
@@ -360,25 +314,32 @@
 					},
 					radar: {
 						// shape: 'circle',
-						indicator: [
-							{ name: '物品信息', max: 0 },
-							{ name: '成色情况', max: 0 },
-							{ name: '功能情况', max: 0 },
-							{ name: '维修情况', max: 0 },
+						indicator: [{
+								name: '物品信息',
+								max: 0
+							},
+							{
+								name: '成色情况',
+								max: 0
+							},
+							{
+								name: '功能情况',
+								max: 0
+							},
+							{
+								name: '维修情况',
+								max: 0
+							},
 						],
 					},
-					series: [
-						{
-							name: 'Budget vs spending',
-							type: 'radar',
-							data: [
-								{
-									value: [0, 0, 0],
-									// name: 'Allocated Budget'
-								},
-							],
-						},
-					],
+					series: [{
+						name: 'Budget vs spending',
+						type: 'radar',
+						data: [{
+							value: [0, 0, 0],
+							// name: 'Allocated Budget'
+						}, ],
+					}, ],
 				},
 			};
 		},
@@ -453,8 +414,7 @@
 							urls: url,
 						});
 					}
-				} else {
-				}
+				} else {}
 			},
 			//查看图片
 			viewImg(url, index) {
@@ -469,8 +429,7 @@
 							urls: urll,
 						});
 					}
-				} else {
-				}
+				} else {}
 			},
 			checkInformation(left, right, index) {
 				// console.log(33333);
@@ -550,8 +509,12 @@
 					receiver: uni.getStorageSync('createById'),
 					deviceId: uni.getStorageSync('deviceId'),
 				}).then((res) => {
+					uni.showToast({
+						title: '回执成功',
+						icon: 'none'
+					})
 					uni.navigateTo({
-						url: '/pages/erp/recycleList/index',
+						url: '/pages/erp/recycleList/index?type=1',
 					});
 				});
 			},
@@ -596,25 +559,31 @@
 <style lang="css">
 	@import './common.css';
 	@import './index.rpx.css';
+
 	.echarts {
 		width: 90%;
 		height: 600rpx;
 	}
+
 	.page-section-spacing {
 		margin-top: 60rpx;
 	}
+
 	.scroll-view_H {
 		white-space: nowrap;
 	}
+
 	.scroll-view-item {
 		height: 300rpx;
 	}
+
 	.scroll-view-item_H {
 		margin-left: 20rpx;
 		display: inline-block;
 		/* width: 100%; */
 		/* height: 300rpx; */
 	}
+
 	.scroll-view-item_H:first-child {
 		margin-left: 0px;
 	}

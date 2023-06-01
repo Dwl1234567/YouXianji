@@ -143,7 +143,8 @@
 			</view>
 			<view class="canngku flex">
 				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId"
-					v-if="item.parentId == 0" @tap="checkHouseId(item.warehouseId)">
+					v-if="item.parentId == 0" @tap="checkHouseId(item.warehouseId)"
+					:class="parentId == item.warehouseId ? 'camgkuCheck' : ''">
 					{{item.warehouseName}}
 				</view>
 			</view>
@@ -153,7 +154,8 @@
 			</view>
 			<view class="canngku flex">
 				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId"
-					v-if="item.parentId == parentId" @tap="checkHouseFenId(item.warehouseId)">
+					v-if="item.parentId == parentId" @tap="checkHouseFenId(item.warehouseId)"
+					:class="warehouseId == item.warehouseId ? 'camgkuCheck' : ''">
 					{{item.warehouseName}}
 				</view>
 			</view>
@@ -402,6 +404,21 @@
 			},
 			// 提交
 			erpclickattreditFuc() {
+				console.log(this.warehouseId)
+				if (!this.warehouseId || !this.warehouseId) {
+					uni.showToast({
+						icon: 'error',
+						title: '请选择仓库',
+					})
+					return
+				}
+				if (!this.diaobojianum || !this.xiaoshoujianum) {
+					uni.showToast({
+						icon: 'error',
+						title: '请输入调拨价或销售价',
+					})
+					return
+				}
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
 				let storeId = uni.getStorageSync('userinfo').storeId
 				let deviceLabel = uni.getStorageSync('goodsdesc')
@@ -710,6 +727,38 @@
 		.cu-btn {
 			margin-left: 10px;
 		}
+	}
+
+	.camgkuCheck {
+		background: #FFE6E6 !important;
+		border-radius: 11rpx;
+		border: 1rpx solid #FD4C4C;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #FD4C4C !important;
+		line-height: 61rpx;
+	}
+
+	.canngku {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.cangkuItem {
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #101010;
+		line-height: 61rpx;
+		margin-bottom: 20.99rpx;
+		min-width: 155rpx;
+		height: 59rpx;
+		background: #F0F0F0;
+		border: 1rpx solid #F0F0F0;
+		text-align: center;
+		border-radius: 11rpx;
+		line-height: 61rpx;
+		padding-left: 26rpx;
+		padding-right: 26rpx;
 	}
 
 	.h-table .h-td {

@@ -248,7 +248,7 @@
 			};
 		},
 		onLoad() {
-			this.erpUserAuth();
+			// this.erpUserAuth();
 			//加载统计数据
 
 			/*
@@ -538,12 +538,6 @@
 			// 		this.loginfo = res.data;
 			// 	});
 			// },
-			// 获取权限
-			erpUserAuth() {
-				erpUserAuth({}).then((res) => {
-					uni.setStorageSync('store_info', JSON.stringify(res.data.store_info));
-				});
-			},
 			//页面被滚动
 			setPageScroll(scrollTop) {
 				//console.log(scrollTop);

@@ -549,9 +549,11 @@
 						this.qualityInfoId = res.data.qualityInfoId
 						this.recycleFormId = res.data.recycleFormId
 						this.totalPrice = res.data.costPrice;
-						this.house.map(item => {
-							this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
-						})
+						if (this.house) {
+							this.house.map(item => {
+								this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+							})
+						}
 					}
 				})
 			},
@@ -908,6 +910,8 @@
 				empCreateRecycleForm(paramsData).then(res => {
 					if (res.code === 200) {
 						this.$u.toast('开单成功');
+						this.hsdangoodsList = []
+						this.customerInfo = {}
 						uni.removeStorageSync('data')
 					}
 				})

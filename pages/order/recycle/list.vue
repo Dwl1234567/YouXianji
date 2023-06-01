@@ -248,6 +248,70 @@
 					</view>
 				</view>
 			</view>
+			<!-- 退货 -->
+			<view class="page flex-col" v-if="tab_cur == 4">
+				<view class="box_1 flex-row">
+					<view class="box_4 flex-col">
+						<view class="list_1 flex-col">
+							<view class="list-items_1 flex-col" v-for="(item, index) in pingjiaList" :key="index">
+								<view class="text-wrapper_1 flex-row justify-between">
+									<text class="text_3">订单编号 {{item.orderNo}}</text>
+									<text class="text_4">时间 {{item.createTime}}</text>
+								</view>
+								<view class="block_1 flex-row">
+									<view class="image-text_1 flex-row">
+										<view class="box_5 flex-col">
+											<image :src="$httpImage + item.modelPhoto" mode="widthFix"></image>
+										</view>
+										<view class="text-group_1 flex-col">
+											<text class="text_5">{{item.modelName}}</text>
+											<text class="text_6">{{item.deviceLabel}}</text>
+											<text class="text_7">序列号：{{item.deviceNo}}</text>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_8"><text>回收预估价: {{item.firstPrice}}</text></text>
+												<text class="text_9">
+													<view v-if="item.transactionPrice - item.firstPrice > 0">
+														加价 {{item.transactionPrice - item.firstPrice}}
+													</view>
+												</text>
+											</view>
+											<view class="text-wrapper_2 flex-row justify-between">
+												<text class="text_110"><text>回收价: {{item.transactionPrice}}</text></text>
+												<text class="text_9"></text>
+											</view>
+										</view>
+										<!-- <view class="tag_1 flex-col"></view> -->
+										<view class="tag_2 flex-col">
+											<text class="text_10">
+												{{item.postType == 0 ? '顺丰上门' : item.postType == 1 ? '自行邮寄' : '同城上门'}}
+											</text>
+										</view>
+									</view>
+									<!-- <view class="tag_3 flex-col"></view> -->
+								</view>
+								<!-- <view class="block_2 flex-row">
+									<text class="text_11" v-html="">回收价{{item.receiptPrice}}</text>
+									<view class="tag_4 flex-col"></view>
+								</view> -->
+								<view class="block_3 flex-row" style="justify-content: flex-end">
+									<button class="button_1 flex-col">
+										<text class="text_12">查看物流</text>
+									</button>
+									<!-- <button class="button_1 flex-col">
+										<text class="text_12">退回中</text>
+									</button> -->
+									<!-- <button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
+										<text class="text_13">拒绝并退回</text>
+									</button>
+									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
+										<text class="text_14">同意并打款</text>
+									</button> -->
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 
 		<!--占位底部距离-->
@@ -276,6 +340,7 @@
 				jeisuanList: [],
 				tuihuoList: [],
 				receiptList: [],
+				pingjiaList: [],
 				loopData0: [],
 				nav_list: [],
 				tab_cur: 0,
@@ -317,6 +382,7 @@
 			this.selectReceiptList();
 			this.selectRecycleOrderSellList();
 			this.selectRecycleOrderSellList4();
+			this.selectRecycleOrderSellList5()
 		},
 		onShow() {},
 		methods: {
@@ -381,6 +447,18 @@
 				selectRecycleOrderSellList(data).then((res) => {
 					if (res.code === 200) {
 						this.tuihuoList = res.rows;
+					}
+				});
+			},
+			// 待评价
+			selectRecycleOrderSellList5() {
+				const data = {
+					orderStatusList: ['3', '6', '7'],
+				};
+				console.log(data);
+				selectRecycleOrderSellList(data).then((res) => {
+					if (res.code === 200) {
+						this.pingjiaList = res.rows;
 					}
 				});
 			},
@@ -463,6 +541,7 @@
 <style lang="scss" scoped>
 	@import './common.css';
 	@import './index.rpx.css';
+
 	.my-box {
 		width: 100%;
 
@@ -474,19 +553,21 @@
 					padding: 0;
 				}
 
-				.cu-list.grid.no-border > .cu-item {
+				.cu-list.grid.no-border>.cu-item {
 					padding-bottom: 9.09rpx;
 				}
 			}
 
-			.cu-list.grid > .cu-item text {
+			.cu-list.grid>.cu-item text {
 				color: inherit;
 			}
 		}
 	}
+
 	page {
 		background-color: rgba(240, 240, 240, 1);
 	}
+
 	.my-box.show {
 		display: block;
 	}
@@ -494,6 +575,7 @@
 	.cu-btn.sm {
 		padding: 0 11.9rpx;
 	}
+
 	.img-view {
 		text-align: center;
 	}

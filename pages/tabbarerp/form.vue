@@ -214,8 +214,18 @@
 		</view>
 
 		<view class="cu-form-group">
-			<view class="title">是否直售</view>
-			<switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
+			<!-- <view class="title">是否直售</view> -->
+			<!-- <switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch> -->
+			<!-- <u-radio-group v-model="switchA" placement="row">
+				<u-radio activeColor="red" label="分拣"></u-radio>
+				<u-radio activeColor="red" label="直售"></u-radio>
+				<u-radio activeColor="red" label="整备"></u-radio>
+			</u-radio-group> -->
+			<u-radio-group v-model="radiovalue1" placement="row" style="justify-content: center;">
+				<u-radio :customStyle="{marginRight: '8px'}" v-for="(item, index) in radiolist2" :key="index" :label="item.name"
+					:name="item.id">
+				</u-radio>
+			</u-radio-group>
 		</view>
 		<view class="cu-form-group" v-if="isDistribution">
 			<view class="title">是否分销</view>
@@ -281,6 +291,24 @@
 		},
 		data() {
 			return {
+				radiolist2: [{
+						name: '分拣',
+						disabled: false,
+						id: 0
+					},
+					{
+						name: '直售',
+						disabled: false,
+						id: 1
+					},
+					{
+						name: '整备',
+						disabled: false,
+						id: 2
+					}
+				],
+				// u-radio-group的v-model绑定的值如果设置为某个radio的name，就会被默认选中
+				radiovalue1: 0,
 				combinationPrice: '',
 				online: {},
 				isDistribution: false,
@@ -460,6 +488,20 @@
 				})
 			},
 			erpclickattreditFuc() {
+				if (!this.warehouseId || !this.warehouseId) {
+					uni.showToast({
+						icon: 'error',
+						title: '请选择仓库',
+					})
+					return
+				}
+				if (!this.diaobojianum || !this.xiaoshoujianum) {
+					uni.showToast({
+						icon: 'error',
+						title: '请输入调拨价或销售价',
+					})
+					return
+				}
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
 				let storeId = uni.getStorageSync('userinfo').storeId
 				let deviceLabel = uni.getStorageSync('goodsdesc')
@@ -473,7 +515,7 @@
 					allotPrice: this.diaobojianum,
 					sellPrice: this.xiaoshoujianum,
 					warehouseId: this.warehouseId,
-					directSellAble: this.switchA ? 1 : 0,
+					directSellAble: this.radiovalue1,
 					distributionAble: this.switchB ? 1 : 0,
 					hotAble: this.switchC ? 1 : 0,
 					specialSaleAble: this.switchD ? 1 : 0,
@@ -504,26 +546,6 @@
 				uni.navigateTo({
 					url: '/pages/tabbarerp/push?tab=1'
 				})
-				// empCreateRecycleForm(paramsData).then(res => {
-				// 	if (res.code == 200) {
-				// 		this.$u.toast('提交成功！')
-				// 		uni.removeStorageSync('goodsdesc')
-				// 		uni.removeStorageSync('deviceId')
-				// 		uni.removeStorageSync('qualityInfoList')
-				// 		uni.removeStorageSync('qualityInfo')
-				// 		uni.removeStorageSync('modelName')
-				// 		uni.removeStorageSync('dataListNum')
-				// 		uni.removeStorageSync('imgList')
-				// 		uni.removeStorageSync('Pricepramitems')
-				// 		uni.removeStorageSync('basicPriceId')
-				// 		uni.removeStorageSync('Priceprams')
-				// 		uni.removeStorageSync('recycleOrderId')
-				// 		uni.removeStorageSync('createById')
-				// 		uni.navigateTo({
-				// 			url: '/pages/erp/recycleList/index'
-				// 		})
-				// 	}
-				// });
 			},
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {

@@ -193,7 +193,7 @@
 						} = res.data;
 						this.recycleOrder = recycleOrder;
 						// 判断邮寄信息是否查询成功
-						if (logisticsInfo.code == 200) {
+						if (logisticsInfo && logisticsInfo.data && logisticsInfo.code == 200) {
 							const data = logisticsInfo.data.map((item) => {
 								return {
 									title: item.AcceptStation,

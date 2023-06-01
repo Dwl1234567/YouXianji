@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<bar-title bgColor="bg-white" adress="/pages/tabbarerp/home">
-			<block slot="content">供应商列表</block>
+			<block slot="content">分拣列表</block>
 			<block slot="right">
 				<button class="cu-btn sm" @tap="snTap" v-if="roles.sorting_leader || roles.store_admin">
 					<!-- <text class="cuIcon-add" /> -->
@@ -9,15 +9,8 @@
 				</button>
 			</block>
 		</bar-title>
-		<filterDropdown
-			ref="filterDropdown"
-			:menuTop="filtertopnum"
-			:filterData="shopownerFilterData"
-			:defaultSelected="defaultSelected"
-			:updateMenuName="true"
-			@confirm="confirm"
-			dataFormat="Object"
-		></filterDropdown>
+		<filterDropdown ref="filterDropdown" :menuTop="filtertopnum" :filterData="shopownerFilterData"
+			:defaultSelected="defaultSelected" :updateMenuName="true" @confirm="confirm" dataFormat="Object"></filterDropdown>
 		<!--为上面的临时筛选条进行的临时兼容处理-->
 		<view style="padding: 0px 20rpx">
 			<!-- :class="admin ? 'transform' : 'transformRight'" -->
@@ -27,15 +20,12 @@
 				</view>
 				<view class="group_3 flex-col">
 					<view class="text-wrapper_1 flex-row justify-between">
-						<text class="text_7">时间:{{item.createTimeStr}}</text>
+						<text class="text_7">时间:{{item.updateTime}}</text>
 					</view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
-						<image
-							:src="$httpImage + item.modelPhoto"
-							mode="aspectFit"
-							class="cu-avatar lg radius box_5 flex-col"
-						></image>
+						<image :src="$httpImage + item.modelPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
+						</image>
 						<view class="text-wrapper_2 flex-col">
 							<text class="text_8">{{item.modelName}}</text>
 							<text class="text_9">{{item.label}}</text>
@@ -70,46 +60,32 @@
 						<view class="tag_66 flex-col" v-if="item.sortStatus == 4 && (roles.sorting_people || roles.sorting_leader)">
 							<text class="text_66">已送达</text>
 						</view>
-						<view
-							class="tag_77 flex-col"
-							v-if="item.sortStatus == 5 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
-						>
+						<view class="tag_77 flex-col"
+							v-if="item.sortStatus == 5 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)">
 							<text class="text_77">待抛售</text>
 						</view>
-						<view
-							class="tag_77 flex-col"
-							v-if="item.sortStatus == 6 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
-						>
+						<view class="tag_77 flex-col"
+							v-if="item.sortStatus == 6 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)">
 							<text class="text_77">抛售中</text>
 						</view>
-						<view
-							class="tag_77 flex-col"
-							v-if="item.sortStatus == 7 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
-						>
+						<view class="tag_77 flex-col"
+							v-if="item.sortStatus == 7 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)">
 							<text class="text_77">已抛售</text>
 						</view>
-						<view
-							class="tag_88 flex-col"
-							v-if="item.sortStatus == 8 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
-						>
+						<view class="tag_88 flex-col"
+							v-if="item.sortStatus == 8 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)">
 							<text class="text_88">待维修</text>
 						</view>
-						<view
-							class="tag_88 flex-col"
-							v-if="item.sortStatus == 9 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
-						>
+						<view class="tag_88 flex-col"
+							v-if="item.sortStatus == 9 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)">
 							<text class="text_88">维修中</text>
 						</view>
-						<view
-							class="tag_88 flex-col"
-							v-if="item.sortStatus == 10 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
-						>
+						<view class="tag_88 flex-col"
+							v-if="item.sortStatus == 10 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)">
 							<text class="text_88">维修完成</text>
 						</view>
-						<view
-							class="tag_88 flex-col"
-							v-if="item.sortStatus == 11 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)"
-						>
+						<view class="tag_88 flex-col"
+							v-if="item.sortStatus == 11 && (roles.sorting_people || roles.sorting_leader || roles.store_admin)">
 							<text class="text_88">维修失败</text>
 						</view>
 					</view>
@@ -126,164 +102,100 @@
 					</text>
 					<text class="text_13" v-if="item.maintainApprove.context">维修内容：{{item.maintainApprove.context}}</text>
 					<view class="button">
-						<view
-							class="receipt"
-							v-if="item.sortStatus == 2 && roles.sorting_people && item.updateStatus == 1"
-							@tap="goBack(item)"
-						>
+						<view class="receipt" v-if="item.sortStatus == 2 && roles.sorting_people && item.updateStatus == 1"
+							@tap="goBack(item)">
 							返回门店
 						</view>
-						<view
-							class="receipt"
-							v-if="item.sortStatus == 2 && roles.sorting_people && item.updateStatus == 0"
-							@tap="goDiandian(item)"
-						>
+						<view class="receipt" v-if="item.sortStatus == 2 && roles.sorting_people && item.updateStatus == 0"
+							@tap="goDiandian(item)">
 							待修改
 						</view>
 						<view class="checkLogistics" v-if="item.sortStatus == 1">查看物流</view>
-						<view
-							class="receipt"
-							@tap="receiveInspectDevices(item.sortId)"
-							v-if="item.status === '0' && item.sortStatus == 1 && roles.sorting_leader"
-						>
+						<view class="receipt" @tap="receiveInspectDevices(item.sortId)"
+							v-if="item.status === '0' && item.sortStatus == 1 && roles.sorting_leader">
 							确认收货
 						</view>
-						<view
-							class="receipt"
-							@tap="getstoreAdminConfirm(item.sortId)"
-							v-if="roles.store_admin && item.sortStatus == 3"
-						>
+						<view class="receipt" @tap="getstoreAdminConfirm(item.sortId)"
+							v-if="roles.store_admin && item.sortStatus == 3">
 							确认收货
 						</view>
 						<view class="checkLogistics" v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 3">
 							物流信息
 						</view>
-						<view
-							class="checkLogistics"
-							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && item.sortStatus == 4"
-						>
+						<view class="checkLogistics"
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && item.sortStatus == 4">
 							物流信息
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 4">已收货</view>
 						<view class="receipt" v-if="item.status === '1' && item.sortStatus == 1">已收货</view>
-						<view
-							class="checkLogistics"
-							@tap="falseshowSell(item)"
-							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 0"
-						>
+						<view class="checkLogistics" @tap="falseshowSell(item)"
+							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 0">
 							拒绝
 						</view>
-						<view
-							class="receipt"
-							@tap="goshowSell(item)"
-							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 0"
-						>
+						<view class="receipt" @tap="goshowSell(item)"
+							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 0">
 							接受
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 6">已接受</view>
-						<view
-							class="checkLogistics"
-							@tap="showImg2(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 6 || item.sortStatus == 7) && !item.undersellApprove.collectionVoucher"
-						>
+						<view class="checkLogistics" @tap="showImg2(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 6 || item.sortStatus == 7) && !item.undersellApprove.collectionVoucher">
 							上传收款凭证
 						</view>
-						<view
-							class="receipt"
-							@tap="showImg1(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 6 || item.sortStatus == 7) && !item.undersellApprove.undersellVoucher"
-						>
+						<view class="receipt" @tap="showImg1(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 6 || item.sortStatus == 7) && !item.undersellApprove.undersellVoucher">
 							上传抛售凭证
 						</view>
-						<view
-							class="receipt"
-							@tap="seeImg1(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 6 || item.sortStatus == 7) && item.undersellApprove.undersellVoucher"
-						>
+						<view class="receipt" @tap="seeImg1(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 6 || item.sortStatus == 7) && item.undersellApprove.undersellVoucher">
 							查看抛售凭证
 						</view>
-						<view
-							class="receipt"
-							@tap="seeImg2(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 6 || item.sortStatus == 7) && item.undersellApprove.collectionVoucher"
-						>
+						<view class="receipt" @tap="seeImg2(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 6 || item.sortStatus == 7) && item.undersellApprove.collectionVoucher">
 							查看收款凭证
 						</view>
-						<view
-							class="checkLogistics"
-							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 2"
-						>
+						<view class="checkLogistics"
+							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 2">
 							已拒绝
 						</view>
-						<view
-							class="checkLogistics"
-							@tap="goBack(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 5 && item.undersellApprove.status == 2"
-						>
+						<view class="checkLogistics" @tap="goBack(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 5 && item.undersellApprove.status == 2">
 							返回门店
 						</view>
-						<view
-							class="checkLogistics"
-							@tap="falseshowMain(item)"
-							v-if="roles.store_admin && item.sortStatus == 8 && item.maintainApprove.status == 0"
-						>
+						<view class="checkLogistics" @tap="falseshowMain(item)"
+							v-if="roles.store_admin && item.sortStatus == 8 && item.maintainApprove.status == 0">
 							拒绝
 						</view>
-						<view
-							class="receipt"
-							@tap="goshowMain(item)"
-							v-if="roles.store_admin && item.sortStatus == 8 && item.maintainApprove.status == 0"
-						>
+						<view class="receipt" @tap="goshowMain(item)"
+							v-if="roles.store_admin && item.sortStatus == 8 && item.maintainApprove.status == 0">
 							接受
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 9">已接受</view>
-						<view
-							class="receipt"
-							@tap="empMaintainFail(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 9) && !item.maintainApprove.maintainVoucher"
-						>
+						<view class="receipt" @tap="empMaintainFail(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 9) && !item.maintainApprove.maintainVoucher">
 							维修失败
 						</view>
-						<view
-							class="receipt"
-							@tap="showMainImg1(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 9) && !item.maintainApprove.maintainVoucher"
-						>
+						<view class="receipt" @tap="showMainImg1(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 9) && !item.maintainApprove.maintainVoucher">
 							上传维修凭证
 						</view>
-						<view
-							class="checkLogistics"
-							@tap="storeAdminSelectHandleType(item, '0')"
-							v-if="(roles.store_admin) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.status == 1 && item.maintainApprove.handleType == null"
-						>
+						<view class="checkLogistics" @tap="storeAdminSelectHandleType(item, '0')"
+							v-if="(roles.store_admin) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.status == 1 && item.maintainApprove.handleType == null">
 							抛售
 						</view>
-						<view
-							class="receipt"
-							@tap="seeImg3(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 10) && item.maintainApprove.maintainVoucher"
-						>
+						<view class="receipt" @tap="seeImg3(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 10) && item.maintainApprove.maintainVoucher">
 							查看维修凭证
 						</view>
-						<view
-							class="checkLogistics"
-							@tap="storeAdminSelectHandleType(item, '1')"
-							v-if="(roles.store_admin) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.status == 1 && item.maintainApprove.handleType == null"
-						>
+						<view class="checkLogistics" @tap="storeAdminSelectHandleType(item, '1')"
+							v-if="(roles.store_admin) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.status == 1 && item.maintainApprove.handleType == null">
 							返回门店
 						</view>
-						<view
-							class="checkLogistics"
-							@tap="goDiandian(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.handleType == 0"
-						>
+						<view class="checkLogistics" @tap="goDiandian(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.handleType == 0">
 							抛售
 						</view>
-						<view
-							class="checkLogistics"
-							@tap="goBack(item)"
-							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.handleType == 1"
-						>
+						<view class="checkLogistics" @tap="goBack(item)"
+							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.handleType == 1">
 							返回门店
 						</view>
 					</view>
@@ -304,34 +216,24 @@
 		</view>
 		<!--弹窗-->
 		<!-- 维修弹框 -->
-		<u-modal
-			:show="showMain"
-			@cancel="showMain = false"
-			@confirm="confirmFucs"
-			title="确定维修？"
-			:showCancelButton="true"
-		></u-modal>
+		<u-modal :show="showMain" @cancel="showMain = false" @confirm="confirmFucs" title="确定维修？"
+			:showCancelButton="true"></u-modal>
 		<!-- 抛售弹框 -->
-		<u-modal
-			:show="showSell"
-			@cancel="showSell = false"
-			@confirm="confirmFuc"
-			title="确定抛售？"
-			:showCancelButton="true"
-		></u-modal>
+		<u-modal :show="showSell" @cancel="showSell = false" @confirm="confirmFuc" title="确定抛售？"
+			:showCancelButton="true"></u-modal>
 		<!-- 上传维修凭证 -->
 		<u-popup :show="yunShowImgMain" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
 			<view class="yunShow-top">
 				<view class="yunShow-title">上传维修凭证</view>
 				<view class="yunShow-img">
-					<u-upload
-						:fileList="fileList1"
-						@afterRead="afterRead"
-						@delete="deletePic"
-						name="1"
-						multiple
-						:maxCount="3"
-					></u-upload>
+					<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+						:maxCount="3"></u-upload>
+				</view>
+				<view class="yunShow-item">
+					<view class="left">序列号</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="deviceNo"></u--input>
+					</view>
 				</view>
 			</view>
 			<view class="yunShow-bottom">
@@ -344,14 +246,8 @@
 			<view class="yunShow-top">
 				<view class="yunShow-title">上传销售凭证</view>
 				<view class="yunShow-img">
-					<u-upload
-						:fileList="fileList1"
-						@afterRead="afterRead"
-						@delete="deletePic"
-						name="1"
-						multiple
-						:maxCount="3"
-					></u-upload>
+					<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+						:maxCount="3"></u-upload>
 				</view>
 			</view>
 			<view class="yunShow-bottom">
@@ -364,14 +260,8 @@
 			<view class="yunShow-top">
 				<view class="yunShow-title">上传收款凭证</view>
 				<view class="yunShow-img">
-					<u-upload
-						:fileList="fileList2"
-						@afterRead="afterRead"
-						@delete="deletePic"
-						name="2"
-						multiple
-						:maxCount="3"
-					></u-upload>
+					<u-upload :fileList="fileList2" @afterRead="afterRead" @delete="deletePic" name="2" multiple
+						:maxCount="3"></u-upload>
 				</view>
 			</view>
 			<view class="yunShow-bottom">
@@ -497,6 +387,8 @@
 		},
 		data() {
 			return {
+				deviceId: null,
+				deviceNo: null,
 				yunShowImgMain: false,
 				fileList2: [],
 				fileList1: [],
@@ -516,10 +408,18 @@
 				logisticsCompany: '',
 				// 物流单号
 				logisticsNo: '',
-				range: [
-					{ value: 0, text: '篮球' },
-					{ value: 1, text: '足球' },
-					{ value: 2, text: '游泳' },
+				range: [{
+						value: 0,
+						text: '篮球'
+					},
+					{
+						value: 1,
+						text: '足球'
+					},
+					{
+						value: 2,
+						text: '游泳'
+					},
 				],
 				values: '',
 				// 运营中心弹框
@@ -535,12 +435,10 @@
 				filtertopnum: '83', //筛选条高度
 				defaultSelected: [],
 				// 店长可视页面
-				shopownerFilterData: [
-					{
+				shopownerFilterData: [{
 						name: '是否直售',
 						type: 'hierarchy',
-						submenu: [
-							{
+						submenu: [{
 								name: '全部', //全部设为默认，选中时标签栏显示为全部
 								value: '0,1,2,3',
 							},
@@ -565,8 +463,7 @@
 					{
 						name: '抛售状态',
 						type: 'hierarchy',
-						submenu: [
-							{
+						submenu: [{
 								name: '全部',
 								value: '5,6,7',
 							},
@@ -587,8 +484,7 @@
 					{
 						name: '维修状态', //选择
 						type: 'hierarchy',
-						submenu: [
-							{
+						submenu: [{
 								name: '全部', //设为默认
 								value: '8,9',
 							},
@@ -609,8 +505,7 @@
 				title: '分拣处理',
 				tab_scroll: 0,
 				tab_cur: 0,
-				nav_list: [
-					{
+				nav_list: [{
 						name: '物品信息',
 						child: [],
 					},
@@ -623,8 +518,7 @@
 						child: [],
 					},
 				],
-				radiolist1: [
-					{
+				radiolist1: [{
 						name: '待抛售',
 						value: '1',
 					},
@@ -639,8 +533,7 @@
 				],
 				radiovalue1: '',
 				radiovalue2: '',
-				radiolist2: [
-					{
+				radiolist2: [{
 						name: '待送修',
 						value: '1',
 					},
@@ -720,11 +613,20 @@
 		},
 		onShow() {
 			let that = this;
-			uni.$once('updatethird', function (data) {
+			uni.$once('updatethird', function(data) {
 				that.thirdInfo = data;
 			});
 		},
 		methods: {
+			// clear
+			clear() {
+				// 运营中心id
+				this.centerId = 0;
+				// 物流公司
+				this.logisticsCompany = '';
+				// 物流单号
+				this.logisticsNo = '';
+			},
 			// 维修失败
 			empMaintainFail(e) {
 				let promise = {
@@ -774,6 +676,8 @@
 					sortId: this.sortId,
 					maintainId: this.maintainId,
 					maintainVoucher: img.join(','),
+					deviceNo: this.deviceNo,
+					deviceId: this.deviceId
 				};
 				console.log(promise);
 				empUploadMaintainVoucher(promise).then((res) => {
@@ -791,7 +695,7 @@
 			falseshowMain(e) {
 				let promise = {
 					sortId: e.sortId,
-					maintainId: e.undersellApprove.maintainId,
+					maintainId: e.maintainApprove.maintainId,
 					status: '2',
 				};
 				storeAdminMaintainApprove(promise).then((res) => {
@@ -888,6 +792,8 @@
 			},
 			// 点击上收维修凭证
 			showMainImg1(e) {
+				console.log(e.deviceId)
+				this.deviceId = e.deviceId
 				this.maintainId = e.maintainApprove.maintainId;
 				this.sortId = e.sortId;
 				this.yunShowImgMain = true;
@@ -1355,15 +1261,19 @@
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
 	@import '@/static/common.css';
+
 	page {
 		background: #f0f0f0;
 		padding-top: 100rpx;
+		padding-bottom: 200rpx;
 		// padding: 100rpx 21rpx 0rpx 21rpx;
 	}
+
 	.button {
 		margin-top: 20rpx;
 		display: flex;
 		justify-content: flex-end;
+
 		view {
 			min-width: 143rpx;
 			height: 55rpx;
@@ -1378,6 +1288,7 @@
 			align-items: center;
 			justify-content: center;
 		}
+
 		.receipt {
 			padding: 9rpx 17rpx;
 			background: linear-gradient(90deg, #ff6868 0%, #ea1515 100%);
@@ -1389,6 +1300,7 @@
 			font-weight: 400;
 		}
 	}
+
 	.bottomView {
 		position: fixed;
 		bottom: 0px;
@@ -1400,12 +1312,15 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
 	.transform {
 		// transform: translateX(100rpx);
 		display: none;
 	}
+
 	.yunShow-top {
 		padding: 26rpx 28rpx 28rpx 28rpx;
+
 		.yunShow-title {
 			font-size: 36rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
@@ -1414,31 +1329,37 @@
 			text-align: center;
 		}
 	}
+
 	.yunShow-item {
 		display: flex;
 		align-items: center;
 		margin-top: 22rpx;
+
 		.left {
 			font-size: 31rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #232323;
 		}
+
 		.select {
 			flex: 1;
 			margin-left: 11.45rpx;
 		}
+
 		.input {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 		}
+
 		.inputAddress {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 			flex: 1;
 			padding: 9rpx 11rpx;
+
 			.copy {
 				width: 141rpx;
 				height: 53rpx;
@@ -1454,8 +1375,10 @@
 			}
 		}
 	}
+
 	.yunShow-bottom {
 		display: flex;
+
 		view {
 			width: 267rpx;
 			height: 99rpx;
@@ -1469,6 +1392,7 @@
 			color: #232323;
 		}
 	}
+
 	.goXiu {
 		width: 313rpx;
 		height: 82rpx;
@@ -1481,18 +1405,22 @@
 		font-weight: 500;
 		color: #ffffff;
 	}
+
 	.transformRight {
 		transform: translateX(-100rpx);
 	}
+
 	.radio {
 		width: 38rpx;
 		height: 38rpx;
 		border-radius: 38rpx;
 		border: 2rpx solid #cecece;
 	}
+
 	.radio-red {
 		background-color: #ff3a31;
 	}
+
 	.tips {
 		justify-content: space-between;
 		display: flex;
@@ -1502,10 +1430,11 @@
 		}
 	}
 
-	.cu-card.article > .cu-item {
+	.cu-card.article>.cu-item {
 		.title {
 			padding: 0 0 10rpx 0;
 		}
+
 		.content {
 			uni-image {
 				width: 5.4em;
@@ -1605,9 +1534,11 @@
 	.cu-modal {
 		z-index: 999;
 	}
+
 	.cu-form-group {
 		min-height: 45px;
 	}
+
 	.group_3 {
 		background-color: rgba(255, 255, 255, 1);
 		border-radius: 6px;
@@ -1708,6 +1639,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.tag_33 {
 		background-color: #fff4e5;
 		border-radius: 10px;
@@ -1716,6 +1648,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.text_33 {
 		overflow-wrap: break-word;
 		color: #e29140;
@@ -1726,6 +1659,7 @@
 		white-space: nowrap;
 		line-height: 17px;
 	}
+
 	.tag_44 {
 		background-color: #ebf6ff;
 		border-radius: 10px;
@@ -1734,6 +1668,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.text_44 {
 		overflow-wrap: break-word;
 		color: #1190d6;
@@ -1744,6 +1679,7 @@
 		white-space: nowrap;
 		line-height: 17px;
 	}
+
 	.tag_55 {
 		background-color: #ffef95;
 		border-radius: 10px;
@@ -1752,6 +1688,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.text_55 {
 		overflow-wrap: break-word;
 		color: #bc890e;
@@ -1762,6 +1699,7 @@
 		white-space: nowrap;
 		line-height: 17px;
 	}
+
 	.tag_66 {
 		background-color: #ef2727;
 		border-radius: 10px;
@@ -1770,6 +1708,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.text_66 {
 		overflow-wrap: break-word;
 		color: #ffffff;
@@ -1780,6 +1719,7 @@
 		white-space: nowrap;
 		line-height: 17px;
 	}
+
 	.tag_77 {
 		background-color: #e5fcf1;
 		border-radius: 10px;
@@ -1788,6 +1728,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.text_77 {
 		overflow-wrap: break-word;
 		color: #00c082;
@@ -1798,6 +1739,7 @@
 		white-space: nowrap;
 		line-height: 17px;
 	}
+
 	.tag_88 {
 		background-color: #ffdbdb;
 		border-radius: 10px;
@@ -1806,6 +1748,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.text_88 {
 		overflow-wrap: break-word;
 		color: #f76540;
@@ -1816,6 +1759,7 @@
 		white-space: nowrap;
 		line-height: 17px;
 	}
+
 	.text_12 {
 		overflow-wrap: break-word;
 		color: rgba(17, 144, 214, 1);
