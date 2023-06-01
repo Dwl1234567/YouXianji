@@ -114,15 +114,18 @@
 			},
 			// 上架
 			shelves(e) {
-				putaway(e.reorganizeId).then((res) => {
-					if (res.code === 200) {
-						uni.showToast({
-							icon: 'none',
-							title: '操作成功',
-						});
-						this.getDataList();
-					}
-				});
+				uni.navigateTo({
+					url: '/pages/erp/maintenance/diandianUnpload?reorganizeId=' + e.reorganizeId + '&modelId=' + e.modelId
+				})
+				// putaway(e.reorganizeId).then((res) => {
+				// 	if (res.code === 200) {
+				// 		uni.showToast({
+				// 			icon: 'none',
+				// 			title: '操作成功',
+				// 		});
+				// 		this.getDataList();
+				// 	}
+				// });
 			},
 			// 抛售
 			sell(e) {

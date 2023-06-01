@@ -891,7 +891,7 @@
 				var receiverId = uni.getStorageSync('receiverId')
 				let load_message = {
 					senderId,
-					storeId: uni.getStorageSync(' '),
+					storeId: uni.getStorageSync('storeId'),
 					receiverId,
 					context: message,
 					contextType: '3',

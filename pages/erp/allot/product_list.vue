@@ -7,42 +7,43 @@
 				<text class="cuIcon-scan" @tap="snTap" />
 			</block>
 		</bar-search-title>
-		
-		
-		
+
+
+
 		<!--<filterDropdown :menuTop="filtertopnum" :filterData="filterData" :defaultSelected="defaultSelected" :updateMenuName="true"
 			@confirm="confirm" @change="changeFuc" dataFormat="Object"></filterDropdown>-->
 
 
 		<view class="margin-lr-sm">
 			<view class="cu-card article">
-				<view class="cu-item margin-tb-sm bg-white padding-sm radius-4" v-for="(item,index) in dataList" @click="tapgoods(item)">
+				<view class="cu-item margin-tb-sm bg-white padding-sm radius-4" v-for="(item,index) in dataList"
+					@click="tapgoods(item)">
 					<view class="content">
-						<image :src="item.image" mode="aspectFill">
+						<image :src="$httpImage + item.frontPhoto" mode="aspectFill">
 						</image>
 						<view class="desc">
-							<view class="text-deepblue text-lg">{{item.name}}</view>
+							<view class="text-deepblue text-lg">{{item.title}}</view>
 							<view class="text-content">
-								<view class="text-sm">调拨价:<text class="text-red">{{item.peer_price}}</text>元 成本:{{item.cost_price}}元
+								<view class="text-sm">调拨价:<text class="text-red">{{item.allotPrice}}</text>元
+									成本:{{item.recyclePrice + item.maintainPrice}}元
 								</view>
-								<view class="text-sm">序列号：{{item.sn}} <text
-										class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)">复制</text>
+								<view class="text-sm">序列号：{{item.deviceNo}} <text class="margin-left-sm cuIcon-copy text-orange"
+										@tap="copy(item.deviceNo)">复制</text>
 								</view>
 								<!-- <view class="text-sm">销售价：{{item.sales_price}}元</view> -->
-								<view class="text-sm">入库时间：{{item.createtime}}</view>
+								<view class="text-sm">入库时间：{{item.updateTime}}</view>
 							</view>
-							<view>
+							<!-- 	<view>
 								<view class="cu-tag bg-red light sm round">{{item.cate_name}}</view>
 								<view class="cu-tag bg-blue light sm round">{{item.brand_name}}</view>
-								<!-- <view class="cu-tag bg-green light sm round" @tap="baogao">验机报告</view> -->
-							</view>
+							</view> -->
 						</view>
 					</view>
 				</view>
 				<!--分页-->
 			</view>
 
-			
+
 		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -57,8 +58,8 @@
 	import _tool from '@/utils/tools.js'; //工具函数
 	import {
 		//erpProductGetBasicData,
-		erpproductgetallotlist
-	} from "@/api/erpapi.js";
+		getAllotedDeviceList
+	} from "@/api/erp.js";
 	import {
 		AdsIndex,
 		ProductLists
@@ -91,7 +92,7 @@
 				bid: '',
 				mid: '',
 				sid: '',
-				
+
 				modalName: null,
 				pageIndex: 1,
 				pageLimit: 10,
@@ -103,13 +104,14 @@
 				machine_id: '',
 				snNumber: '',
 				storeName: '',
-				filtertopnum:'90',//筛选条高度
+				filtertopnum: '90', //筛选条高度
 			}
 		},
 		onLoad(e) {
 			// #ifdef APP-PLUS
 			this.filtertopnum = 160;
 			// #endif
+			this.storeId = e.storeId
 			this.erpproductgetlistFuc();
 		},
 		//下拉刷新
@@ -134,25 +136,37 @@
 		methods: {
 
 			tapgoods(info) {
-				
-				let selectInfo = {
-					goods_id: info.id
+				const list = uni.getStorageSync('model_list') || []
+				if (list) {
+					let isTrue = false
+					list.map(item => {
+						if (item.recycleFormId == info.recycleFormId) {
+							uni.showToast({
+								icon: 'none',
+								title: '请误重复添加',
+							});
+							isTrue = true
+						}
+					})
+					if (!isTrue) {
+						list.push(info)
+						uni.setStorageSync('model_list', list)
+						uni.navigateTo({
+							url: '/pages/erp/allot/allot_push'
+						})
+					}
+				} else {
+					list.push(info)
+					uni.setStorageSync('model_list', list)
+					uni.navigateTo({
+						url: '/pages/erp/allot/allot_push'
+					})
 				}
-				// 1. 获取当前页面栈实例（此时最后一个元素为当前页）
-				let pages = getCurrentPages()
-				// 2. 上一页面实例
-				// 注意是length长度，所以要想得到上一页面的实例需要 -2
-				// 若要返回上上页面的实例就 -3，以此类推
-				let prevPage = pages[pages.length - 2]
-				// 3. 给上一页面实例绑定getValue()方法和参数（注意是$vm）
-				prevPage.$vm.getValue(selectInfo)
-				// 4. 返回上一页面
-				uni.navigateBack({
-					delta: 1 // 返回的页面数
-				})
+
+
 			},
-			
-			
+
+
 			loadData() {
 				let that = this;
 				AdsIndex({}).then(res => {
@@ -162,19 +176,20 @@
 			erpproductgetlistFuc() {
 				let that = this;
 				let paramsData = {
-					'page': this.pageIndex,
-					'pagelist': this.pageLimit,
-					'keyword': this.storeName
+					'pageNum': this.pageIndex,
+					'pageSize': this.pageLimit,
+					'modelName': this.storeName,
+					'storeId': this.storeId
 				}
-				erpproductgetallotlist(paramsData).then(res => {
-					let data = res.data.data;
+				getAllotedDeviceList(paramsData).then(res => {
+					let data = res.rows;
 					if (that.ifBottomRefresh) {
 						that.dataList = that.dataList.concat(data)
 					} else {
 						that.dataList = data
 					}
 					that.ifBottomRefresh = false
-					that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+					that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 				})
 			},
 			searchTap(e) {
@@ -242,7 +257,7 @@
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
-	
+
 
 	.cu-card.article>.cu-item {
 

@@ -37,7 +37,7 @@
 											<text class="text_6">{{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_8"><text>回收预估价: {{item.firstPrice}}</text></text>
+												<text class="text_8"><text>预估回收价: {{item.firstPrice}}</text></text>
 												<text class="text_9">
 													<view v-if="item.transactionPrice - item.firstPrice > 0">
 														加价 {{item.transactionPrice - item.firstPrice}}
@@ -45,7 +45,7 @@
 												</text>
 											</view>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_110"><text>回收价: {{item.transactionPrice}}</text></text>
+												<text class="text_110"><text>回执回收价: {{item.transactionPrice}}</text></text>
 												<text class="text_9"></text>
 											</view>
 										</view>
@@ -94,7 +94,7 @@
 											<text class="text_6">{{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_8">回收预估价: {{item.firstPrice}}</text>
+												<text class="text_8">预估回收价: {{item.firstPrice}}</text>
 												<text class="text_9"></text>
 											</view>
 										</view>
@@ -143,7 +143,7 @@
 											<text class="text_6">{{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_8"><text>回收预估价: {{item.firstPrice}}</text></text>
+												<text class="text_8"><text>预估回收价: {{item.firstPrice}}</text></text>
 												<text class="text_9">
 													<view v-if="item.transactionPrice - item.firstPrice > 0">
 														加价 {{item.transactionPrice - item.firstPrice}}
@@ -151,7 +151,7 @@
 												</text>
 											</view>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_110"><text>回收价: {{item.transactionPrice}}</text></text>
+												<text class="text_110"><text>回执回收价: {{item.transactionPrice}}</text></text>
 												<text class="text_9"></text>
 											</view>
 										</view>
@@ -204,7 +204,7 @@
 											<text class="text_6">{{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_8"><text>回收预估价: {{item.firstPrice}}</text></text>
+												<text class="text_8"><text>预估回收价: {{item.firstPrice}}</text></text>
 												<text class="text_9">
 													<view v-if="item.transactionPrice - item.firstPrice > 0">
 														加价 {{item.transactionPrice - item.firstPrice}}
@@ -212,7 +212,7 @@
 												</text>
 											</view>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_110"><text>回收价: {{item.transactionPrice}}</text></text>
+												<text class="text_110"><text>回执回收价: {{item.transactionPrice}}</text></text>
 												<text class="text_9"></text>
 											</view>
 										</view>
@@ -268,7 +268,7 @@
 											<text class="text_6">{{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_8"><text>回收预估价: {{item.firstPrice}}</text></text>
+												<text class="text_8"><text>预估回收价: {{item.firstPrice}}</text></text>
 												<text class="text_9">
 													<view v-if="item.transactionPrice - item.firstPrice > 0">
 														加价 {{item.transactionPrice - item.firstPrice}}
@@ -276,7 +276,7 @@
 												</text>
 											</view>
 											<view class="text-wrapper_2 flex-row justify-between">
-												<text class="text_110"><text>回收价: {{item.transactionPrice}}</text></text>
+												<text class="text_110"><text>回执回收价: {{item.transactionPrice}}</text></text>
 												<text class="text_9"></text>
 											</view>
 										</view>

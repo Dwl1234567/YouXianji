@@ -2,7 +2,7 @@
 	<view class="page flex-col">
 		<view class="block_1 flex-col">
 			<view class="section_2 flex-row justify-between">
-				<text class="text_2">最终价格</text>
+				<text class="text_2">回执回收价</text>
 				<view class="input_1 flex-col" style="width: 200px">
 					<input type="text" v-model="receiptPrice" />
 				</view>
@@ -33,39 +33,6 @@
 				</view>
 				<text class="text_9">本机价格影响因素</text>
 				<view class="box_3 flex-row justify-between">
-					<!-- <text class="paragraph_2">
-            物品信息
-            <br />
-            （4）
-          </text>
-          <view class="box_4 flex-col">
-            <view class="box_5 flex-col">
-              <view class="box_6 flex-col">
-                <image
-                  class="image_2"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_zhijianbaogaoduibitu/SketchPngd3fd274ae21490f8ca656e84d06df9fc9fffbfc9f5d58a2234e0767ad001546b.png"
-                />
-                <image
-                  class="image_3"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_zhijianbaogaoduibitu/SketchPngc420b376bb8ff4dfc30f586ea7952e2b6d13a71806d890ce8b0a49b8c1a9c4ea.png"
-                />
-                <view class="image-wrapper_1 flex-col">
-                  <image
-                    class="image_4"
-                    referrerpolicy="no-referrer"
-                    src="/static/lanhu_zhijianbaogaoduibitu/SketchPng771ba99fef016892c174d1418e8f2a6c50897b554c5a1ff95bca7755ca3b1964.png"
-                  />
-                </view>
-              </view>
-            </view>
-          </view>
-          <text class="paragraph_3">
-            物品信息
-            <br />
-            （4）
-          </text> -->
 					<view id="echarts" class="echarts" @click="echarts.onClick" :prop="optionData"
 						:change:prop="echarts.updateEcharts"></view>
 				</view>
@@ -252,6 +219,7 @@
 				<text class="text_72">提交订单</text>
 			</button>
 		</view>
+		123
 	</view>
 </template>
 <script>

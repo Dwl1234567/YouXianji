@@ -7,18 +7,13 @@
 		</bar-title>
 
 		<view class="margin bg-white radius-4">
+			<view class="cu-form-group" @tap="goMenDian">
+				<view class="title">门店选择</view>
+				{{mendians}}
+			</view>
 			<view class="cu-form-group">
 				<view class="title">货品</view>
 				<view class="cu-capsule radius">
-					<view class="padding-right" @tap="scanTap">
-						<view class="cu-tag bg-blue">
-							<text class="cuIcon-scan text-white"></text>
-						</view>
-						<view class="cu-tag line-blue">
-							扫
-						</view>
-					</view>
-
 					<view class="" @tap="selectAllotTap">
 						<view class="cu-tag bg-green">
 							<text class="cuIcon-check text-white"></text>
@@ -30,39 +25,39 @@
 				</view>
 			</view>
 			<view class="cu-list menu-avatar">
-				<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''"
-					v-for="(item,index) in goodsList" :key="index" @touchstart="ListTouchStart"
-					@touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index">
-					
+				<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in goodsList"
+					:key="index" @touchstart="ListTouchStart" @touchmove="ListTouchMove" @touchend="ListTouchEnd"
+					:data-target="'move-box-' + index">
+
 					<view class="cu-item-box">
-						<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ (item.image) +')'}]">
+						<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ ($httpImage + item.frontPhoto) +')'}]">
 						</view>
 						<view class="content">
-							<view class="text-grey">{{item.name}}</view>
+							<view class="text-grey">{{item.title}}</view>
 							<view class="text-gray text-sm">
-								收:<text class="text-red margin-right-xs">{{item.cost_price}}</text> 调:<text
-									class="margin-right-xs">{{item.peer_price}}</text> 销:<text
-									class="margin-right-xs">{{item.sales_price}}</text>
+								收:<text class="text-red margin-right-xs">{{item.recyclePrice}}</text> 调:<text
+									class="margin-right-xs">{{item.allotPrice}}</text> 销:<text
+									class="margin-right-xs">{{item.sellPrice}}</text>
+							</view>
+							<view class="text-gray text-sm">
+								成本价：<text class="text-red margin-right-xs">{{item.recyclePrice + item.maintainPrice}}</text>
 							</view>
 						</view>
-						<view class="action">
+						<!-- <view class="action">
 							<button class="cu-btn print line-red" @click="dayinFuc(item)">打印</button>
-						</view>
+						</view> -->
 						<view class="move">
 							<!-- <view class="bg-blue" @tap="editTap">编辑</view> -->
 							<!-- <view class="bg-grey" @tap="delectTap">打印</view> -->
 							<view class="bg-red" @tap="delectTap(index)">删除</view>
 						</view>
-						
+
 					</view>
-					<view class="margin-left">
+					<!-- <view class="margin-left">
 						选择入库仓库：
-						<!--v-if 未选择仓库-->
-							<button class="cu-btn ruku line-gray" @click="rukuFuc(index)">{{item.warehouse_name ? item.warehouse_name :'未入仓'}}</button>
-						<!--v-else 已选择仓库-->
-							<!--<button class="cu-btn ruku line-green" @click="rukuFuc(item.id)">已入仓</button>-->
-						<!--/if-->
-					</view>
+						<button class="cu-btn ruku line-gray"
+							@click="rukuFuc(index)">{{item.warehouse_name ? item.warehouse_name :'未入仓'}}</button>
+					</view> -->
 				</view>
 			</view>
 			<view class="cu-form-group">
@@ -115,7 +110,7 @@
 				<input placeholder="请输入备注" v-model="remark" name="input"></input>
 			</view>
 		</view>
-		
+
 		<view class="orderview-footer-fixed">
 			<view class="flex flex-direction margin-lg">
 				<button class="cu-btn bg-red radius-4 margin-tb-sm lg" @click="confirmFuc">确定</button>
@@ -165,12 +160,8 @@
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import {
-		erpProductGetAllotdata,
-		erpDayin,
-		updatesingletransfer,
-		selladd,
-		erpProductGetBasicData
-	} from "@/api/erpapi.js";
+		storeAllot
+	} from "@/api/erp.js";
 	import {
 		raiseUpload
 	} from "@/api/upload.js";
@@ -181,11 +172,13 @@
 		},
 		data() {
 			return {
-				thatgoodsindex:'',
-				cangkushow:false,
-				columns:[],
-				columnData:[],
-				filterbasicList:{},
+				storeId: null,
+				mendians: '选择门店',
+				thatgoodsindex: '',
+				cangkushow: false,
+				columns: [],
+				columnData: [],
+				filterbasicList: {},
 				scrollLeft: 0,
 				switchGD: false,
 				modalName: null,
@@ -203,10 +196,10 @@
 				goods_id: '',
 				goodsList: [],
 				imgList: [],
-				upgetimgList:[],
-				remark:'',//备注
-				account:'', //付款账户信息
-				allmoney:'',//调拨总价
+				upgetimgList: [],
+				remark: '', //备注
+				account: '', //付款账户信息
+				allmoney: 0, //调拨总价
 				warehouse_id: '', //主仓库
 				warehouse_name: '',
 				partition_id: '', //分仓库
@@ -214,110 +207,131 @@
 			}
 		},
 		onLoad() {
-			this.erpProductGetBasicDataFuc();
+			const mendian = uni.getStorageSync('mendian_list');
+			if (mendian) {
+				this.storeId = mendian.storeId
+				this.mendians = mendian.storeName
+			}
+			const modelList = uni.getStorageSync('model_list');
+			if (modelList) {
+				this.goodsList = modelList
+				modelList.map(item => {
+					this.allmoney = Number(this.allmoney) + item.recyclePrice + item.maintainPrice
+				})
+			}
 		},
 		onShow() {
 
 		},
 		methods: {
-			// 获取筛选项
-			erpProductGetBasicDataFuc() {
-				
-				let that = this;
-				erpProductGetBasicData({}).then(res => {
-					let data = res.data;
-					that.filterbasicInfo = data;
-					that.filterbasicList = data.house;
-					let houseData = data.house;
-					console.log('接口读取->', that.filterbasicInfo);
-					//that.copycanku();
-					this.columns[0] = houseData.map((iii, ddd) => {
-						// let info = {
-						// 	value: iii.value,
-						// 	lable: iii.text
-						// }
-						return iii.text
-					});
-					if (houseData[0].children.length == 0) {
-						this.columns[1] = [无分仓]
-					} else {
-						this.columns[1] = houseData[0].children.map((e) => {
-							// let info = {
-							// 	value: iii.value,
-							// 	lable: iii.text
-							// }
-							return e.text
-						});
-					}
-					const picker = this.$refs.uPicker
-					picker.setColumns(this.columns)
-								
-								
-					this.columnData = houseData.map((iiii, dddd) => {
-						let child = [];
-						if (iiii.children.length == 0) {
-							child = [{
-								value: 0,
-								lable: '无分仓'
-							}, ]
-						} else {
-							child = iiii.children.map((cii, cdd) => {
-								return {
-									value: cii.value,
-									lable: cii.text
-								}
-							})
-						}
-								
-						return child;
-					});
+			// 跳转门店选择 
+			goMenDian() {
+				uni.navigateTo({
+					url: '/pages/erp/allot/mendian_list'
 				})
 			},
-			checkruku(){
+			// 获取筛选项
+			// erpProductGetBasicDataFuc() {
+
+			// 	let that = this;
+			// 	erpProductGetBasicData({}).then(res => {
+			// 		let data = res.data;
+			// 		that.filterbasicInfo = data;
+			// 		that.filterbasicList = data.house;
+			// 		let houseData = data.house;
+			// 		console.log('接口读取->', that.filterbasicInfo);
+			// 		//that.copycanku();
+			// 		this.columns[0] = houseData.map((iii, ddd) => {
+			// 			// let info = {
+			// 			// 	value: iii.value,
+			// 			// 	lable: iii.text
+			// 			// }
+			// 			return iii.text
+			// 		});
+			// 		if (houseData[0].children.length == 0) {
+			// 			this.columns[1] = [无分仓]
+			// 		} else {
+			// 			this.columns[1] = houseData[0].children.map((e) => {
+			// 				// let info = {
+			// 				// 	value: iii.value,
+			// 				// 	lable: iii.text
+			// 				// }
+			// 				return e.text
+			// 			});
+			// 		}
+			// 		const picker = this.$refs.uPicker
+			// 		picker.setColumns(this.columns)
+
+
+			// 		this.columnData = houseData.map((iiii, dddd) => {
+			// 			let child = [];
+			// 			if (iiii.children.length == 0) {
+			// 				child = [{
+			// 					value: 0,
+			// 					lable: '无分仓'
+			// 				}, ]
+			// 			} else {
+			// 				child = iiii.children.map((cii, cdd) => {
+			// 					return {
+			// 						value: cii.value,
+			// 						lable: cii.text
+			// 					}
+			// 				})
+			// 			}
+
+			// 			return child;
+			// 		});
+			// 	})
+			// },
+			checkruku() {
 				let checkstatus = false;
-				this.goodsList.forEach((item,index)=>{
-					if(!item.warehouse_name){
+				this.goodsList.forEach((item, index) => {
+					if (!item.warehouse_name) {
 						checkstatus = true;
 					}
 				})
 				return checkstatus;
 			},
-			closecheck(){
+			closecheck() {
 				this.cangkushow = false;
 			},
 			// 确认提交
-			confirmFuc(){
-				if(!this.goodsList.length>0){
+			confirmFuc() {
+				if (!this.goodsList.length > 0) {
 					return this.$u.toast('请选择货品！');
 				}
-				
-				if(this.checkruku()){
-					return this.$u.toast('请入库');
-				}
-				let goodsinfojson = this.goodsList.map((item,index)=>{
+				let goodsinfojson = this.goodsList.map((item, index) => {
 					let info = {
-						sn_id:item.sn_id,
-						warehouse_id:item.warehouse_id,
-						partition_id:item.partition_id
+						deviceId: item.deviceId,
+						qualityInfoId: item.qualityInfoId,
+						recycleFormId: item.recycleFormId,
+						allotNumber: '1'
 					}
 					return info;
 				})
-				// console.log(goodsinfojson);
+
 				let params = {
-					nums:this.goodsList.length,
-					money:this.allmoney,
-					goodsinfo:JSON.stringify(goodsinfojson),
-					remark:this.remark,
-					is_allot:'1',
+					approveStore: this.storeId,
+					storeAllotList: goodsinfojson,
+					remark: this.remark
 				}
-				selladd(params).then(res=>{
+				console.log(params, '222222');
+				storeAllot(params).then(res => {
 					this.$u.toast('提交成功！');
 					setTimeout(() => {
-						location.reload()
+						this.storeId = null
+						this.mendians = '选择门店'
+						this.goodsList = []
+						this.allmoney = 0
+						uni.removeStorageSync('model_list')
+						uni.removeStorageSync('mendian_list')
+						uni.navigateTo({
+							url: '/pages/tabbarerp/home'
+						})
 					}, 1000);
 				})
 			},
-			
+
 			// 多级联动  ---- start
 			changeHandler(e) {
 				const {
@@ -343,7 +357,8 @@
 				let cindex = e.indexs;
 				//console.log('this.filterbasicList',this.filterbasicList[0]);
 				this.goodsList[this.thatgoodsindex].warehouse_id = this.filterbasicList[cindex[0]].value;
-				this.goodsList[this.thatgoodsindex].warehouse_name = this.filterbasicList[cindex[0]].text+' - '+this.filterbasicList[cindex[0]].children[cindex[1]].text;
+				this.goodsList[this.thatgoodsindex].warehouse_name = this.filterbasicList[cindex[0]].text + ' - ' + this
+					.filterbasicList[cindex[0]].children[cindex[1]].text;
 				this.goodsList[this.thatgoodsindex].partition_id = this.filterbasicList[cindex[0]].children[cindex[1]].value;
 				this.goodsList[this.thatgoodsindex].partition_name = this.filterbasicList[cindex[0]].children[cindex[1]].text;
 				this.cangkushow = false;
@@ -358,15 +373,15 @@
 				console.log(list, 'B页面传递的数据')
 				this.goods_id = list.goods_id;
 				let checkSnID = false;
-				this.goodsList.forEach((item,index)=>{
-					if(item.sn_id==this.goods_id){
+				this.goodsList.forEach((item, index) => {
+					if (item.sn_id == this.goods_id) {
 						checkSnID = true;
 					}
 				})
-				if(!checkSnID){
+				if (!checkSnID) {
 					this.getoncegoods();
 				}
-				
+
 			},
 			getoncegoods() {
 				erpProductGetAllotdata({
@@ -402,16 +417,16 @@
 			},
 			editTap() {},
 			delectTap(index) {
-				this.goodsList.splice(index,1);
+				this.goodsList.splice(index, 1);
 			},
 			deliveryTap() {
 				let that = this;
 				updatesingletransfer({
-					allot_id:'',
-					allot_status:'',
-					remarks:this.remark
-				}).then(res=>{
-					
+					allot_id: '',
+					allot_status: '',
+					remarks: this.remark
+				}).then(res => {
+
 				})
 			},
 			tabSelect(e) {
@@ -459,7 +474,7 @@
 				}
 			},
 			// 使用拍照功能
-			opencamare(){
+			opencamare() {
 				let that = this;
 				let uplength = 9 - Number(that.imgList.length);
 				uni.chooseImage({
@@ -474,14 +489,14 @@
 						}
 						console.log(that.imgList);
 					},
-					complete:function(){
+					complete: function() {
 						that.checkimgshow = false;
 					}
-					
+
 				});
 			},
 			// 使用相册功能
-			openpictrue(){
+			openpictrue() {
 				let that = this;
 				let uplength = 9 - Number(that.imgList.length);
 				uni.chooseImage({
@@ -496,7 +511,7 @@
 						}
 						console.log(that.imgList);
 					},
-					complete:function(){
+					complete: function() {
 						that.checkimgshow = false;
 					}
 				});
@@ -518,36 +533,36 @@
 						console.log(this.imgList);
 					}
 				});
-				
+
 			},
 			// 上传分享图片
-			upShareimg(){
+			upShareimg() {
 				let that = this;
-				if(this.goodsList.length <= 0){
+				if (this.goodsList.length <= 0) {
 					return that.$u.toast('请录入货品');
 				}
 				// if(this.imgList.length <= 0){
 				// 	return that.$u.toast('请上传付款凭证');
 				// }
 				let promisearr = [];
-				that.imgList.forEach((item,index)=>{
-					if(item.indexOf('shousifang') == -1){
+				that.imgList.forEach((item, index) => {
+					if (item.indexOf('shousifang') == -1) {
 						promisearr.push(raiseUpload(item));
-					}else{
+					} else {
 						that.upgetimgList.push(item);
 					}
 				})
-				
-				Promise.all(promisearr).then((res)=>{
-					// console.log(res);
-					res.forEach((iii)=>{
-						that.upgetimgList.push(iii.data.imgurl);
+
+				Promise.all(promisearr).then((res) => {
+						// console.log(res);
+						res.forEach((iii) => {
+							that.upgetimgList.push(iii.data.imgurl);
+						})
 					})
-				})
-				.finally(() => {
-					that.deliveryTap();
-				})
-				
+					.finally(() => {
+						that.deliveryTap();
+					})
+
 			},
 			DelImg(e) {
 				let that = this;
@@ -563,7 +578,7 @@
 			},
 			selectAllotTap() {
 				uni.navigateTo({
-					url: '/pages/erp/allot/product_list'
+					url: '/pages/erp/allot/product_list?storeId=' + this.storeId
 				})
 			},
 			PickerChange(e) {
@@ -593,45 +608,49 @@
 </script>
 
 <style lang="scss">
-	.cu-form-group{
+	.cu-form-group {
 		background-color: unset;
 	}
-	.cu-list{
-		.cu-item{
+
+	.cu-list {
+		.cu-item {
 			position: unset;
 			display: block;
 			padding-right: unset;
-			padding-top:20rpx;
+			padding-top: 20rpx;
 			height: 200rpx;
 			background-color: unset;
 			justify-content: unset;
 			align-items: unset;
-			.cu-item-box{
+
+			.cu-item-box {
 				justify-content: flex-end;
 				height: 100rpx;
 				display: flex;
 				position: relative;
-				.cu-avatar{
+
+				.cu-avatar {
 					left: 10rpx;
 					position: absolute;
 				}
-				.action{
+
+				.action {
 					.print {
 						padding: 20rpx 10rpx;
 						font-size: 24rpx;
 					}
 				}
+
 				.content {
-					left:120rpx;
+					left: 120rpx;
 				}
 			}
-			
+
 			.ruku {
 				padding: 10rpx 20rpx;
 				font-size: 24rpx;
-				margin-right:10rpx;
+				margin-right: 10rpx;
 			}
 		}
 	}
-	
 </style>

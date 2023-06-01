@@ -34,7 +34,7 @@
 								<text class="text_9">{{item.modelName}}</text>
 								<text class="text_10">{{item.deviceLabel}}</text>
 								<text class="text_11">序列号:{{item.deviceNo}}</text>
-								<text class="text_12">回收预估价:{{item.firstPrice}}元</text>
+								<text class="text_12">预估回收价:{{item.firstPrice}}元</text>
 							</view>
 							<view class="tag_1 flex-col"></view>
 						</view>

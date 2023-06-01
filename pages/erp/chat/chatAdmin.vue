@@ -44,11 +44,11 @@
 			<!-- 留言板end -->
 
 			<!-- 主界面 -->
-			<!-- #ifdef H5 -->
+			<!-- #ifdef APP-PLUS -->
 			<view class="content_wrapper" v-if="!showLeaveMessage"
 				:style="{height:'calc(100vh - var(--window-top) - ' + writeBottom + 'px)'}">
 				<!-- #endif -->
-				<!-- #ifndef H5 -->
+				<!-- #ifndef APP-PLUS -->
 				<view class="content_wrapper" v-if="!showLeaveMessage" :style="{height:'calc(100vh - ' + writeBottom + 'px)'}">
 					<!-- #endif -->
 					<view :style="{height:'calc(100% - ' + wrapperHeight + 'px)'}" class="chat_wrapper">
@@ -56,7 +56,7 @@
 							:scroll-with-animation="kefu_scroll_with_animation" :scroll-top="scrollTop">
 
 
-							<view id="scroll-view-content">
+							<view id="scroll-view-content" android:descendantFocusability="blocksDescendants">
 								<view class="status" @tap="showHistory" v-if="isHistory"><text>点击查看历史记录</text></view>
 								<block v-for="(item, index) in messageList">
 									<!-- <view class="status"><text>{{item.datetime}}</text></view> -->
@@ -166,7 +166,7 @@
 							</view>
 						</view>
 
-						<view class="list">
+						<view class="list" v-if="showBottom">
 							<view class="list-dingdan" @tap="selectModelshows">
 								<image src="@/static/fasongdingdan.png"></image>
 							</view>
@@ -246,6 +246,7 @@
 		},
 		data() {
 			return {
+				showBottom: false,
 				senderId: 0,
 				isHistory: true,
 				receiverId: null,
@@ -282,13 +283,13 @@
 				errorTips: '链接中...',
 				selectModel: false,
 				selectModelData: [],
-				writeBottom: -100,
+				writeBottom: 0,
 				kefu_scroll_top: 0,
 				kefu_scroll_with_animation: true,
 				record_scroll_height: 0,
 				navigation_bar_title: '',
 				scrollTop: 0,
-				scrollViewHeight: 400,
+				scrollViewHeight: 0,
 				pageLoad: {
 					pageNum: 1,
 					pageSize: 10
@@ -430,14 +431,18 @@
 			// 打开产品弹框
 			selectModelshow() {
 				// this.selectModel = true
-				this.writeBottom = 0
+				// this.writeBottom = 0
+				this.showBottom = true
 			},
 			scrollToBottom() {
 				this.$nextTick(() => {
 					uni.createSelectorQuery().in(this).select('#scroll-view-content').boundingClientRect((res) => {
+						console.log(res, '0000000000000')
 						let top = res.height - this.scrollViewHeight;
 						if (top > 0) {
-							this.scrollTop = top;
+							console.log(top, '99999999')
+							this.scrollTop = top + 10000;
+							console.log(this.scrollTop)
 						}
 					}).exec()
 				})
@@ -546,10 +551,14 @@
 			switch_show_tool: function(value) {
 				if (!value) {
 					this.showTool = false;
-					this.writeBottom = -100;
+					// this.writeBottom = -100;
+					console.log(222)
+					this.showBottom = false
 				} else {
 					this.showTool = value;
-					this.writeBottom = 170;
+					// this.writeBottom = 170;
+					this.showBottom = true
+					console.log(222)
 					this.scroll_into_footer();
 				}
 			},
@@ -1316,7 +1325,15 @@
 				var that = this
 				this.showTool = false;
 				that.scroll_into_footer(0, 99993)
-				that.writeBottom = e.detail.height ? e.detail.height : -100;
+				if (e.detail.height) {
+					that.writeBottom = e.detail.height
+				} else {
+					that.writeBottom = 0
+					this.showBottom = true;
+				}
+				// that.writeBottom = e.detail.height ? e.detail.height : this.showBottom = true;
+				// console.log(222)
+				// this.showBottom = true
 			},
 			// 输入框输入
 			textarea_input: function(e) {
@@ -1356,7 +1373,10 @@
 				var that = this
 				that.kefuMessageFocus = false;
 				if (!that.showTool) {
-					that.writeBottom = -100;
+					// that.writeBottom = -100;
+					console.log(222)
+					this.showBottom = false
+					console.log(this.showBottom)
 				}
 
 				if (parseInt(that.config.input_status_display) == 0) {
@@ -1469,7 +1489,7 @@
 	}
 
 	#scroll-view-content {
-		padding-bottom: 250rpx
+		padding-bottom: 240rpx
 	}
 
 	.kefu_container {

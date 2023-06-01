@@ -50,6 +50,7 @@
 			that.sendFirst();
 			uni.onSocketMessage(function(res) {
 				let msg = JSON.parse(res.data)
+				console.log(msg, '44444444')
 				if (msg.code === 200) {
 					if (msg.data && msg.data.messageType == 4) {
 						that.messagesUserList = []

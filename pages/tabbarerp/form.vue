@@ -21,7 +21,7 @@
 		</view>
 		<view class="pic padding flex justify-between align-center">
 			<view class='cu-avatar xl radius' @tap="uploadImg(0)"
-				:style="{'background-image': !phoneImgArr[0] ?  addpicicon : 'url('+phoneImgArr[0]+')' }">
+				:style="{'background-image': !phoneImgArr[0] ?  addpicicon : 'url('+$httpImage + phoneImgArr[0]+')' }">
 				正面
 				<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[0] ? '#111f3a':'#dd514c'}">
 					<view :class="phoneImgArr[0] ? 'translate45':''">
@@ -30,7 +30,7 @@
 				</view>
 			</view>
 			<view class='cu-avatar xl radius' @tap="uploadImg(1)"
-				:style="{'background-image': !phoneImgArr[1] ?  addpicicon : 'url('+phoneImgArr[1]+')' }">
+				:style="{'background-image': !phoneImgArr[1] ?  addpicicon : 'url('+$httpImage +phoneImgArr[1]+')' }">
 				背面<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[1] ? '#111f3a':'#dd514c'}">
 					<view :class="phoneImgArr[1] ? 'translate45':''">
 						<u-icon name="plus" color="#ffffff" size="10" @click="deleteImg(1)"></u-icon>
@@ -38,7 +38,7 @@
 				</view>
 			</view>
 			<view class='cu-avatar xl radius' @tap="uploadImg(2)"
-				:style="{'background-image': !phoneImgArr[2] ?  addpicicon : 'url('+phoneImgArr[2]+')' }">
+				:style="{'background-image': !phoneImgArr[2] ?  addpicicon : 'url('+$httpImage +phoneImgArr[2]+')' }">
 				顶面
 				<view class="cu-tag badge" :style="{backgroundColor: !phoneImgArr[2] ? '#111f3a':'#dd514c'}">
 					<view :class="phoneImgArr[2] ? 'translate45':''">
@@ -47,7 +47,7 @@
 				</view>
 			</view>
 			<view class='cu-avatar xl radius' @tap="uploadImg(3)"
-				:style="{'background-image': !phoneImgArr[3] ?  addpicicon : 'url('+phoneImgArr[3]+')' }">
+				:style="{'background-image': !phoneImgArr[3] ?  addpicicon : 'url('+$httpImage +phoneImgArr[3]+')' }">
 				底面
 				<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[3] ? '#111f3a':'#dd514c'}">
 					<view :class="phoneImgArr[3] ? 'translate45':''">
@@ -58,7 +58,7 @@
 		</view>
 		<view class="pic padding flex justify-between align-center">
 			<view class='cu-avatar xl radius' @tap="uploadImg(4)"
-				:style="{'background-image': !phoneImgArr[4] ?  addpicicon : 'url('+phoneImgArr[4]+')' }">
+				:style="{'background-image': !phoneImgArr[4] ?  addpicicon : 'url('+$httpImage +phoneImgArr[4]+')' }">
 				左侧
 				<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[4] ? '#111f3a':'#dd514c'}">
 					<view :class="phoneImgArr[4] ? 'translate45':''">
@@ -67,7 +67,7 @@
 				</view>
 			</view>
 			<view class='cu-avatar xl radius' @tap="uploadImg(5)"
-				:style="{'background-image': !phoneImgArr[5] ?  addpicicon : 'url('+phoneImgArr[5]+')' }">
+				:style="{'background-image': !phoneImgArr[5] ?  addpicicon : 'url('+$httpImage +phoneImgArr[5]+')' }">
 				右侧
 				<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[5] ? '#111f3a':'#dd514c'}">
 					<view :class="phoneImgArr[5] ? 'translate45':''">
@@ -76,7 +76,7 @@
 				</view>
 			</view>
 			<view class='cu-avatar xl radius' @tap="uploadImg(6)"
-				:style="{'background-image': !phoneImgArr[6] ?  addpicicon : 'url('+phoneImgArr[6]+')' }">
+				:style="{'background-image': !phoneImgArr[6] ?  addpicicon : 'url('+$httpImage +phoneImgArr[6]+')' }">
 				摄像头
 				<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[6] ? '#111f3a':'#dd514c'}">
 					<view :class="phoneImgArr[6] ? 'translate45':''">
@@ -85,7 +85,7 @@
 				</view>
 			</view>
 			<view class='cu-avatar xl radius' @tap="uploadImg(7)"
-				:style="{'background-image': !phoneImgArr[7] ?  addpicicon : 'url('+phoneImgArr[7]+')' }">
+				:style="{'background-image': !phoneImgArr[7] ?  addpicicon : 'url('+$httpImage +phoneImgArr[7]+')' }">
 				其他
 				<view class='cu-tag badge' :style="{backgroundColor: !phoneImgArr[7] ? '#111f3a':'#dd514c'}">
 					<view :class="phoneImgArr[7] ? 'translate45':''">
@@ -517,6 +517,14 @@
 					warehouseId: this.warehouseId,
 					directSellAble: this.radiovalue1,
 					distributionAble: this.switchB ? 1 : 0,
+					frontPhoto: this.phoneImgArr[0],
+					backPhoto: this.phoneImgArr[1],
+					topPhoto: this.phoneImgArr[2],
+					bottomPhoto: this.phoneImgArr[3],
+					leftPhoto: this.phoneImgArr[4],
+					rightPhoto: this.phoneImgArr[5],
+					cameraPhoto: this.phoneImgArr[6],
+					otherPhoto: this.phoneImgArr[7],
 					hotAble: this.switchC ? 1 : 0,
 					specialSaleAble: this.switchD ? 1 : 0,
 					qualityInfo: JSON.stringify(uni.getStorageSync('Priceprams')),
@@ -719,9 +727,9 @@
 				Imgdata.push(e.path);
 				// console.log(Imgdata);
 				upload(Imgdata).then(res => {
-					console.log(res.data.imgurl);
-					that.$set(that.phoneImgArr, that.uploadImgtype, res.data.imgurl);
-					that.imgParams.push(res.data.imgurl);
+					console.log(res.fileName, 444444444);
+					that.$set(that.phoneImgArr, that.uploadImgtype, res.fileName);
+					that.imgParams.push(res.fileName);
 				})
 			},
 			// 提交图片

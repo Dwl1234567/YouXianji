@@ -708,3 +708,73 @@ export function uploadCheckVoucher(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 获取调拨门店列表
+ *
+ */
+export function getAllotedStoreList(data) {
+	return request.get('/yxj/app/storeAllot/getAllotedStoreList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店可调拨设备
+ *
+ */
+export function getAllotedDeviceList(data) {
+	return request.get('/yxj/app/storeAllot/getAllotedDeviceList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 新增门店调拨
+ *
+ */
+export function storeAllot(data) {
+	return request.post('/yxj/app/storeAllot', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店调拨列表
+ *
+ */
+export function storeAllotList(data) {
+	return request.get('/yxj/app/storeAllot/list', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 同意调拨申请
+ *
+ */
+export function agreeAlloteApprove(data) {
+	return request.post('/yxj/app/storeAllot/agreeAlloteApprove', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 整备仓获取点点信息
+ *
+ */
+export function getPutawayInfo(data) {
+	return request.get('/yxj/app/reoragnize/getPutawayInfo/' + data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 修改
+ *
+ */
+export function reoragnizePutaway(data) {
+	return request.post('/yxj/app/reoragnize/putaway', data, {
+		noLogin: true
+	});
+}

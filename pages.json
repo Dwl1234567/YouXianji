@@ -1168,6 +1168,13 @@
 			}
 		},
 		{
+			"path": "pages/erp/allot/mendian_list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/erp/shop/goods_list",
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
@@ -1181,6 +1188,20 @@
 
 		{
 			"path": "pages/erp/diandianUnpload/diandianUnpload",
+			"style": {
+				"navigationBarTitleText": "开单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			//回收单产品表单提交
+			"path": "pages/erp/maintenance/select_recycleform",
+			"style": {
+				"navigationBarTitleText": "回收产品"
+			}
+		},
+		{
+			"path": "pages/erp/maintenance/diandianUnpload",
 			"style": {
 				"navigationBarTitleText": "开单",
 				"enablePullDownRefresh": false
