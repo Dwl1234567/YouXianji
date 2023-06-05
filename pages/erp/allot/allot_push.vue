@@ -30,7 +30,7 @@
 					:data-target="'move-box-' + index">
 
 					<view class="cu-item-box">
-						<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ ($httpImage + item.frontPhoto) +')'}]">
+						<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ ($httpImage + item.backPhoto) +')'}]">
 						</view>
 						<view class="content">
 							<view class="text-grey">{{item.title}}</view>
@@ -207,6 +207,7 @@
 			}
 		},
 		onLoad() {
+			console.log(123)
 			const mendian = uni.getStorageSync('mendian_list');
 			if (mendian) {
 				this.storeId = mendian.storeId
@@ -221,7 +222,15 @@
 			}
 		},
 		onShow() {
-
+			console.log(222)
+		},
+		watch: {
+			goodsList() {
+				this.allmoney = 0
+				this.goodsList.map(item => {
+					this.allmoney = Number(this.allmoney) + item.recyclePrice + item.maintainPrice
+				})
+			}
 		},
 		methods: {
 			// 跳转门店选择 
@@ -417,7 +426,9 @@
 			},
 			editTap() {},
 			delectTap(index) {
+				console.log(this.goodsList)
 				this.goodsList.splice(index, 1);
+				uni.setStorageSync('model_list', this.goodsList)
 			},
 			deliveryTap() {
 				let that = this;

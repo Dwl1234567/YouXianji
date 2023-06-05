@@ -154,6 +154,7 @@
 			};
 		},
 		onShow() {
+			this.getProduct()
 			this.$nextTick(() => {
 				let address = uni.getStorageSync('address');
 				console.log(address, 3333333333)
@@ -260,8 +261,6 @@
 					data.push(...res.data);
 					that.headTab.list = data;
 				});
-
-				this.getProduct();
 			},
 			// 获取产品列表
 			getProduct() {

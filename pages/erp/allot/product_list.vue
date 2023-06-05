@@ -19,7 +19,7 @@
 				<view class="cu-item margin-tb-sm bg-white padding-sm radius-4" v-for="(item,index) in dataList"
 					@click="tapgoods(item)">
 					<view class="content">
-						<image :src="$httpImage + item.frontPhoto" mode="aspectFill">
+						<image :src="$httpImage + item.backPhoto" mode="aspectFill">
 						</image>
 						<view class="desc">
 							<view class="text-deepblue text-lg">{{item.title}}</view>

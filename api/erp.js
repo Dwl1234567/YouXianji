@@ -778,3 +778,94 @@ export function reoragnizePutaway(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 获取我的回收列表
+ *
+ */
+export function getMyRecycleList(data) {
+	return request.get('/yxj/app/recycleForm/getMyRecycleList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询我的销售单列表
+ *
+ */
+export function selectMySellFormList(data) {
+	return request.get('/yxj/app/fittingsForm/selectMySellFormList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取所有分类
+ *
+ */
+export function getAllClassification(data) {
+	return request.get('/yxj/app/common/getAllClassification', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店商品管理列表
+ *
+ */
+export function selectGoodsManageList(data) {
+	return request.get('/yxj/app/secondGoods/selectGoodsManageList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 调到整备仓
+ *
+ */
+export function toReoragnize(data) {
+	return request.get('/yxj/app/secondGoods/toReoragnize', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取员工业绩信息
+ *
+ */
+export function getPerformance(data) {
+	return request.get('/yxj/app/performance/getPerformance', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店回收业绩
+ *
+ */
+export function getStoreRecyclePerformance(data) {
+	return request.get('/yxj/app/performance/getStoreRecyclePerformance', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取门店销售业绩
+ *
+ */
+export function getStoreSellPerformance(data) {
+	return request.get('/yxj/app/performance/getStoreSellPerformance', data, {
+		noLogin: true
+	});
+}
+
+
+/**
+ * 获取门店客户列表
+ *
+ */
+export function selectStoreClientList(data) {
+	return request.get('/yxj/app/employeeClient/selectStoreClientList', data, {
+		noLogin: true
+	});
+}

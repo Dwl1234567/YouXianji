@@ -1,339 +1,499 @@
 <template>
-	<view>
-		<!--接入查找商品列表接口-->
-		<!--标题栏-->
+	<view class="page flex-col">
 		<bar-search-title bgColor="bg-white" content="名称/序列号" @seachTap="searchTap">
-			<block slot="right">
+			<!-- <block slot="right">
 				<text class="cuIcon-scan" @tap="snTap" />
-			</block>
+			</block> -->
 		</bar-search-title>
-
-
-
-		<view class="margin-sm padding-bottom-sm padding-top-sm">
-			<view class="cu-card article">
-				<view class="cu-item bg-white radius-2 margin-bottom padding-xs" v-for="(item,index) in dataList">
-					<view class="title">
-						<view class="text-cut">{{item.name}}</view>
+		<view class="group_1 flex-row">
+			<!-- <view class="block_1 flex-col">
+				<view class="tabs_1 flex-col">
+					<view class="text-wrapper_1 flex-row justify-between">
+						<text :class="tab === 1 ?'text_3':'text_4'" @tap="checkTab(1)">待处理</text>
+						<text :class="tab === 2 ?'text_3':'text_4'" @tap="checkTab(2)">已处理</text>
+						<text :class="tab === 3 ?'text_3':'text_4'" @tap="checkTab(3)">待退回</text>
+						<text :class="tab === 4 ?'text_3':'text_4'" @tap="checkTab(4)">已退回</text>
 					</view>
-					<view class="content">
-						<image :src="item.image" mode="aspectFill">
-						</image>
-						<view class="desc">
-							<view class="text-content">
-								<view class="text-sm">回收价:<text class="text-red">{{item.cost_price}}</text>元
-									</view>
-								<view class="text-sm">序列号：{{item.sn}} <text
-										class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)">复制</text>
-								</view>
-								<view class="text-sm">销售价：{{item.sales_price}}元</view>
-								<view class="text-sm">入库时间：{{item.createtime}}</view>
-							</view>
-							<view>
-								<view class="cu-tag bg-red light sm round">{{item.cate_name}}</view>
-								<view class="cu-tag bg-blue light sm round">{{item.brand_name}}</view>
-								<!-- <view class="cu-tag bg-green light sm round" @tap="baogao">验机报告</view> -->
-							</view>
-						</view>
+					<view class="section_1 flex-row">
+						<view class="box_1 flex-col"></view>
 					</view>
 				</view>
-
-			</view>
-			<view class="cu-modal" :class="modalName=='Modal'?'show':''">
-				<view class="cu-dialog">
-					<view class="cu-bar bg-white justify-end">
-						<view class="content">{{tiaojiaInfo.title}}</view>
-						<view class="action" @tap="hideModal">
-							<text class="cuIcon-close text-red"></text>
+			</view> -->
+			<view class="block_3 flex-col">
+				<view class="group_2 flex-col" v-for="item in recycleList">
+					<view class="text-wrapper_2 flex-row justify-between">
+						<text class="text_8">时间:{{item.createTime}}</text>
+					</view>
+					<view class="group_3 flex-row justify-between">
+						<view class="image-text_1 flex-row">
+							<view class="box_2 flex-col">
+								<image :src="$httpImage + item.modelPhoto" mode="widthFix"></image>
+							</view>
+							<view class="text-group_1 flex-col">
+								<text class="text_9">{{item.modelName}}</text>
+								<text class="text_10">{{item.label}}</text>
+								<text class="text_11">序列号:{{item.deviceNo}}</text>
+								<text class="text_12">回收价:{{item.recyclePrice}}元</text>
+							</view>
+							<view class="tag_1 flex-col"></view>
+						</view>
+						<view class="group_4 flex-col">
+							<button class="tag_2 flex-col" v-if="item.postType == 0">
+								<text class="text_14">顺丰上门</text>
+							</button>
+							<view class="button_1 flex-col" v-if="item.postType == 1">
+								<text class="text_13">自行邮寄</text>
+							</view>
+							<view class="tag_3 flex-col" v-if="item.postType == 2">
+								<text class="text_15">同城上门</text>
+							</view>
 						</view>
 					</view>
-					<view class="padding-xl">
-						<input class="border" v-model="tiaojiaInfo.tjprice" placeholder="请输入价格" name="input"
-							value="10000"></input>
-					</view>
-					<view class="cu-bar bg-white">
-						<view class="action margin-0 flex-sub " @tap="hideModal">取消调价</view>
-						<!-- <view class="action margin-0 flex-sub text-green solid-left" @tap="hideModal">取消</view> -->
-						<view class="action margin-0 flex-sub text-green solid-left" @tap="edit(1)">确定调价</view>
-					</view>
+					<!-- <view class="group_5 flex-row justify-between" v-if="item.orderStatus != 7">
+						<button class="button_3 flex-col" v-if="item.orderStatus == 1">
+							<text class="text_17">待确认</text>
+						</button>
+						<button class="button_3 flex-col" @tap="payShows(item.recycleOrderId)" v-else-if="item.orderStatus == 2">
+							<text class="text_17">去付款</text>
+						</button>
+						<button class="button_3 flex-col" v-else-if="item.orderStatus == 3" @tap="kaidan(item)">
+							<text class="text_17">开单</text>
+						</button>
+						<button class="button_3 flex-col" @tap="goBack(item.recycleOrderId)" v-else-if="item.orderStatus == 4">
+							<text class="text_17">确认退回</text>
+						</button>
+						<button class="button_3 flex-col" v-else-if="item.orderStatus == 5">
+							<text class="text_17">退回中</text>
+						</button>
+						<button class="button_3 flex-col" @tap="goDetail(item.recycleOrderId)" v-else>
+							<text class="text_17">查看订单</text>
+						</button>
+					</view> -->
 				</view>
 			</view>
 		</view>
-		<!-- 下拉加载提示 -->
-		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
+
+		<u-popup :show="payShow" mode="center">
+			<view class="block_31 flex-col">
+				<text class="text_23">付款凭证</text>
+				<view class="block_4 flex-col"></view>
+				<view class="list_1 flex-row">
+					<!-- <view class="image-wrapper_1 flex-col" v-for="(item, index) in loopData0" :key="index">
+						<image class="thumbnail_4" referrerpolicy="no-referrer" :src="item.lanhuimage0" />
+					</view> -->
+					<view class="cu-dialog">
+						<view class="padding-xl">
+							<view class="cu-list grid col-2">
+								<view class="cu-item bg-deepblue">
+									<input class="text-green text-lg" type="number" v-model="weixinnum" placeholder="微信"
+										@input="ActualreceiptsAllFuc"></input>
+								</view>
+								<view class="cu-item bg-deepblue">
+									<input class="text-blue" type="number" v-model="alipaynum" placeholder="支付宝"
+										@input="ActualreceiptsAllFuc"></input>
+								</view>
+								<view class="cu-item bg-deepblue">
+									<input class="text-red" type="number" v-model="xianjinnum" placeholder="现金"
+										@input="ActualreceiptsAllFuc"></input>
+								</view>
+								<view class="cu-item bg-deepblue">
+									<input class="text-purple" type="number" v-model="dihuonum" placeholder="抵货款"
+										@input="ActualreceiptsAllFuc"></input>
+								</view>
+							</view>
+							<view class="margin-top">
+								总计：<text class="text-red">{{ActualreceiptsAll}}</text>
+							</view>
+							<view class="cu-form-group pingzheng" :class="switchGD?'hide':''">
+								<view class="title">收款凭证</view>
+								<view class="cu-capsule round" @tap="paiTap">
+									<view class="cu-tag bg-deepblue">
+										<text class="cuIcon-camera text-white"></text>
+									</view>
+									<view class="cu-tag line-deepblue">
+										图
+									</view>
+								</view>
+							</view>
+
+							<view class="cu-form-group" v-if="imgList1.length > 0">
+								<view class="grid col-3 grid-square flex-sub">
+									<view class="bg-img" v-for="(item,index) in imgList1" :key="index" @tap="ViewImage"
+										:data-url="imgList1[index]">
+										<image :src="imgList1[index]" mode="aspectFill"></image>
+										<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
+											<text class='cuIcon-close'></text>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<button class="button_11 flex-col" @click="onClick_1">
+					<text class="text_24">确认付款</text>
+				</button>
+			</view>
+		</u-popup>
+		<u-popup :show="goBackShow" mode="center">
+			<view class="box_5 flex-col">
+				<view class="text-wrapper_5">
+					<text class="text_177">物流信息</text>
+					<text class="text_18">填写</text>
+				</view>
+				<view class="section_4 flex-row justify-between">
+					<text class="text_19">快递公司</text>
+					<view class="dropdown_1 flex-row justify-between">
+						<u-input type="text" v-model="returnPostComp" />
+					</view>
+				</view>
+				<view class="section_5 flex-row justify-between">
+					<text class="text_21">快递单号</text>
+					<view class="dropdown_1 flex-col justify-between">
+						<u-input type="text" style="height: 19px;" v-model="returnPostNo" />
+					</view>
+				</view>
+				<view class="section_6 flex-col"></view>
+				<view class="section_7 flex-row justify-between">
+					<text class="text_233" @tap="goBackShow = fasle">取消</text>
+					<view class="group_55 flex-col"></view>
+					<text class="text_244" @tap="goBackFir">确定</text>
+				</view>
+			</view>
+		</u-popup>
+		<u-action-sheet :actions="upimageList" :closeOnClickAction="true" @close="closeUpimg" :cancelText="'取消'"
+			@select="selectUpimg" :show="showupimage"></u-action-sheet>
 	</view>
 </template>
-
 <script>
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
-	import goodsSortList from '@/components/common/list/goods-sort-list';
-	// import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
-	//import filterDropdown from '@/components/HMERP-filterDropdown/HM-filterDropdown.vue';
-
-	import _tool from '@/utils/tools.js'; //工具函数
 	import {
-		erpUserMyproduct,
-		erpProductGetBasicData
-	} from "@/api/erpapi.js"
+		getMyRecycleList,
+		empRobRecycleOrder,
+		empConfirmPayment,
+		empConfirmReturn
+	} from '@/api/erp.js';
+	import {
+		raiseUpload
+	} from "@/api/upload.js";
+	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
-			barSearchTitle,
-			goodsSortList,
+			barTitle,
+			barSearchTitle
 		},
 		data() {
 			return {
-				fid: '',
-				sid: '',
-				dataList: [],
-				tiaojiaInfo: {
-					title: '',
-					tjprice: ''
+				deviceNo: null,
+				TabCur: 1,
+				upimageList: [{
+						name: '拍照',
+						value: 1,
+					},
+					{
+						name: '相册选图',
+						value: 2,
+					}
+				],
+				showupimage: false,
+				imgList: [], //销售图片
+				imgList1: [],
+				weixinnum: '',
+				alipaynum: '',
+				xianjinnum: '',
+				dihuonum: '',
+				ActualreceiptsAll: 0, //实收款总计
+				switchGD: false,
+				// 快递公司
+				returnPostComp: '',
+				// 快递单号
+				returnPostNo: '',
+				// 付款凭证
+				paymentVoucher: '',
+				// 订单id
+				recycleOrderId: 0,
+				payShow: false,
+				goBackShow: false,
+				constants: {},
+				loopData0: [{
+						lanhuimage0: 'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
+					},
+					{
+						lanhuimage0: 'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
+					},
+					{
+						lanhuimage0: 'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng82a231131af99408dfa1b1126561c726f46f1ebcc21c22bdd30a4947b898f933',
+					},
+				],
+				tab: 1,
+				// 回收订单列表
+				recycleList: [],
+				queryPage: {
+					pageNum: 1,
+					pageSize: 10000,
+					orderStatusList: ['0'],
 				},
-				ifBottomRefresh: false,
-				loadmore: 'more', //more 还有数据   noMore 无数据
-				contentText: {
-					"contentdown": "加载更多数据",
-					"contentrefresh": "加载中...",
-					"contentnomore": "暂无更多数据。"
-				},
-				defaultSelected: [],
-				
-				modalName: null,
-				pageIndex: 1,
-				pageLimit: 10,
-				warehouse_id: '',
-				partition_id: '',
-				category_id: '',
-				brand_id: '',
-				series_id: '',
-				machine_id: '',
-				snNumber: '',
-				storeName: '',
-				initFilterList: [],
-				checkFilterList: [],
-				lastcheckList:[],
-				filtertopnum:'90',//筛选条高度
+			};
+		},
+		onLoad(option) {
+			this.tab = option.type;
+			this.selectRecycleOrderList();
+		},
+		// 触底加载新页面
+		onReachBottom() {
+			if (this.queryPage.total > this.recycleList.length) {
+				this.queryPage.pageNum = this.queryPage.pageNum + 1;
+				this.selectRecycleOrderList(true);
 			}
 		},
-		onLoad(e) {
-			// #ifdef APP-PLUS
-			this.filtertopnum = 160;
-			// #endif
-			//this.erpProductGetBasicDataFuc()
-			this.erpproductgetlistFuc();
-		},
-		//下拉刷新
-		onPullDownRefresh() {
-			this.pageIndex = 1; //重置分页页码
-			this.erpproductgetlistFuc('refresh');
-		},
-		//加载更多
-		onReachBottom() {
-			if (this.loadmore == 'noMore') return
-			this.pageIndex += 1;
-			this.ifBottomRefresh = true
-			this.erpproductgetlistFuc();
-		},
-		onReady() {
-			_tool.setBarColor(true);
-			uni.pageScrollTo({
-				scrollTop: 0,
-				duration: 0
-			});
-		},
 		methods: {
-			// 获取筛选项
-			
-			//接收菜单结果
-			confirm(e) {
-				console.log(e);
-				this.indexArr = e.index;
-				this.valueArr = e.value;
-
-			},
-			change(e) {
-				console.log(e);
-				this.getcheckfilterInfo(e.value)
-				// this.indexArr = e.index;
-				// this.valueArr = e.value;
-
-			},
-			// 获取选中项
-			getcheckfilterInfo(value) {
-				// let index = value[1].length - 1;
-				let iindex= value[1];
-				console.log(iindex[0][0]);
-				let that = this;
-				value[1].forEach((item,index)=>{
-					if(index == 0){
-						let info = {
-							'name': '品牌',
-							'submenu': [...that.initFilterList[iindex[0][0]].children]
-						}
-						that.filterData[1]['submenu'][index+1] = info;
-					}else if(index == 1){
-						let info = {
-							'name': '系列',
-							'submenu': [...that.initFilterList[iindex[0][0]].children[iindex[1][0]]]
-						}
-						that.filterData[1]['submenu'][index+1] = info;
-					}else if(index == 2){
-						let info = {
-							'name': '型号',
-							'submenu': [...that.initFilterList[iindex[0][0]].childreniindex[2][0]]
-						}
-						that.filterData[1]['submenu'][index+1] = info;
-					}
-					
-				})
-				that.filterData = JSON.parse(JSON.stringify(that.filterData));
-				console.log(that.filterData);
-				// that.filterData[1].submenu.push({
-				// 	name: '品牌',
-				// 	submenu: that.initFilterList[index].children
-				// });
-				// this.lastcheckList = value;
-				let datalen = that.filterData[1]['submenu'].length
-				this.changeSelected(datalen);
-			},
-			//修改选中项-示例
-			changeSelected(len) {
-				//设置选中项
-				// 一下的注释是针对测试数据说明结构的意思，具体传入什么数据，要看你自己数据。如果data.js数据有修改，注意defaultSelected也要修改
-				//传入defaultSelected的结构不能错，错了就报错运行异常。 不想选中的请传入null
-
-				this.defaultSelected = [];
-				this.$nextTick(() => {
-					let info = []
-					for(let i = 0;i<len;i++){
-						info.push([null])
-					}
-					console.log(info);
-					// return;
-					this.defaultSelected = [
-						[null],
-						[...info]
-					]
-					// this.defaultSelected = [
-					// 	[3, 0, 1], //第0个菜单选中 一级菜单的第6项，二级菜单的第0项，三级菜单的第1项
-					// 	[2, 0, 1], //第1个菜单选中 一级菜单的第2项，二级菜单的第0项，三级菜单的第1项
-					// 	[1, 1], //第2个菜单选中 一级菜单的第1项 一级菜单的第1项
-					// 	[
-					// 		[0],
-					// 		[1, 2, 7],
-					// 		[1, 0]
-					// 	], //筛选菜单选中 第一个筛选的第0项，第二个筛选的第1,2,7项，第三个筛选的第1,0项
-					// 	[
-					// 		[0],
-					// 		[1],
-					// 		[1]
-					// 	] //单选菜单选中 第一个筛选的第0项，第二个筛选的第1项，第三个筛选的第1项
-					// ];
-				})
-			},
-			getArrDifference(arr1, arr2){
-			  return arr1.concat(arr2).filter((v, i, arr) => {
-			    return arr.indexOf(v) === arr.lastIndexOf(v);
-			  })
-			},
-			erpproductgetlistFuc() {
-				let that = this;
-				let paramsData = {
-					'page': this.pageIndex,
-					'pagesize': this.pageLimit,
-					'warehouse_id': this.warehouse_id,
-					'partition_id': this.partition_id,
-					'category_id': this.category_id,
-					'brand_id': this.brand_id,
-					'series_id': this.series_id,
-					'machine_id': this.machine_id,
-					// 'sn':this.snNumber,
-					'keyword': this.storeName,
-					type:1
-				}
-				erpUserMyproduct(paramsData).then(res => {
-					let data = res.data.data;
-					if (that.ifBottomRefresh) {
-						that.dataList = that.dataList.concat(data)
-					} else {
-						that.dataList = data
-					}
-					that.ifBottomRefresh = false
-					that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
-				})
-			},
 			searchTap(e) {
-				console.log('搜索结果', e)
-				this.storeName = e;
-				this.erpproductgetlistFuc();
+				console.log(e)
+				this.deviceNo = e;
+				this.selectRecycleOrderList()
 			},
-			snTap() {
-				console.log('扫描二维码获取序列号筛选结果')
+			// 开单
+			kaidan(item) {
+				uni.navigateTo({
+					url: '/pages/erp/diandianUnpload/diandianUnpload?recycleOrderId=' + item.recycleOrderId + '&modelId=' +
+						item.modelId
+				})
+			},
+			selectUpimg(e) {
+				console.log(e);
+				if (e.value == 1) {
+					this.opencamare();
+				} else {
+					this.openpictrue();
+				}
+			},
+			DelImg(e) {
 				let that = this;
-				// 允许从相机和相册扫码
-				uni.scanCode({
-					scanType: ['qrCode'], //条形码
-					success: function(res) {
-						console.log('获取到货品号，调用接口', res)
-						// 微信小程序
-						if (res.errMsg == "scanCode:ok") {
-							// 扫描到的信息
-							let code = res.result
-							that.storeName = code;
-							that.erpproductgetlistFuc();
-						} else {
-							console.log("未识别到二维码，请重新尝试！")
-							uni.$u.toast('未识别到二维码，请重新尝试！')
+				that.imgList1.splice(e.currentTarget.dataset.index, 1)
+				// uni.showModal({
+				// 	title: '提示',
+				// 	content: '确定要删除吗？',
+				// 	success: res => {
+				// 		if (res.confirm) {
+				// 			that.imgList1.splice(e.currentTarget.dataset.index, 1)
+				// 		}
+				// 	}
+				// })
+			},
+			// 使用拍照功能
+			opencamare() {
+				let that = this;
+				let uplength = 9;
+				if (that.TabCur) {
+					uplength = 9 - Number(that.imgList1.length);
+				} else {
+					uplength = 9 - Number(that.imgList.length);
+				}
+				uni.chooseImage({
+					count: uplength, //默认9
+					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['camera'], //从相册选择
+					success: (res) => {
+						if (that.TabCur) {
+							if (that.imgList1.length != 0) {
+								that.imgList1 = that.imgList1.concat(res.tempFilePaths)
+							} else {
+								that.imgList1 = res.tempFilePaths
+							}
+							return;
 						}
+						if (that.imgList.length != 0) {
+							that.imgList = that.imgList.concat(res.tempFilePaths)
+						} else {
+							that.imgList = res.tempFilePaths
+						}
+						console.log(that.imgList);
+					},
+					complete: function() {
+						that.checkimgshow = false;
+					}
 
+				});
+			},
+			// 使用相册功能
+			openpictrue() {
+				let that = this;
+				let uplength = 9;
+				if (that.TabCur) {
+					uplength = 9 - Number(that.imgList1.length);
+				} else {
+					uplength = 9 - Number(that.imgList.length);
+				}
+				console.log(uplength);
+				uni.chooseImage({
+					count: uplength, //默认9
+					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					success: (res) => {
+						console.log(res)
+						if (that.TabCur) {
+							if (that.imgList1.length != 0) {
+								that.imgList1 = that.imgList1.concat(res.tempFilePaths)
+							} else {
+								that.imgList1 = res.tempFilePaths
+							}
+							return;
+						}
+						if (that.imgList.length != 0) {
+							that.imgList = that.imgList.concat(res.tempFilePaths)
+						} else {
+							that.imgList = res.tempFilePaths
+						}
+						console.log(that.imgList);
+					},
+					complete: function() {
+						that.checkimgshow = false;
 					}
 				});
 			},
-			edit(id) {
-				//编辑提交
-				console.log('编辑提交' + id)
-				//回调后决定消失或继续编辑
-				this.modalName = null
+			paiTap() {
+				console.log('拍照、选图');
+				this.showupimage = true;
 			},
-			copy(sn) {
-				//拷贝
-				console.log('复制到剪贴板' + sn)
-				uni.setClipboardData({
-					data: sn
+			closeUpimg() {
+				this.showupimage = false;
+			},
+			// 实收款总计
+			ActualreceiptsAllFuc() {
+				// this.ActualreceiptsAll = 0;
+				// this.ReceivablesMoney = 0;
+				this.ActualreceiptsAll = Number(this.weixinnum) + Number(this.alipaynum) + Number(this.xianjinnum) + Number(this
+					.dihuonum)
+				this.ActualreceiptsJson = JSON.stringify({
+					wexin: Number(this.weixinnum),
+					alipay: Number(this.alipaynum),
+					xianjin: Number(this.xianjinnum),
+					dihuo: Number(this.dihuonum)
+				});
+				this.arrearsMoney = this.ReceivablesMoney - this.ActualreceiptsAll;
+			},
+			// 退回接口
+			goBackFir() {
+				empConfirmReturn({
+					'recycleOrderId': this.recycleOrderId,
+					'returnPostComp': this.returnPostComp,
+					'returnPostNo': this.returnPostNo
+				}).then(res => {
+					if (res.code == 200) {
+						this.selectRecycleOrderList()
+						this.goBackShow = false;
+					}
+				})
+			},
+			// 确认退回
+			goBack(recycleOrderId) {
+				this.recycleOrderId = recycleOrderId;
+				this.goBackShow = true;
+			},
+			payShows(recycleOrderId) {
+				this.recycleOrderId = recycleOrderId;
+				this.payShow = true;
+			},
+
+			// 获取回收订单列表
+			selectRecycleOrderList(isReach = false) {
+				// if (this.tab == 1) {
+				// 	this.queryPage.orderStatusList = ['0'];
+				// } else if (this.tab == 2) {
+				// 	this.queryPage.orderStatusList = ['1', '2', '3', '7'];
+				// } else if (this.tab == 3) {
+				// 	this.queryPage.orderStatusList = ['4', '5'];
+				// } else {
+				// 	this.queryPage.orderStatusList = ['6'];
+				// }
+				this.queryPage.deviceNo = this.deviceNo
+				getMyRecycleList(this.queryPage).then((res) => {
+					if (isReach) {
+						this.recycleList = this.recycleList.concat(res.rows);
+					} else {
+						this.recycleList = res.rows;
+					}
 				});
 			},
-			showModal(e) {
-				this.modalName = e.currentTarget.dataset.target
+			// 员工抢单
+			empRobRecycleOrder(recycleOrderId) {
+				empRobRecycleOrder(recycleOrderId).then((res) => {
+					if (res.code == 200) {
+						this.queryPage.total = res.total;
+						this.selectRecycleOrderList();
+					}
+				});
 			},
-			hideModal(e) {
-				this.modalName = null
+			goDetail(item) {
+				uni.navigateTo({
+					url: '/pages/erp/recycleList/recycleListDetail/recycleListDetail?recycleOrderId=' + item,
+				});
 			},
-		}
-	}
+			checkTab(e) {
+				this.tab = e;
+				if (e == 1) {
+					this.queryPage.orderStatusList = ['0'];
+				} else if (e == 2) {
+					this.queryPage.orderStatusList = ['1', '2', '3', '7'];
+				} else if (e == 3) {
+					this.queryPage.orderStatusList = ['4', '5'];
+				} else {
+					this.queryPage.orderStatusList = ['6'];
+				}
+				this.selectRecycleOrderList();
+			},
+			onClick_1() {
+				let promisearr = this.imgList1.map(item => {
+					return raiseUpload(item)
+				})
+				let imagesList = []
+				Promise.all(promisearr).then((res) => {
+					// console.log(res);
+					console.log(res)
+					// imagesList.push(res[0].fileName)
+					res.map(itemm => {
+						imagesList.push(itemm.fileName)
+					})
+				}).finally(() => {
+					this.push(imagesList.join(','))
+				})
+
+				// setTimeout(this.push(), 1000)
+
+			},
+			push(list) {
+				empConfirmPayment({
+					'recycleOrderId': this.recycleOrderId,
+					"wxPaymentPrice": this.weixinnum,
+					"zfbPaymentPrice": this.alipaynum,
+					"bankCardPrice": this.dihuonum,
+					"cashPaymentPrice": this.xianjinnum,
+					'paymentVoucher': list,
+				}).then((res) => {
+					if (res.code == 200) {
+						this.selectRecycleOrderList();
+						this.payShow = false;
+					}
+				})
+			},
+			onClick_2(item) {
+				this.empRobRecycleOrder(item.recycleOrderId);
+			},
+			onClick_3() {
+				alert(1);
+			},
+		},
+	};
 </script>
+<style lang="css">
+	@import './common.css';
+	@import './index.rpx.css';
 
-<style lang="scss">
-	/* #ifdef APP-PLUS */
-	@import "/uni_modules/colorui/main.css";
-	@import "/uni_modules/colorui/icon.css";
-	@import "@/uni_modules/mpb-ui/shop/app.scss";
-	/* #endif */
-	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
-
-	.cu-card.article>.cu-item .content {
-		uni-image {
-			width: 6.8em;
-			height: 6.8em;
-		}
-
-		.text-content {
-			height: 5.4em;
-		}
+	page {
+		background-color: rgba(240, 240, 240, 1);
 	}
 
-	.border {
-		height: 2.4em;
-		line-height: 2.4em;
-		border: 1px solid #e1e1e1;
+	.block_3 {
+		width: 100vw;
 	}
 </style>

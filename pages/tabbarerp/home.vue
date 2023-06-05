@@ -290,13 +290,13 @@
 							cuIcon: 'icon-refund',
 							color: 'red',
 							badge: 0,
-							name: '退款登记',
+							name: '商城列表',
 						},
 						{
 							cuIcon: 'icon-refund',
 							color: 'red',
 							badge: 0,
-							name: '退款登记',
+							name: '挂单列表',
 						},
 					],
 				},
@@ -620,6 +620,12 @@
 					}
 					if (index == 4) {
 						var value = 'sell/out';
+					}
+					if (index == 5) {
+						var value = 'mallList/list';
+					}
+					if (index == 6) {
+						var value = 'pendingList/list';
 					}
 				}
 				if (key == 1) {

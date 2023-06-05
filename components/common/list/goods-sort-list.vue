@@ -3,10 +3,8 @@
 		<view class="cu-list menu-avatar">
 			<block v-for="(item,index) in list_data" :key="index">
 				<view class="cu-item margin-sm bg-white radius-2" @tap="listTap(item,index)">
-					<view
-						class="cu-avatar radius lg"
-						:style="[{backgroundImage:'url('+ $httpImage + item.frontPhoto +')'}]"
-					></view>
+					<view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ $httpImage + item.backPhoto +')'}]">
+					</view>
 					<view class="content">
 						<!--标题-->
 						<view class="text-black text-cut">
@@ -82,26 +80,31 @@
 <style lang="scss" scoped>
 	.goods-list-box {
 		display: none;
-		.cu-list.menu-avatar > .cu-item {
+
+		.cu-list.menu-avatar>.cu-item {
 			height: 140px;
 			background: #ffffff;
 			border: 0.5px solid rgba(213, 218, 223, 1);
 			border-radius: 6px;
 			overflow: hidden;
+
 			&:after {
 				width: 0;
 				height: 0;
 				border-bottom: 0;
 			}
+
 			.cu-avatar.lg {
 				width: 140px;
 				height: 140px;
 				font-size: 2em;
 			}
+
 			.content {
 				left: 153px;
 				width: calc(100% - 94.54rpx - 59.99rpx - 119.99rpx);
 				line-height: 1.7em;
+
 				.cu-tag.sm {
 					display: inline-block;
 					margin-left: 0;
@@ -111,6 +114,7 @@
 					margin-right: 9.09rpx;
 					margin-bottom: 9.09rpx;
 				}
+
 				view:first-child {
 					font-family: PingFangSC-Medium;
 					font-size: 16px;
@@ -119,15 +123,18 @@
 					display: inherit;
 					align-items: inherit;
 				}
+
 				.through {
 					text-decoration: line-through;
 				}
+
 				.tag-view {
 					margin-top: 12px;
 					font-family: PingFangSC-Medium;
 					font-size: 20px;
 					color: #ff3a31;
 					font-weight: 500;
+
 					text {
 						margin-right: 9.09rpx;
 					}
@@ -135,6 +142,7 @@
 			}
 		}
 	}
+
 	.goods-list-box.show {
 		display: block;
 	}

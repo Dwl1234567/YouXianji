@@ -12,13 +12,13 @@
 			</block>
 		</bar-title>
 		-->
-		
+
 
 
 		<!--统计数据-->
 		<scroll-view scroll-x class="bg-white nav text-center">
-			<view class="cu-item text-bold" :class="index==TabCur?'text-red cur':''" v-for="(item,index) in daylist" :key="index"
-				@tap="tabSelect" :data-id="index">
+			<view class="cu-item text-bold" :class="index==TabCur?'text-red cur':''" v-for="(item,index) in daylist"
+				:key="index" @tap="tabSelect" :data-id="index">
 				{{item.key}}
 			</view>
 		</scroll-view>
@@ -44,17 +44,14 @@
 		<!-- 日期选择控件 -->
 		<u-calendar :show="showdate" mode="range" minDate="2022-01-01" :maxDate="daylist[0].value[0]" defaultDate="[]"
 			:allowSameDay="true" :closeOnClicOverlay="true" @confirm="confirmDate" @close="closeDate"></u-calendar>
-		
+
 	</view>
 </template>
 
 <script>
-	
 	import {
-		erpUserAuth,
-		getAccountData,
-		erpuserbacklog
-	} from "@/api/erpapi.js";
+		getPerformance,
+	} from "@/api/erp.js";
 	import {
 		addNowDay,
 		gethoursInfo
@@ -94,11 +91,10 @@
 				],
 				dataList: [],
 				showdate: false,
-				loginfo:''
+				loginfo: ''
 			}
 		},
 		onLoad() {
-			this.erpUserAuth();
 			this.getAccountData();
 			console.log(this.daylist);
 
@@ -110,45 +106,46 @@
 			//console.log(this.CustomBar);
 			//加载统计数据
 
-			
+
 		},
 		onPullDownRefresh() {
 			this.getAccountData();
 		},
 		onShow() {
-			this.erpuserbacklogFuc();
+			// this.erpuserbacklogFuc();
 		},
 		methods: {
 			// 获取待办数据
-			erpuserbacklogFuc(){
-				erpuserbacklog({}).then(res=>{
+			erpuserbacklogFuc() {
+				erpuserbacklog({}).then(res => {
 					this.loginfo = res.data;
 				})
 			},
 			getAccountData() {
+				console.log(this.TabCur)
 				let queryparams = {
+					queryType: this.TabCur,
 					starttime: this.daylist[this.TabCur].value[0],
 					endtime: this.daylist[this.TabCur].value[1]
-
 				}
-				getAccountData(queryparams).then(res => {
-					this.dataList = [{
-							name: '销售',
-							yeji: res.data.sell_account.totalprice,
-							chengben: res.data.sell_account.totalcost_price,
-							maoli: res.data.sell_account.totallirun_price
-						},
-						{
-							name: '回收',
-							yeji: res.data.recylce_account.total_recycle_price,
-							chengben: res.data.recylce_account.total_recycle_cost_price,
-							maoli: res.data.recylce_account.total_recycle_lirun_price
-						}
-					];
-				})
-				.finally(()=>{
-					uni.stopPullDownRefresh()
-				})
+				getPerformance(queryparams).then(res => {
+						this.dataList = [{
+								name: '销售',
+								yeji: res.data.sellPerformance,
+								chengben: res.data.sellCost,
+								maoli: res.data.totallirun_price
+							},
+							{
+								name: '回收',
+								yeji: res.data.recyclePerformance,
+								chengben: res.data.recycleCost,
+								maoli: res.data.total_recycle_lirun_price
+							}
+						];
+					})
+					.finally(() => {
+						uni.stopPullDownRefresh()
+					})
 			},
 			confirmDate(e) {
 				console.log(e);
@@ -302,13 +299,15 @@
 	.home-box.show {
 		display: block;
 	}
-	.grid.col-6 > uni-view{
-		width:16.666%;
+
+	.grid.col-6>uni-view {
+		width: 16.666%;
 	}
-	.flex-wrap{
-		.cu-item{
-			width:auto;
-			margin-left:20rpx;
+
+	.flex-wrap {
+		.cu-item {
+			width: auto;
+			margin-left: 20rpx;
 		}
 	}
 </style>

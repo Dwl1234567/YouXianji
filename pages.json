@@ -1363,6 +1363,24 @@
 				"navigationStyle": "custom"
 				// "navigationBarTitleText": "智能库存"
 			}
+		},
+		// 商城列表
+		{
+			"path": "pages/erp/mallList/list",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 挂单列表
+		{
+			"path": "pages/erp/pendingList/list",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"tabBar": {

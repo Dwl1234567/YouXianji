@@ -33,7 +33,7 @@
 						</view>
 					</scroll-view>
 
-					<view class="cu-form-group" v-if="!reorganizeId">
+					<view class="cu-form-group" v-if="!reorganizeId && !sellFormId">
 						<view class="title">货品</view>
 						<view class="cu-capsule radius">
 							<view class="padding-right" @tap="scanTap">
@@ -56,7 +56,7 @@
 						</view>
 					</view>
 
-					<view class="cu-list menu-avatar" v-if="!reorganizeId">
+					<view class="cu-list menu-avatar" v-if="!reorganizeId && !sellFormId">
 						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in goodsList"
 							:key="index" @touchstart="ListTouchStart" @touchmove="ListTouchMove" @touchend="ListTouchEnd"
 							:data-target="'move-box-' + index">
@@ -144,7 +144,7 @@
 						</view>
 					</view>
 
-					<view class="cu-form-group">
+					<view class="cu-form-group" v-if="!sellFormId">
 						<view class="title">是否挂单</view>
 						<switch class='red' @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"
 							color="#e54d42"></switch>
@@ -352,7 +352,7 @@
 								@input="ActualreceiptsAllFuchs"></input>
 						</view>
 						<view class="cu-item bg-deepblue">
-							<input class="text-purple" type="number" v-model="hsdihuonum" placeholder="抵货款"
+							<input class="text-purple" type="number" v-model="hsdihuonum" placeholder="银行卡"
 								@input="ActualreceiptsAllFuchs"></input>
 						</view>
 					</view>
@@ -425,7 +425,8 @@
 		},
 		data() {
 			return {
-				reorganizeId: 0,
+				sellFormId: null,
+				reorganizeId: null,
 				totalPrice: 0,
 				costPrice: 0,
 				deviceId: 0,
@@ -508,6 +509,12 @@
 				name: '回收'
 			}];
 			this.reorganizeId = options.reorganizeId
+			this.sellFormId = options.sellFormId
+			if (options.sellFormId) {
+				this.deviceId = uni.getStorageSync('updatecustomer').deviceId
+				this.recycleFormId = uni.getStorageSync('updatecustomer').recycleFormId
+				this.qualityInfoId = uni.getStorageSync('updatecustomer').qualityInfoId
+			}
 			this.typeListData = typeListData;
 			if (options.reorganizeId) {
 				this.selectReoragnizeSellInfo(options.reorganizeId);
@@ -1049,7 +1056,8 @@
 					cashPaymentPrice: that.xianjinnum, // 现金金额
 					pendingOrder: that.switchA ? '1' : '0', // 是否挂单
 					sellFormFittingsList, // 配件
-					storeId
+					storeId,
+					debtPrice: that.arrearsMoney
 				}).then(res => {
 					if (res.code === 200) {
 						that.$u.toast('开单成功');

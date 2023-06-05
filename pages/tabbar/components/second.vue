@@ -381,6 +381,9 @@
 			// 427
 			this.loadData();
 		},
+		onShow() {
+			console.log(111)
+		},
 		onLoad() {},
 		onPullDownRefresh() {
 			// this.pageIndex = 1;
@@ -455,33 +458,22 @@
 				// this.getProduct();
 			},
 			// 获取产品列表
-			getProduct() {
-				console.log(222);
-				let that = this;
-				let params = {
-					firstFlag: this.firstFlag,
-				};
-				secondGoodsList(params)
-					.then((res) => {
-						console.log(res);
-						let data = res.data;
-						that.goodsData.push(...data);
-						this.firstFlag = false;
-						// if (that.pageIndex == 1) {
-						// 	that.goodsData = data;
-						// } else {
-						// 	that.goodsData.push(...data);
-						// }
-						// if (res.rows.length == 10) {
-						// 	that.pageIndex++;
-						// } else {
-						// 	that.loadmore = 'noMore';
-						// }
-					})
-					.finally(() => {
-						uni.stopPullDownRefresh();
-					});
-			},
+			// getProduct() {
+			// 	console.log(222);
+			// 	let that = this;
+			// 	let params = {
+			// 		firstFlag: this.firstFlag,
+			// 	};
+			// 	secondGoodsList(params)
+			// 		.then((res) => {
+			// 			let data = res.data;
+			// 			that.goodsData.push(...data);
+			// 			this.firstFlag = false;
+			// 		})
+			// 		.finally(() => {
+			// 			uni.stopPullDownRefresh();
+			// 		});
+			// },
 			//页面被滚动
 			setPageScroll(scrollTop) {
 				let that = this;
@@ -503,7 +495,7 @@
 			},
 			//触底了
 			setReachBottom() {
-				this.getProduct();
+				// this.getProduct();
 				//设置加载
 			},
 			//欢迎提示关闭事件
