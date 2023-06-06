@@ -869,3 +869,14 @@ export function selectStoreClientList(data) {
 		noLogin: true
 	});
 }
+
+
+/**
+ * 查询员工工资
+ *
+ */
+export function getEmployeeWage(data) {
+	return request.get('/yxj/app/employeeCommission/getEmployeeWage', data, {
+		noLogin: true
+	});
+}

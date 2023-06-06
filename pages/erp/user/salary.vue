@@ -5,11 +5,11 @@
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">工资条</block>
 		</bar-title>
-		
+
 		<scroll-view scroll-x class="bg-white nav text-center">
 			<view class="cu-item" :class="index==TabCur?'text-blue cur':''" v-for="(item,index) in daylist" :key="index"
 				@tap="tabSelect" :data-id="index">
-				{{item.key}}
+				{{index == 2 ? time ? time : '请选择日期' : item.key}}
 			</view>
 		</scroll-view>
 		<view class="padding">
@@ -20,81 +20,83 @@
 				</view>
 				<view class="h-tr h-tr-2">
 					<view class="h-td">基本工资</view>
-					<view class="h-td">{{dataList.gongzi}}</view>
+					<view class="h-td">{{dataList.baseWageTotal}}</view>
 				</view>
 				<view class="h-tr h-tr-2">
-					<view class="h-td">回收提成</view>
-					<view class="h-td">{{dataList.hstc}}</view>
+					<view class="h-td">线上回收提成</view>
+					<view class="h-td">{{dataList.onlineRecycleConmission}}</view>
 				</view>
 				<view class="h-tr h-tr-2">
-					<view class="h-td">销售提成</view>
-					<view class="h-td">{{dataList.xstc}}</view>
+					<view class="h-td">线下回收提成</view>
+					<view class="h-td">{{dataList.offlineRecycleConmission}}</view>
 				</view>
 				<view class="h-tr h-tr-2">
+					<view class="h-td">线上销售提成</view>
+					<view class="h-td">{{dataList.onlineSellConmission}}</view>
+				</view>
+				<view class="h-tr h-tr-2">
+					<view class="h-td">线下销售提成</view>
+					<view class="h-td">{{dataList.offlineSellConmission}}</view>
+				</view>
+				<!-- <view class="h-tr h-tr-2">
 					<view class="h-td">客服接待</view>
 					<view class="h-td">{{dataList.kefu}}</view>
-				</view>
-				<view class="h-tr h-tr-2">
+				</view> -->
+				<!-- <view class="h-tr h-tr-2">
 					<view class="h-td">机器分拣</view>
 					<view class="h-td">{{dataList.fenjian}}</view>
-				</view>
-				<view class="h-tr h-tr-2">
+				</view> -->
+				<!-- <view class="h-tr h-tr-2">
 					<view class="h-td">社保</view>
 					<view class="h-td">-{{dataList.shebao}}</view>
-				</view>
-				<view class="h-tr h-tr-2">
+				</view> -->
+				<!-- <view class="h-tr h-tr-2">
 					<view class="h-td">扣款项</view>
 					<view class="h-td">-{{dataList.koukuan}}</view>
 				</view>
 				<view class="h-tr h-tr-2">
 					<view class="h-td">奖金</view>
 					<view class="h-td">{{dataList.jiangjin}}</view>
-				</view>
-				
+				</view> -->
+
 				<view class="h-tr h-tr-2">
 					<view class="h-td">总计</view>
-					<view class="h-td text-red">{{dataList.heji}}</view>
+					<view class="h-td text-red">{{dataList.totalWage}}</view>
 				</view>
 			</view>
 		</view>
-		
-		
-		
-		
+
+
+
+		<u-datetime-picker ref="datetimePicker" :show="showdate" v-model="value1" mode="year-month" :formatter="formatter"
+			@confirm="aaa(1)" @cancel="close"></u-datetime-picker>
 		<!--占位底部距离-->
 		<view class="cu-tabbar-height" />
 		<!-- 日期选择控件 -->
-		<u-calendar :show="showdate" mode="range" minDate="2022-01-01" :maxDate="daylist[0].value[0]" defaultDate="[]" :allowSameDay="true" :closeOnClicOverlay="true" @confirm="confirmDate"
-			@close="closeDate"></u-calendar>
+		<!-- <u-calendar :show="showdate" mode="range" minDate="2022-01-01" :maxDate="daylist[0].value[0]" defaultDate="[]"
+			:allowSameDay="true" :closeOnClicOverlay="true" @confirm="confirmDate" @close="closeDate"></u-calendar> -->
 	</view>
 </template>
 
 <script>
 	import barTitle from '@/components/common/basics/bar-title';
-	import _tool from '@/utils/tools.js';	//工具函数
+	import _tool from '@/utils/tools.js'; //工具函数
 	import {
-		getAccountData,
-		erpusersalary
-	} from "@/api/erpapi.js";
+		getEmployeeWage
+	} from "@/api/erp.js";
 	export default {
 		//name: 'sales',
-		components: { 
+		components: {
 			barTitle
 		},
 		data() {
 			return {
+				time: '',
+				value1: '',
 				TabCur: 0,
-				dataList:'',
+				dataList: '',
 				showdate: false,
 				daylist: [{
-						'key': '今天',
-						'value': this.getDay(0)
-					},
-					{
-						'key': '昨天',
-						'value': this.getDay(-1)
-					},
-					{
 						'key': '本月',
 						'value': this.getthismonth()
 					},
@@ -116,32 +118,71 @@
 		mounted() {
 			_tool.setBarColor(true);
 			uni.pageScrollTo({
-			    scrollTop: 0,
-			    duration: 0
+				scrollTop: 0,
+				duration: 0
 			});
 		},
 		methods: {
-			getAccountData() {
-				let queryparams = {
-					starttime: this.daylist[this.TabCur].value[0],
-					endtime: this.daylist[this.TabCur].value[1]
-			
+			day(e) {
+				var today = new Date(e);
+
+				//日期
+				var DD = String(today.getDate()).padStart(2, '0'); // 获取日
+				var MM = String(today.getMonth() + 1).padStart(2, '0'); //获取月份，1 月为 0
+				var yyyy = today.getFullYear(); // 获取年
+
+				// 时间
+				var hh = String(today.getHours()).padStart(2, '0'); //获取当前小时数(0-23)
+				var mm = String(today.getMinutes()).padStart(2, '0'); //获取当前分钟数(0-59)
+				var ss = String(today.getSeconds()).padStart(2, '0'); //获取当前秒数(0-59)
+				today = yyyy + '-' + MM;
+				return today;
+			},
+			formatter(type, value) {
+				if (type === 'year') {
+					return `${value}年`;
 				}
-				erpusersalary(queryparams).then(res => {
-					this.dataList = res.data;
+				if (type === 'month') {
+					return `${value}月`;
+				}
+				if (type === 'day') {
+					return `${value}日`;
+				}
+				return value;
+			},
+			close() {
+				this.showdate = false;
+			},
+			aaa(value) {
+				// this.TabCur = '';
+				setTimeout(() => {
+					this.time = this.day(this.value1);
+					this.showdate = false;
+					this.getAccountData();
+				}, 100);
+			},
+			getAccountData() {
+				console.log(this.time)
+				let queryparams = {
+					queryType: this.TabCur + 2,
+					starttime: this.time,
+					// endtime: this.daylist[this.TabCur].value[1]
+				}
+				getEmployeeWage(queryparams).then(res => {
+					this.dataList = res.data ? res.data : {};
 				})
 			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-				if (this.TabCur == 4) {
+				if (this.TabCur == 2) {
 					//弹出日期选择
 					console.log('弹出日期选择');
 					this.showdate = true;
-				}else{
+				} else {
 					this.getAccountData();
 				}
-				
+
 				//console.log(this.TabCur);
 				//console.log(this.scrollLeft);
 			},
@@ -151,7 +192,7 @@
 				let today = new Date();
 				let targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
 				today.setTime(targetday_milliseconds); //注意，这行是关键代码
-			
+
 				let tYear = today.getFullYear();
 				let tMonth = today.getMonth();
 				let tDate = today.getDate();
@@ -164,7 +205,7 @@
 			},
 			getthismonth() {
 				let today = new Date();
-			
+
 				let tYear = today.getFullYear();
 				let tMonth = today.getMonth();
 				let tDate = today.getDate();
@@ -201,7 +242,7 @@
 				let relativeMonth = relativeDate.getMonth();
 				// 获得当前年份4位年
 				let relativeYear = relativeDate.getFullYear();
-			
+
 				// 当为12月的时候年份需要加1 月份需要更新为0 也就是下一年的第一个月
 				if (relativeMonth === 11) {
 					relativeYear += 1;
@@ -226,11 +267,11 @@
 			},
 			confirmDate(e) {
 				console.log(e);
-				
+
 				this.daylist[4].value = [];
 				this.daylist[4].value.push(e[0]);
 				this.daylist[4].value.push(e.pop());
-				
+
 				this.daylist[4].key = e[0] + '~' + e.pop();
 				this.showdate = false;
 				this.getAccountData();
@@ -249,19 +290,21 @@
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
-	
-	.cu-card.article>.cu-item .content{
-		uni-image{
-			width:6.8em;
-			height:6.8em;
+
+	.cu-card.article>.cu-item .content {
+		uni-image {
+			width: 6.8em;
+			height: 6.8em;
 		}
-		.text-content{
+
+		.text-content {
 			height: 5.4em;
 		}
 	}
-	.border{
-		height:2.4em;
-		line-height:2.4em;
-		border:1px solid #e1e1e1;
+
+	.border {
+		height: 2.4em;
+		line-height: 2.4em;
+		border: 1px solid #e1e1e1;
 	}
 </style>
