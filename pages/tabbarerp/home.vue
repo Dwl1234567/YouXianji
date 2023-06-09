@@ -37,6 +37,38 @@
 			<view class="cu-bar solid-bottom">
 				<view class="action">
 					<text class="cuIcon-titles text-orange"></text>
+					商城代办
+				</view>
+			</view>
+			<view class="cu-list grid col-4 no-border">
+				<view class="cu-item" @tap="payment">
+					<view class="iconfont icon-cashorange text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>代付款</text>
+				</view>
+				<view class="cu-item" @tap="delivery">
+					<view class="iconfont icon-cashorange text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>代发货</text>
+				</view>
+				<view class="cu-item" @tap="receipt">
+					<view class="iconfont icon-cashorange text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>代收货</text>
+				</view>
+				<view class="cu-item" @tap="refund">
+					<view class="iconfont icon-cashorange text-red">
+						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+					</view>
+					<text>退款/售后</text>
+				</view>
+			</view>
+			<view class="cu-bar solid-bottom">
+				<view class="action">
+					<text class="cuIcon-titles text-orange"></text>
 					回收代办
 				</view>
 			</view>
@@ -91,12 +123,6 @@
 					</view>
 					<text>审上架</text>
 				</view>
-				<view class="cu-item" @tap="financeTap">
-					<view class="iconfont icon-reward text-red">
-						<view class="cu-tag badge" v-if="loginfo.fukuannum!=0">{{loginfo.fukuannum || 0}}</view>
-					</view>
-					<text>待付款</text>
-				</view>
 				<view class="cu-item" @tap="qualityTaskTap">
 					<view class="iconfont icon-selectandcheck text-red">
 						<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
@@ -104,42 +130,36 @@
 					<text>待分拣</text>
 				</view>
 
-				<view class="cu-item" @tap="fahuoTap">
-					<view class="iconfont icon-goship text-red">
-						<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
-					</view>
-					<text>待发货</text>
-				</view>
 				<view class="cu-item" @tap="taskattrPriceTap">
 					<view class="iconfont icon-recyclepricecheck text-red">
 						<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
 					</view>
-					<text>审收价</text>
+					<text>审报价</text>
 				</view>
 				<view class="cu-item" @tap="attrPriceTap">
 					<view class="iconfont icon-tubiao-64 text-red">
 						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
 					</view>
-					<text>改收价</text>
+					<text>改报价</text>
 				</view>
-				<view class="cu-item" @tap="localTap">
+				<!-- 				<view class="cu-item" @tap="localTap">
 					<view class="iconfont icon-tubiao-64 text-red">
 						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
 					</view>
 					<text>待上门</text>
-				</view>
+				</view> -->
 				<view class="cu-item" @tap="maintenance">
 					<view class="iconfont icon-tubiao-64 text-red">
 						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
 					</view>
 					<text>整备仓</text>
 				</view>
-				<view class="cu-item" @tap="adjustmentList">
+				<!-- <view class="cu-item" @tap="adjustmentList">
 					<view class="iconfont icon-tubiao-64 text-red">
 						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
 					</view>
 					<text>调价列表</text>
-				</view>
+				</view> -->
 			</view>
 		</view>
 
@@ -175,7 +195,8 @@
 						<view class="cu-item" v-for="(item,index) in items.children" :key="index"
 							style="padding-bottom: 0; display: inline-block;text-align: center;">
 							<view @tap="goTap(key,index)">
-								<view :class="['iconfont ' + item.cuIcon,item.color?'text-' +item.color:'text-gray']">
+								<view :class="['iconfont ' + item.cuIcon,item.color?'text-' +item.color:'text-gray']"
+									style="font-size: 20px;">
 									<view class="cu-tag badge" v-if="item.badge!=0">{{item.badge}}</view>
 								</view>
 								<text :class="[item.color?'text-' +item.color:'text-gray']">{{item.name}}</text>
@@ -269,24 +290,6 @@
 							name: '销售列表',
 						},
 						{
-							cuIcon: 'icon-myselect',
-							color: 'red',
-							badge: 0,
-							name: '调拨入库',
-						},
-						{
-							cuIcon: 'icon-myselect',
-							color: 'red',
-							badge: 0,
-							name: '上门回收',
-						},
-						{
-							cuIcon: 'icon-refund',
-							color: 'red',
-							badge: 0,
-							name: '退款登记',
-						},
-						{
 							cuIcon: 'icon-refund',
 							color: 'red',
 							badge: 0,
@@ -297,6 +300,18 @@
 							color: 'red',
 							badge: 0,
 							name: '挂单列表',
+						},
+						{
+							cuIcon: 'icon-myselect',
+							color: 'red',
+							badge: 0,
+							name: '调拨入库',
+						},
+						{
+							cuIcon: 'icon-refund',
+							color: 'red',
+							badge: 0,
+							name: '退款登记',
 						},
 					],
 				},
@@ -337,29 +352,29 @@
 				{
 					name: '本店',
 					children: [{
+							cuIcon: 'icon-product',
+							color: 'red',
+							badge: 0,
+							name: '本店商品',
+						}, {
 							cuIcon: 'icon-buyaccessory',
 							color: 'red',
 							badge: 0,
 							name: '配件管理',
 						},
-						{
-							cuIcon: 'icon-product',
-							color: 'red',
-							badge: 0,
-							name: '本店商品',
-						},
+						// {
+						// 	cuIcon: 'icon-product',
+						// 	color: 'red',
+						// 	badge: 0,
+						// 	name: '本店商品',
+						// },
 						{
 							cuIcon: 'icon-statistic',
 							color: 'red',
 							badge: 0,
 							name: '本店业绩',
 						},
-						{
-							cuIcon: 'icon-announce',
-							color: 'red',
-							badge: 0,
-							name: '聊天记录',
-						},
+
 						{
 							cuIcon: 'icon-announce',
 							color: 'red',
@@ -371,6 +386,12 @@
 							color: 'red',
 							badge: 0,
 							name: '智能库存',
+						},
+						{
+							cuIcon: 'icon-announce',
+							color: 'red',
+							badge: 0,
+							name: '聊天记录',
 						},
 					],
 				},
@@ -397,7 +418,7 @@
 					],
 				},
 				{
-					name: '客户',
+					name: '关系',
 					children: [
 						// {
 						// 	cuIcon: 'questionfill',
@@ -411,53 +432,29 @@
 							badge: 0,
 							name: '客户列表',
 						},
-						{
-							cuIcon: 'icon-addhuishoushang',
-							color: 'red',
-							badge: 0,
-							name: '添加客户',
-						},
+						// {
+						// 	cuIcon: 'icon-addhuishoushang',
+						// 	color: 'red',
+						// 	badge: 0,
+						// 	name: '添加客户',
+						// },
 						{
 							cuIcon: 'icon-gongyingshanglist',
 							color: 'red',
 							badge: 0,
 							name: '供商列表',
 						},
-						{
-							cuIcon: 'icon-addgongyingshang',
-							color: 'red',
-							badge: 0,
-							name: '添加供商',
-						},
-					],
-				},
-				{
-					name: '分拣',
-					children: [
 						// {
-						// 	cuIcon: 'questionfill',
-						// 	color: 'mauve',
+						// 	cuIcon: 'icon-addgongyingshang',
+						// 	color: 'red',
 						// 	badge: 0,
-						// 	name: '客户公海'
+						// 	name: '添加供商',
 						// },
-						{
-							cuIcon: 'icon-selectandcheck',
-							color: 'red',
-							badge: 0,
-							name: '分拣记录',
-						},
 						{
 							cuIcon: 'icon-recyclelisting',
 							color: 'red',
 							badge: 0,
 							name: '收方列表',
-						},
-						{
-							cuIcon: 'icon-addrecycling',
-							color: 'red',
-							textsize: 'mini',
-							badge: 0,
-							name: '添加收方',
 						},
 					],
 				},
@@ -469,6 +466,30 @@
 			this.sendFirst();
 		},
 		methods: {
+			// 代付款
+			payment() {
+				uni.navigateTo({
+					url: '/pages/erp/commodity/payment',
+				});
+			},
+			// 代发货
+			delivery() {
+				uni.navigateTo({
+					url: '/pages/erp/commodity/delivery',
+				});
+			},
+			// 代收货
+			receipt() {
+				uni.navigateTo({
+					url: '/pages/erp/commodity/receipt',
+				});
+			},
+			// 退款
+			refund() {
+				uni.navigateTo({
+					url: '/pages/erp/commodity/refund',
+				});
+			},
 			// 初始化获取消息
 			sendFirst() {
 				console.log(222233333)
@@ -613,20 +634,18 @@
 						var value = 'sell/list';
 					}
 					if (index == 2) {
-						var value = 'allot/allot_push';
-					}
-					if (index == 3) {
-						var value = 'purchase/local';
-					}
-					if (index == 4) {
-						var value = 'sell/out';
-					}
-					if (index == 5) {
 						var value = 'mallList/list';
 					}
-					if (index == 6) {
+					if (index == 3) {
 						var value = 'pendingList/list';
 					}
+					if (index == 4) {
+						var value = 'allot/allot_push';
+					}
+					if (index == 5) {
+						var value = 'sell/out';
+					}
+
 				}
 				if (key == 1) {
 					if (index == 0) {
@@ -647,27 +666,27 @@
 				}
 				if (key == 2) {
 					if (index == 0) {
-						var value = 'shop/list';
-					}
-					if (index == 1) {
 						var value = 'stores/list';
 					}
+					if (index == 1) {
+						var value = 'shop/list';
+					}
+
 					if (index == 2) {
 						var value = 'stores/sales';
 					}
-
 					if (index == 3) {
-						var value = 'chat/list';
-					}
-					if (index == 4) {
 						var value = 'shop/storehouse';
 						// this.getKefuUserList();
 						// this.show = true;
 					}
-					if (index == 5) {
+					if (index == 4) {
 						var value = 'stock/index';
 						// this.getKefuUserList();
 						// this.show = true;
+					}
+					if (index == 5) {
+						var value = 'chat/list';
 					}
 				}
 				if (key == 3) {
@@ -689,24 +708,10 @@
 						var value = 'customer/customer?chooseStatus=1';
 					}
 					if (index == 1) {
-						var value = 'customer/add';
-					}
-					if (index == 2) {
 						var value = 'supplier/supplier?chooseStatus=1';
 					}
-					if (index == 3) {
-						var value = 'supplier/add';
-					}
-				}
-				if (key == 5) {
-					if (index == 0) {
-						var value = 'quality/list';
-					}
-					if (index == 1) {
-						var value = 'third/list?chooseStatus=1';
-					}
 					if (index == 2) {
-						var value = 'third/add';
+						var value = 'third/list?chooseStatus=1';
 					}
 				}
 				var url = pageurl + value;

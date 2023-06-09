@@ -5,8 +5,8 @@
 			<block slot="content">{{title}}</block>
 		</bar-title>
 		<scroll-view scroll-x class="bg-white nav text-center">
-			<view class="cu-item" :class="index==TabCur?'text-blue cur':''" v-for="(item,index) in dataList"
-				:key="index" @tap="tabSelect" :data-id="index">
+			<view class="cu-item" :class="index==TabCur?'text-blue cur':''" v-for="(item,index) in dataList" :key="index"
+				@tap="tabSelect" :data-id="index">
 				{{item.name}}
 			</view>
 		</scroll-view>
@@ -60,7 +60,7 @@
 				navlist: ['基础SKU', '物品信息', '成色情况', '功能情况'], //非固定数组
 				title: 'iPhone 13 Pro Max',
 				dataList: [],
-				floatmoney:''
+				floatmoney: ''
 			}
 		},
 		onLoad(options) {
@@ -76,24 +76,25 @@
 			});
 		},
 		methods: {
-			changenewprice(row){
-				if(!row.new_price || this.floatmoney == '0'){
+
+			changenewprice(row) {
+				if (!row.new_price || this.floatmoney == '0') {
 					return;
 				}
 				let press = Number(this.floatmoney) * 100;
-				let maxnum = Number(row.price1) *  (1 + Number(this.floatmoney));
-				let minnum = Number(row.price1) *  (1 - Number(this.floatmoney));
-				
-				if(Number(row.new_price)>maxnum || Number(row.new_price) <minnum ){
+				let maxnum = Number(row.price1) * (1 + Number(this.floatmoney));
+				let minnum = Number(row.price1) * (1 - Number(this.floatmoney));
+
+				if (Number(row.new_price) > maxnum || Number(row.new_price) < minnum) {
 					row.new_price = '';
 					return this.$u.toast(`新价格浮动不能相差${press}%`);
-				} 
+				}
 			},
 			erprecycletaskattrview() {
 				erprecycletaskattrview({
 					goods_id: this.goodsid
 				}).then(res => {
-					if(res.data.list.length == 0){
+					if (res.data.list.length == 0) {
 						uni.navigateBack();
 					}
 					this.dataList = res.data.list;
@@ -169,7 +170,8 @@
 			margin-left: 10px;
 		}
 	}
-	.hight-view{
-		height:300rpx;
+
+	.hight-view {
+		height: 300rpx;
 	}
 </style>

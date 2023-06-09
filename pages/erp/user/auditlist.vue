@@ -1,181 +1,154 @@
 <template>
 	<view>
-		
-		<scroll-view scroll-x class="bg-white nav text-center">
-			<view class="cu-item" :class="0==TabCur?'text-red cur':''" @tap="tabSelect" data-id="0">
-				待审核
+		<bar-title bgColor="bg-white" isBack>
+			<block slot="content">审报价</block>
+		</bar-title>
+		<scroll-view scroll-x class="bg-white nav text-center text-xl">
+			<view class="cu-item padding-lr-sm " :class="0==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="0" style="position:relative">
+				正在进行
+				<view class="tab-dot bg-white"></view>
 			</view>
-			<view class="cu-item" :class="1==TabCur?'text-red cur':''" @tap="tabSelect" data-id="1">
-				未完成
+			<view class="cu-item padding-lr-sm" :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="1" style="position:relative">
+				已完成
+				<view class="tab-dot bg-white"></view>
 			</view>
 		</scroll-view>
-		<view class="cu-card article" v-if="0==TabCur">
-			<view class="cu-item shadow" v-for="(item,index) in dataList[TabCur].list" :key="index">
-				<view class="content">
-					<image :src="item.image" mode="aspectFill"></image>
-					<view class="desc">
-						<view class="text-content">
-							<view class="text-lg">{{item.title}}</view>
-							<view class="text-sm">属性维度:<text class="text-red">{{item.project}}</text></view>
-						</view>
+		<view class="margin">
+			<view class="box" v-if="TabCur == 0" style="background-color: white;border-radius: 11rpx;">
+				<view style="padding: 40rpx 28rpx;" class="boxs" v-for="(item,index) in dataList" :key="index">
+					<view class="title">{{item.modelName}}</view>
+					<view class="text">时间:{{item.updateTime}}</view>
+					<view class="text">提交人:{{item.employeeName}}</view>
+					<view class="button" @tap="backAtt(item)">驳回</view>
+					<view class="button" @tap="seeAtt(item)"
+						style="margin-right:10rpx; background: white !important;color: black;border: 1rpx solid #979797;">查看
 					</view>
-					<view class="action">
-						<view class="margin-bottom-sm">
-							<button class="cu-btn bg-green sm" @tap="showModal(item)" data-target="Modal">查看</button>
-						</view>
-					</view>
+
 				</view>
 			</view>
-			<uni-load-more :status="dataList[TabCur].loadmore" :contentText="contentText"></uni-load-more>
-		</view>
-		
-		<view class="cu-card article" v-if="1==TabCur">
-			<view class="cu-item shadow" v-for="(item,index) in dataList[TabCur].list" :key="index">
-				<view class="content">
-					<image :src="item.image" mode="aspectFill"></image>
-					<view class="desc">
-						<view class="text-content">
-							<view class="text-lg">{{item.title}}</view>
-							<view class="text-sm">属性维度:<text class="text-red">{{item.project}}</text></view>
-						</view>
-					</view>
+			<view class="box" style="padding: 40rpx 28rpx; background-color: white;border-radius: 11rpx;" v-if="TabCur == 1">
+				<view style="padding: 40rpx 28rpx;" class="boxs" v-for="(item,index) in dataList" :key="index">
+					<view class="title">{{item.modelName}}</view>
+					<view class="text">时间:{{item.updateTime}}</view>
 				</view>
 			</view>
-			<uni-load-more :status="dataList[TabCur].loadmore" :contentText="contentText"></uni-load-more>
+			<view class="buttons" @tap="submitAttr" v-if="dataList.length && TabCur == 0">提交</view>
 		</view>
-		
-		<!--弹窗-->
-		<view class="cu-modal" :class="modalName=='Modal'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class="content">属性详情</view>
-					<view class="action" @tap="hideModal">
-						<text class="cuIcon-close text-red"></text>
-					</view>
-				</view>
-				<view class="padding-sm">
-					<scroll-view scroll-y class="bg-white nav text-center" style="height: 800rpx;">
-						<view class="h-table margin-bottom-sm" v-for="(item,index) in selectInfo" :key="index">
-							<view class="name">{{item.name}}</view>
-							<view class="h-tr h-tr-2 h-thead">
-								<view class="h-td">属性</view>
-								<view class="h-td">价格</view>
-							</view>
-							<view class="h-tr h-tr-2" v-for="(item1,index1) in item.child" :key="index1">
-								<view class="h-td">{{item1.name}}</view>
-								<view class="h-td">{{item1.price}}</view>
-							</view>
-						</view>
-					</scroll-view>
-				</view>
-				<view class="cu-bar bg-white">
-					<view class="action margin-0 flex-sub " @tap="actionTop(2)">拒绝</view>
-					<view class="action margin-0 flex-sub text-green solid-left"  @tap="actionTop(1)">同意</view>
-				</view>
-			</view>
-		</view>
-		
+		<!--占位底部距离-->
+		<view class="cu-tabbar-height" />
+		<!-- 下拉加载提示 -->
+		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
 </template>
 
 <script>
+	import barTitle from '@/components/common/basics/bar-title';
+	import _tool from '@/utils/tools.js'; //工具函数
 	import {
-		erprecycleattrpriceaction,
-		erprecycleattrpricelist
-	} from "@/api/erpapi.js";
-	import _tool from '@/utils/tools.js';	//工具函数
+		selectApproveAdjustPriceList,
+		rejectAdjustPrice,
+		agreeAdjustPrice
+	} from "@/api/erp.js"
 	export default {
+		//name: 'sales',
 		components: {
+			barTitle
 		},
 		data() {
 			return {
 				TabCur: 0,
-				modalName: null,
 				dataList: [{
-					list:[],
-					page: 1,
-					pagesize: 10,
-					loadmore: 'more'
-				},{
-					list:[],
-					page: 1,
-					pagesize: 10,
-					loadmore: 'more'
-				},],
+
+				}],
 				queryInfo: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
+				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
 					"contentdown": "加载更多数据",
 					"contentrefresh": "加载中...",
 					"contentnomore": "暂无更多数据。"
 				},
-				ifBottomRefresh:false,
-				selectInfo:'',
-				selectgoodsid:''
+				ifBottomRefresh: false,
 			}
 		},
 		onLoad() {
 			//加载虚拟数据
-			this.$nextTick(()=>{
+			this.$nextTick(() => {
 				uni.startPullDownRefresh({})
 			})
 		},
-		onReady() {
+		mounted() {
 			_tool.setBarColor(true);
 			uni.pageScrollTo({
-			    scrollTop: 0,
-			    duration: 0
+				scrollTop: 0,
+				duration: 0
 			});
 		},
 		onPullDownRefresh() {
-			this.dataList[this.TabCur].page = 1; //重置分页页码
+			this.queryInfo.pageNum = 1; //重置分页页码
 			this.getDataList();
 		},
 		onReachBottom() {
 			if (this.loadmore == 'noMore') return
-			this.dataList[this.TabCur].page += 1;
+			this.queryInfo.pageNum += 1;
 			this.ifBottomRefresh = true
 			this.getDataList();
 		},
 		methods: {
-			actionTop(type){
-				erprecycleattrpriceaction({
-					id:this.selectInfo.id,
-					auditstatus:type
-				}).then(res=>{
-					this.hideModal();
-					uni.startPullDownRefresh({})
+			seeAtt(row) {
+				uni.navigateTo({
+					url: '/pages/erp/user/editAttrlist?taskId=' + row.taskId + '&see=' + true
+				})
+			},
+			submitAttr() {
+				let data = this.dataList.map(item => {
+					return item.taskId
+				})
+				agreeAdjustPrice(data)
+				uni.showToast({
+					title: '提交成功'
+				})
+				this.getDataList()
+
+			},
+			backAtt(row) {
+				rejectAdjustPrice({
+					taskId: row.taskId
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '已驳回'
+						})
+						this.getDataList();
+					}
 				})
 			},
 			// 获取列表
 			getDataList() {
 				let that = this;
-				
+
 				let paramsData = {
-					page:this.dataList[this.TabCur].page,
-					pagesize:this.dataList[this.TabCur].pagesize,
-					status:this.TabCur
+					...that.queryInfo,
 				}
-				erprecycleattrpricelist(paramsData).then(res => {
-						let data = res.data.list;
-						
-						// console.log(data[0].new_json);
+				paramsData.approveStatus = this.TabCur
+				selectApproveAdjustPriceList(paramsData).then(res => {
+						let data = res.rows;
 						if (data) {
-							data.map((item,index)=>{
-								item.new_json = JSON.parse(item.new_json);
-								// item.old_json = JSON.parse(item.old_json);
-							})
 							//判断是触底加载还是第一次进入页面的加载
+
 							if (that.ifBottomRefresh) {
-								that.dataList[this.TabCur].list = that.dataList.concat(data)
+								that.dataList = that.dataList.concat(data)
 							} else {
-								that.dataList[this.TabCur].list = data
+								that.dataList = data
 							}
 							that.ifBottomRefresh = false
-							that.dataList[this.TabCur].loadmore = res.data.total == that.dataList[this.TabCur].list.length ? 'noMore' : 'more'
-			
+							console.log(that.dataList)
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
+
 						}
 					})
 					.finally(() => {
@@ -183,45 +156,112 @@
 					})
 			},
 			tabSelect(e) {
+				console.log(e.currentTarget.dataset.id)
+
 				this.TabCur = e.currentTarget.dataset.id;
+				this.getDataList()
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-				uni.startPullDownRefresh({})
-				
 			},
-			showModal(e) {
-				this.modalName = 'Modal';
-				this.selectInfo = e.new_json;
-				// console.log(this.selectInfo);
-				this.selectgoodsid = e.id;
-			},
-			hideModal(e) {
-				this.modalName = null
-			},
+			goodsclick(id) {
+				uni.navigateTo({
+					url: '/pages/erp/user/attrprice?id=' + id
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	.cu-card.article>.cu-item {
-		margin-top:0;
-		margin-bottom: 0;
-		padding-bottom:0;
-		.content{
-			uni-image{
-				width:3.8em;
-				height:3.8em;
-			}
-			.text-content{
-				height: 3.8em;
-			}
+	/* #ifdef APP-PLUS */
+	@import "/uni_modules/colorui/main.css";
+	@import "/uni_modules/colorui/icon.css";
+	@import "@/uni_modules/mpb-ui/shop/app.scss";
+
+	/* #endif */
+	page {
+		background: #F0F0F0;
+	}
+
+	.buttons {
+		background: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+		border-radius: 13rpx 13rpx 13rpx 11rpx;
+		width: 622rpx;
+		height: 84rpx;
+		font-size: 36rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		line-height: 84rpx;
+		text-align: center;
+		margin: 0 auto;
+		margin-top: 50rpx;
+	}
+
+	.box {
+
+		.boxs {
+			padding-bottom: 80rpx !important;
+		}
+
+		.title {
+			font-size: 29rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #101010;
+			line-height: 29rpx;
+		}
+
+		.text {
+			margin-top: 20rpx;
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #8E8E8E;
+			line-height: 25rpx;
+		}
+
+		.button {
+			float: right;
+			display: inline-block;
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #FFFFFF;
+			line-height: 34rpx;
+			padding: 9rpx 47rpx;
+			background: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+			border-radius: 29rpx;
 		}
 	}
-	.border{
-		height:2.4em;
-		line-height:2.4em;
-		border:1px solid #e1e1e1;
+
+	.item {
+		text-align: center;
+
+		.img {
+			width: 166rpx;
+			height: 166rpx;
+		}
+
+		.text {
+			color: #999999;
+			font-size: 24rpx;
+			// height: 50rpx;
+		}
+
+
 	}
-	.cu-modal{
-		z-index: 99;
+
+	.cur {
+		.tab-dot {
+			position: absolute;
+			height: 3px !important;
+			border-radius: 20rpx;
+			bottom: 5px;
+			left: 0;
+			right: 0;
+			width: 25px !important;
+			margin: auto;
+			background-image: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+		}
 	}
 </style>

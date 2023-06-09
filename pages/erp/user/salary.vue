@@ -42,10 +42,10 @@
 					<view class="h-td">客服接待</view>
 					<view class="h-td">{{dataList.kefu}}</view>
 				</view> -->
-				<!-- <view class="h-tr h-tr-2">
+				<view class="h-tr h-tr-2">
 					<view class="h-td">机器分拣</view>
-					<view class="h-td">{{dataList.fenjian}}</view>
-				</view> -->
+					<view class="h-td">{{dataList.sortingCommission ? dataList.sortingCommission : 0}}</view>
+				</view>
 				<!-- <view class="h-tr h-tr-2">
 					<view class="h-td">社保</view>
 					<view class="h-td">-{{dataList.shebao}}</view>

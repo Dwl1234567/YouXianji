@@ -880,3 +880,93 @@ export function getEmployeeWage(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 改报价列表
+ *
+ */
+export function selectUnderwayTaskList(data) {
+	return request.get('/yxj/app/adjustPriceTask/selectUnderwayTaskList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 改报价列表
+ *
+ */
+export function selectTaskItemList(data) {
+	return request.get('/yxj/app/adjustPriceTask/selectTaskItemList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 保存报价列表
+ *
+ */
+export function saveAdjustPrice(data) {
+	return request.post('/yxj/app/adjustPriceTask/saveAdjustPrice', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 提交调报价申请
+ *
+ */
+export function submitAdjustPrice(data) {
+	return request.get('/yxj/app/adjustPriceTask/submitAdjustPrice/' + data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询审报价列表
+ *
+ */
+export function selectApproveAdjustPriceList(data) {
+	return request.get('/yxj/app/adjustPriceTask/selectApproveAdjustPriceList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 审报价驳回
+ *
+ */
+export function rejectAdjustPrice(data) {
+	return request.get('/yxj/app/adjustPriceTask/rejectAdjustPrice', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 同意调报价申请
+ *
+ */
+export function agreeAdjustPrice(data) {
+	return request.get('/yxj/app/adjustPriceTask/agreeAdjustPrice/' + data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店回收方列表
+ *
+ */
+export function storeRecyclerList(data) {
+	return request.get('/yxj/app/storeRecycler/list', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 添加回收方
+ *
+ */
+export function storeRecycler(data) {
+	return request.post('/yxj/app/storeRecycler', data, {
+		noLogin: true
+	});
+}

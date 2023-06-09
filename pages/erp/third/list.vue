@@ -5,13 +5,13 @@
 			<!-- #ifdef MP -->
 			<!--<view class="text-center text-black zaiui-small-routine-title">客户列表</view>-->
 			<!-- #endif -->
-			
+
 			<!--标题栏-->
 			<bar-title bgColor="bg-white">
 				<block slot="content">回收方列表</block>
 				<block slot="right">
-					<button class="cu-btn sm line-red  round"  @tap="snTap">
-						<text class="cuIcon-add"/>
+					<button class="cu-btn sm line-red  round" @tap="snTap">
+						<text class="cuIcon-add" />
 						添加回收方
 					</button>
 				</block>
@@ -26,16 +26,16 @@
 				<button class="cu-btn bg-red round" @click="seachFuc">搜索</button>
 			</view>
 		</view>
-		
+
 		<view class="cu-list menu">
 			<block v-for="(item,index) in dataList" :key="index">
 				<view class="cu-item bg-white radius-4 margin-sm" @click="choosecust(item)">
 					<view class="content">
-						<view class="text-grey">{{item.name}}</view>
+						<view class="text-grey">{{item.recyclerName}}</view>
 					</view>
 					<view class="action">
 						<view class="text-gray text-sm">
-							{{item.phone}}
+							{{item.linkPhone}}
 						</view>
 					</view>
 				</view>
@@ -48,8 +48,8 @@
 
 <script>
 	import {
-		erpthirdgetlist
-	}from "@/api/erpapi.js"
+		storeRecyclerList
+	} from "@/api/erp.js"
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -59,11 +59,11 @@
 			return {
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
-				seachtext:'',
+				seachtext: '',
 				dataList: [],
 				queryInfo: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
@@ -71,8 +71,8 @@
 					"contentrefresh": "加载中...",
 					"contentnomore": "暂无更多数据。"
 				},
-				ifBottomRefresh:false,
-				chooseStatus:0
+				ifBottomRefresh: false,
+				chooseStatus: 0
 			};
 		},
 		onLoad(options) {
@@ -82,65 +82,66 @@
 			this.getDataList();
 		},
 		onReady() {
-			
+
 		},
 		onPullDownRefresh() {
-			this.queryInfo.page = 1; //重置分页页码
+			this.queryInfo.pageNum = 1; //重置分页页码
 			this.getDataList();
 		},
 		onReachBottom() {
 			if (this.loadmore == 'noMore') return
-			this.queryInfo.page += 1;
+			this.queryInfo.pageNum += 1;
 			this.ifBottomRefresh = true
 			this.getDataList();
 		},
 		methods: {
-			choosecust(info){
-				if(this.chooseStatus){
+			choosecust(info) {
+				if (this.chooseStatus) {
 					return;
 				}
-				uni.$emit('updatethird',info)
+				uni.$emit('updatethird', info)
 				uni.navigateBack({
 					delta: 1
 				})
 			},
-			seachFuc(){
+			seachFuc() {
 				this.getDataList();
 			},
-			snTap(){
+			snTap() {
 				uni.navigateTo({
-					url:'/pages/erp/third/add'
+					url: '/pages/erp/third/add'
 				})
 			},
-			isMobile (mobile) {
+			isMobile(mobile) {
 				let regExp = /^1[3-9]\d{9}$/;
 				return regExp.test(mobile)
 			},
 			getDataList() {
 				let that = this;
-				if(this.isMobile(that.seachtext)){
-					that.queryInfo.phone  = that.seachtext;
-					that.queryInfo.name = '';
-				}else{
-					that.queryInfo.name  = that.seachtext;
-					that.queryInfo.phone = '';
-				}
+				// if (this.isMobile(that.seachtext)) {
+				// 	that.queryInfo.phone = that.seachtext;
+				// 	that.queryInfo.name = '';
+				// } else {
+				// 	that.queryInfo.name = that.seachtext;
+				// 	that.queryInfo.phone = '';
+				// }
 				let paramsData = {
 					...that.queryInfo,
 				}
-				erpthirdgetlist(paramsData).then(res => {
-						let data = res.data.data;
+				paramsData.recyclerName = that.seachtext;
+				storeRecyclerList(paramsData).then(res => {
+						let data = res.rows;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
-			
+
 							if (that.ifBottomRefresh) {
 								that.dataList = that.dataList.concat(data)
 							} else {
 								that.dataList = data
 							}
 							that.ifBottomRefresh = false
-							that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
-			
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
+
 						}
 					})
 					.finally(() => {

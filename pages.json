@@ -700,8 +700,18 @@
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
 
-				//"navigationStyle": "custom",
-				"navigationBarTitleText": "调整收价"
+				"navigationStyle": "custom"
+				// "navigationBarTitleText": "调整收价"
+			}
+		},
+		//修改改报价
+		{
+			"path": "pages/erp/user/editAttrlist",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+
+				"navigationStyle": "custom"
+				// "navigationBarTitleText": "调整收价"
 			}
 		},
 		//待上门
@@ -767,8 +777,8 @@
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
 
-				//"navigationStyle": "custom",
-				"navigationBarTitleText": "收价任务"
+				"navigationStyle": "custom"
+				// "navigationBarTitleText": "收价任务"
 			}
 		},
 		//本店聊天记录

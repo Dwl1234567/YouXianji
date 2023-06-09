@@ -2,16 +2,16 @@
 	<view>
 		<uni-forms ref="customForm" :rules="customRules" labelWidth="80px" :modelValue="customFormData">
 			<uni-forms-item label="回收方名称" labelWidth="120" required name="name" class="cu-form-group">
-				<uni-easyinput v-model="customFormData.name" placeholder="请输入回收方名称" />
+				<uni-easyinput v-model="customFormData.recyclerName" placeholder="请输入回收方名称" />
 			</uni-forms-item>
 			<uni-forms-item label="联系人" labelWidth="120" name="contact" class="cu-form-group">
-				<uni-easyinput v-model="customFormData.contact" placeholder="请输入联系人" />
+				<uni-easyinput v-model="customFormData.linkPeople" placeholder="请输入联系人" />
 			</uni-forms-item>
 			<uni-forms-item label="联系人手机号" labelWidth="120" name="phone" class="cu-form-group">
-				<uni-easyinput v-model="customFormData.phone" placeholder="请输入联系人手机号" />
+				<uni-easyinput v-model="customFormData.linkPhone" placeholder="请输入联系人手机号" />
 			</uni-forms-item>
 			<uni-forms-item label="备注" class="cu-form-group">
-				<uni-easyinput type="textarea" v-model="customFormData.description" placeholder="请输入备注" />
+				<uni-easyinput type="textarea" v-model="customFormData.remark" placeholder="请输入备注" />
 			</uni-forms-item>
 		</uni-forms>
 		<view class="padding flex flex-direction">
@@ -22,8 +22,8 @@
 
 <script>
 	import {
-		erpthirdadd
-	} from "@/api/erpapi.js"
+		storeRecycler
+	} from "@/api/erp.js"
 	export default {
 		components: {
 
@@ -45,14 +45,14 @@
 					value: 2
 				}],
 				customFormData: {
-					name: '',
-					contact: '',
-					phone: '',
-					description: '',
+					recyclerName: '',
+					linkPeople: '',
+					linkPhone: '',
+					remark: '',
 				},
 				// 自定义表单校验规则
 				customRules: {
-					name: {
+					recyclerName: {
 						rules: [{
 							required: true,
 							errorMessage: '回收方名称不能为空'
@@ -78,12 +78,12 @@
 				console.log(this.customFormData);
 				this.$refs[ref].validate().then(res => {
 					console.log('success', res);
-					erpthirdadd({
+					storeRecycler({
 						...this.customFormData
 					}).then(res => {
 						uni.showToast({
-							title:'添加成功！',
-							icon:"none"
+							title: '添加成功！',
+							icon: "none"
 						})
 						uni.navigateBack({})
 					})

@@ -1,7 +1,7 @@
 <template>
 	<view class="my-box">
 		<image src="../../static/我的备份@1x.png" mode="" class="background"></image>
-		<view class="head-box">
+		<view class="head-box" style="padding: 0 13px 50px;">
 			<!--标题栏-->
 			<!--小程序端不显示-->
 			<!-- #ifndef MP -->
@@ -24,10 +24,11 @@
 				<!--已登陆-->
 				<view class="cu-list menu-avatar">
 					<view class="cu-item">
-						<view class="cu-avatar round lg" style="background-image: url(/static/images/avatar/1.jpg)" />
+						<image :src="$httpImage + storeInfo.avatar" class="cu-avatar round lg"></image>
+						<!-- <view class="cu-avatar round lg" style="background-image: url(/static/images/avatar/1.jpg)" /> -->
 						<view class="content text-xl">
 							<view class="text-white">
-								<text class="margin-right">{{storeInfo.name}}</text>
+								<text class="margin-right">{{storeInfo.nickName}}</text>
 							</view>
 							<view class="text-white-bg text-sm">
 								<text class="text-border-x">{{storeInfo.storename}}</text>
@@ -122,24 +123,11 @@
 						</view>
 						<text>审上架</text>
 					</view>
-					<view class="cu-item" @tap="financeTap">
-						<view class="iconfont icon-reward text-red">
-							<view class="cu-tag badge" v-if="loginfo.fukuannum!=0">{{loginfo.fukuannum || 0}}</view>
-						</view>
-						<text>待付款</text>
-					</view>
 					<view class="cu-item" @tap="qualityTaskTap">
 						<view class="iconfont icon-selectandcheck text-red">
 							<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
 						</view>
 						<text>待分拣</text>
-					</view>
-
-					<view class="cu-item" @tap="fahuoTap">
-						<view class="iconfont icon-goship text-red">
-							<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
-						</view>
-						<text>待发货</text>
 					</view>
 					<view class="cu-item" @tap="taskattrPriceTap">
 						<view class="iconfont icon-recyclepricecheck text-red">
@@ -153,12 +141,12 @@
 						</view>
 						<text>改收价</text>
 					</view>
-					<view class="cu-item" @tap="localTap">
+					<!-- <view class="cu-item" @tap="localTap">
 						<view class="iconfont icon-tubiao-64 text-red">
 							<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
 						</view>
 						<text>待上门</text>
-					</view>
+					</view> -->
 				</view>
 			</view>
 
@@ -221,7 +209,8 @@
 		onLoad() {
 			//加载虚拟数据
 			this.toolsList = _my_data.toolsListData();
-			this.storeInfo = JSON.parse(uni.getStorageSync('store_info'));
+			this.storeInfo = uni.getStorageSync('userinfo');
+			console.log(this.storeInfo)
 		},
 		onShow() {
 			this.erpuserbacklogFuc();
