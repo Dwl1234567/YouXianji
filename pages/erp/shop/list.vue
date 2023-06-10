@@ -19,10 +19,8 @@
 					</picker>
 				</view>
 			</view>
-			<view
-				v-for="(item, index) in dataList"
-				style="display: flex; align-items: center; margin-bottom: 10px; margin-top: 10px"
-			>
+			<view v-for="(item, index) in dataList"
+				style="display: flex; align-items: center; margin-bottom: 10px; margin-top: 10px">
 				<view class="transform" style="margin-right: 28rpx">
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
@@ -32,11 +30,8 @@
 					</view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
-						<image
-							:src="$httpImage + item.fittingsConfig.fittingsPhoto"
-							mode="aspectFit"
-							class="cu-avatar lg radius box_5 flex-col"
-						></image>
+						<image :src="$httpImage + item.fittingsConfig.fittingsPhoto" mode="aspectFit"
+							class="cu-avatar lg radius box_5 flex-col"></image>
 						<view class="text-wrapper_2 flex-col">
 							<text class="text_8">{{item.fittingsConfig.fittingsName}}</text>
 							<view style="display: flex; margin-top: 10px">
@@ -70,14 +65,8 @@
 			<view class="yunShow-top">
 				<view class="yunShow-title">上传维修凭证</view>
 				<view class="yunShow-img">
-					<u-upload
-						:fileList="fileList1"
-						@afterRead="afterRead"
-						@delete="deletePic"
-						name="1"
-						multiple
-						:maxCount="3"
-					></u-upload>
+					<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+						:maxCount="3"></u-upload>
 				</view>
 			</view>
 			<view class="yunShow-bottom">
@@ -92,7 +81,12 @@
 
 <script>
 	import Vue from 'vue';
-	import { fittingsOrderList, undersell, putaway, confirmWarehousing } from '@/api/erp.js';
+	import {
+		fittingsOrderList,
+		undersell,
+		putaway,
+		confirmWarehousing
+	} from '@/api/erp.js';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
@@ -127,7 +121,7 @@
 			};
 		},
 		onLoad(options) {
-			this.getDataList();
+			// this.getDataList();
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -141,8 +135,9 @@
 			this.getDataList();
 		},
 		onShow() {
+			this.getDataList();
 			let that = this;
-			uni.$once('updatethird', function (data) {
+			uni.$once('updatethird', function(data) {
 				that.thirdInfo = data;
 			});
 		},
@@ -190,8 +185,7 @@
 			gotap(item) {
 				uni.setStorageSync('shopAdd', item.fittingsConfig);
 				uni.navigateTo({
-					url:
-						'/pages/erp/shop/add?fittingsNumber=' +
+					url: '/pages/erp/shop/add?fittingsNumber=' +
 						item.fittingsNumber +
 						'&fittingsSellPrice=' +
 						item.fittingsSellPrice +
@@ -299,14 +293,17 @@
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
 	@import '@/static/common.css';
+
 	page {
 		background: #f0f0f0;
 		padding-top: 30rpx;
 		// padding: 100rpx 21rpx 0rpx 21rpx;
 	}
+
 	.button {
 		display: flex;
 		justify-content: flex-end;
+
 		view {
 			min-width: 143rpx;
 			height: 55rpx;
@@ -321,6 +318,7 @@
 			align-items: center;
 			justify-content: center;
 		}
+
 		.receipt {
 			padding: 9rpx 17rpx;
 			background: linear-gradient(90deg, #ff6868 0%, #ea1515 100%);
@@ -332,6 +330,7 @@
 			font-weight: 400;
 		}
 	}
+
 	.bottomView {
 		position: fixed;
 		bottom: 0px;
@@ -343,12 +342,15 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
 	.transform {
 		// transform: translateX(100rpx);
 		display: none;
 	}
+
 	.yunShow-top {
 		padding: 26rpx 28rpx 28rpx 28rpx;
+
 		.yunShow-title {
 			font-size: 36rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
@@ -357,31 +359,37 @@
 			text-align: center;
 		}
 	}
+
 	.yunShow-item {
 		display: flex;
 		align-items: center;
 		margin-top: 22rpx;
+
 		.left {
 			font-size: 31rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #232323;
 		}
+
 		.select {
 			flex: 1;
 			margin-left: 11.45rpx;
 		}
+
 		.input {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 		}
+
 		.inputAddress {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 			flex: 1;
 			padding: 9rpx 11rpx;
+
 			.copy {
 				width: 141rpx;
 				height: 53rpx;
@@ -397,8 +405,10 @@
 			}
 		}
 	}
+
 	.yunShow-bottom {
 		display: flex;
+
 		view {
 			width: 267rpx;
 			height: 99rpx;
@@ -412,6 +422,7 @@
 			color: #232323;
 		}
 	}
+
 	.goXiu {
 		width: 313rpx;
 		height: 82rpx;
@@ -424,18 +435,22 @@
 		font-weight: 500;
 		color: #ffffff;
 	}
+
 	.transformRight {
 		transform: translateX(-100rpx);
 	}
+
 	.radio {
 		width: 38rpx;
 		height: 38rpx;
 		border-radius: 38rpx;
 		border: 2rpx solid #cecece;
 	}
+
 	.radio-red {
 		background-color: #ff3a31;
 	}
+
 	.tips {
 		justify-content: space-between;
 		display: flex;
@@ -445,10 +460,11 @@
 		}
 	}
 
-	.cu-card.article > .cu-item {
+	.cu-card.article>.cu-item {
 		.title {
 			padding: 0 0 10rpx 0;
 		}
+
 		.content {
 			uni-image {
 				width: 5.4em;
@@ -548,9 +564,11 @@
 	.cu-modal {
 		z-index: 999;
 	}
+
 	.cu-form-group {
 		min-height: 45px;
 	}
+
 	.group_3 {
 		background-color: rgba(255, 255, 255, 1);
 		border-radius: 6px;
@@ -651,6 +669,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.tag_33 {
 		background-color: #e5fcf1;
 		border-radius: 10px;
@@ -659,6 +678,7 @@
 		position: absolute;
 		right: 0;
 	}
+
 	.text_33 {
 		overflow-wrap: break-word;
 		color: #00c082;
@@ -669,6 +689,7 @@
 		white-space: nowrap;
 		line-height: 17px;
 	}
+
 	.text_12 {
 		overflow-wrap: break-word;
 		color: rgba(17, 144, 214, 1);

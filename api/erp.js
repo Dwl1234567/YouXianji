@@ -970,3 +970,33 @@ export function storeRecycler(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 获取本店销售列表
+ *
+ */
+export function selectUserSellFormList(data) {
+	return request.get('/yxj/app/fittingsForm/selectUserSellFormList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 新增门店退款登记
+ *
+ */
+export function returnRegistration(data) {
+	return request.post('/yxj/app/returnRegistration', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店设备收支财务列表
+ *
+ */
+export function financeList(data) {
+	return request.get('/yxj/app/finance/list', data, {
+		noLogin: true
+	});
+}

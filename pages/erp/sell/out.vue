@@ -10,22 +10,7 @@
 			</block>
 		</bar-title>
 		<view class="">
-			<view class="margin-sm cu-item bg-white radius-3 padding-sm" v-for="(item,index) in dataList" :key="index">
-				<view>
-					<text class="text-deepblue margin-right-xs">销售单号：</text> 
-					{{item.order_sn}}
-				</view>
-				<view class="flex justify-between">
-					<view>
-						<text class="text-deepblue margin-right-xs">退款金额：</text> 
-						<text class="text-red">{{item.money}}元</text>
-					</view>
-					<view class="text-grey">{{item.createtime}}</view>
-				</view>
-				<view class="text-gray text-sm">
-					退款原因：{{item.remark}}
-				</view>
-			</view>
+			<!-- <data-lists dataList="dataList"></data-lists> -->
 		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -37,14 +22,16 @@
 		getrefundlist
 	} from "@/api/erpapi.js"
 	import barTitle from '@/components/common/basics/bar-title';
+	import dataLists from '@/components/common/dataListmore/dataList.vue';
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		components: {
-			barTitle
+			barTitle,
+			dataLists
 		},
 		data() {
 			return {
-				ifBottomRefresh:false,
+				ifBottomRefresh: false,
 				dataList: [],
 				queryInfo: {
 					page: 1,
@@ -59,7 +46,7 @@
 			}
 		},
 		onLoad() {
-			
+
 			// 进入页面刷新
 			this.$nextTick(() => {
 				uni.startPullDownRefresh();
@@ -83,7 +70,7 @@
 			this.getDataList();
 		},
 		methods: {
-			goToout(){
+			goToout() {
 				uni.navigateTo({
 					url: '/pages/erp/sell/outadd'
 				});
@@ -96,10 +83,10 @@
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
-				
+
 				getrefundlist(paramsData).then(res => {
 						let data = res.data.data;
-						
+
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
 							if (that.ifBottomRefresh) {
@@ -126,5 +113,4 @@
 	@import "/uni_modules/colorui/icon.css";
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
 	/* #endif */
-	
 </style>

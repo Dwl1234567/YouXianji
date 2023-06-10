@@ -2,11 +2,7 @@
 	<view>
 		<uni-forms ref="customForm" :rules="customRules" labelWidth="80px" :modelValue="customFormData">
 			<uni-forms-item label="父仓库" name="parentId" class="cu-form-group">
-				<uni-data-select
-				        v-model="customFormData.parentId"
-				        :localdata="range"
-				        @change="change"
-				      ></uni-data-select>
+				<uni-data-select v-model="customFormData.parentId" :localdata="range" @change="change"></uni-data-select>
 			</uni-forms-item>
 			<uni-forms-item label="仓库名称" required name="warehouseName" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.warehouseName" placeholder="请输入仓库名称" />
@@ -72,7 +68,7 @@
 			getFaterList() {
 				warehouseList({
 					storeId: this.storeId,
-					parentId: 0
+					parentId: null
 				}).then(res => {
 					console.log(res.rows)
 					res.rows.map(item => {
@@ -83,9 +79,9 @@
 					})
 				})
 			},
-			 change(e) {
-			        console.log("e:", e);
-			      },
+			change(e) {
+				console.log("e:", e);
+			},
 			RegionChange(e) {
 				this.region = e.detail.value
 			},
@@ -100,14 +96,14 @@
 					}).then(res => {
 						if (res.code == 200) {
 							uni.showToast({
-								title:'添加成功！',
-								icon:"none"
+								title: '添加成功！',
+								icon: "none"
 							})
 							uni.navigateTo({
-								url:'/pages/erp/warehouse/quality'
+								url: '/pages/erp/warehouse/quality'
 							})
 						}
-						
+
 					})
 				}).catch(err => {
 					console.log('err', err);
