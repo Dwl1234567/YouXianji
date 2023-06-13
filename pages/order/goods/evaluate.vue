@@ -1,27 +1,30 @@
 <template>
 	<view class="evaluate">
-		<u--textarea v-model="value1" placeholder="请输入内容" class="textarea"></u--textarea>
+		<view class="rate" style="display:flex;align-items: center;">
+			<text>评分</text>
+			<u-rate count="5" v-model="rate" style="margin-left: 20rpx;"></u-rate>
+		</view>
+		<u--textarea v-model="value1" placeholder="请输入内容" class="textarea"
+			style="background: #f0f0f0;margin-top: 20rpx;margin-bottom: 20rpx;"></u--textarea>
 		<view class="upload">
 			<text>添加图片</text>
-			<u-upload
-				:fileList="fileList1"
-				@afterRead="afterRead"
-				@delete="deletePic"
-				name="1"
-				multiple
-				:maxCount="3"
-			></u-upload>
+			<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+				:maxCount="3"></u-upload>
 		</view>
+
 		<view class="button" @tap="shoppingOrderEvaluate">分享评价</view>
 	</view>
 </template>
 
 <script>
-	import { shoppingOrderEvaluate } from '@/api/malls.js';
+	import {
+		shoppingOrderEvaluate
+	} from '@/api/malls.js';
 	import Vue from 'vue';
 	export default {
 		data() {
 			return {
+				rate: 5,
 				value1: '',
 				shoppingOrderId: 0,
 				fileList1: [],
@@ -39,6 +42,7 @@
 				shoppingOrderEvaluate({
 					photo: photo.join(','),
 					context: this.value1,
+					rate: this.rate,
 					shoppingOrderId: Number(this.shoppingOrderId),
 				}).then((res) => {
 					if (res.code === 200) {
@@ -112,10 +116,12 @@
 <style lang="scss">
 	.evaluate {
 		padding: 23rpx 28rpx 0rpx 28rpx;
+
 		.textarea {
 			height: 288rpx !important;
 			padding: 0rpx !important;
 		}
+
 		.upload {
 			text {
 				font-size: 29rpx;
@@ -125,10 +131,12 @@
 				line-height: 40rpx;
 				margin-bottom: 21rpx;
 			}
+
 			.u-upload {
 				margin-top: 21rpx;
 			}
 		}
+
 		.button {
 			margin: 55rpx auto;
 			width: 622rpx;

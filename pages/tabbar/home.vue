@@ -21,7 +21,7 @@
 			<newView @checkView="checkView"></newView>
 		</view> -->
 		<view>
-			<secondView @checkView="checkView" :goodsData="goodsData"></secondView>
+			<secondView @checkView="checkView" :goodsData="goodsData" @checkBrandId="checkBrandId"></secondView>
 		</view>
 		<!--返回顶部-->
 		<view class="add-btn-view-box">
@@ -217,6 +217,11 @@
 			this.getProduct();
 		},
 		methods: {
+			checkBrandId(e) {
+				this.goodsData = []
+				this.bandId = e != 0 ? e : null;
+				this.getProduct()
+			},
 			checkView(e) {
 				if (e === 'new') {
 					this.newViews = true;
@@ -266,23 +271,14 @@
 			getProduct() {
 				let that = this;
 				let params = {
-					firstFlag: this.firstFlag,
+					firstFlag: that.firstFlag,
+					bandId: that.bandId
 				};
 				secondGoodsList(params)
 					.then((res) => {
 						let data = res.data;
 						that.goodsData.push(...data);
 						this.firstFlag = false;
-						// if (that.pageIndex == 1) {
-						// 	that.goodsData = data;
-						// } else {
-						// 	that.goodsData.push(...data);
-						// }
-						// if (res.rows.length == 10) {
-						// 	that.pageIndex++;
-						// } else {
-						// 	that.loadmore = 'noMore';
-						// }
 					})
 					.finally(() => {
 						uni.stopPullDownRefresh();

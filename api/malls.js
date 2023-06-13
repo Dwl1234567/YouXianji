@@ -229,3 +229,73 @@ export function bindDistributionBrowse(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 根据机型查询最近5条好评
+ *
+ */
+export function selectByModelId(data) {
+	return request.get('/yxj/app/shoppingOrderEvaluate/selectByModelId', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取所有品牌
+ *
+ */
+export function getAllBrand(data) {
+	return request.get('/yxj/app/common/getAllBrand', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取系列列表
+ *
+ */
+export function getSeriesList(data) {
+	return request.get('/yxj/app/common/getSeriesList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取所有分类
+ *
+ */
+export function getAllClassification(data) {
+	return request.get('/yxj/app/common/getAllClassification', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取系列机型树
+ *
+ */
+export function selectModelTree(data) {
+	return request.get('/yxj/app/common/selectModelTree', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取随机商品列表
+ *
+ */
+export function selectStoreGoods(data) {
+	return request.get('/yxj/app/secondGoods/selectStoreGoods', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 根据条件查询商品列表
+ *
+ */
+export function getQueryGoodsList(data) {
+	return request.get('/yxj/app/secondGoods/getQueryGoodsList', data, {
+		noLogin: true
+	});
+}

@@ -63,12 +63,12 @@
 							<!--商品价格-->
 							<view class="margin-top-sm">
 								<text class="text-price text-xxl text-red text-sl" style="font-family: DINCondensed-Bold">
-									{{product.sales_price}}
+									{{product.sellPrice}}
 								</text>
-								<view class="text-xs cost-price-num text-red flex text-929294">
+								<!-- <view class="text-xs cost-price-num text-red flex text-929294">
 									<view class="text-through">原价￥{{product.market_price}}</view>
 									<view class="margin-left-sm">剩余{{product.stock}}件</view>
-								</view>
+								</view> -->
 
 								<!-- <view class="text-right time-right ">
 									<view class="text-through">原价￥{{product.market_price}}</view>
@@ -76,7 +76,7 @@
 								</view> -->
 							</view>
 							<view class="title-view">
-								<text class="cu-tag bg-red radius sm">{{product.colourname}}</text>
+								<!-- <text class="cu-tag bg-red radius sm">{{product.colourname}}</text> -->
 								<text class="text-black text-bold">{{product.title}}</text>
 							</view>
 							<view class="text-lg margin-bottom-sm">
@@ -87,12 +87,12 @@
 						<view class="bg-white margin-sm radius-2">
 							<!--新机属性选择-->
 							<view class="view-box select-view-box">
-								<view class="flex flex-wrap text-sm" @tap="selectTap">
+								<view class="flex flex-wrap text-df" @tap="selectTap">
 									<view class="basis-1">
 										<text class="text-gray">已选</text>
 									</view>
 									<view class="basis-8 text-500">
-										<text class="text-sm">{{specSelectedName}}</text>
+										<text class="text-df">{{product.title}}</text>
 									</view>
 									<view class="basis-1">
 										<view class="text-gray text-right">
@@ -105,27 +105,29 @@
 
 							<!--发货-->
 							<view class="view-box select-view-box">
-								<view class="flex flex-wrap text-sm">
+								<view class="flex flex-wrap text-df">
 									<view class="basis-1">
 										<text class="text-gray">发货</text>
 									</view>
 									<view class="basis-9 text-500">
-										<text class="text-sm">16:00前下单，当日发货，顺丰包邮</text>
+										<text class="text-df">16:00前下单，当日发货，顺丰包邮</text>
 									</view>
 								</view>
 							</view>
 							<view class="border-view" />
 							<view class="view-box service-view-box">
 								<!--<view class="view-box service-view-box" @tap="serviceTap">-->
-								<view class="flex flex-wrap text-sm">
+								<view class="flex flex-wrap text-df">
 									<view class="basis-1">
 										<text class="text-gray">保障</text>
 									</view>
 									<view class="basis-7 text-500">
 										<view>
-											<text class="tag-view" v-for="(item,index) in product.server" :key="index">
+											<!-- v-for="(item,index) in product.server" -->
+											<text class="tag-view">
 												<text class="text-red" />
-												<text>{{item}}</text>
+												<!-- <text>{{item}}</text> -->
+												<text>7天包退，15天包换</text>
 											</text>
 										</view>
 									</view>
@@ -135,25 +137,37 @@
 					</view>
 					<!--包含商品 end-->
 					<!--评论列表-->
-					<view id="pinglunBlock" class="bg-white margin-sm padding-sm radius-2" :style="{paddingTop: '0'}">
+					<view id="pinglunBlock" class="bg-white margin-sm padding  radius-2" :style="{paddingTop: '0'}">
 						<!-- <view class="" v-for="(items,index) in 10" :key="index">评论123</view> -->
-						<view class="cu-bar bg-white solid-bottom">
+						<view class="cu-bar bg-white">
 							<text class="text-bold">商品评价</text>
 						</view>
-						<block v-for="(items,index) in evalueteList" :key="index">
-							<view class="view-box">
-								<view class="flex flex-wrap text-sm">
-									<view class="basis-1 margin-right-sm">
-										<view class="cu-avatar sm round" :style="'backgroundImage: url('+items.avatar+')'" />
+						<block v-for="(items,index) in rateList.shoppingOrderEvaluates" :key="index">
+							<view class="view-box" style="padding: 0rpx;">
+								<view class="flex flex-wrap text-sm" style="margin-top: 32rpx;">
+									<view class="basis-1 margin-right-sm" style="display: flex;align-items: center;">
+										<view class="cu-avatar sm round" :style="'backgroundImage: url(' + $httpImage + items.avatar + ')'"
+											style="width: 53rpx; height: 53rpx;" />
+										<view class=""
+											style="font-size: 27rpx;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;color: #4F4F50;">
+											{{items.nickName}}
+										</view>
 									</view>
-									<view class="basis-9 text-sm">
-										<view class="text-lg text-bold">{{items.username}}</view>
-										<view class="margin-top-xs">{{items.comment}}</view>
-										<view class="text-gray margin-top-sm">{{items.spec}}</view>
+									<view class="basis-9" style="margin-top: 26rpx;">
+
+										<view class="margin-top-xs"
+											style="word-break: break-all;width: 80vw;font-size: 25rpx;font-family: PingFangSC-Regular, PingFang SC;font-weight: 400;color: #4F4F50;">
+											{{items.context}}
+										</view>
+										<!-- <view class="text-gray margin-top-sm">{{items.spec}}</view> -->
 									</view>
+									<view v-if="items.photo" style="margin-top: 24rpx;display: flex;">
+										<image v-for="(item, index) in items.photo" :src="$httpImage + item"
+											style="width: 153rpx; height: 153rpx;margin-right: 11rpx;"></image>
+									</view>
+
 								</view>
 							</view>
-							<view class="border-view" />
 						</block>
 						<!--
 						<view class="cu-bar bg-white">
@@ -189,10 +203,220 @@
 						-->
 					</view>
 					<!--验机报告-->
-					<view class=""></view>
+					<view class="">
+						<view class="block_2 flex-col">
+							<view class="group_1 flex-row">
+								<!-- <view class="group_2 flex-col"></view> -->
+								<text class="text_71">验机评估报告</text>
+							</view>
+							<view class="group_3 flex-row">
+								<view class="box_1 flex-col">
+									<text class="text_4">隐私清除&nbsp;|&nbsp;专业验机&nbsp;|&nbsp;整机清洁</text>
+								</view>
+								<view class="box_2 flex-col"></view>
+							</view>
+							<view class="group_5 flex-col">
+								<!-- <view class="text-wrapper_1 flex-row justify-between">
+									<text class="text_5">{{modelName}}</text>
+									<text class="text_6">质检时间:2023-04-12</text>
+								</view>
+								<view class="image-text_1 flex-row justify-between">
+									<view class="single-avatar_1 flex-col"></view>
+									<view class="text-group_1 flex-col">
+										<text class="text_7">刘康维</text>
+										<text class="text_8">官方认证&nbsp;|&nbsp;验机工程师&nbsp;|&nbsp;已检测4567件</text>
+									</view>
+								</view> -->
+								<!-- <text class="text_9">本机价格影响因素</text>
+								<view class="box_3 flex-row justify-between">
+									<view id="echarts" class="echarts" @click="echarts.onClick" :prop="optionData"
+										:change:prop="echarts.updateEcharts"></view>
+								</view> -->
+								<!-- <text class="paragraph_4">
+									本机价格影响因素
+									<br />
+									(12张）
+								</text> -->
+								<!-- <view class="box_7 flex-row justify-between">
+									<view class="list_1 flex-row">
+										<scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
+											<view class="scroll-view-item_H demo-text-1" v-for="(item, index) in urls"
+												@tap="viewImgs(urls, index)">
+												<image :src="item" mode="aspectFit" style="width: 122rpx; height: 122rpx"></image>
+											</view>
+										</scroll-view>
+									</view>
+									<image class="image_5" referrerpolicy="no-referrer"
+										src="/static/lanhu_zhijianbaogaoduibitu/326f64c9428b49b7be6a6dde77919c89_mergeImage.png" />
+								</view> -->
+								<!-- <text class="text_27">本机质检报告</text>
+								<view class="box_8 flex-row">
+									<view class="text-group_2 flex-col">
+										<text class="text_28">用户</text>
+										<text class="text_29">物品信息</text>
+									</view>
+									<view class="text-group_3 flex-col">
+										<text class="text_30">平台质检</text>
+									</view>
+								</view> -->
+								<view
+									style="padding: 0 24rpx;font-size: 32rpx;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;">
+									{{product.modelName}}
+								</view>
+								<view style="display: flex;padding: 0 24rpx;margin-top: 30rpx;">
+									<view style="width: 40%;">
+										<view class="titles">
+											机器SKU
+										</view>
+										<view class="texts">
+											{{product.basePriceLabel}}G
+										</view>
+									</view>
+									<view>
+										<view class="titles">
+											物品信息
+										</view>
+										<view class="texts">
+											{{product.deviceLabel}}
+										</view>
+									</view>
+								</view>
+
+								<view class="box_14 flex-row justify-between">
+									<text class="text_53">物品信息</text>
+									<image class="icon_2" referrerpolicy="no-referrer"
+										src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png" />
+								</view>
+								<view class="box_9 flex-col">
+									<view class="section_3 flex-row justify-between" v-for="(item, index) in Pricepramitems"
+										v-if="item.indexs === 1" :key="index">
+										<view class="text-group_4 flex-col">
+											<text class="text_33">{{qualityInfoList[index].key}}</text>
+											<text class="text_34">{{qualityInfoList[index].value}}</text>
+											<text class="text_36">{{Pricepramitems[index].value}}</text>
+										</view>
+										<!-- <view class="box_10 flex-col">
+											<view
+												v-if="checkInformation(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
+												<view class="cu-avatar xl radius"
+													:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
+													<view class="img" @tap="viewImg(phoneImgArr,index)">
+														<text class="text"></text>
+													</view>
+													<view class="cu-tag badge"
+														:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
+														@tap="uploadImg(index)">
+														<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
+															<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+														</view>
+													</view>
+												</view>
+											</view>
+										</view> -->
+									</view>
+								</view>
+								<view class="box_14 flex-row justify-between">
+									<text class="text_53">成色情况</text>
+									<image class="icon_2" referrerpolicy="no-referrer"
+										src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png" />
+								</view>
+								<view class="box_9 flex-col">
+									<view class="section_3 flex-row justify-between" v-for="(item, index) in qualityInfoList"
+										v-if="item.indexs == 2">
+										<view class="text-group_4 flex-col">
+											<text class="text_33">{{qualityInfoList[index].key}}</text>
+											<text class="text_34">{{qualityInfoList[index].value}}</text>
+											<text class="text_36">{{Pricepramitems[index].value}}</text>
+										</view>
+										<!-- <view class="box_10 flex-col">
+											<view v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
+												<view class="cu-avatar xl radius"
+													:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
+													<view class="img" @tap="viewImg(phoneImgArr,index)">
+														<text class="text"></text>
+													</view>
+													<view class="cu-tag badge"
+														:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
+														@tap="uploadImg(index)">
+														<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
+															<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+														</view>
+													</view>
+												</view>
+											</view>
+										</view> -->
+									</view>
+								</view>
+								<view class="box_14 flex-row justify-between">
+									<text class="text_53">功能情况</text>
+									<image class="icon_2" referrerpolicy="no-referrer"
+										src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png" />
+								</view>
+								<view class="box_9 flex-col">
+									<view class="section_3 flex-row justify-between" v-for="(item, index) in qualityInfoList"
+										v-if="item.indexs == 3">
+										<view class="text-group_4 flex-col">
+											<text class="text_33">{{qualityInfoList[index].key}}</text>
+											<text class="text_34">{{qualityInfoList[index].value}}</text>
+											<text class="text_36">{{Pricepramitems[index].value}}</text>
+										</view>
+										<!-- <view class="box_10 flex-col">
+											<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
+												<view class="cu-avatar xl radius"
+													:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
+													<view class="img" @tap="viewImg(phoneImgArr,index)">
+														<text class="text"></text>
+													</view>
+													<view class="cu-tag badge"
+														:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
+														@tap="uploadImg(index)">
+														<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
+															<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+														</view>
+													</view>
+												</view>
+											</view>
+										</view> -->
+									</view>
+								</view>
+								<view class="box_14 flex-row justify-between">
+									<text class="text_53">维修情况</text>
+									<image class="icon_2" referrerpolicy="no-referrer"
+										src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png" />
+								</view>
+								<view class="box_9 flex-col">
+									<view class="section_3 flex-row justify-between" v-for="(item, index) in Pricepramitems"
+										v-if="item.indexs == 4">
+										<view class="text-group_4 flex-col">
+											<text class="text_33">{{qualityInfoList[index].key}}</text>
+											<text class="text_34">{{qualityInfoList[index].value}}</text>
+											<text class="text_36">{{Pricepramitems[index].value}}</text>
+										</view>
+										<!-- <view class="box_10 flex-col">
+											<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
+												<view class="cu-avatar xl radius"
+													:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
+													<view class="img" @tap="viewImg(phoneImgArr,index)">
+														<text class="text"></text>
+													</view>
+													<view class="cu-tag badge"
+														:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
+														@tap="uploadImg(index)">
+														<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
+															<u-icon name="plus" color="#ffffff" size="10"></u-icon>
+														</view>
+													</view>
+												</view>
+											</view>
+										</view> -->
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
 				</view>
 				<!--包含评论end-->
-				<view id="" class="bg-white margin-sm padding-sm radius-2">
+				<view id="" class=" bg-white margin-sm padding  radius-2">
 					<view class="margin-bottom-xs text-bold text-lg margin-bottom-sm">我们的服务</view>
 					<view class="text-lightgrey">
 						<view class="margin-bottom-xs text-bold text-df margin-top-xs text-101010">官方验机</view>
@@ -209,7 +433,7 @@
 					</view>
 				</view>
 				<!--参数-->
-				<view id="canshuBlock" class="bg-white margin-sm padding-sm radius-2">
+				<view id="canshuBlock" class="bg-white margin-sm padding  radius-2">
 					<view class="margin-tb-xs text-bold text-xl">温馨提示</view>
 					<image src="/static/img/shili.jpg"></image>
 					<view class="margin-bottom-xs text-bold text-lg margin-top-xs">防拆标签</view>
@@ -220,7 +444,7 @@
 			</view>
 			<!--包含参数end-->
 			<!--详情-->
-			<!-- <view id="xiangqingBlock" class="goods-details-box margin-sm bg-white radius-2 padding-sm"> -->
+			<!-- <view id="xiangqingBlock" class="goods-details-box margin-sm bg-white radius-2 padding "> -->
 			<!-- <rich-text :nodes="product.desc|formatRichText"></rich-text> -->
 			<!-- <image src="/static/delect_images/home/goods/goods-1.png" mode="widthFix" />
 				<image src="/static/delect_images/home/goods/goods-2.png" mode="widthFix" /> -->
@@ -245,8 +469,8 @@
 					<text>购物车</text>
 				</view>
 				<view class="btn-group">
-					<button class="cu-btn bg-orange radius shadow-blur" @tap="selectTap('add')">加入购物车</button>
-					<button class="cu-btn bg-red radius shadow-blur" @tap="selectTap('sell')">立即购买</button>
+					<button class="cu-btn radius shadow-blur addGouwu" @tap="selectTap('add')">加入购物车</button>
+					<button class="cu-btn radius shadow-blur addgo" @tap="selectTap('sell')">立即购买</button>
 				</view>
 			</view>
 		</view>
@@ -434,17 +658,12 @@
 	import Vue from 'vue';
 	import {
 		bindDistributionRelation,
-		bindDistributionBrowse
-	} from '@/api/malls.js'
-	import {
-		goodsdetail,
-		bindingUser
-	} from '@/api/common.js';
-	import {
+		bindDistributionBrowse,
 		shoppingCart,
 		secondGoodsFootprint,
 		secondGoodsFavorite,
-		secondGoods
+		secondGoods,
+		selectByModelId
 	} from '@/api/malls.js';
 	import qrcode from './qrcode';
 	import {
@@ -500,6 +719,8 @@
 		},
 		data() {
 			return {
+				modelId: 0,
+				rateList: [],
 				goodsId: 0,
 				imageData: '',
 				qrUrl: '', // 生成二维码的链接
@@ -548,6 +769,8 @@
 				pageIndex: 1,
 				pageLimit: 10,
 				evalueteList: [],
+				qualityInfoList: [],
+				Pricepramitems: [],
 				isNew: false,
 			};
 		},
@@ -586,7 +809,7 @@
 			if (flash_id != 0) {
 				this.flashId = flash_id;
 			}
-			this.getDetail(this.goodsid, flash_id);
+			// this.getDetail(this.goodsid, flash_id);
 			// 添加用户足迹
 			let loginInfo = JSON.parse(uni.getStorageSync('app_config_data') || '{}'); // 解决缓存值为空导致JSON.parse解析语法报错
 			if (loginInfo?.hasLogin) {
@@ -595,8 +818,6 @@
 					goods_id: options.id,
 				}).then((res) => {});
 			}
-
-			this.loadData();
 		},
 		filters: {
 			/**
@@ -669,6 +890,24 @@
 			}
 		},
 		methods: {
+			selectByModelId() {
+				const storeId = uni.getStorageSync('userinfo').storeId
+				const modelId = this.modelId
+				selectByModelId({
+					storeId,
+					modelId
+				}).then(res => {
+					if (res.code === 200) {
+						res.data.shoppingOrderEvaluates.map(item => {
+							if (item.photo) {
+								item.photo = item.photo.split(',')
+							}
+						})
+						console.log(res.data)
+						this.rateList = res.data
+					}
+				})
+			},
 			// 添加收藏
 			secondGoodsFavorite() {
 				secondGoodsFavorite({
@@ -701,10 +940,14 @@
 						} else if (res.data.otherPhoto) {
 							images_text.push(res.data.otherPhoto)
 						}
-						console.log(images_text)
+						console.log(images_text);
+						this.modelId = res.data.modelId
+						this.qualityInfoList = JSON.parse(res.data.qualityInfoList)
+						this.Pricepramitems = JSON.parse(res.data.oldQualityInfoList)
 						this.product = res.data;
 						this.product.images_text = images_text;
 						this.onCanvas();
+						this.selectByModelId()
 					}
 				});
 			},
@@ -1234,9 +1477,46 @@
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
 	@import '@/uni_modules/mpb-ui/shop/goods.scss';
+	@import './common.css';
+	@import './index.rpx.css';
 
 	page {
 		background: #f0f0f0;
+	}
+
+	.titles {
+		font-size: 23rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #8E8E8E;
+	}
+
+	.texts {
+		margin-top: 13rpx;
+		font-size: 27rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #101010;
+	}
+
+	.addGouwu {
+		background: #FFBB4C;
+		border-radius: 42rpx;
+		padding: 18rpx 29rpx;
+		font-size: 34rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+	}
+
+	.addgo {
+		background: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+		border-radius: 42rpx;
+		padding: 18rpx 29rpx;
+		font-size: 34rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
 	}
 
 	.xiangqingH {

@@ -50,9 +50,9 @@
 						</scroll-view>
 					</view>
 					<view class="basis-xs flex" @tap="sortVueTap">
-						<view class="sort-icon">
+						<!-- 					<view class="sort-icon">
 							<text class="cuIcon-sort"></text>
-						</view>
+						</view> -->
 						<view style="line-height: 60rpx">分类</view>
 					</view>
 				</view>
@@ -163,13 +163,12 @@
 
 		<view class="view-content" :class="headTab.TabCur!=0?'show':''">
 			<!--宫格分类-->
-			<grid-sort-list v-if="headTab.list[0]" :list_data="headTab.list[headTab.TabCur].serieslist"
-				@listTap="gridSortTap"></grid-sort-list>
+			<grid-sort-list :list_data="modelList" @listTap="gridSortTap"></grid-sort-list>
 
 			<!--广告-->
-			<view class="margin">
+			<!-- <view class="margin">
 				<image class="ad-img" :src="swiperInfo.list[0].image" mode="widthFix"></image>
-			</view>
+			</view> -->
 
 			<!--标题-->
 			<view class="margin-bottom-sm tab-list-title">
@@ -246,7 +245,9 @@
 	// 接口
 	import {
 		secondGoodsList,
-		bindDistributionRelation
+		bindDistributionRelation,
+		getAllBrand,
+		getSeriesList
 	} from '@/api/malls.js';
 	import {
 		getIndexPrice
@@ -278,6 +279,7 @@
 		},
 		data() {
 			return {
+				modelList: [],
 				firstFlag: true,
 				newViews: true,
 				tabID: 0,
@@ -443,15 +445,20 @@
 			// 页面基本数据请求
 			loadData() {
 				let that = this;
-				AdsIndex({}).then((res) => {
-					that.swiperInfo.list = res.data;
-				});
-				CategoryMenu({}).then((res) => {
+				// AdsIndex({}).then((res) => {
+				// 	that.swiperInfo.list = res.data;
+				// });
+				getAllBrand({}).then((res) => {
 					let data = [{
 						id: '0',
 						name: '首页',
 					}, ];
+					res.data.map(item => {
+						item.id = item.brandId
+						item.name = item.brandName
+					})
 					data.push(...res.data);
+					console.log(data)
 					that.headTab.list = data;
 				});
 
@@ -515,12 +522,18 @@
 				let cid = e.currentTarget.dataset.id;
 				this.headTab.TabCur = index;
 				this.headTab.TabCatID = cid;
-				that.gridSortData = [];
-				this.initgridSortData.map((mmp) => {
-					if (mmp.pid == cid) {
-						that.gridSortData.push(mmp);
-					}
-				});
+				this.$emit('checkBrandId', cid)
+				getSeriesList({
+					brandId: cid
+				}).then(res => {
+					this.modelList = res.data
+				})
+				// that.gridSortData = [];
+				// this.initgridSortData.map((mmp) => {
+				// 	if (mmp.pid == cid) {
+				// 		that.gridSortData.push(mmp);
+				// 	}
+				// });
 				this.headTab.scrollLeft = (index - 1) * 60;
 				if (index == 0) {
 					this.swiperInfo.show = true;
@@ -605,9 +618,9 @@
 			videoListTap(e) {},
 			gridSortTap(e) {
 				// 点击品牌
+				console.log(e)
 				uni.navigateTo({
-					url: '/pages/home/sort_list?sid=' + e.data.id + '&bid=' + this.headTab.TabCatID + '&cid=' + e.data
-						.category_id,
+					url: '/pages/home/sort_list?seriesId=' + e.data.seriesId,
 				});
 			},
 			goToTap() {
