@@ -1050,3 +1050,13 @@ export function selectWarehouseGoodsCount(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 获取回收单详情信息
+ *
+ */
+export function selectRecycleFormDetail(data) {
+	return request.get('/yxj/app/recycleForm/selectRecycleFormDetail/' + data, {
+		noLogin: true
+	});
+}

@@ -234,9 +234,7 @@
 	import _tool from '@/utils/tools.js';
 	// 接口
 	import {
-		AdsIndex,
 		ProductLists,
-		CategoryMenu,
 		CategoryAll,
 		BrandList,
 		ProductFuscreen,
@@ -249,9 +247,6 @@
 		getAllBrand,
 		getSeriesList
 	} from '@/api/malls.js';
-	import {
-		getIndexPrice
-	} from '@/api/common.js';
 	import {
 		kefuInitUser
 	} from '@/api/user.js';
@@ -361,22 +356,6 @@
 							that.phoneModel = that.phoneModel.substring(0, index1);
 						}
 					}
-					let parmas = {
-						model: that.phoneModel,
-					};
-					getIndexPrice(parmas).then((res) => {
-						console.log(123);
-						if (res.code == 1) {
-							that.UserPhoneMoney = res.data.money;
-							if (res.data.money > 0) {
-								that.UserGoodsId = res.data.goods_info.id;
-								that.UserCateId = res.data.goods_info.cate_id;
-							}
-							if (res.data.goods_info.name) {
-								that.phoneModel = res.data.goods_info.name;
-							}
-						}
-					});
 				},
 			});
 			this.headInfo.Class = 'welcome';
@@ -445,9 +424,6 @@
 			// 页面基本数据请求
 			loadData() {
 				let that = this;
-				// AdsIndex({}).then((res) => {
-				// 	that.swiperInfo.list = res.data;
-				// });
 				getAllBrand({}).then((res) => {
 					let data = [{
 						id: '0',

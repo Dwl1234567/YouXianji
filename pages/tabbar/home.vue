@@ -61,17 +61,12 @@
 
 	// 接口
 	import {
-		AdsIndex,
 		ProductLists,
-		CategoryMenu,
 		CategoryAll,
 		BrandList,
 		ProductFuscreen,
 		ProductFulists,
 	} from '@/api/mall.js';
-	import {
-		getIndexPrice
-	} from '@/api/common.js';
 	import {
 		kefuInitUser
 	} from '@/api/user.js';
@@ -189,18 +184,6 @@
 					let parmas = {
 						model: that.phoneModel,
 					};
-					getIndexPrice(parmas).then((res) => {
-						if (res.code == 1) {
-							that.UserPhoneMoney = res.data.money;
-							if (res.data.money > 0) {
-								that.UserGoodsId = res.data.goods_info.id;
-								that.UserCateId = res.data.goods_info.cate_id;
-							}
-							if (res.data.goods_info.name) {
-								that.phoneModel = res.data.goods_info.name;
-							}
-						}
-					});
 				},
 			});
 			this.headInfo.Class = 'welcome';
@@ -255,17 +238,6 @@
 			// 页面基本数据请求
 			loadData() {
 				let that = this;
-				AdsIndex({}).then((res) => {
-					that.swiperInfo.list = res.data;
-				});
-				CategoryMenu({}).then((res) => {
-					let data = [{
-						id: '0',
-						name: '首页',
-					}, ];
-					data.push(...res.data);
-					that.headTab.list = data;
-				});
 			},
 			// 获取产品列表
 			getProduct() {

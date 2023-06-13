@@ -325,6 +325,15 @@
 				"navigationBarTitleText": "审上架"
 			}
 		},
+		{
+			//回收产品审上架
+			"path": "pages/erp/purchase/form",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				// "navigationStyle": "custom",
+				"navigationBarTitleText": "审上架详情"
+			}
+		},
 		//"navigationStyle": "custom"
 		{
 			//回收列表

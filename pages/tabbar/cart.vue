@@ -86,8 +86,10 @@
 					<text class="text-red text-xxl text-bold">{{total}}</text>
 				</view>
 			</view>
-			<button class="no-border cu-btn bg-deepblue radius-4" @click="createOrder" v-if="!checkout">结算</button>
-			<button class="no-border cu-btn bg-deepblue radius-4" @click="createOrder" v-else>删除</button>
+			<button class="no-border cu-btn" @click="createOrder" v-if="!checkout"
+				style="padding: 17rpx 122rpx;background: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);border-radius: 42rpx;color: #FFFFFF;">结算</button>
+			<button class="no-border cu-btn" @click="createOrder" v-else
+				style="padding: 17rpx 122rpx;background: #FF1A1A;border-radius: 42rpx;color: #FFFFFF;">删除</button>
 		</view>
 		<!--小程序端显示-->
 		<!-- #ifdef MP -->

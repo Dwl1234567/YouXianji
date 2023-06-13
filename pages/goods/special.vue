@@ -9,30 +9,18 @@
 
 		<!-- <filterDropdown ref="filterDropdown" :menuTop="filterDropdowntop" :filterData="filterData" :defaultSelected="defaultSelected"
 			:updateMenuName="true" @confirm="confirm" @change="changefilter" dataFormat="Object"></filterDropdown> -->
-		<HM-filterDropdown
-			:menuTop="downFiltertop"
-			:filterData="downFilterData"
-			:defaultSelected="dfDefaultSelected"
-			:updateMenuName="true"
-			@confirm="confirm"
-			@filterLabelChange="filterLabelChange"
-			dataFormat="Object"
-		></HM-filterDropdown>
+		<!-- <HM-filterDropdown :menuTop="downFiltertop" :filterData="downFilterData" :defaultSelected="dfDefaultSelected"
+			:updateMenuName="true" @confirm="confirm" @filterLabelChange="filterLabelChange"
+			dataFormat="Object"></HM-filterDropdown> -->
 		<!--商品列表-->
 		<view class="bg-white margin-top padding-bottom-sm padding-top-sm goods-list-view-box">
 			<view :style="{marginTop: downFilterPlaceholderHeight + 'px'}">
 				<!--商品列表1-->
-				<goods-sort-list
-					:list_data="goodsList"
-					@listTap="goodsSortListTap"
-					:show="TabCur==0?true:false"
-				></goods-sort-list>
+				<goods-sort-list :list_data="goodsList" @listTap="goodsSortListTap"
+					:show="TabCur==0?true:false"></goods-sort-list>
 				<!--商品列表2-->
-				<goods-sort-list
-					:list_data="goodsList"
-					@listTap="goodsSortListTap"
-					:show="TabCur==1?true:false"
-				></goods-sort-list>
+				<goods-sort-list :list_data="goodsList" @listTap="goodsSortListTap"
+					:show="TabCur==1?true:false"></goods-sort-list>
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
@@ -47,8 +35,16 @@
 	import data from '@/static/data/shaixuan.js'; //筛选菜单数据
 	import _sort_list_data from '@/static/data/sort_list.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
-	import { AdsIndex, ProductLists, ProductFuscreen, ProductFulists, ProductFilterchilren } from '@/api/mall.js';
-	import { secondGoodsLists } from '@/api/malls.js';
+	import {
+		AdsIndex,
+		ProductLists,
+		ProductFuscreen,
+		ProductFulists,
+		ProductFilterchilren
+	} from '@/api/mall.js';
+	import {
+		secondGoodsLists
+	} from '@/api/malls.js';
 	export default {
 		components: {
 			barSearchTitle,
@@ -74,8 +70,7 @@
 				pageIndex: 1,
 				pageLimit: 10,
 				defaultSelected: [],
-				filterData: [
-					{
+				filterData: [{
 						name: '综合排序',
 						type: 'hierarchy',
 						submenu: [],
@@ -88,12 +83,10 @@
 					{
 						name: '成色',
 						type: 'hierarchy',
-						submenu: [
-							{
-								name: '',
-								submenu: [],
-							},
-						],
+						submenu: [{
+							name: '',
+							submenu: [],
+						}, ],
 					},
 					{
 						name: '筛选',
@@ -163,100 +156,13 @@
 					this.downFiltertop = '137';
 				}
 				// #endif
-
-				// 获取页面筛选数据
-				ProductFuscreen({}).then((res) => {
-					if (res && res.code === 1) {
-						let arr = [];
-						for (let key in res.data) {
-							let obj = {};
-
-							if (key === 'by' || key === 'price_type' || key === 'colour') {
-								obj.name = res.data[key].title;
-								obj.type = 'hierarchy';
-								obj.submenu = [];
-
-								if (res.data[key].data?.length > 0) {
-									let subData = res.data[key].data;
-									subData.forEach(function (item, index) {
-										obj.submenu.push({
-											name: item.text,
-											value: item.value,
-										});
-									});
-								}
-							}
-
-							if (key === 'category') {
-								obj.name = '筛选';
-								obj.type = 'radio';
-								obj.submenu = [];
-
-								let sunSubMenu = [];
-
-								if (res.data[key].submenu?.length > 0) {
-									let sunSubData = res.data[key].submenu;
-
-									sunSubData.forEach(function (item, index) {
-										sunSubMenu.push({
-											name: item.name,
-											value: item.value,
-											key: item.key,
-											deep: item.deep,
-										});
-									});
-								}
-
-								obj.submenu[0] = {
-									name: res.data[key].name,
-									cascade: res.data[key].cascade,
-									submenu: sunSubMenu,
-								};
-							}
-
-							let keyNum;
-							if (key === 'by') keyNum = 0;
-							if (key === 'price_type') keyNum = 1;
-							if (key === 'colour') keyNum = 2;
-							if (key === 'category') keyNum = 3;
-							arr[keyNum] = obj;
-						}
-						this.downFilterData = arr;
-					}
-
-					// 获取定义默认筛选值
-					let filterDefVal = null;
-					if (e.cid && this.downFilterData[3].submenu[0]?.submenu?.length > 0) {
-						let cascadeOneArr = this.downFilterData[3].submenu[0].submenu;
-						cascadeOneArr.forEach(function (item, index) {
-							if (item.value == e.cid) {
-								filterDefVal = index;
-							}
-						});
-					}
-
-					this.dfDefaultSelected = [[null], [null], [null], [[filterDefVal]]];
-
-					// 如果filterDefVal不为null说明一级分类已经默认选中，那么获取下级的分类列表
-					if (filterDefVal !== null) {
-						ProductFilterchilren({
-							key: 'cid',
-							value: e.cid,
-						}).then((res) => {
-							console.log(res);
-
-							if (res && res.code === 1) {
-								this.downFilterData[3].submenu.push(res.data[0]);
-								this.dfDefaultSelected[3].push([null]);
-								this.downFilterData[3].submenu[0].submenu[filterDefVal].selected = true;
-							}
-						});
-					}
-
-					console.log('downFilterData->', this.downFilterData);
-				});
 			},
-			filterLabelChange({ page_index, box_index, label_index, box }) {
+			filterLabelChange({
+				page_index,
+				box_index,
+				label_index,
+				box
+			}) {
 				console.log('filterLabelChange emit');
 				console.log(box);
 

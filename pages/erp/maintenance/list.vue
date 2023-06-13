@@ -9,10 +9,7 @@
 				<view class="transform" style="margin-right: 28rpx">
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
-				<view class="group_3 flex-col">
-					<view class="text-wrapper_1 flex-row justify-between">
-						<text class="text_7">时间:{{item.createTimeStr}}</text>
-					</view>
+				<view class="group_3 flex-col" @tap="goDetail(item)">
 					<view class="section_1 flex-row">
 						<view class=""></view>
 						<image :src="$httpImage + item.modelPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
@@ -22,6 +19,7 @@
 							<text class="text_9">{{item.basicPriceLabel}}</text>
 							<text class="text_10">序列号:{{item.deviceNo}}</text>
 							<text class="text_11">回收价:{{item.recyclePrice}}元</text>
+							<text class="text_11">组合成本价:{{item.combinationPrice}}元</text>
 						</view>
 					</view>
 					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
@@ -106,6 +104,12 @@
 			});
 		},
 		methods: {
+			goDetail(e) {
+				console.log(e)
+				uni.navigateTo({
+					url: '/pages/erp/purchase/form?recycleFormId=' + e.recycleFormId
+				})
+			},
 			// 销售开单
 			billing(e) {
 				uni.navigateTo({

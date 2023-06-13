@@ -165,7 +165,7 @@
 		},
 		onLoad() {
 			// #ifdef APP-PLUS
-			// this.filtertopnum = 1;
+			this.filtertopnum = 1;
 			// #endif
 			this.checkfilterData = {
 				index: [

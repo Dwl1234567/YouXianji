@@ -418,8 +418,8 @@
 				} = this.online
 				console.log(this.online)
 				// 组合成本 =  回收价 + 杂费
-				this.combinationPrice = Number(this.ActualreceiptsAll) + pettyExpenses
-				console.log(Number(this.ActualreceiptsAll), pettyExpenses)
+				// this.combinationPrice = Number(this.ActualreceiptsAll) + pettyExpenses
+				// console.log(Number(this.ActualreceiptsAll), pettyExpenses)
 				if (chengben > fenxiao) {
 					this.isDistribution = true
 				} else {
@@ -447,6 +447,7 @@
 					this.ActualreceiptsAll = Number(res.data.recyclePrice);
 					this.diaobojianum = Number(res.data.allotPrice);
 					this.xiaoshoujianum = Number(res.data.sellPrice);
+					this.combinationPrice = res.data.combinationPrice
 					this.goodssn = res.data.deviceNo
 				});
 			},

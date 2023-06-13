@@ -382,7 +382,7 @@
 				console.log(e);
 
 				uni.navigateTo({
-					url: '/pages/goods/goods?id=' + e.data.product_id
+					url: '/pages/goods/goods?id=' + e.data.goodsId
 				});
 			},
 			searchTap() {
