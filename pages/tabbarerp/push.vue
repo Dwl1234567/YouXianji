@@ -1057,7 +1057,8 @@
 					pendingOrder: that.switchA ? '1' : '0', // 是否挂单
 					sellFormFittingsList, // 配件
 					storeId,
-					debtPrice: that.arrearsMoney
+					debtPrice: that.arrearsMoney,
+					sellFormId: that.sellFormId
 				}).then(res => {
 					if (res.code === 200) {
 						that.$u.toast('开单成功');

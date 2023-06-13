@@ -77,7 +77,7 @@
 			</view>
 		</view>
 
-		<u-popup :show="payShow" mode="center">
+		<u-popup :show="payShow" mode="center" @close="close">
 			<view class="block_31 flex-col">
 				<text class="text_23">付款凭证</text>
 				<view class="block_4 flex-col"></view>
@@ -248,6 +248,9 @@
 			}
 		},
 		methods: {
+			close() {
+				this.payShow = false
+			},
 			// 开单
 			kaidan(item) {
 				uni.navigateTo({
