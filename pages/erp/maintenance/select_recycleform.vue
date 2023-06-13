@@ -131,7 +131,7 @@
 		</view>
 
 		<!--选择SKU 与仓库-->
-		<view class="cu-bar bg-white">
+		<!-- <view class="cu-bar bg-white">
 			<view class='action'>
 				<text class="title">入库信息</text>
 				<text class="margin-left-xs text-sm"></text>
@@ -160,7 +160,7 @@
 				</view>
 			</view>
 
-		</view>
+		</view> -->
 		<!-- <view style="position: relative;">
 			<LiFilter :isType="0" :alias="['分类','品牌','系列','机型']" @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1" :isFixtop="false" ></LiFilter>
 		</view> -->
@@ -275,7 +275,7 @@
 	} from "@/api/erpapi.js"
 	import {
 		getPutawayInfo,
-		warehouseList,
+		selectDefaultWarehouse,
 		empCreateRecycleForm,
 		getStoreOnlineCostConfig,
 		reoragnizePutaway
@@ -493,13 +493,9 @@
 			},
 			// 仓库列表
 			warehouseList() {
-				warehouseList({
-					pageNum: 1,
-					pageSize: 100000
-				}).then(res => {
+				selectDefaultWarehouse({}).then(res => {
 					if (res.code == 200) {
-						this.warehouseLists = res.rows;
-						this.parentId = res.rows[0].warehouseId
+						this.warehouseId = res.data.warehouseId
 					}
 				})
 			},

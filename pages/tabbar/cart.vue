@@ -30,7 +30,7 @@
 					padding-left: 20rpx;
 					position: relative;
 				">
-				<block>
+				<block v-if="item.goodsInfo">
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 					<view class="cart-item" :class="{'b-b': index!==cartList.length-1}"
 						@click="navTo(`/pages/product/product?id=${item.product_id}&flash=0`)">

@@ -19,7 +19,8 @@
 		<view class="cu-list menu" v-if="0==TabCur">
 			<view class="arrow" v-for="(item,index) in dataList" :key="index" @tap="tabGoods(item)">
 				<view class="content">
-					<text class="text-grey title">{{item.warehouseName}}</text>
+					<text
+						class="text-grey title">{{item.checkTaskType == 0 ? '整备' : item.checkTaskType == 1 ? '上架' : '配件'}}</text>
 				</view>
 				<view class="action">
 					<view class=""><text class="text-grey text-sm text">发布时间{{item.startTime}}</text></view>

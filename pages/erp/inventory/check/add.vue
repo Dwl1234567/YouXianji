@@ -4,26 +4,9 @@
 		<bar-title bgColor="bg-white" isBack>
 			<block slot="content">添加盘点任务</block>
 		</bar-title>
-		<scroll-view scroll-x class="bg-white nav text-center text-xl">
-			<view class="cu-item padding-lr-sm " :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
-				data-id="1" style="position:relative">
-				产品
-				<view class="tab-dot bg-white"></view>
-			</view>
-			<!-- <view class="cu-item padding-lr-sm" :class="2==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
-				data-id="2" style="position:relative">
-				已接受
-				<view class="tab-dot bg-white"></view>
-			</view> -->
-			<view class="cu-item padding-lr-sm" :class="3==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
-				data-id="3" style="position:relative">
-				价格
-				<view class="tab-dot bg-white"></view>
-			</view>
-		</scroll-view>
 		<view class="context">
 			<view class="list" v-for="(item, index) in warehouseListss" :key="index">
-				<view>{{item.warehouseName}}</view>
+				<view>{{item.name}}</view>
 				<view @tap="addList(index)" :class="item.display ? 'red' : ''"></view>
 			</view>
 		</view>
@@ -72,14 +55,25 @@
 				range: [],
 				centerId: 0,
 				scrollLeft: 0,
-				warehouseListss: [],
+				warehouseListss: [{
+					name: '整备',
+					display: false,
+					warehouseId: 0
+				}, {
+					name: '上架',
+					warehouseId: 1,
+					display: false
+				}, {
+					name: '配件',
+					warehouseId: 2,
+					display: false
+				}],
 				checkboxArr: [],
 				modalName: null,
 				textareaAValue: '',
 			}
 		},
 		onLoad() {
-			this.warehouseLists();
 			this.getSelectStoreUsers()
 		},
 		onReady() {
@@ -118,7 +112,7 @@
 				})
 				const parmes = {
 					checkPeopleIds: checkPeople,
-					warehouseIdList
+					checkTaskTypeList: warehouseIdList
 				}
 				storeCheckTask(parmes).then(res => {
 					if (res.code === 200) {
@@ -149,18 +143,6 @@
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
-			warehouseLists() {
-				warehouseList({
-					parentId: 0
-				}).then(res => {
-					if (res.code === 200) {
-						res.rows.map(item => {
-							item.display = false
-						})
-						this.warehouseListss = res.rows
-					}
-				})
-			}
 		}
 	}
 </script>

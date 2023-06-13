@@ -38,7 +38,6 @@
 	import {
 		//erpProductGetBasicData,
 		selectWarehouseGoodsList,
-		selectWarehouseTree,
 		selectWarehouseGoodsCount
 	} from "@/api/erp.js";
 	import {
@@ -77,11 +76,23 @@
 				bid: '',
 				mid: '',
 				sid: '',
-				treeData: [],
+				treeData: [{
+						value: 0,
+						text: "全部"
+					},
+					{
+						value: 1,
+						text: "整备"
+					},
+					{
+						value: 2,
+						text: "上架"
+					},
+				],
 				modalName: null,
 				pageIndex: 1,
 				pageLimit: 10,
-				warehouse_id: '',
+				warehouse_id: 0,
 				partition_id: '',
 				category_id: '',
 				brand_id: '',
@@ -99,7 +110,6 @@
 			// #endif
 			// 0 开单 1调拨
 			this.inPageType = e.type;
-			this.selectWarehouseTree()
 			this.erpproductgetlistFuc();
 			this.selectWarehouseGoodsCount();
 		},
@@ -121,27 +131,17 @@
 		methods: {
 			selectWarehouseGoodsCount() {
 				selectWarehouseGoodsCount({
-					'warehouseId': this.warehouse_id,
+					'queryType': this.warehouse_id,
 				}).then(res => {
 					if (res.code === 200) {
 						this.wareCount = res.data
 					}
 				})
 			},
-			selectWarehouseTree() {
-				selectWarehouseTree().then(res => {
-					if (res.code === 200) {
-						res.data.map((item, index) => {
-							item.value = index * 10000
-						})
-						console.log(res.data)
-						this.treeData = res.data
-					}
-				})
-			},
 			seachSelect(e) {
-				if (e.detail.value[1].value) {
-					this.warehouse_id = e.detail.value[1].value
+				console.log(e)
+				if (e) {
+					this.warehouse_id = e
 				}
 				this.erpproductgetlistFuc()
 				this.selectWarehouseGoodsCount()
@@ -224,7 +224,7 @@
 				let paramsData = {
 					'pageNum': this.pageIndex,
 					'pageSize': this.pageLimit,
-					'warehouseId': this.warehouse_id,
+					'queryType': this.warehouse_id,
 				}
 				selectWarehouseGoodsList(paramsData).then(res => {
 					let data = res.rows;

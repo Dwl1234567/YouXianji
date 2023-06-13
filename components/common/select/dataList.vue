@@ -1,9 +1,10 @@
 <template>
 	<view class="">
 		<uni-section :title=title type="line" padding>
-			<uni-data-picker placeholder="请选择" popup-title="请选择" :localdata="dataList" v-model="classes" @change="onchange"
+			<uni-data-select v-model="classes" :localdata="dataList" @change="onchange"></uni-data-select>
+			<!-- <uni-data-picker placeholder="请选择" popup-title="请选择" :localdata="dataList" v-model="classes" @change="onchange"
 				@nodeclick="onnodeclick" @popupopened="onpopupopened" @popupclosed="onpopupclosed">
-			</uni-data-picker>
+			</uni-data-picker> -->
 		</uni-section>
 	</view>
 </template>
@@ -14,7 +15,7 @@
 		name: 'activity-list',
 		data() {
 			return {
-				classes: '0',
+				classes: 0,
 				dataTree: [{
 						text: "一年级",
 						value: "1-0",

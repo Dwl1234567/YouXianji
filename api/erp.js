@@ -1060,3 +1060,13 @@ export function selectRecycleFormDetail(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 获取门店默认仓库
+ *
+ */
+export function selectDefaultWarehouse(data) {
+	return request.get('/yxj/app/warehouse/selectDefaultWarehouse', data, {
+		noLogin: true
+	});
+}

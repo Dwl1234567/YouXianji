@@ -341,12 +341,12 @@
 							badge: 0,
 							name: '盘点记录',
 						},
-						{
-							cuIcon: 'icon-checksheet',
-							color: 'red',
-							badge: 0,
-							name: '仓库管理',
-						},
+						// {
+						// 	cuIcon: 'icon-checksheet',
+						// 	color: 'red',
+						// 	badge: 0,
+						// 	name: '仓库管理',
+						// },
 					],
 				},
 				{

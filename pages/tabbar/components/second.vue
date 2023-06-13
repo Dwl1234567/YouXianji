@@ -362,9 +362,7 @@
 			// 427
 			this.loadData();
 		},
-		onShow() {
-			console.log(111)
-		},
+		onShow() {},
 		onLoad() {},
 		onPullDownRefresh() {
 			// this.pageIndex = 1;
@@ -394,10 +392,8 @@
 						// 微信小程序
 						if (res.errMsg == 'scanCode:ok') {
 							// 扫描到的信息
-							console.log(res, '2222222')
 							const data = JSON.parse(res.result)
 							if (data.way == 1) {
-								console.log('分享产品')
 								setTimeout(() => {
 									uni.navigateTo({
 										url: data.url,
@@ -434,7 +430,6 @@
 						item.name = item.brandName
 					})
 					data.push(...res.data);
-					console.log(data)
 					that.headTab.list = data;
 				});
 
@@ -594,7 +589,6 @@
 			videoListTap(e) {},
 			gridSortTap(e) {
 				// 点击品牌
-				console.log(e)
 				uni.navigateTo({
 					url: '/pages/home/sort_list?seriesId=' + e.data.seriesId,
 				});
@@ -610,14 +604,11 @@
 				uni.navigateTo({
 					url: '/pages/goods/reward',
 				});
-				console.log('图片被点击');
 			},
 			closeTap() {
 				this.modalShow = false;
-				console.log('点击了关闭');
 			},
 			sortVueTap() {
-				console.log('点击了分类');
 				uni.navigateTo({
 					url: '/pages/home/sort',
 				});

@@ -492,8 +492,37 @@
 			uni.removeStorageSync('updatehouse')
 			uni.removeStorageSync('updatecustomer')
 		},
-		watcha: {
+		watch: {
+			customer() {
+				this.ReceivablesMoney = 0
+				this.totalPrice = 0
+				this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
+					Number(this.ReceivablesMoney) : 0;
+				this.totalPrice = this.customer.costPrice;
+				if (this.house.length) {
+					this.house.map(item => {
+						this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
+							.ReceivablesMoney);
+						this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+					})
+				}
 
+			},
+			house() {
+				this.ReceivablesMoney = 0
+				this.totalPrice = 0
+				this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
+					Number(this.ReceivablesMoney) : 0;
+				this.totalPrice = this.customer.costPrice;
+				if (this.house.length) {
+					this.house.map(item => {
+						this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
+							.ReceivablesMoney);
+						this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+					})
+				}
+
+			}
 		},
 		onLoad(options) {
 			//加载虚拟数据
@@ -544,15 +573,12 @@
 				this.qualityInfoId = this.customer.qualityInfoId
 				this.recycleFormId = this.customer.recycleFormId
 				this.totalPrice = this.customer.costPrice;
-				this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney);
 			}
 			this.house = uni.getStorageSync('updatehouse')
 			console.log(this.house)
 			if (this.house) {
 				this.house.map(item => {
 					this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
-					this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
-						.ReceivablesMoney);
 				})
 			}
 
