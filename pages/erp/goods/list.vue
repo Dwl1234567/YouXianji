@@ -7,42 +7,21 @@
 				<text class="cuIcon-scan" @tap="snTap" />
 			</block>
 		</bar-search-title>
-		
-		
-		
+
+
+
 		<!--<filterDropdown :menuTop="filtertopnum" :filterData="filterData" :defaultSelected="defaultSelected" :updateMenuName="true"
 			@confirm="confirm" @change="changeFuc" dataFormat="Object"></filterDropdown>-->
 
-
-		<view class="margin-lr-sm">
-			<view class="cu-card article">
-				<view class="cu-item margin-tb-sm bg-white padding-sm radius-4" v-for="(item,index) in dataList" @click="tapgoods(item)">
-					<view class="content">
-						<image :src="item.image" mode="aspectFill">
-						</image>
-						<view class="desc">
-							<view class="text-deepblue text-lg">{{item.name}}</view>
-							<view class="text-content">
-								<view class="text-sm">销售价:<text class="text-red">{{item.sales_price}}</text>元 库存:1230
-								</view>
-								<view class="text-sm">序列号：{{item.sn}} <text
-										class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)">复制</text>
-								</view>
-								<view class="text-sm">销售价：{{item.sales_price}}元</view>
-								<view class="text-sm">入库时间：{{item.updatetime}}</view>
-							</view>
-							<view>
-								<view class="cu-tag bg-red light sm round">手机</view>
-								<view class="cu-tag bg-blue light sm round">苹果</view>
-								<!-- <view class="cu-tag bg-green light sm round" @tap="baogao">验机报告</view> -->
-							</view>
-						</view>
-					</view>
-				</view>
-				<!--分页-->
+		<select-data-list :title="titles" @seachSelect="seachSelect" :dataList="treeData"></select-data-list>
+		<data-list :dataList="dataList"></data-list>
+		<view class="bottomView">
+			<view class="totalNumber">
+				总数量：{{wareCount.totalNumber}}
 			</view>
-
-			
+			<view class="totalCost">
+				总价值：{{wareCount.totalCost}}
+			</view>
 		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -50,15 +29,18 @@
 </template>
 
 <script>
+	import dataList from '@/components/common/dataList/dataList.vue';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import goodsSortList from '@/components/common/list/goods-sort-list';
 	import filterDropdown from '@/components/HMERP-filterDropdown/HM-filterDropdown.vue';
-
+	import selectDataList from '@/components/common/select/dataList.vue';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import {
 		//erpProductGetBasicData,
-		erpproductgetlist
-	} from "@/api/erpapi.js";
+		selectWarehouseGoodsList,
+		selectWarehouseTree,
+		selectWarehouseGoodsCount
+	} from "@/api/erp.js";
 	import {
 		AdsIndex,
 		ProductLists
@@ -66,11 +48,15 @@
 	export default {
 		components: {
 			barSearchTitle,
+			dataList,
 			filterDropdown,
 			goodsSortList,
+			selectDataList
 		},
 		data() {
 			return {
+				wareCount: {},
+				titles: '仓库筛选',
 				index: '',
 				swiperIndex: 0,
 				swiperList: [],
@@ -91,7 +77,7 @@
 				bid: '',
 				mid: '',
 				sid: '',
-				
+				treeData: [],
 				modalName: null,
 				pageIndex: 1,
 				pageLimit: 10,
@@ -104,7 +90,7 @@
 				snNumber: '',
 				storeName: '',
 				inPageType: '',
-				filtertopnum:'90',//筛选条高度
+				filtertopnum: '90', //筛选条高度
 			}
 		},
 		onLoad(e) {
@@ -113,7 +99,9 @@
 			// #endif
 			// 0 开单 1调拨
 			this.inPageType = e.type;
+			this.selectWarehouseTree()
 			this.erpproductgetlistFuc();
+			this.selectWarehouseGoodsCount();
 		},
 		//下拉刷新
 		onPullDownRefresh() {
@@ -131,9 +119,35 @@
 			});
 		},
 		methods: {
-
+			selectWarehouseGoodsCount() {
+				selectWarehouseGoodsCount({
+					'warehouseId': this.warehouse_id,
+				}).then(res => {
+					if (res.code === 200) {
+						this.wareCount = res.data
+					}
+				})
+			},
+			selectWarehouseTree() {
+				selectWarehouseTree().then(res => {
+					if (res.code === 200) {
+						res.data.map((item, index) => {
+							item.value = index * 10000
+						})
+						console.log(res.data)
+						this.treeData = res.data
+					}
+				})
+			},
+			seachSelect(e) {
+				if (e.detail.value[1].value) {
+					this.warehouse_id = e.detail.value[1].value
+				}
+				this.erpproductgetlistFuc()
+				this.selectWarehouseGoodsCount()
+			},
 			tapgoods(info) {
-				if(!this.inPageType){
+				if (!this.inPageType) {
 					return;
 				}
 				let selectInfo = {
@@ -153,7 +167,7 @@
 					delta: 1 // 返回的页面数
 				})
 			},
-			
+
 			//接收菜单结果
 			confirm(e) {
 				let that = this;
@@ -208,26 +222,19 @@
 			erpproductgetlistFuc() {
 				let that = this;
 				let paramsData = {
-					'page': this.pageIndex,
-					'pagelist': this.pageLimit,
-					'warehouse_id': this.warehouse_id,
-					'partition_id': this.partition_id,
-					'category_id': this.category_id,
-					'brand_id': this.brand_id,
-					'series_id': this.series_id,
-					'machine_id': this.machine_id,
-					// 'sn':this.snNumber,
-					'keyword': this.storeName
+					'pageNum': this.pageIndex,
+					'pageSize': this.pageLimit,
+					'warehouseId': this.warehouse_id,
 				}
-				erpproductgetlist(paramsData).then(res => {
-					let data = res.data.data;
+				selectWarehouseGoodsList(paramsData).then(res => {
+					let data = res.rows;
 					if (that.ifBottomRefresh) {
 						that.dataList = that.dataList.concat(data)
 					} else {
 						that.dataList = data
 					}
 					that.ifBottomRefresh = false
-					that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+					that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 				})
 			},
 			searchTap(e) {
@@ -295,6 +302,21 @@
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
+
+	page {
+		background-color: #F0F0F0;
+	}
+
+	.bottomView {
+		position: fixed;
+		bottom: 0px;
+		background: white;
+		width: 100vw;
+		padding: 20rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 
 	.cu-card.article>.cu-item {
 

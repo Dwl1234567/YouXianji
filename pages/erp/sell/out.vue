@@ -9,8 +9,8 @@
 				</button>
 			</block>
 		</bar-title>
-		<view class="">
-			<!-- <data-lists dataList="dataList"></data-lists> -->
+		<view class="dataList">
+			<data-lists :dataList="dataList"></data-lists>
 		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -19,8 +19,8 @@
 
 <script>
 	import {
-		getrefundlist
-	} from "@/api/erpapi.js"
+		returnRegistrationList
+	} from "@/api/erp.js"
 	import barTitle from '@/components/common/basics/bar-title';
 	import dataLists from '@/components/common/dataListmore/dataList.vue';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -34,8 +34,8 @@
 				ifBottomRefresh: false,
 				dataList: [],
 				queryInfo: {
-					page: 1,
-					pagesize: 20,
+					pageNum: 1,
+					pageSize: 20,
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
@@ -60,12 +60,12 @@
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
-			this.queryInfo.page = 1; //重置分页页码
+			this.queryInfo.pageNum = 1; //重置分页页码
 			this.getDataList();
 		},
 		onReachBottom() {
 			if (this.loadmore == 'noMore') return
-			this.queryInfo.page += 1;
+			this.queryInfo.pageNum += 1;
 			this.ifBottomRefresh = true
 			this.getDataList();
 		},
@@ -84,8 +84,8 @@
 				let that = this;
 				let paramsData = that.queryInfo;
 
-				getrefundlist(paramsData).then(res => {
-						let data = res.data.data;
+				returnRegistrationList(paramsData).then(res => {
+						let data = res.rows;
 
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
@@ -95,7 +95,7 @@
 								that.dataList = data
 							}
 							that.ifBottomRefresh = false
-							that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 						}
 						console.log(data)
 					})
@@ -112,5 +112,13 @@
 	@import "/uni_modules/colorui/main.css";
 	@import "/uni_modules/colorui/icon.css";
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
+
 	/* #endif */
+	page {
+		background-color: #F0F0F0;
+	}
+
+	.dataList {
+		padding: 20rpx;
+	}
 </style>

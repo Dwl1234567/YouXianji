@@ -68,7 +68,9 @@
 			getFaterList() {
 				warehouseList({
 					storeId: this.storeId,
-					parentId: null
+					parentId: null,
+					pageSize: 10000,
+					pageNum: 1
 				}).then(res => {
 					console.log(res.rows)
 					res.rows.map(item => {

@@ -5,15 +5,15 @@
 				<view class="title">销售单号</view>
 				<view class="cu-capsule radius" @tap="sellorderTap">
 					<view class="">
-						{{sellInfo.sellFormId ? sellInfo.sellFormId :'请选择销售单'}}
+						{{sellInfo.sellFormNo ? sellInfo.sellFormNo :'请选择销售单'}}
 						<text class="cuIcon-right"></text>
 					</view>
 				</view>
 			</view>
-			<view class="cu-form-group">
+			<!-- <view class="cu-form-group">
 				<view class="title">退款金额</view>
 				<input placeholder="请输入退款金额" v-model="ReceivablesMoney"></input>
-			</view>
+			</view> -->
 			<!--拍照-->
 			<view class="cu-form-group pingzheng">
 				<view class="title">客户收款账户</view>
@@ -134,13 +134,13 @@
 				// 	that.btnStatus = false;
 				// 	return that.$u.toast('请选择销售单号');
 				// }
-				if (that.sellInfo.fundsReceived < that.ReceivablesMoney) {
-					return that.$u.toast('退款金额大于销售金额');
-				}
-				if (that.ReceivablesMoney == 0) {
-					that.btnStatus = false;
-					return that.$u.toast('请填写退款金额');
-				}
+				// if (that.sellInfo.fundsReceived < that.ReceivablesMoney) {
+				// 	return that.$u.toast('退款金额大于销售金额');
+				// }
+				// if (that.ReceivablesMoney == 0) {
+				// 	that.btnStatus = false;
+				// 	return that.$u.toast('请填写退款金额');
+				// }
 				if (that.imgList.length == 0) {
 					that.btnStatus = false;
 					return that.$u.toast('请上传客户收款账户');

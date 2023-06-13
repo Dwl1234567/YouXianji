@@ -1000,3 +1000,53 @@ export function financeList(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 查询门店退款登记列表
+ *
+ */
+export function returnRegistrationList(data) {
+	return request.get('/yxj/app/returnRegistration/list', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 串码追踪
+ *
+ */
+export function selectDeviceNoTrace(data) {
+	return request.get('/yxj/app/common/selectDeviceNoTrace', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 获取仓库树
+ *
+ */
+export function selectWarehouseTree(data) {
+	return request.get('/yxj/app/common/selectWarehouseTree', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询库存商品列表
+ *
+ */
+export function selectWarehouseGoodsList(data) {
+	return request.get('/yxj/app/common/selectWarehouseGoodsList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查找库存统计
+ *
+ */
+export function selectWarehouseGoodsCount(data) {
+	return request.get('/yxj/app/common/selectWarehouseGoodsCount', data, {
+		noLogin: true
+	});
+}
