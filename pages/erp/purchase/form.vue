@@ -83,9 +83,9 @@
 		<view class="cu-form-group">
 			<view class="title">成色</view>
 			<view>
-				<u-radio-group style="display: flex;" v-model="colorvalue" placement="row" @change="groupChange">
+				<u-radio-group style="display: flex;" v-model="colorvalue" placement="row">
 					<u-radio :customStyle="{marginRight: '5px'}" :size="12" :labelSize="13" v-for="(item, index) in radiolist1"
-						:key="index" :label="item.name" :name="item.value" @change="radioChange">
+						:key="index" :label="item.name" :name="item.value">
 					</u-radio>
 				</u-radio-group>
 			</view>
@@ -147,7 +147,7 @@
 
 
 		<!-- 相机相册选择 -->
-		<u-popup :show="checkimgshow" :round="8" mode="bottom" :closeOnClickOverlay="true">
+		<!-- <u-popup :show="checkimgshow" :round="8" mode="bottom" :closeOnClickOverlay="true">
 			<view>
 				<u-button type="default" :customStyle="{height:'120rpx'}" @click="opencamare" text="拍照"></u-button>
 				<view style="height:2rpx;background-color: #EEEEEE;width: 100%;"></view>
@@ -157,7 +157,7 @@
 			<view>
 				<u-button type="default" @click="checkimgshow = false" :customStyle="{height:'120rpx'}" text="取消"></u-button>
 			</view>
-		</u-popup>
+		</u-popup> -->
 	</view>
 </template>
 

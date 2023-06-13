@@ -331,7 +331,7 @@
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
 				// "navigationStyle": "custom",
-				"navigationBarTitleText": "审上架详情"
+				"navigationBarTitleText": "详情"
 			}
 		},
 		//"navigationStyle": "custom"
