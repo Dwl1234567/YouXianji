@@ -130,7 +130,9 @@
 
 					<view class="cu-form-group">
 						<view class="title">应收款</view>
-						<input placeholder="请输入收款金额" v-model="ReceivablesMoney" @input="changemoney"></input>
+						{{ReceivablesMoney}}元
+						<!-- <input placeholder="请输入收款金额" v-model="ReceivablesMoney" @input="changemoney"
+							style="text-align: right;">元</input> -->
 					</view>
 					<view class="cu-form-group">
 						<view class="title">实收款 <text style="margin-left:30rpx">{{ActualreceiptsAll}}</text> </view>
@@ -490,6 +492,9 @@
 			uni.removeStorageSync('updatehouse')
 			uni.removeStorageSync('updatecustomer')
 		},
+		watcha: {
+
+		},
 		onLoad(options) {
 			//加载虚拟数据
 			//this.typeListData();
@@ -532,17 +537,22 @@
 			if (uni.getStorageSync('updatecustomer')) {
 				this.goodsList = [uni.getStorageSync('updatecustomer')]
 			}
+			console.log(this.customer)
 			if (this.customer) {
 				this.costPrice = this.customer.costPrice;
 				this.deviceId = this.customer.deviceId
 				this.qualityInfoId = this.customer.qualityInfoId
 				this.recycleFormId = this.customer.recycleFormId
 				this.totalPrice = this.customer.costPrice;
+				this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney);
 			}
 			this.house = uni.getStorageSync('updatehouse')
+			console.log(this.house)
 			if (this.house) {
 				this.house.map(item => {
 					this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+					this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
+						.ReceivablesMoney);
 				})
 			}
 

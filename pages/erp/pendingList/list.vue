@@ -18,7 +18,7 @@
 					<view class="text-wrapper_1 flex-row justify-between"></view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
-						<image :src="$httpImage + item.backPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
+						<image :src="$httpImage + item.modelPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
 						</image>
 						<view class="text-wrapper_2 flex-col">
 							<text class="text_8">{{item.modelName}}</text>
@@ -31,7 +31,7 @@
 					<text class="text_13">应收款：{{item.accountReceived}}</text>
 					<text class="text_13">实收款：{{item.fundsReceived}}</text>
 					<text class="text_13">欠款：{{item.debtPrice}}</text>
-					<text class="text_13">客户：{{item.debtPrice}}</text>
+					<text class="text_13">客户：{{item.clienterName}}</text>
 					<view class="group_5 flex-row justify-between">
 						<button class="button_2 flex-col" @click="onClick_2(item)">
 							<text class="text_16">销售开单</text>

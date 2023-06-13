@@ -160,6 +160,7 @@
 	.button {
 		display: flex;
 		justify-content: flex-end;
+		margin-top: 20rpx;
 
 		view {
 			min-width: 143rpx;

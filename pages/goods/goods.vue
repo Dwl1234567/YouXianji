@@ -925,22 +925,28 @@
 					if (res.code === 200) {
 						if (res.data.frontPhoto) {
 							images_text.push(res.data.frontPhoto)
-						} else if (res.data.backPhoto) {
+						}
+						if (res.data.backPhoto) {
 							images_text.push(res.data.backPhoto)
-						} else if (res.data.topPhoto) {
+						}
+						if (res.data.topPhoto) {
 							images_text.push(res.data.topPhoto)
-						} else if (res.data.bottomPhoto) {
+						}
+						if (res.data.bottomPhoto) {
 							images_text.push(res.data.bottomPhoto)
-						} else if (res.data.leftPhoto) {
+						}
+						if (res.data.leftPhoto) {
 							images_text.push(res.data.leftPhoto)
-						} else if (res.data.rightPhoto) {
+						}
+						if (res.data.rightPhoto) {
 							images_text.push(res.data.rightPhoto)
-						} else if (res.data.cameraPhoto) {
+						}
+						if (res.data.cameraPhoto) {
 							images_text.push(res.data.cameraPhoto)
-						} else if (res.data.otherPhoto) {
+						}
+						if (res.data.otherPhoto) {
 							images_text.push(res.data.otherPhoto)
 						}
-						console.log(images_text);
 						this.modelId = res.data.modelId
 						this.qualityInfoList = JSON.parse(res.data.qualityInfoList)
 						this.Pricepramitems = JSON.parse(res.data.oldQualityInfoList)
@@ -965,7 +971,6 @@
 				query
 					.selectAll('#btn')
 					.boundingClientRect((data) => {
-						console.log(data[0].top, e.target.y);
 						if (e.target.y < data[0].top) {
 							this.bottomModal = false;
 						}
@@ -982,9 +987,7 @@
 					sharePeople: Number(item),
 					goodsId: this.goodsId
 				}).
-				then(res => {
-					console.log(res, '3333333')
-				})
+				then(res => {})
 			},
 			async onCanvas() {
 				qrcode
@@ -1000,14 +1003,12 @@
 						errorCorrectLevel: qrcode.errorCorrectLevel.H,
 					})
 					.then((res) => {});
-				console.log(22222222)
 				// const userInfo = Vue.prototype.$store.state.userInfo;
 				const ctx = uni.createCanvasContext('img1', this);
 				const ctx2 = uni.createCanvasContext('img2', this);
 				ctx.fillRect(0, 0, 324, 324);
 				ctx2.fillRect(0, 0, 40, 40);
 				const image = this.$httpImage + this.product.images_text[0]
-				console.log(image, '222222')
 				ctx.drawImage(image, 0, 0, 324, 324);
 				// ctx2.drawImage(this.userInfo.avatar, 0, 0, 40, 40);
 				let pic = await this.setTime(ctx);
@@ -1101,7 +1102,6 @@
 													url: imgurl[i], // 图片地址
 													methods: 'GET',
 													success: (res) => {
-														console.log(res)
 														var tempFilePath = res.tempFilePath; // 这里拿到后端返回的图片路径
 														uni.saveImageToPhotosAlbum({
 															// 然后调用这个方法
@@ -1408,9 +1408,7 @@
 				// this.showImageModal();
 				const dateEditor = uni.createSelectorQuery().in(this).select('#qrcode');
 				dateEditor
-					.boundingClientRect((rect) => {
-						console.log(rect);
-					})
+					.boundingClientRect((rect) => {})
 					.exec();
 				html2canvas(document.getElementById('qrcode')).then((canvas) => {
 					this.imageData = canvas.toDataURL('image/png', 1);
@@ -1420,9 +1418,7 @@
 					});
 					uni.saveImageToPhotosAlbum({
 						filePath: this.imageData,
-						success: function() {
-							console.log('save success');
-						},
+						success: function() {},
 					});
 				});
 			},

@@ -35,9 +35,9 @@
 					</text>
 					<text class="text_13" v-if="item.maintainApprove">维修内容：{{item.maintainApprove.context}}</text>
 					<view class="button">
-						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="sell(item)">抛售</view>
-						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="shelves(item)">上架</view>
-						<view class="receipt" v-if="item.reorganizeStatus == 1" @tap="billing(item)">销售开单</view>
+						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap.stop="sell(item)">抛售</view>
+						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap.stop="shelves(item)">上架</view>
+						<view class="receipt" v-if="item.reorganizeStatus == 1" @tap.stop="billing(item)">销售开单</view>
 					</view>
 				</view>
 			</view>
