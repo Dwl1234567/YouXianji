@@ -666,9 +666,6 @@
 					if (!that.jjphone) {
 						return that.$u.toast('请填写手机号！');
 					}
-					if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(that.jjphone)) {
-						return that.$u.toast('请输入正确的手机号码');
-					}
 					if (!that.jjdanhao) {
 						return that.$u.toast('请填写顺丰单号！');
 					}

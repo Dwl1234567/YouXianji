@@ -35,7 +35,7 @@
 					<view class="cart-item" :class="{'b-b': index!==cartList.length-1}"
 						@click="navTo(`/pages/product/product?id=${item.product_id}&flash=0`)">
 						<view class="image-wrapper">
-							<image :src="$httpImage + item.goodsInfo.frontPhoto" class="loaded" mode="aspectFill"></image>
+							<image :src="$httpImage + item.goodsInfo.backPhoto" class="loaded" mode="aspectFill"></image>
 							<!-- 							<view
 								v-if="item.isset == true"
 								class="iconfont icon-circleorange checkbox"

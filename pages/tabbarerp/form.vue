@@ -498,6 +498,7 @@
 					})
 					return
 				}
+				console.log(this.qualityInfoList)
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
 				let storeId = uni.getStorageSync('userinfo').storeId
 				let deviceLabel = uni.getStorageSync('goodsdesc')

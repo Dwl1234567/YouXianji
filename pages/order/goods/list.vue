@@ -1,13 +1,8 @@
 <template>
 	<view class="content">
 		<view class="navbar">
-			<view
-				v-for="(item, index) in navList"
-				:key="index"
-				class="nav-item"
-				:class="{current: tabCurrentIndex === index}"
-				@click="tabClick(index)"
-			>
+			<view v-for="(item, index) in navList" :key="index" class="nav-item" :class="{current: tabCurrentIndex === index}"
+				@click="tabClick(index)">
 				{{item.text}}
 			</view>
 		</view>
@@ -23,11 +18,8 @@
 								<view class="image-text_1 flex-row justify-between">
 									<text class="text-group_1">优闲集寻他店</text>
 								</view>
-								<image
-									class="icon_2"
-									referrerpolicy="no-referrer"
-									src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng76a69ec8d984edf3b54d04b77768e328ebb05626d86c986f26777b8490007c8e"
-								/>
+								<image class="icon_2" referrerpolicy="no-referrer"
+									src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng76a69ec8d984edf3b54d04b77768e328ebb05626d86c986f26777b8490007c8e" />
 								<text class="text_3" v-if="item.orderStatus == 0">等待买家付款</text>
 							</view>
 							<view class="group_4 flex-row justify-between">
@@ -99,13 +91,8 @@
 							</view>
 						</view>
 					</view>
-					<u-modal
-						:show="showlogout"
-						@cancel="showlogout = false"
-						@confirm="confirmFuc"
-						title="确认取消订单？"
-						:showCancelButton="true"
-					></u-modal>
+					<u-modal :show="showlogout" @cancel="showlogout = false" @confirm="confirmFuc" title="确认取消订单？"
+						:showCancelButton="true"></u-modal>
 					<u-popup :show="show" mode="bottom" @close="close" @open="open">
 						<view class="prop">
 							<view class="title">选择支付方式</view>
@@ -142,10 +129,8 @@
 										<text>申请售后</text>
 									</view>
 									<view class="right">
-										<image
-											:src="afterSaleType ? '/static/checkYuan.png' : '/static/yuan.png'"
-											@tap="checkAfterSaleType"
-										></image>
+										<image :src="afterSaleType ? '/static/checkYuan.png' : '/static/yuan.png'"
+											@tap="checkAfterSaleType"></image>
 									</view>
 								</view>
 								<view class="zfbPay">
@@ -154,10 +139,8 @@
 										<text>退货退款</text>
 									</view>
 									<view class="right">
-										<image
-											:src="!afterSaleType ? '/static/checkYuan.png' : '/static/yuan.png'"
-											@tap="checkAfterSaleType"
-										></image>
+										<image :src="!afterSaleType ? '/static/checkYuan.png' : '/static/yuan.png'"
+											@tap="checkAfterSaleType"></image>
 									</view>
 								</view>
 							</view>
@@ -177,14 +160,8 @@
 							<view class="tab">退款说明</view>
 							<u--textarea v-model="value1" placeholder="请输入内容" class="textarea"></u--textarea>
 							<view class="tab upload">上传图片</view>
-							<u-upload
-								:fileList="fileList1"
-								@afterRead="afterRead"
-								@delete="deletePic"
-								name="1"
-								multiple
-								:maxCount="3"
-							></u-upload>
+							<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+								:maxCount="3"></u-upload>
 							<view class="querenbutton" @tap="secondGoodsReturn">确认</view>
 						</view>
 					</u-popup>
@@ -194,14 +171,8 @@
 							<view class="title">售后类型</view>
 							<!-- <u--textarea v-model="returnList.context" placeholder="请输入内容" class="textarea"></u--textarea> -->
 							<view class="tab upload">查看图片</view>
-							<u-upload
-								:fileList="fileList2"
-								@afterRead="afterRead"
-								@delete="deletePic"
-								name="2"
-								multiple
-								:maxCount="3"
-							></u-upload>
+							<u-upload :fileList="fileList2" @afterRead="afterRead" @delete="deletePic" name="2" multiple
+								:maxCount="3"></u-upload>
 						</view>
 					</u-popup>
 					<u-popup :show="yunShow" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
@@ -246,6 +217,7 @@
 		clientReturn,
 		clientRefund,
 		selectNewest,
+		zfbContinuePayment
 	} from '@/api/malls.js';
 	export default {
 		components: {
@@ -268,8 +240,7 @@
 				showlogout: false,
 				itemList: {},
 				tabCurrentIndex: 0,
-				navList: [
-					{
+				navList: [{
 						state: 0,
 						text: '待付款',
 						loadingType: 'more',
@@ -434,25 +405,46 @@
 				});
 			},
 			// 确认付款
-			initiatePayment() {
+			initiatePayment(e) {
 				console.log({
 					orderId: Number(this.itemList.orderId),
 					paymentType: this.isWx ? '1' : '0',
 				});
-				continuePayment({
-					orderId: Number(this.itemList.orderId),
-					paymentType: this.isWx ? '1' : '0',
-				}).then((res) => {
-					if (res.code === 200) {
-						uni.showToast({
-							icon: 'none',
-							title: '结算成功',
-						});
-						this.navList[this.tabCurrentIndex].page = 1;
-						this.show = false;
-						this.loadData();
-					}
-				});
+				if (!this.isWx) {
+					zfbContinuePayment({
+						orderId: this.itemList.orderId
+					}).then(res => {
+						if (res.code === 200) {
+							uni.requestPayment({
+								provider: 'alipay',
+								orderInfo: res.data.orderStr,
+								success: function(ress) {
+									paymentReturn({
+										orderPaymentId: res.orderPaymentId,
+										tradeno: ress.tradeno
+									}).then(resss => {
+										if (resss.code === 200) {
+											uni.showToast({
+												icon: 'none',
+												title: '支付成功',
+											});
+										}
+									})
+									console.log('success:' + JSON.stringify(res));
+								},
+								fail: function(err) {
+									if (err.code == -100) {
+										uni.showToast({
+											icon: 'none',
+											title: '支付失败',
+										});
+									}
+									console.log('fail:' + JSON.stringify(err));
+								}
+							})
+						}
+					})
+				}
 			},
 			checkWx() {
 				this.isWx = !this.isWx;
@@ -508,10 +500,10 @@
 				let state = navItem.state;
 				navItem.loadingType = 'loading';
 				shoppingOrderList({
-					orderStatus: state,
-					pageNum: navItem.page,
-					pageSize: this.pageSize,
-				})
+						orderStatus: state,
+						pageNum: navItem.page,
+						pageSize: this.pageSize,
+					})
 					.then((res) => {
 						let result = res.rows;
 						if (!result) {
@@ -594,7 +586,7 @@
 						stateTipColor = '#909399';
 						break;
 
-					//更多自定义
+						//更多自定义
 				}
 				return {
 					stateTip,
@@ -603,8 +595,7 @@
 			},
 			pullDownRefresh() {
 				this.navList = [];
-				this.navList = [
-					{
+				this.navList = [{
 						state: 0,
 						text: '全部',
 						loadingType: 'more',
@@ -708,8 +699,10 @@
 
 <style lang="scss">
 	@import '/static/common.css';
+
 	.yunShow-top {
 		padding: 26rpx 28rpx 28rpx 28rpx;
+
 		.yunShow-title {
 			font-size: 36rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
@@ -718,31 +711,37 @@
 			text-align: center;
 		}
 	}
+
 	.yunShow-item {
 		display: flex;
 		align-items: center;
 		margin-top: 22rpx;
+
 		.left {
 			font-size: 31rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #232323;
 		}
+
 		.select {
 			flex: 1;
 			margin-left: 11.45rpx;
 		}
+
 		.input {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 		}
+
 		.inputAddress {
 			margin-left: 11.45rpx;
 			border: 1px solid #e2e2e2;
 			border-radius: 11rpx;
 			flex: 1;
 			padding: 9rpx 11rpx;
+
 			.copy {
 				width: 141rpx;
 				height: 53rpx;
@@ -758,8 +757,10 @@
 			}
 		}
 	}
+
 	.yunShow-bottom {
 		display: flex;
+
 		view {
 			width: 267rpx;
 			height: 99rpx;
@@ -773,8 +774,10 @@
 			color: #232323;
 		}
 	}
+
 	.prop {
 		padding: 34rpx 47rpx 120rpx 47rpx;
+
 		.title {
 			font-size: 34rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
@@ -783,6 +786,7 @@
 			line-height: 48rpx;
 			text-align: center;
 		}
+
 		.group_4 {
 			margin: 0;
 			margin-top: 28rpx;
@@ -791,6 +795,7 @@
 			border-radius: 11rpx;
 			margin-bottom: 13rpx;
 		}
+
 		.textarea {
 			height: 155rpx !important;
 			border: 2rpx solid #d8d8d8;
@@ -798,10 +803,12 @@
 			margin-top: 28rpx;
 			margin-bottom: 43rpx;
 		}
+
 		.upload {
 			margin-bottom: 28rpx;
 		}
 	}
+
 	.querenbutton {
 		background: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%);
 		border-radius: 13rpx 13rpx 13rpx 11rpx;
@@ -813,26 +820,31 @@
 		line-height: 84rpx;
 		text-align: center;
 	}
+
 	.pay {
 		margin: 20rpx;
 		background: #ffffff;
 		border-radius: 11rpx;
 		padding: 30rpx 0rpx;
 	}
+
 	.zfbPay {
 		margin-top: 34rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
 		.left {
 			display: flex;
 			align-items: center;
+
 			image {
 				width: 57rpx;
 				height: 57rpx;
 				margin-right: 11rpx;
 			}
 		}
+
 		.right {
 			image {
 				width: 38rpx;
@@ -840,19 +852,23 @@
 			}
 		}
 	}
+
 	.wxPay {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
 		.left {
 			display: flex;
 			align-items: center;
+
 			image {
 				width: 57rpx;
 				height: 57rpx;
 				margin-right: 11rpx;
 			}
 		}
+
 		.right {
 			image {
 				width: 38rpx;
@@ -860,11 +876,13 @@
 			}
 		}
 	}
+
 	page,
 	.content {
 		background: $page-color-base;
 		height: 100%;
 	}
+
 	.box_2 {
 		background-color: rgba(240, 240, 240, 1);
 		padding: 13px;
@@ -940,8 +958,7 @@
 		margin-right: 10rpx;
 	}
 
-	.text-group_2 {
-	}
+	.text-group_2 {}
 
 	.text_4 {
 		overflow-wrap: break-word;
@@ -1054,6 +1071,7 @@
 		margin-top: 17rpx;
 		margin-right: 14px;
 		justify-content: flex-end;
+
 		button {
 			margin-left: 28rpx;
 		}
@@ -1220,6 +1238,7 @@
 				padding: 0 30upx 0 24upx;
 				overflow: hidden;
 				position: relative;
+
 				.title {
 					font-size: $font-base + 2upx;
 					color: $font-color-dark;
@@ -1242,6 +1261,7 @@
 						margin: 0 2upx 0 8upx;
 					}
 				}
+
 				.action-btn {
 					width: 160rpx;
 					height: 60rpx;
@@ -1257,6 +1277,7 @@
 					right: 30rpx;
 					bottom: 0;
 				}
+
 				.refund {
 					position: absolute;
 					right: 30rpx;
@@ -1349,11 +1370,11 @@
 		margin-right: 10px;
 	}
 
-	.uni-load-more__img > view {
+	.uni-load-more__img>view {
 		position: absolute;
 	}
 
-	.uni-load-more__img > view view {
+	.uni-load-more__img>view view {
 		width: 6px;
 		height: 2px;
 		border-top-left-radius: 1px;
@@ -1365,25 +1386,25 @@
 		animation: load 1.56s ease infinite;
 	}
 
-	.uni-load-more__img > view view:nth-child(1) {
+	.uni-load-more__img>view view:nth-child(1) {
 		transform: rotate(90deg);
 		top: 2px;
 		left: 9px;
 	}
 
-	.uni-load-more__img > view view:nth-child(2) {
+	.uni-load-more__img>view view:nth-child(2) {
 		transform: rotate(180deg);
 		top: 11px;
 		right: 0;
 	}
 
-	.uni-load-more__img > view view:nth-child(3) {
+	.uni-load-more__img>view view:nth-child(3) {
 		transform: rotate(270deg);
 		bottom: 2px;
 		left: 9px;
 	}
 
-	.uni-load-more__img > view view:nth-child(4) {
+	.uni-load-more__img>view view:nth-child(4) {
 		top: 11px;
 		left: 0;
 	}

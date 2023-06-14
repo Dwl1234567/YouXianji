@@ -171,6 +171,10 @@
 						<textarea class="textarea" maxlength="-1" @input="textareaAInput" placeholder="请输入备注信息" v-model="remark"
 							name="input"></textarea>
 					</view>
+					<view class="cu-form-group" style="border:2rpx solid #EEEEEE; padding-top: 20rpx;">
+						<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+							:maxCount="3"></u-upload>
+					</view>
 					<!--
 					<view class="cu-form-group">
 						<view class="title">备注</view>
@@ -398,6 +402,7 @@
 </template>
 
 <script>
+	import Vue from 'vue';
 	// 底部tabbar
 	import footerTabbar from './components/footer-tabbar.vue';
 	//import _sell_data from '@/static/data/sell.js';	//虚拟数据
@@ -427,6 +432,7 @@
 		},
 		data() {
 			return {
+				fileList1: [],
 				sellFormId: null,
 				reorganizeId: null,
 				totalPrice: 0,
@@ -503,7 +509,6 @@
 					this.house.map(item => {
 						this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
 							.ReceivablesMoney);
-						this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
 					})
 				}
 
@@ -518,7 +523,6 @@
 					this.house.map(item => {
 						this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
 							.ReceivablesMoney);
-						this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
 					})
 				}
 
@@ -584,6 +588,59 @@
 
 		},
 		methods: {
+			// 删除图片
+			deletePic(event) {
+				this[`fileList${event.name}`].splice(event.index, 1);
+			},
+			// 新增图片
+			async afterRead(event) {
+				console.log(123);
+				// 当设置 multiple 为 true 时, file 为数组格式，否则为对象格式
+				let lists = [].concat(event.file);
+				console.log(this[`fileList${event.name}`]);
+				let fileListLen = this[`fileList${event.name}`].length;
+				lists.map((item) => {
+					this[`fileList${event.name}`].push({
+						...item,
+						status: 'uploading',
+						message: '上传中',
+					});
+				});
+				for (let i = 0; i < lists.length; i++) {
+					console.log(lists[i].url);
+					const result = await this.uploadFilePromise(lists[i].url);
+					console.log(result);
+					let item = this[`fileList${event.name}`][fileListLen];
+					this[`fileList${event.name}`].splice(
+						fileListLen,
+						1,
+						Object.assign(item, {
+							status: 'success',
+							message: '',
+							url: result,
+						})
+					);
+					fileListLen++;
+				}
+			},
+			uploadFilePromise(urls) {
+				return new Promise((resolve, reject) => {
+					uni.uploadFile({
+						url: 'http://192.168.2.36:8080/common/upload', // 仅为示例，非真实的接口地址
+						filePath: urls,
+						name: 'file',
+						header: {
+							Authorization: Vue.prototype.$store.state.token,
+						},
+						success: (res) => {
+							setTimeout(() => {
+								const data = JSON.parse(res.data);
+								resolve(data.fileName);
+							}, 1000);
+						},
+					});
+				});
+			},
 			selectReoragnizeSellInfo(id) {
 				selectReoragnizeSellInfo(id).then(res => {
 					if (res.code === 200) {
@@ -980,27 +1037,6 @@
 				let that = this;
 				console.log(that.TabCur)
 				if (that.TabCur == 0) {
-					// if(!that.customerInfo.id){
-					// 	return that.$u.toast('请选择客户');
-					// }
-					// if(that.goodsList.length <= 0){
-					// 	return that.$u.toast('请录入货品');
-					// }
-					// if(that.imgList.length <= 0 && !that.switchA){
-					// 	return that.$u.toast('请上传付款凭证');
-					// }
-
-					// let promisearr = [];
-					// that.imgList.forEach((item, index) => {
-					// 	console.log(item)
-					// 	if (item.indexOf('shousifang') == -1) {
-					// 		console.log(123)
-					// 		promisearr.push(raiseUpload(item));
-					// 	} else {
-					// 		console.log(222)
-					// 		that.upgetimgList.push(item);
-					// 	}
-					// })
 
 					let promisearr = this.imgList.map(item => {
 						return raiseUpload(item)
@@ -1056,10 +1092,13 @@
 			},
 			// 销售开单
 			deliveryTap(list) {
-				console.log(list)
+				console.log(this.fileList1)
 				let that = this;
 				let ids = that.goodsList.map((item, index) => {
 					return item.sn_id;
+				})
+				let fileList = this.fileList1.map(item => {
+					return item.url
 				})
 				let sellFormFittingsList = []
 				if (this.house) {
@@ -1069,7 +1108,7 @@
 							fittingsId: item.fittingsId,
 							fittingsNumber: item.value,
 							fittingsCostPrice: item.fittingsCostPrice,
-							fittingsSellPrice: item.fittingsSellPrice
+							fittingsSellPrice: item.fittingsSellPrice,
 						})
 
 					})
@@ -1094,7 +1133,8 @@
 					sellFormFittingsList, // 配件
 					storeId,
 					debtPrice: that.arrearsMoney,
-					sellFormId: that.sellFormId
+					sellFormId: that.sellFormId,
+					pendingOrderVoucher: fileList.join(',')
 				}).then(res => {
 					if (res.code === 200) {
 						that.$u.toast('开单成功');

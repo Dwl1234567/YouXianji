@@ -293,7 +293,8 @@
 										<view class="text-group_4 flex-col">
 											<text class="text_33">{{qualityInfoList[index].key}}</text>
 											<text class="text_34">{{qualityInfoList[index].value}}</text>
-											<text class="text_36">{{Pricepramitems[index].value}}</text>
+											<text
+												class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
 										</view>
 										<!-- <view class="box_10 flex-col">
 											<view
@@ -326,7 +327,8 @@
 										<view class="text-group_4 flex-col">
 											<text class="text_33">{{qualityInfoList[index].key}}</text>
 											<text class="text_34">{{qualityInfoList[index].value}}</text>
-											<text class="text_36">{{Pricepramitems[index].value}}</text>
+											<text
+												class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
 										</view>
 										<!-- <view class="box_10 flex-col">
 											<view v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
@@ -358,7 +360,8 @@
 										<view class="text-group_4 flex-col">
 											<text class="text_33">{{qualityInfoList[index].key}}</text>
 											<text class="text_34">{{qualityInfoList[index].value}}</text>
-											<text class="text_36">{{Pricepramitems[index].value}}</text>
+											<text
+												class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
 										</view>
 										<!-- <view class="box_10 flex-col">
 											<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
@@ -390,7 +393,8 @@
 										<view class="text-group_4 flex-col">
 											<text class="text_33">{{qualityInfoList[index].key}}</text>
 											<text class="text_34">{{qualityInfoList[index].value}}</text>
-											<text class="text_36">{{Pricepramitems[index].value}}</text>
+											<text
+												class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
 										</view>
 										<!-- <view class="box_10 flex-col">
 											<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
@@ -663,7 +667,8 @@
 		secondGoodsFootprint,
 		secondGoodsFavorite,
 		secondGoods,
-		selectByModelId
+		selectByModelId,
+		immediatelyPayment
 	} from '@/api/malls.js';
 	import qrcode from './qrcode';
 	import {
@@ -1333,13 +1338,6 @@
 				this.showModal();
 			},
 			async selectTap(type) {
-				// this.selectType = type;
-				// this.modalTitle = '选择规格';
-				// this.modalType = 'select';
-				// let is_login = await this.$api.checkLogin();
-				// if (is_login) {
-				// 	this.showModal();
-				// }
 				if (type == 'add') {
 					let params = {
 						handGoodsId: Number(this.goodsId),
@@ -1352,6 +1350,30 @@
 							});
 						}
 					});
+				} else {
+					immediatelyPayment({
+						goodsId: this.goodsId
+					}).then(res => {
+						if (res.code === 200) {
+							uni.setStorageSync('cartList', [{
+								goodsInfo: {
+									basePriceLabel: this.product.basePriceLabel,
+									deviceLabel: this.product.deviceLabel,
+									goodsId: this.goodsId,
+									modelId: this.product.modelId,
+									modelName: this.product.deviceLabel,
+									sellPrice: this.product.sellPrice,
+									title: this.product.title,
+									backPhoto: this.product.backPhoto,
+								},
+								disabled: true,
+								value: 1
+							}])
+							uni.navigateTo({
+								url: '/pages/tabbar/settlement?id=' + res.data,
+							});
+						}
+					})
 				}
 			},
 			confirmFuc() {

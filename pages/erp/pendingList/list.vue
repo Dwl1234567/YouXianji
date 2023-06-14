@@ -33,7 +33,10 @@
 					<text class="text_13">欠款：{{item.debtPrice}}</text>
 					<text class="text_13">客户：{{item.clienterName}}</text>
 					<view class="group_5 flex-row justify-between">
-						<button class="button_2 flex-col" @click="onClick_2(item)">
+						<button class="button_2 flex-col" @click="onClick_1(item)" v-if="item.pendingOrderVoucher">
+							<text class="text_16">查看凭证</text>
+						</button>
+						<button class="button_2 flex-col" @click="onClick_2(item)" style="margin-left: 10rpx;">
 							<text class="text_16">销售开单</text>
 						</button>
 					</view>
@@ -109,6 +112,15 @@
 			});
 		},
 		methods: {
+			onClick_1(item) {
+				let fealList = item.pendingOrderVoucher.split(',').map(item => {
+					return this.$httpImage + item
+				})
+				uni.previewImage({
+					current: 0,
+					urls: fealList,
+				});
+			},
 			onClick_2(item) {
 				uni.navigateTo({
 					url: '/pages/tabbarerp/push?sellFormId=' + item.sellFormId

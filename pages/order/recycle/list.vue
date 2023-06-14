@@ -230,11 +230,12 @@
 									<view class="tag_4 flex-col"></view>
 								</view> -->
 								<view class="block_3 flex-row" style="justify-content: flex-end">
+
 									<button class="button_1 flex-col">
 										<text class="text_12">查看物流</text>
 									</button>
-									<button class="button_1 flex-col">
-										<text class="text_12">退回中</text>
+									<button class="button_1 flex-col" @tap="okShou(item)">
+										<text class="text_12">确认收货</text>
 									</button>
 									<!-- <button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
 										<text class="text_13">拒绝并退回</text>
@@ -329,6 +330,7 @@
 		refuseReceipt,
 		agreeReceipt,
 		selectRecycleOrderSellList,
+		confirmReturnReceive
 	} from '@/api/commons.js';
 	export default {
 		name: 'my',
@@ -386,6 +388,18 @@
 		},
 		onShow() {},
 		methods: {
+			// 确认收货
+			okShou(item) {
+				console.log(item)
+				confirmReturnReceive(item.orderId).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '收货成功'
+						})
+						this.selectRecycleOrderSellList4()
+					}
+				})
+			},
 			// 同意并打款
 			onClick_3(receiptId) {
 				agreeReceipt(receiptId).then((res) => {
