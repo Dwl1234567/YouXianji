@@ -305,7 +305,17 @@ export function getQueryGoodsList(data) {
  *
  */
 export function testAliPay(data) {
-	return request.get('/yxj/app/common/testAliPay', data, {
+	return request.get('/yxj/app/shoppingOrder/createZfbPayment', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 支付宝支付成功回掉
+ *
+ */
+export function paymentReturn(data) {
+	return request.post('/yxj/app/shoppingOrder/paymentReturn', data, {
 		noLogin: true
 	});
 }

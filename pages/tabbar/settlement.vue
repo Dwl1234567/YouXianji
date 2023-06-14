@@ -157,7 +157,8 @@
 		shoppingCartList,
 		getDefaultAddress,
 		initiatePayment,
-		testAliPay
+		testAliPay,
+		paymentReturn
 	} from '@/api/malls.js';
 	import {
 		mapState
@@ -385,26 +386,42 @@
 					orderPaymentId: Number(this.orderPaymentId),
 					paymentType: this.isWx ? '1' : '0',
 				});
-				testAliPay().then(res => {
-					if (res.code === 200) {
-						uni.requestPayment({
-							provider: 'alipay',
-							orderInfo: res.data,
-							success: function(res) {
-								console.log('success:' + JSON.stringify(res));
-							},
-							fail: function(err) {
-								if (err.code == -100) {
-									uni.showToast({
-										icon: 'none',
-										title: '支付失败',
-									});
+				if (!this.isWx) {
+					testAliPay({
+						orderPaymentId: this.orderPaymentId
+					}).then(res => {
+						if (res.code === 200) {
+							uni.requestPayment({
+								provider: 'alipay',
+								orderInfo: res.data,
+								success: function(ress) {
+									paymentReturn({
+										orderPaymentId: this.orderPaymentId,
+										tradeno: ress.tradeno
+									}).then(resss => {
+										if (resss.code === 200) {
+											uni.showToast({
+												icon: 'none',
+												title: '支付成功',
+											});
+										}
+									})
+									console.log('success:' + JSON.stringify(res));
+								},
+								fail: function(err) {
+									if (err.code == -100) {
+										uni.showToast({
+											icon: 'none',
+											title: '支付失败',
+										});
+									}
+									console.log('fail:' + JSON.stringify(err));
 								}
-								console.log('fail:' + JSON.stringify(err));
-							}
-						})
-					}
-				})
+							})
+						}
+					})
+				}
+
 
 				// initiatePayment({
 				// 	orderPaymentId: Number(this.orderPaymentId),

@@ -110,18 +110,17 @@
 							@tap="goDiandian(item)">
 							待修改
 						</view>
-						<view class="checkLogistics" v-if="item.sortStatus == 1" @tap="test()">查看物流</view>
+						<view class="checkLogistics" v-if="item.sortStatus == 1" @tap="test(item)">查看物流</view>
 						<view class="receipt" @tap="receiveInspectDevices(item.sortId)"
 							v-if="item.status === '0' && item.sortStatus == 1 && roles.sorting_leader">
 							确认收货
 						</view>
+						<view class="checkLogistics" v-if="item.sortStatus == 3" @tap="test(item)">
+							物流信息
+						</view>
 						<view class="receipt" @tap="getstoreAdminConfirm(item.sortId)"
 							v-if="roles.store_admin && item.sortStatus == 3">
 							确认收货
-						</view>
-						<view class="checkLogistics" v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 3"
-							@tap="test(item)">
-							物流信息
 						</view>
 						<view class="checkLogistics"
 							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && item.sortStatus == 4"
