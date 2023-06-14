@@ -1496,7 +1496,7 @@
 	}
 
 	.addGouwu {
-		background: #FFBB4C;
+		background: #FFBB4C !important;
 		border-radius: 42rpx;
 		padding: 18rpx 29rpx;
 		font-size: 34rpx;

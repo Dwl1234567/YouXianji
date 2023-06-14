@@ -8,20 +8,27 @@
 		</bar-search-title>
 		<scroll-view scroll-x class="bg-white nav text-center">
 			<view class="cu-item" :class="0==TabCur?'text-red cur':''" @tap="tabSelect" data-id="0">
-				未盘点 ({{dataList.length}})
+				未盘点 ({{total}})
 			</view>
 			<view class="cu-item" :class="1==TabCur?'text-red cur':''" @tap="tabSelect" data-id="1">
-				盘点 ({{dataList1.length}})
+				盘点 ({{total1}})
 			</view>
 		</scroll-view>
 		<view class="cu-list menu" v-if="0==TabCur">
 			<view class="arrow" v-for="(item,index) in dataList" :key="index">
 				<view class="content">
-					<text class="text-grey title">{{item.modelName}}</text>
+					<text class="text-grey title" v-if="item.modelName">{{item.modelName}}</text>
+					<text class="text-grey title" v-if="item.fittingsName">{{item.fittingsName}}</text>
 				</view>
 				<view class="action">
-					<view class=""><text class="text-grey text-sm text">{{item.basicPriceLabel}}</text></view>
-					<view class=""><text class="text-grey text-sm text">序列号{{item.deviceNo}}</text></view>
+					<view class=""><text class="text-grey text-sm text"
+							v-if="item.basicPriceLabel">{{item.basicPriceLabel}}</text></view>
+					<view class=""><text class="text-grey text-sm text" v-if="item.deviceNo">序列号：{{item.deviceNo}}</text></view>
+					<view class=""><text class="text-grey text-sm text" v-if="item.fittingsColor">颜色：{{item.fittingsColor}}</text>
+					</view>
+					<view class=""><text class="text-grey text-sm text"
+							v-if="item.fittingsNumber">数量：{{item.fittingsNumber}}个</text>
+					</view>
 				</view>
 				<view class="over" @tap="yunShow(item)">取样</view>
 			</view>
@@ -31,11 +38,12 @@
 		<view class="cu-list menu" v-if="1==TabCur">
 			<view class="arrow" v-for="(item,index) in dataList1" :key="index">
 				<view class="content">
-					<text class="text-grey title">{{item.modelName}}</text>
+					<text class="text-grey title" v-if="item.modelName">{{item.modelName}}</text>
 				</view>
 				<view class="action">
-					<view class=""><text class="text-grey text-sm text">{{item.basicPriceLabel}}</text></view>
-					<view class=""><text class="text-grey text-sm text">序列号{{item.deviceNo}}</text></view>
+					<view class=""><text class="text-grey text-sm text"
+							v-if="item.basicPriceLabel">{{item.basicPriceLabel}}</text></view>
+					<view class=""><text class="text-grey text-sm text" v-if="item.deviceNo">序列号{{item.deviceNo}}</text></view>
 				</view>
 				<view class="time">
 					<view>盘点时间:{{item.checkTime}}</view>
@@ -47,8 +55,14 @@
 		</view>
 		<u-popup :show="yunShowImg1" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
 			<view class="yunShow-top">
-				<view class="yunShow-title">上传销售凭证</view>
-				<view class="yunShow-img">
+				<view class="yunShow-title">上传凭证</view>
+				<view class="yunShow-item" v-if="checkTaskType == 2">
+					<view class="left">配件数量</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="fittingsNumber"></u--input>
+					</view>
+				</view>
+				<view class="yunShow-img" style="margin-top: 20rpx;">
 					<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
 						:maxCount="3"></u-upload>
 				</view>
@@ -67,7 +81,8 @@
 	import _tool from '@/utils/tools.js'; //工具函数
 	import {
 		storeCheckItemList,
-		uploadCheckVoucher
+		uploadCheckVoucher,
+		selectFittingsList
 	} from "@/api/erp.js";
 	export default {
 		components: {
@@ -75,6 +90,10 @@
 		},
 		data() {
 			return {
+				fittingsNumber: null,
+				total: 0,
+				total1: 0,
+				checkTaskType: 0,
 				checkTaskId: 0,
 				fileList1: [],
 				itemList: {},
@@ -85,7 +104,6 @@
 				listTouchStart: 0,
 				listTouchDirection: null,
 				switchA: false,
-				dataList: [],
 				checkId: '',
 				storeName: '',
 				ifBottomRefresh: false,
@@ -110,6 +128,7 @@
 		},
 		onLoad(options) {
 			this.checkTaskId = options.checkTaskId;
+			this.checkTaskType = options.checkTaskType;
 		},
 		onShow() {
 			this.getDataList();
@@ -155,14 +174,13 @@
 			uploadCheckVoucher() {
 				let checkVoucher = ''
 				this.fileList1.map(item => {
-					console.log(item.url)
 					checkVoucher = item.url
 				})
 				let parms = {
 					checkItemId: this.itemList.checkItemId,
-					checkVoucher
+					checkVoucher,
+					fittingsNumber: this.fittingsNumber
 				}
-				console.log(parms)
 				uploadCheckVoucher(parms).then(res => {
 					if (res.code === 200) {
 						uni.showToast({
@@ -219,40 +237,79 @@
 				let paramsData = that.queryInfo1;
 				paramsData.itemStatus = 1
 				paramsData.checkTaskId = this.checkTaskId
-				storeCheckItemList(paramsData).then(res => {
-						let data = res.rows;
-						if (data) {
-							if (that.ifBottomRefresh) {
-								that.dataList1 = that.dataList1.concat(data)
-							} else {
-								that.dataList1 = data
+				if (this.checkTaskType != 2) {
+					storeCheckItemList(paramsData).then(res => {
+							let data = res.rows;
+							if (data) {
+								if (that.ifBottomRefresh1) {
+									that.dataList1 = that.dataList1.concat(data)
+								} else {
+									that.dataList1 = data
+								}
+								this.total1 = res.total;
+								that.ifBottomRefresh1 = false
+								that.loadmore1 = res.total == that.dataList1.length ? 'noMore' : 'more'
 							}
-							that.ifBottomRefresh1 = false
-							that.loadmore1 = res.total == that.dataList1.length ? 'noMore' : 'more'
-						}
 
-					})
-					.finally(() => {})
+						})
+						.finally(() => {})
+				} else {
+					selectFittingsList(paramsData).then(res => {
+							let data = res.rows;
+							if (data) {
+								if (that.ifBottomRefresh1) {
+									that.dataList1 = that.dataList1.concat(data)
+								} else {
+									that.dataList1 = data
+								}
+								this.total1 = res.total;
+								that.ifBottomRefresh1 = false
+								that.loadmore1 = res.total == that.dataList1.length ? 'noMore' : 'more'
+							}
+
+						})
+						.finally(() => {})
+				}
+
 			},
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo
 				paramsData.itemStatus = 0
 				paramsData.checkTaskId = this.checkTaskId
-				storeCheckItemList(paramsData).then(res => {
-						let data = res.rows;
-						if (data) {
-							if (that.ifBottomRefresh) {
-								that.dataList = that.dataList.concat(data)
-							} else {
-								that.dataList = data
+				if (this.checkTaskType != 2) {
+					storeCheckItemList(paramsData).then(res => {
+							let data = res.rows;
+							if (data) {
+								if (that.ifBottomRefresh) {
+									that.dataList = that.dataList.concat(data)
+								} else {
+									that.dataList = data
+								}
+								this.total = res.total;
+								that.ifBottomRefresh = false
+								that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 							}
-							that.ifBottomRefresh = false
-							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
-						}
 
-					})
-					.finally(() => {})
+						})
+						.finally(() => {})
+				} else {
+					selectFittingsList(paramsData).then(res => {
+							let data = res.rows;
+							if (data) {
+								if (that.ifBottomRefresh) {
+									that.dataList = that.dataList.concat(data)
+								} else {
+									that.dataList = data
+								}
+								that.ifBottomRefresh = false
+								this.total = res.total;
+								that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
+							}
+
+						})
+						.finally(() => {})
+				}
 			},
 			// 删除图片
 			deletePic(event) {
@@ -400,6 +457,7 @@
 		border-radius: 11rpx;
 		padding: 45rpx 38rpx;
 		margin-bottom: 24rpx;
+		padding-bottom: 41px;
 
 		.content {
 			margin-bottom: 34rpx

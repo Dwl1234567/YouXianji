@@ -102,9 +102,7 @@
 		},
 		onLoad(options) {
 			// 进入页面刷新
-			this.$nextTick(() => {
-				uni.startPullDownRefresh();
-			})
+			this.getDataList()
 		},
 		onReady() {
 			_tool.setBarColor(true);
@@ -163,7 +161,8 @@
 			},
 			tabGoods(info) {
 				uni.navigateTo({
-					url: "/pages/erp/inventory/check/goods?checkTaskId=" + info.checkTaskId
+					url: "/pages/erp/inventory/check/goods?checkTaskId=" + info.checkTaskId + "&checkTaskType=" + info
+						.checkTaskType
 				});
 			},
 			getDataList() {
@@ -223,6 +222,7 @@
 		border-radius: 11rpx;
 		padding: 45rpx 38rpx;
 		padding-bottom: 80rpx;
+		margin-bottom: 20rpx;
 
 		.content {
 			margin-bottom: 34rpx

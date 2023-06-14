@@ -110,7 +110,7 @@
 							@tap="goDiandian(item)">
 							待修改
 						</view>
-						<view class="checkLogistics" v-if="item.sortStatus == 1">查看物流</view>
+						<view class="checkLogistics" v-if="item.sortStatus == 1" @tap="test()">查看物流</view>
 						<view class="receipt" @tap="receiveInspectDevices(item.sortId)"
 							v-if="item.status === '0' && item.sortStatus == 1 && roles.sorting_leader">
 							确认收货
@@ -119,11 +119,13 @@
 							v-if="roles.store_admin && item.sortStatus == 3">
 							确认收货
 						</view>
-						<view class="checkLogistics" v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 3">
+						<view class="checkLogistics" v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 3"
+							@tap="test(item)">
 							物流信息
 						</view>
 						<view class="checkLogistics"
-							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && item.sortStatus == 4">
+							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && item.sortStatus == 4"
+							@tap="test(item)">
 							物流信息
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 4">已收货</view>
@@ -353,6 +355,7 @@
 			</view>
 		</u-popup>
 		<!-- 下拉加载提示 -->
+		<logistics :show="test1111" @showFalse="showFalse" :logisticsInfo="logisticsInfo" :active="active"></logistics>
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
 </template>
@@ -375,18 +378,24 @@
 		empUploadMaintainVoucher,
 		storeAdminSelectHandleType,
 		empMaintainFail,
+		selectLogisticsInfo
 	} from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
+	import logistics from '@/components/common/logistics/dataList.vue';
 	import _tool from '@/utils/tools.js'; //工具函数
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
 	export default {
 		components: {
 			barTitle,
+			logistics,
 			filterDropdown,
 		},
 		data() {
 			return {
+				active: null,
+				logisticsInfo: [],
+				test1111: false,
 				deviceId: null,
 				deviceNo: null,
 				yunShowImgMain: false,
@@ -618,6 +627,30 @@
 			});
 		},
 		methods: {
+			showFalse() {
+				this.test1111 = false
+			},
+			test(item) {
+				selectLogisticsInfo({
+					sortOrderId: item.sortOrderId
+				}).then(res => {
+					const {
+						logisticsInfo,
+					} = res.data;
+					// 判断邮寄信息是否查询成功
+					if (logisticsInfo && logisticsInfo.data && logisticsInfo.code == 200) {
+						const data = logisticsInfo.data.map((item) => {
+							return {
+								title: item.AcceptStation,
+								desc: item.AcceptTime,
+							};
+						});
+						this.active = logisticsInfo.data.length - 1;
+						this.logisticsInfo = data;
+					}
+				})
+				this.test1111 = true
+			},
 			// clear
 			clear() {
 				// 运营中心id

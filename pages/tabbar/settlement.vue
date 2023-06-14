@@ -18,7 +18,7 @@
 		</view> -->
 
 		<view class="cart-list-view">
-			<view class="adress">
+			<view class="adress" v-if="addressN">
 				<view class="">{{addressN.linkman}} {{addressN.phonenumber}}</view>
 				<view>{{addressN.provinceName}}{{addressN.cityName}}{{addressN.regionName}} {{addressN.detailAddress}}</view>
 			</view>
@@ -26,11 +26,8 @@
 			<view class="cart-list bg-white margin-sm" style="border-radius: 11rpx; position: relative">
 				<block v-for="(item, index) in cartList" :key="item.cart_id" v-if="item.disabled == true">
 					<!-- <view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view> -->
-					<view
-						class="cart-item"
-						:class="{'b-b': index!==cartList.length-1}"
-						@click="navTo(`/pages/product/product?id=${item.product_id}&flash=0`)"
-					>
+					<view class="cart-item" :class="{'b-b': index!==cartList.length-1}"
+						@click="navTo(`/pages/product/product?id=${item.product_id}&flash=0`)">
 						<view class="image-wrapper">
 							<image :src="$httpImage + item.goodsInfo.frontPhoto" class="loaded" mode="aspectFill"></image>
 							<!-- 							<view
@@ -101,7 +98,7 @@
 			<view class="zfbPay">
 				<view class="left">
 					<image src="/static/支付宝@2x.png" mode=""></image>
-					<text>微信</text>
+					<text>支付宝</text>
 				</view>
 				<view class="right">
 					<image :src="!isWx ? '/static/checkYuan.png' : '/static/yuan.png'" @tap="checkWx"></image>
@@ -114,11 +111,8 @@
 		<!-- 底部菜单栏 -->
 		<view class="action-section bg-white">
 			<view class="checkbox">
-				<image
-					:src="allChoose?'/static/selected.png':'/static/select.png'"
-					mode="aspectFit"
-					@click="checkall('all')"
-				></image>
+				<image :src="allChoose?'/static/selected.png':'/static/select.png'" mode="aspectFit" @click="checkall('all')">
+				</image>
 			</view>
 			<view class="total-box">
 				<view class="text-red">
@@ -126,7 +120,8 @@
 					<text class="text-red text-xxl text-bold">{{total}}</text>
 				</view>
 			</view>
-			<button class="no-border cu-btn bg-deepblue radius-4" @click="createOrder" v-if="!checkout">结算</button>
+			<button class="no-border cu-btn bg-deepblue radius-4" @click="createOrder" v-if="!checkout"
+				style="padding: 17rpx 122rpx;background: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);border-radius: 42rpx;color: #FFFFFF;">结算</button>
 			<button class="no-border cu-btn bg-deepblue radius-4" @click="createOrder" v-else>删除</button>
 		</view>
 
@@ -151,9 +146,22 @@
 	import uniNumberBox from '@/components/uni-number-box.vue';
 	import _my_cart_data from '@/static/data/my_cart.js'; //虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
-	import { CartIndex, CartAdd, CartDelete, CartNumberChange, CartChooseChange } from '@/api/mall.js';
-	import { shoppingCartList, getDefaultAddress, initiatePayment } from '@/api/malls.js';
-	import { mapState } from 'vuex';
+	import {
+		CartIndex,
+		CartAdd,
+		CartDelete,
+		CartNumberChange,
+		CartChooseChange
+	} from '@/api/mall.js';
+	import {
+		shoppingCartList,
+		getDefaultAddress,
+		initiatePayment,
+		testAliPay
+	} from '@/api/malls.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		name: 'cart',
 		components: {
@@ -240,9 +248,9 @@
 				console.log(login);
 				if (login) {
 					shoppingCartList({
-						pageSize: 100000,
-						pageNum: 1,
-					})
+							pageSize: 100000,
+							pageNum: 1,
+						})
 						.then((res) => {
 							let data = res.rows;
 							data.map((item) => {
@@ -284,60 +292,7 @@
 					url: '/pages/public/login',
 				});
 			},
-			//选中状态处理
-			// async check(type, index) {
-			// 	let trueArr = [];
-			// 	let falseArr = [];
-			// 	let oldChoose = [];
-			// 	const list = this.cartList;
-			// 	//保存旧的数据
-			// 	list.forEach((item) => {
-			// 		if (item.choose) {
-			// 			oldChoose.push(item.cart_id);
-			// 		}
-			// 	});
 
-			// 	//本地处理
-			// 	if (type === 'item') {
-			// 		this.cartList[index].choose = !this.cartList[index].choose;
-			// 		if (this.cartList[index].choose) {
-			// 			trueArr.push(this.cartList[index].cart_id);
-			// 		} else {
-			// 			falseArr.push(this.cartList[index].cart_id);
-			// 		}
-			// 	} else {
-			// 		const choose = !this.allChoose;
-			// 		list.forEach((item) => {
-			// 			item.choose = choose;
-			// 			if (item.isset) {
-			// 				if (choose) {
-			// 					trueArr.push(item.cart_id);
-			// 				} else {
-			// 					falseArr.push(item.cart_id);
-			// 				}
-			// 			}
-			// 		});
-			// 		this.allChoose = choose;
-			// 	}
-			// 	this.calcTotal(type);
-
-			// 	//远程处理
-			// 	let result = await this.$api.request('/cart/choose_change', 'POST', {
-			// 		trueArr,
-			// 		falseArr,
-			// 	});
-			// 	if (!result) {
-			// 		//恢复原来勾选的状态
-			// 		list.forEach((item) => {
-			// 			if (oldChoose.indexOf(item.cart_id) >= 0) {
-			// 				item.choose = 1;
-			// 			} else {
-			// 				item.choose = 0;
-			// 			}
-			// 		});
-			// 		this.calcTotal(type);
-			// 	}
-			// },
 			//数量
 			async numberChange(data) {
 				let oldNumber = this.cartList[data.index].number;
@@ -349,7 +304,10 @@
 				// let result = await this.$api.request('/cart/number_change?id=' + cart_id, 'GET', {
 				// 	number: newNumber
 				// }, false);
-				CartNumberChange({ id: cart_id, number: newNumber })
+				CartNumberChange({
+						id: cart_id,
+						number: newNumber
+					})
 					.then((res) => {})
 					.catch((err) => {
 						this.cartList[data.index].number = oldNumber;
@@ -392,7 +350,7 @@
 					});
 					let that = this;
 					if (data) {
-						setTimeout(function () {
+						setTimeout(function() {
 							that.state = 'load';
 							that.cartList = [];
 							that.getCart();
@@ -427,17 +385,38 @@
 					orderPaymentId: Number(this.orderPaymentId),
 					paymentType: this.isWx ? '1' : '0',
 				});
-				initiatePayment({
-					orderPaymentId: Number(this.orderPaymentId),
-					paymentType: this.isWx ? '1' : '0',
-				}).then((res) => {
+				testAliPay().then(res => {
 					if (res.code === 200) {
-						uni.showToast({
-							icon: 'none',
-							title: '结算成功',
-						});
+						uni.requestPayment({
+							provider: 'alipay',
+							orderInfo: res.data,
+							success: function(res) {
+								console.log('success:' + JSON.stringify(res));
+							},
+							fail: function(err) {
+								if (err.code == -100) {
+									uni.showToast({
+										icon: 'none',
+										title: '支付失败',
+									});
+								}
+								console.log('fail:' + JSON.stringify(err));
+							}
+						})
 					}
-				});
+				})
+
+				// initiatePayment({
+				// 	orderPaymentId: Number(this.orderPaymentId),
+				// 	paymentType: this.isWx ? '1' : '0',
+				// }).then((res) => {
+				// 	if (res.code === 200) {
+				// 		uni.showToast({
+				// 			icon: 'none',
+				// 			title: '结算成功',
+				// 		});
+				// 	}
+				// });
 				// uni.requestPayment({
 				// 	provider: 'wxpay',
 				// 	success(res) {
@@ -519,29 +498,36 @@
 	@import '@/uni_modules/mpb-ui/shop/app.scss';
 	/* #endif */
 	@import '@/uni_modules/mpb-ui/shop/my_cart.scss';
+
 	.cart-box {
 		// display: none;
 	}
+
 	page {
 		background: #f0f0f0;
 	}
+
 	.cart-box.show {
 		display: block;
 	}
+
 	.adress {
 		margin: 20rpx;
 		background: #ffffff;
 		border-radius: 11rpx;
 		padding: 30rpx 32rpx;
 	}
+
 	.xinxi {
 		padding: 28rpx 32rpx;
 	}
+
 	.xinxi-item {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		margin-bottom: 34rpx;
+
 		view {
 			font-size: 27rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
@@ -549,30 +535,36 @@
 			color: #101010;
 			line-height: 38rpx;
 		}
+
 		view:nth-child(2) {
 			color: #929294;
 		}
 	}
+
 	.pay {
 		margin: 20rpx;
 		background: #ffffff;
 		border-radius: 11rpx;
 		padding: 30rpx 32rpx;
 	}
+
 	.zfbPay {
 		margin-top: 34rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
 		.left {
 			display: flex;
 			align-items: center;
+
 			image {
 				width: 57rpx;
 				height: 57rpx;
 				margin-right: 11rpx;
 			}
 		}
+
 		.right {
 			image {
 				width: 38rpx;
@@ -580,19 +572,23 @@
 			}
 		}
 	}
+
 	.wxPay {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
 		.left {
 			display: flex;
 			align-items: center;
+
 			image {
 				width: 57rpx;
 				height: 57rpx;
 				margin-right: 11rpx;
 			}
 		}
+
 		.right {
 			image {
 				width: 38rpx;
@@ -600,20 +596,24 @@
 			}
 		}
 	}
+
 	.radio {
 		width: 38rpx;
 		height: 38rpx;
 		border-radius: 38rpx;
 		border: 2rpx solid #cecece;
 	}
+
 	.radio-red {
 		background-color: #ff3a31;
 	}
+
 	.step {
 		position: absolute;
 		bottom: 0px;
 		right: 0px;
 	}
+
 	.container {
 		padding-bottom: 134upx;
 
@@ -649,16 +649,19 @@
 			}
 		}
 	}
+
 	/* 购物车列表项 */
 	.cart-item {
 		display: flex;
 		position: relative;
 		width: 100%;
 		padding: 30upx 20upx 30upx 14upx;
+
 		.clamp {
 			height: auto !important;
 			white-space: unset;
 		}
+
 		.image-wrapper {
 			width: 180upx;
 			height: 180upx;
@@ -693,6 +696,7 @@
 				height: 40upx;
 				line-height: 40upx;
 			}
+
 			.price {
 				font-size: $font-base + 2upx;
 				color: #ec6e57;
@@ -706,6 +710,7 @@
 				height: 50upx;
 				line-height: 50upx;
 			}
+
 			.uni-numbox {
 				left: unset;
 				right: -60upx;
@@ -732,6 +737,7 @@
 			margin-bottom: 32upx;
 		}
 	}
+
 	/* 底部栏 */
 	.action-section {
 		/* #ifdef H5 */
@@ -804,6 +810,7 @@
 			font-size: $font-base + 2upx;
 		}
 	}
+
 	/* 复选框选中状态 */
 	.action-section .checkbox.checked,
 	.cart-item .checkbox.checked {

@@ -7,13 +7,12 @@
 				<text class="cuIcon-scan" @tap="snTap" />
 			</block>
 		</bar-search-title>
-		<LiFilter :isType="isType" @change="changebar" @select="selectbar" :datalist="filterData" :height="0.6"
-			:isFixtop="false" :show="false"></LiFilter>
 		<!--<filterDropdown :menuTop="filtertopnum" :updateMenuName="false" @confirm="confirm"></filterDropdown>-->
 
 
-		<view class="margin-top-lg margin-bottom padding-bottom-sm padding-top-sm">
-			<view class="cu-card article">
+		<view class="padding-bottom-sm padding-top-sm">
+			<data-list :dataList="dataList"></data-list>
+			<!-- <view class="cu-card article">
 				<view class="cu-item bg-white margin-sm radius-4" v-for="(item,index) in dataList">
 					<view class="title">
 						<view class="text-cut">{{item.name}}</view>
@@ -24,9 +23,9 @@
 						<view class="desc">
 							<view class="text-content">
 								<view class="text-sm">销售价:<text class="text-red">{{item.sales_price}}</text>元
-									库存:{{item.stock}}<text class="margin-left-sm cuIcon-edit text-orange"
-										@tap="showModal(item)" data-target="Modal">调价</text></view>
-								<view class="text-sm">序列号：{{item.sn}} 
+									库存:{{item.stock}}<text class="margin-left-sm cuIcon-edit text-orange" @tap="showModal(item)"
+										data-target="Modal">调价</text></view>
+								<view class="text-sm">序列号：{{item.sn}}
 									<text class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)">复制</text>
 								</view>
 								<view class="text-sm">销售价：{{item.sales_price}}元</view>
@@ -35,14 +34,13 @@
 							<view>
 								<view class="cu-tag bg-red light sm round">手机</view>
 								<view class="cu-tag bg-blue light sm round">苹果</view>
-								<!-- <view class="cu-tag bg-green light sm round" @tap="baogao">验机报告</view> -->
 							</view>
 						</view>
 					</view>
 				</view>
 
-			</view>
-			<view class="cu-modal" :class="modalName=='Modal'?'show':''">
+			</view> -->
+			<!-- <view class="cu-modal" :class="modalName=='Modal'?'show':''">
 				<view class="cu-dialog">
 					<view class="cu-bar bg-white justify-end">
 						<view class="content">{{tiaojiaInfo.name}}</view>
@@ -56,11 +54,10 @@
 					</view>
 					<view class="cu-bar bg-white">
 						<view class="action margin-0 flex-sub " @tap="hideModal">取消调价</view>
-						<!-- <view class="action margin-0 flex-sub text-green solid-left" @tap="hideModal">取消</view> -->
 						<view class="action margin-0 flex-sub text-green solid-left" @tap="edit()">确定调价</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -68,6 +65,7 @@
 </template>
 
 <script>
+	import dataList from '@/components/common/dataList/dataList.vue';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import goodsSortList from '@/components/common/list/goods-sort-list';
 	// import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
@@ -76,12 +74,11 @@
 
 	import _tool from '@/utils/tools.js'; //工具函数
 	import {
-		erpProductStorelist,
-		erpProductGetBasicData,
-		erpusereditproductmoney
-	} from "@/api/erpapi.js"
+		selectStoreGoods,
+	} from "@/api/erp.js"
 	export default {
 		components: {
+			dataList,
 			barSearchTitle,
 			filterDropdown,
 			LiFilter,
@@ -92,7 +89,7 @@
 				fid: '',
 				sid: '',
 				dataList: [],
-				tiaojiaInfo:'',
+				tiaojiaInfo: '',
 				ifBottomRefresh: false,
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
@@ -101,7 +98,7 @@
 					"contentnomore": "暂无更多数据。"
 				},
 				defaultSelected: [],
-				isType:0,
+				isType: 0,
 				filterData: {},
 				modalName: null,
 				pageIndex: 1,
@@ -116,8 +113,8 @@
 				storeName: '',
 				initFilterList: [],
 				checkFilterList: [],
-				lastcheckList:[],
-				filtertopnum:'90',//筛选条高度
+				lastcheckList: [],
+				filtertopnum: '90', //筛选条高度
 			}
 		},
 		onLoad(e) {
@@ -131,7 +128,7 @@
 			// #ifdef APP-PLUS
 			this.filtertopnum = 160;
 			// #endif
-			this.erpProductGetBasicDataFuc();
+			// this.erpProductGetBasicDataFuc();
 			this.erpproductgetlistFuc();
 		},
 		//下拉刷新
@@ -153,7 +150,7 @@
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {
 				let that = this;
-			
+
 				erpProductGetBasicData({}).then(res => {
 					let data = res.data;
 					if (data) {
@@ -181,7 +178,7 @@
 										"系列",
 										"机型"
 									],
-									"data":data.category
+									"data": data.category
 								}
 							]
 						};
@@ -198,35 +195,35 @@
 				console.log('----------select----------');
 				console.log(e);
 				// e.nodes
-				if(e.root.value == 'a'){
+				if (e.root.value == 'a') {
 					// 仓库
-					e.nodes.map((item,index)=>{
+					e.nodes.map((item, index) => {
 						console.log(index);
-						if(index == 0){
-							this.warehouse_id = item.value;  //主
-						}else if(index == 1){
-							this.partition_id = item.value;  //子
+						if (index == 0) {
+							this.warehouse_id = item.value; //主
+						} else if (index == 1) {
+							this.partition_id = item.value; //子
 						}
 					})
-				}else if(e.root.value == 'b'){
+				} else if (e.root.value == 'b') {
 					// 筛选
-					e.nodes.map((item,index)=>{
+					e.nodes.map((item, index) => {
 						console.log(index);
-						if(index == 0){
-							this.category_id = item.value;  //"分类",
-						}else if(index == 1){
-							this.brand_id = item.value;  //品牌
-						}else if(index == 2){
-							this.series_id = item.value;  //系列
-						}else if(index == 3){
-							this.machine_id = item.value;  //机型
+						if (index == 0) {
+							this.category_id = item.value; //"分类",
+						} else if (index == 1) {
+							this.brand_id = item.value; //品牌
+						} else if (index == 2) {
+							this.series_id = item.value; //系列
+						} else if (index == 3) {
+							this.machine_id = item.value; //机型
 						}
 					})
 				}
 				this.erpproductgetlistFuc('refresh');
-				
+
 			},
-			filterInitData(data){
+			filterInitData(data) {
 				let that = this;
 				if (data) {
 					// 仓库
@@ -246,7 +243,7 @@
 							}
 							info.submenu.push(childinfo);
 						})
-				
+
 						return info
 					})
 					filedata.unshift({
@@ -273,13 +270,13 @@
 			},
 			change(e) {
 				// console.log('选中-》',e);
-				this.getcheckfilterInfo(e.checkindex,e.value)
+				this.getcheckfilterInfo(e.checkindex, e.value)
 				// this.indexArr = e.index;
 				// this.valueArr = e.value;
 
 			},
 			// 获取选中项
-			getcheckfilterInfo(index,value) {
+			getcheckfilterInfo(index, value) {
 				let that = this;
 				// let index = value[1].length - 1;
 				// console.log(value);
@@ -291,35 +288,35 @@
 				// console.log(checkinfo);
 				// return;
 				let info = '';
-				switch(index){
+				switch (index) {
 					case 0:
-					// console.log(that.initFilterList[cIndex[0][0]].children);
-					info = {
-						'name': '品牌',
-						'submenu': [...that.initFilterList[cIndex[0][0]].children]
-					}
-					that.filterData[1]['submenu'][1] = info;
-					break;
+						// console.log(that.initFilterList[cIndex[0][0]].children);
+						info = {
+							'name': '品牌',
+							'submenu': [...that.initFilterList[cIndex[0][0]].children]
+						}
+						that.filterData[1]['submenu'][1] = info;
+						break;
 					case 1:
-					// console.log(that.initFilterList[cIndex[0][0]].children[cIndex[1][0]].children);
-					info = {
-						'name': '系列',
-						'submenu': [...that.initFilterList[cIndex[0][0]].children[cIndex[0][0]].children]
-					}
-					that.filterData[1]['submenu'][2] = info;
-					break;
+						// console.log(that.initFilterList[cIndex[0][0]].children[cIndex[1][0]].children);
+						info = {
+							'name': '系列',
+							'submenu': [...that.initFilterList[cIndex[0][0]].children[cIndex[0][0]].children]
+						}
+						that.filterData[1]['submenu'][2] = info;
+						break;
 					case 2:
-					info = {
-						'name': '型号',
-						'submenu': [...that.initFilterList[cIndex[0][0]].children[cIndex[0][0]].children[cIndex[0][0]].children]
-					}
-					that.filterData[1]['submenu'][3] = info;
-					break;
+						info = {
+							'name': '型号',
+							'submenu': [...that.initFilterList[cIndex[0][0]].children[cIndex[0][0]].children[cIndex[0][0]].children]
+						}
+						that.filterData[1]['submenu'][3] = info;
+						break;
 					case 3:
-					// 点击型号
-					break;
+						// 点击型号
+						break;
 				}
-				
+
 				that.filterData = JSON.parse(JSON.stringify(that.filterData));
 				// console.log(that.filterData);
 				// return;
@@ -333,15 +330,15 @@
 				// 一下的注释是针对测试数据说明结构的意思，具体传入什么数据，要看你自己数据。如果data.js数据有修改，注意defaultSelected也要修改
 				//传入defaultSelected的结构不能错，错了就报错运行异常。 不想选中的请传入null
 				console.log(len);
-				console.log('筛选数据->',this.filterData);
+				console.log('筛选数据->', this.filterData);
 				// return;
 				this.$nextTick(() => {
 					let info = []
-					for(let i = 0;i<len;i++){
+					for (let i = 0; i < len; i++) {
 						info.push([0])
-						
+
 					}
-					
+
 					// return;
 					that.defaultSelected = [
 						[null, null],
@@ -352,34 +349,26 @@
 					]
 				})
 			},
-			getArrDifference(arr1, arr2){
-			  return arr1.concat(arr2).filter((v, i, arr) => {
-			    return arr.indexOf(v) === arr.lastIndexOf(v);
-			  })
+			getArrDifference(arr1, arr2) {
+				return arr1.concat(arr2).filter((v, i, arr) => {
+					return arr.indexOf(v) === arr.lastIndexOf(v);
+				})
 			},
 			erpproductgetlistFuc() {
 				let that = this;
 				let paramsData = {
-					'page': this.pageIndex,
-					'pagelist': this.pageLimit,
-					'warehouse_id': this.warehouse_id,
-					'partition_id': this.partition_id,
-					'category_id': this.category_id,
-					'brand_id': this.brand_id,
-					'series_id': this.series_id,
-					'machine_id': this.machine_id,
-					// 'sn':this.snNumber,
-					'keyword': this.storeName
+					'pageNum': this.pageIndex,
+					'pageSize': this.pageLimit,
 				}
-				erpProductStorelist(paramsData).then(res => {
-					let data = res.data.data;
+				selectStoreGoods(paramsData).then(res => {
+					let data = res.rows
 					if (that.ifBottomRefresh) {
 						that.dataList = that.dataList.concat(data)
 					} else {
 						that.dataList = data
 					}
 					that.ifBottomRefresh = false
-					that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+					that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 				})
 			},
 			searchTap(e) {
@@ -411,25 +400,25 @@
 			},
 			edit() {
 				//编辑提交
-				if(this.tiaojiaInfo.sales_price<=0){
+				if (this.tiaojiaInfo.sales_price <= 0) {
 					return uni.showToast({
-						title:'价格不能为0小于0！',
-						icon:'none',
-						position:'top'
+						title: '价格不能为0小于0！',
+						icon: 'none',
+						position: 'top'
 					});
 				}
 				erpusereditproductmoney({
-					money:this.tiaojiaInfo.sales_price,
-					goods_id:this.tiaojiaInfo.goods_id
-				}).then(res=>{
-					this.$u.toast('调价成功！');
-					uni.startPullDownRefresh({
-						
+						money: this.tiaojiaInfo.sales_price,
+						goods_id: this.tiaojiaInfo.goods_id
+					}).then(res => {
+						this.$u.toast('调价成功！');
+						uni.startPullDownRefresh({
+
+						})
 					})
-				})
-				.finally(()=>{
-					this.modalName = null
-				})
+					.finally(() => {
+						this.modalName = null
+					})
 			},
 			copy(sn) {
 				//拷贝
@@ -457,9 +446,13 @@
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
 
+	page {
+		background: #f0f0f0;
+	}
+
 	.cu-card.article>.cu-item {
 		.content {
-			
+
 			uni-image {
 				width: 6.8em;
 				height: 6.8em;

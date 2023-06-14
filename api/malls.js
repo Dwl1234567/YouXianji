@@ -299,3 +299,13 @@ export function getQueryGoodsList(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 支付宝支付
+ *
+ */
+export function testAliPay(data) {
+	return request.get('/yxj/app/common/testAliPay', data, {
+		noLogin: true
+	});
+}

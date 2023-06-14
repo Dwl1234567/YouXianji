@@ -248,6 +248,7 @@
 				};
 				secondGoodsList(params)
 					.then((res) => {
+						console.log(res.data, '3333333333')
 						let data = res.data;
 						that.goodsData.push(...data);
 						this.firstFlag = false;

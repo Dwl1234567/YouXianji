@@ -12,8 +12,9 @@
 					<view class="text-group_1 flex-col">
 						<text class="text_9">{{item.modelName}}</text>
 						<text class="text_10">{{item.label}}</text>
+						<text class="text_10">{{item.basePriceLabel}}</text>
 						<text class="text_11">序列号:{{item.deviceNo}}</text>
-
+						<text class="text_11">成本价:{{item.costPrice}}</text>
 						<text class="text_12" v-if="item.recycleGuidePrice">预估回收价:{{item.recycleGuidePrice}}元</text>
 					</view>
 					<view class="tag_1 flex-col"></view>

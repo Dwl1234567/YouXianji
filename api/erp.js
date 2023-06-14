@@ -1070,3 +1070,33 @@ export function selectDefaultWarehouse(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 查询配件盘库明细列表
+ *
+ */
+export function selectFittingsList(data) {
+	return request.get('/yxj/app/storeCheckTask/selectFittingsList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询分拣物流信息
+ *
+ */
+export function selectLogisticsInfo(data) {
+	return request.get('/yxj/app/sorting/selectLogisticsInfo', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 支付宝支付
+ *
+ */
+export function testAliPay(data) {
+	return request.get('/yxj/app/common/testAliPay', data, {
+		noLogin: true
+	});
+}
