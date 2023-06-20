@@ -106,6 +106,22 @@
 			<input placeholder="请输入回收价" v-model="ActualreceiptsAll" name="input" disabled="true"></input>
 		</view>
 		<view class="cu-form-group">
+			<view class="title">组合成本</view>
+			<input placeholder="请输入组合成本" v-model="combinationPrice" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">回收佣金</view>
+			<input placeholder="" v-model="formList.totalRecycleCommission" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">门店杂费</view>
+			<input placeholder="" v-model="formList.pettyExpenses" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">维修费用</view>
+			<input placeholder="" v-model="formList.maintenancePrice" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
 			<view class="title">调拨价</view>
 			<input placeholder="请输入调拨价" v-model="diaobojianum" name="input"></input>
 		</view>
@@ -113,10 +129,7 @@
 			<view class="title">销售价</view>
 			<input placeholder="请输入销售价" v-model="xiaoshoujianum" name="input"></input>
 		</view>
-		<view class="cu-form-group">
-			<view class="title">组合成本</view>
-			<input placeholder="请输入组合成本" v-model="combinationPrice" name="input" disabled="true"></input>
-		</view>
+
 
 		<!--点点单-->
 		<view class="cu-form-group">
@@ -379,21 +392,21 @@
 		},
 		methods: {
 			// 获取门店杂费
-			getStoreOnlineCostConfig() {
-				getStoreOnlineCostConfig().then(res => {
-					if (res.code === 200) {
-						const {
-							pettyExpenses,
-							platformEachPhoneRecyclePrice,
-							recycleRatio
-						} = res.data
-						// 组合成本 =  回收价 * 平台佣金比例 + 平台每台佣金 + 杂费
-						this.combinationPrice = Number(this.ActualreceiptsAll) + (Number(this.ActualreceiptsAll) * recycleRatio *
-								0.01) +
-							platformEachPhoneRecyclePrice + pettyExpenses
-					}
-				})
-			},
+			// getStoreOnlineCostConfig() {
+			// 	getStoreOnlineCostConfig().then(res => {
+			// 		// if (res.code === 200) {
+			// 		// 	const {
+			// 		// 		pettyExpenses,
+			// 		// 		platformEachPhoneRecyclePrice,
+			// 		// 		recycleRatio
+			// 		// 	} = res.data
+			// 		// 	// 组合成本 =  回收价 * 平台佣金比例 + 平台每台佣金 + 杂费
+			// 		// 	this.combinationPrice = Number(this.ActualreceiptsAll) + (Number(this.ActualreceiptsAll) * recycleRatio *
+			// 		// 			0.01) +
+			// 		// 		platformEachPhoneRecyclePrice + pettyExpenses
+			// 		// }
+			// 	})
+			// },
 			SwitchA(e) {
 				this.switchA = e.detail.value
 			},
@@ -417,6 +430,8 @@
 			getInfoByRecycleOrderId() {
 				getInfoByRecycleOrderId(this.recycleOrderId).then(res => {
 					this.formList = res.data;
+					this.combinationPrice = res.data.totalRecycleCommission + res.data.pettyExpenses + res.data.recyclePrice +
+						res.data.maintenancePrice
 					this.goodssn = res.data.deviceNo;
 					this.ActualreceiptsAll = res.data.recyclePrice;
 					this.qualityInfoList = JSON.parse(res.data.qualityInfoList);
@@ -713,7 +728,7 @@
 			},
 			tabSelect(e) {
 				// console.log(e.currentTarget);
-				// if (e.currentTarget?.dataset?.id) {
+				// if (e.currentTarget.dataset.id) {
 				// 	this.curTabIndex = e.currentTarget.dataset.id;
 				// }
 				let index = e.currentTarget.dataset.id;

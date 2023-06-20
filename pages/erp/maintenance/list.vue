@@ -27,7 +27,7 @@
 					<text class="text_13" v-if="item.storeName">门店名称：{{item.storeName}}</text>
 					<text class="text_13" v-if="item.undersellApprove">抛售渠道：{{item.undersellApprove.channel}}</text>
 					<text class="text_13" v-if="item.undersellApprove">
-						抛售预估价：{{item.undersellApprove}}
+						抛售预估价：{{item.undersellApprove.undersellPrice}}
 					</text>
 					<text class="text_13" v-if="item.maintainApprove">维修渠道：{{item.maintainApprove.channel}}</text>
 					<text class="text_13" v-if="item.maintainApprove">

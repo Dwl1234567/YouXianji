@@ -4,14 +4,14 @@
 		<!--标题栏-->
 		<bar-search-title bgColor="bg-white" content="名称/序列号" @seachTap="searchTap">
 			<block slot="right">
-				<text class="cuIcon-scan" @tap="snTap" />
+				<text class="iconfont icon-saomiao" @tap="snTap" />
 			</block>
 		</bar-search-title>
 		<!--<filterDropdown :menuTop="filtertopnum" :updateMenuName="false" @confirm="confirm"></filterDropdown>-->
 
 
 		<view class="padding-bottom-sm padding-top-sm">
-			<data-list :dataList="dataList"></data-list>
+			<data-list :dataList="dataList" @goDetail="goDetail"></data-list>
 			<!-- <view class="cu-card article">
 				<view class="cu-item bg-white margin-sm radius-4" v-for="(item,index) in dataList">
 					<view class="title">
@@ -86,6 +86,7 @@
 		},
 		data() {
 			return {
+				deviceId: null,
 				fid: '',
 				sid: '',
 				dataList: [],
@@ -147,6 +148,12 @@
 			});
 		},
 		methods: {
+			goDetail(e) {
+				console.log(e)
+				uni.navigateTo({
+					url: '/pages/erp/purchase/form?goodsId=' + e.goodsId
+				})
+			},
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {
 				let that = this;
@@ -359,6 +366,8 @@
 				let paramsData = {
 					'pageNum': this.pageIndex,
 					'pageSize': this.pageLimit,
+					'deviceId': this.deviceId,
+					'deviceNo': this.storeName
 				}
 				selectStoreGoods(paramsData).then(res => {
 					let data = res.rows
@@ -387,8 +396,9 @@
 						// 微信小程序
 						if (res.errMsg == "scanCode:ok") {
 							// 扫描到的信息
-							let code = res.result
-							that.storeName = code;
+							const data = JSON.parse(res.result)
+							console.log(data.a)
+							that.deviceId = data.a
 							that.erpproductgetlistFuc();
 						} else {
 							console.log("未识别到二维码，请重新尝试！")

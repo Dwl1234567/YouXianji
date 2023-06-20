@@ -21,9 +21,11 @@
 			</view>
 			<bar-title :isBack="false" :fixed="false" :bgColor="bgColor">
 				<block slot="right">
+
 					<button class="cu-btn sm text-color-yellow margin-right-lg text-white radius-12" @tap="goToErp"
 						v-if="roles.store_admin || roles.store_employee || roles.sorting_leader || roles.sorting_people"
 						style="box-shadow: 0px 2px 4px 0px rgba(181, 181, 181, 0.5)">
+						<view class="cu-tag badge" v-if="loginfo.TODO_ALL!=0">{{loginfo.TODO_ALL || 0}}</view>
 						工作模式
 						<!-- <text class="iconfont icon-nextpageorange margin-lr-xs"></text> -->
 					</button>
@@ -153,7 +155,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daifukuan text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">{{userInfo.recyclenum|| 0}}</view>
+									<view class="cu-tag badge" v-if="buyCount.payment_count!=0">{{buyCount.payment_count|| 0}}</view>
 								</view>
 								<text class="text-101010">待付款</text>
 							</view>
@@ -164,7 +166,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daifahuo text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">{{userInfo.shopnum|| 0}}</view>
+									<view class="cu-tag badge" v-if="buyCount.shipments_count!=0">{{buyCount.shipments_count|| 0}}</view>
 								</view>
 								<text>待发货</text>
 							</view>
@@ -175,7 +177,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daishouhuo text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
+									<view class="cu-tag badge" v-if="buyCount.receiving_count!=0">{{buyCount.receiving_count|| 0}}</view>
 								</view>
 								<text>待收货</text>
 							</view>
@@ -186,7 +188,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daipingjia text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
+									<view class="cu-tag badge" v-if="buyCount.evaluate_count!=0">{{buyCount.evaluate_count|| 0}}</view>
 								</view>
 								<text>待评价</text>
 							</view>
@@ -203,7 +205,8 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daifukuan text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.recyclenum!=0">{{userInfo.recyclenum|| 0}}</view>
+									<view class="cu-tag badge" v-if="sellCount.shipments_count!=0">{{sellCount.shipments_count|| 0}}
+									</view>
 								</view>
 								<text class="text-101010">发货</text>
 							</view>
@@ -214,7 +217,9 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daifahuo text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.shopnum!=0">{{userInfo.shopnum|| 0}}</view>
+									<view class="cu-tag badge" v-if="sellCount.quality_testing_count!=0">
+										{{sellCount.quality_testing_count|| 0}}
+									</view>
 								</view>
 								<text class="text-101010">质检</text>
 							</view>
@@ -225,7 +230,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daishouhuo text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
+									<view class="cu-tag badge" v-if="sellCount.payment_count!=0">{{sellCount.payment_count|| 0}}</view>
 								</view>
 								<text class="text-101010">结算</text>
 							</view>
@@ -236,7 +241,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-daipingjia text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
+									<view class="cu-tag badge" v-if="sellCount.return_count!=0">{{sellCount.return_count|| 0}}</view>
 								</view>
 								<text class="text-101010">退货</text>
 							</view>
@@ -247,7 +252,7 @@
 							</view>
 							<view class="text-xxl text-black" v-else>
 								<view class="iconfont icon-refund text-darkgrey">
-									<view class="cu-tag badge" v-if="userInfo.favoritenum!=0">{{userInfo.favoritenum|| 0}}</view>
+									<view class="cu-tag badge" v-if="sellCount.evaluate_count!=0">{{sellCount.evaluate_count|| 0}}</view>
 								</view>
 								<text class="text-101010">待评价</text>
 							</view>
@@ -293,7 +298,9 @@
 	import footerTabbar from './components/footer-tabbar.vue';
 	import {
 		getUserInfo,
-		kefuInitUser
+		kefuInitUser,
+		selectMySellCount,
+		selectMyBuyCount
 	} from '@/api/user.js';
 	import {
 		erpuserislogin
@@ -312,6 +319,9 @@
 		},
 		data() {
 			return {
+				buyCount: {},
+				sellCount: {},
+				loginfo: {},
 				toolsList: [],
 				bgColor: 'bg-111',
 				login: false,
@@ -340,9 +350,13 @@
 			this.toolsList = _my_data.toolsListData();
 		},
 		onShow() {
+			this.selectMyBuyCount()
+			this.selectMySellCount()
+			this.loginfo = Vue.prototype.$store.state.business
 			const data = Vue.prototype.$store.state.address
 			getUserInfo(data).then((res) => {
 				this.userInfo = res.data;
+				this.$store.commit('setUserInfo', res.data);
 			});
 			this.erpuserislogin();
 			// #ifdef APP-PLUS
@@ -372,12 +386,29 @@
 			getUserInfo(data)
 				.then((res) => {
 					this.userInfo = res.data;
+					this.$store.commit('setUserInfo', res.data);
 				})
 				.finally(() => {
 					uni.stopPullDownRefresh();
 				});
 		},
 		methods: {
+			// 获取买到角标
+			selectMyBuyCount() {
+				selectMyBuyCount().then(res => {
+					if (res.code === 200) {
+						this.buyCount = res.data
+					}
+				})
+			},
+			// 获取卖出角标
+			selectMySellCount() {
+				selectMySellCount().then(res => {
+					if (res.code === 200) {
+						this.sellCount = res.data
+					}
+				})
+			},
 			// 获取手机序列号
 			getIMEI() {
 				// console.log('IMEI:' + plus.device.imei);

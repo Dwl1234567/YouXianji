@@ -66,6 +66,9 @@
 				default: true,
 			},
 		},
+		created() {
+			console.log(this.list_data)
+		},
 		methods: {
 			listTap(data, index) {
 				this.$emit('listTap', {

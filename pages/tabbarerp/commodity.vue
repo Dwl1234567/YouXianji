@@ -62,6 +62,7 @@
 		},
 		data() {
 			return {
+				deviceNo: null,
 				value: 0,
 				topWarehouseId: null,
 				listData: [{
@@ -106,6 +107,10 @@
 			});
 		},
 		methods: {
+			searchTap(e) {
+				this.deviceNo = e
+				this.getDataList()
+			},
 			updatecustomer(item) {
 				uni.setStorageSync('updatecustomer', item);
 				uni.navigateTo({
@@ -150,6 +155,7 @@
 				let that = this;
 				let paramsData = that.queryInfo;
 				paramsData.topWarehouseId = this.topWarehouseId;
+				paramsData.deviceNo = this.deviceNo
 				selectStaySellFormList(paramsData)
 					.then((res) => {
 						let data = res.rows;

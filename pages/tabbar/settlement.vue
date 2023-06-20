@@ -110,10 +110,10 @@
 
 		<!-- 底部菜单栏 -->
 		<view class="action-section bg-white">
-			<view class="checkbox">
+			<!-- <view class="checkbox">
 				<image :src="allChoose?'/static/selected.png':'/static/select.png'" mode="aspectFit" @click="checkall('all')">
 				</image>
-			</view>
+			</view> -->
 			<view class="total-box">
 				<view class="text-red">
 					<text class="text-red margin-right-xs">¥</text>

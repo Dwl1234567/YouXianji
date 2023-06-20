@@ -67,16 +67,28 @@
 			<input placeholder="请输入回收价" v-model="formList.recyclePrice" name="input" disabled="true"></input>
 		</view>
 		<view class="cu-form-group">
+			<view class="title">组合成本</view>
+			<input placeholder="请输入组合成本" v-model="formList.combinationPrice" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">回收佣金</view>
+			<input placeholder="" v-model="formList.totalRecycleCommission" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">门店杂费</view>
+			<input placeholder="" v-model="formList.pettyExpenses" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">维修费用</view>
+			<input placeholder="" v-model="formList.maintenancePrice" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
 			<view class="title">调拨价</view>
 			<input placeholder="请输入调拨价" v-model="formList.allotPrice" name="input" disabled="true"></input>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">销售价</view>
 			<input placeholder="请输入销售价" v-model="formList.sellPrice" name="input" disabled="true"></input>
-		</view>
-		<view class="cu-form-group">
-			<view class="title">组合成本</view>
-			<input placeholder="请输入组合成本" v-model="formList.combinationPrice" name="input" disabled="true"></input>
 		</view>
 
 		<!--点点单-->
@@ -170,7 +182,8 @@
 		warehouseList,
 		empCreateRecycleForm,
 		getStoreOnlineCostConfig,
-		selectRecycleFormDetail
+		selectRecycleFormDetail,
+		secondGoods
 	} from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
@@ -184,6 +197,7 @@
 		},
 		data() {
 			return {
+				goodsId: null,
 				radiolist2: [{
 						name: '分拣',
 						disabled: false,
@@ -282,7 +296,7 @@
 		},
 		onLoad(options) {
 			this.recycleFormId = options.recycleFormId
-			this.modelId = options.goodsId
+			this.goodsId = options.goodsId
 			this.recycleOrderId = options.recycleOrderId
 			this.guidePrice = options.forecastMoney;
 			this.selectRecycleFormDetail()
@@ -315,20 +329,39 @@
 			},
 			// 获取详情
 			selectRecycleFormDetail() {
-				selectRecycleFormDetail(this.recycleFormId).then(res => {
-					if (res.code === 200) {
-						this.formList = res.data
-						this.qualityInfoList = JSON.parse(res.data.qualityInfoList)
-						this.phoneImgArr.push(res.data.frontPhoto)
-						this.phoneImgArr.push(res.data.backPhoto)
-						this.phoneImgArr.push(res.data.topPhoto)
-						this.phoneImgArr.push(res.data.bottomPhoto)
-						this.phoneImgArr.push(res.data.leftPhoto)
-						this.phoneImgArr.push(res.data.rightPhoto)
-						this.phoneImgArr.push(res.data.cameraPhoto)
-						this.phoneImgArr.push(res.data.otherPhoto)
-					}
-				})
+				if (this.recycleFormId) {
+					selectRecycleFormDetail(this.recycleFormId).then(res => {
+						if (res.code === 200) {
+							this.formList = res.data
+							this.qualityInfoList = JSON.parse(res.data.qualityInfoList)
+							this.phoneImgArr.push(res.data.frontPhoto)
+							this.phoneImgArr.push(res.data.backPhoto)
+							this.phoneImgArr.push(res.data.topPhoto)
+							this.phoneImgArr.push(res.data.bottomPhoto)
+							this.phoneImgArr.push(res.data.leftPhoto)
+							this.phoneImgArr.push(res.data.rightPhoto)
+							this.phoneImgArr.push(res.data.cameraPhoto)
+							this.phoneImgArr.push(res.data.otherPhoto)
+						}
+					})
+				} else if (this.goodsId) {
+
+					secondGoods(this.goodsId).then(res => {
+						if (res.code === 200) {
+							this.formList = res.data
+							this.qualityInfoList = JSON.parse(res.data.qualityInfoList)
+							this.phoneImgArr.push(res.data.frontPhoto)
+							this.phoneImgArr.push(res.data.backPhoto)
+							this.phoneImgArr.push(res.data.topPhoto)
+							this.phoneImgArr.push(res.data.bottomPhoto)
+							this.phoneImgArr.push(res.data.leftPhoto)
+							this.phoneImgArr.push(res.data.rightPhoto)
+							this.phoneImgArr.push(res.data.cameraPhoto)
+							this.phoneImgArr.push(res.data.otherPhoto)
+						}
+					})
+				}
+
 			},
 			// 获取门店杂费
 			getStoreOnlineCostConfig() {
@@ -340,24 +373,24 @@
 			},
 			SwitchB(e) {
 				this.switchB = e.detail.value
-				if (this.switchB) {
-					this.switchC = false;
-					this.switchD = false;
-				}
+				// if (this.switchB) {
+				// 	this.switchC = false;
+				// 	this.switchD = false;
+				// }
 			},
 			SwitchC(e) {
 				this.switchC = e.detail.value
-				if (this.switchC) {
-					this.switchB = false;
-					this.switchD = false;
-				}
+				// if (this.switchC) {
+				// 	this.switchB = false;
+				// 	this.switchD = false;
+				// }
 			},
 			SwitchD(e) {
 				this.switchD = e.detail.value
-				if (this.switchD) {
-					this.switchC = false;
-					this.switchB = false;
-				}
+				// if (this.switchD) {
+				// 	this.switchC = false;
+				// 	this.switchB = false;
+				// }
 			},
 			SwitchA(e) {
 				this.switchA = e.detail.value

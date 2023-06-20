@@ -491,9 +491,6 @@
 				hsReceivablesMoney: ''
 			}
 		},
-		onHide() {
-			console.log(123)
-		},
 		onUnload() {
 			uni.removeStorageSync('updatehouse')
 			uni.removeStorageSync('updatecustomer')
@@ -502,29 +499,40 @@
 			customer() {
 				this.ReceivablesMoney = 0
 				this.totalPrice = 0
-				this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
-					Number(this.ReceivablesMoney) : 0;
-				this.totalPrice = this.customer.costPrice;
-				if (this.house.length) {
-					this.house.map(item => {
-						this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
-							.ReceivablesMoney);
-					})
+				if (!this.reorganizeId) {
+					this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
+						Number(this.ReceivablesMoney) : 0;
+					this.totalPrice = this.customer.costPrice;
+					if (this.house.length) {
+						this.house.map(item => {
+							this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
+								.ReceivablesMoney);
+							this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+						})
+					}
+				} else {
+					this.selectReoragnizeSellInfo(this.reorganizeId)
 				}
 
 			},
 			house() {
 				this.ReceivablesMoney = 0
 				this.totalPrice = 0
-				this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
-					Number(this.ReceivablesMoney) : 0;
-				this.totalPrice = this.customer.costPrice;
-				if (this.house.length) {
-					this.house.map(item => {
-						this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
-							.ReceivablesMoney);
-					})
+				if (!this.reorganizeId) {
+					this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
+						Number(this.ReceivablesMoney) : 0;
+					this.totalPrice = this.customer.costPrice;
+					if (this.house.length) {
+						this.house.map(item => {
+							this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
+								.ReceivablesMoney);
+							this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+						})
+					}
+				} else {
+					this.selectReoragnizeSellInfo(this.reorganizeId)
 				}
+
 
 			}
 		},
@@ -561,30 +569,18 @@
 		onShow() {
 			let that = this;
 			uni.$once('updatecustomer', function(data) {
-				// console.log(data);
 				that.customerInfo = {
 					...data
 				};
 			})
 			this.customer = uni.getStorageSync('updatecustomer')
+			this.deviceId = this.customer.deviceId
+			this.recycleFormId = this.customer.recycleFormId
+			this.qualityInfoId = this.customer.qualityInfoId
 			if (uni.getStorageSync('updatecustomer')) {
 				this.goodsList = [uni.getStorageSync('updatecustomer')]
 			}
-			console.log(this.customer)
-			if (this.customer) {
-				this.costPrice = this.customer.costPrice;
-				this.deviceId = this.customer.deviceId
-				this.qualityInfoId = this.customer.qualityInfoId
-				this.recycleFormId = this.customer.recycleFormId
-				this.totalPrice = this.customer.costPrice;
-			}
 			this.house = uni.getStorageSync('updatehouse')
-			console.log(this.house)
-			if (this.house) {
-				this.house.map(item => {
-					this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
-				})
-			}
 
 		},
 		methods: {
@@ -594,10 +590,8 @@
 			},
 			// 新增图片
 			async afterRead(event) {
-				console.log(123);
 				// 当设置 multiple 为 true 时, file 为数组格式，否则为对象格式
 				let lists = [].concat(event.file);
-				console.log(this[`fileList${event.name}`]);
 				let fileListLen = this[`fileList${event.name}`].length;
 				lists.map((item) => {
 					this[`fileList${event.name}`].push({
@@ -607,9 +601,7 @@
 					});
 				});
 				for (let i = 0; i < lists.length; i++) {
-					console.log(lists[i].url);
 					const result = await this.uploadFilePromise(lists[i].url);
-					console.log(result);
 					let item = this[`fileList${event.name}`][fileListLen];
 					this[`fileList${event.name}`].splice(
 						fileListLen,
@@ -649,9 +641,12 @@
 						this.qualityInfoId = res.data.qualityInfoId
 						this.recycleFormId = res.data.recycleFormId
 						this.totalPrice = res.data.costPrice;
+						this.ReceivablesMoney = res.data.combinationPrice
 						if (this.house) {
 							this.house.map(item => {
 								this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
+								this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
+									.ReceivablesMoney);
 							})
 						}
 					}
@@ -659,7 +654,6 @@
 			},
 			// 截止挂单时间
 			DateChange(e) {
-				console.log(e);
 				let data = e.detail.value;
 			},
 			// 应收款
@@ -683,7 +677,7 @@
 			// 回收价格
 			ActualreceiptsAllFuchs() {
 				// 合计
-				this.hsActualreceiptsAll = Number(this.hsweixinnum) + Number(this.hsalipaynum) + Number(this.hsxianjinnum) +
+				this.hsyinggaiMoney = Number(this.hsweixinnum) + Number(this.hsalipaynum) + Number(this.hsxianjinnum) +
 					Number(this.hsdihuonum)
 				// json
 				this.hsActualreceiptsJson = JSON.stringify({
@@ -708,13 +702,11 @@
 					id: id
 				}).then(res => {
 					let data = res.data;
-					// console.log(res.data);
 					that.hsdangoodsList.push(res.data);
 					that.hsyinggaiMoney = Number(that.hsyinggaiMoney) + Number(res.data.cost_price);
 				})
 			},
 			getValue(list) {
-				console.log(list, 'B页面传递的数据')
 				if (list && list.sn_id) {
 					//判断该sn_id 是否已选择
 					let snList = this.goodsList;
@@ -727,7 +719,6 @@
 						}
 					}
 					if (snFlag == 1) {
-						console.log('该产品已有了');
 						return;
 					}
 					this.sn_id = list.sn_id;
@@ -739,7 +730,6 @@
 				}
 			},
 			getDiyValue(list) {
-				console.log(list, '未上架机型B页面传递的数据')
 				if (list && list.sn_id) {
 					//判断该sn_id 是否已选择
 					let snList = this.goodsList;
@@ -752,7 +742,6 @@
 						}
 					}
 					if (snFlag == 1) {
-						console.log('该产品已有了');
 						return;
 					}
 					this.sn_id = list.sn_id;
@@ -785,7 +774,6 @@
 			},
 			SwitchA(e) {
 				this.switchA = e.detail.value
-				//console.log(this.switchA);
 				if (this.switchA) {
 					this.switchGD = true;
 				} else {
@@ -806,7 +794,6 @@
 			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
-				console.log(this.TabCur);
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
 			textareaAInput(e) {
@@ -863,9 +850,7 @@
 				}
 				this.listTouchDirection = null
 			},
-			typeListTap(e) {
-				console.log(e);
-			},
+			typeListTap(e) {},
 			CustomerChange(e) {
 
 			},
@@ -929,7 +914,6 @@
 						} else {
 							that.imgList = res.tempFilePaths
 						}
-						console.log(that.imgList);
 					},
 					complete: function() {
 						that.checkimgshow = false;
@@ -946,7 +930,6 @@
 				} else {
 					uplength = 9 - Number(that.imgList.length);
 				}
-				console.log(uplength);
 				uni.chooseImage({
 					count: uplength, //默认9
 					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
@@ -986,7 +969,6 @@
 						} else {
 							this.imgList = res.tempFilePaths
 						}
-						console.log(this.imgList);
 					}
 				});
 
@@ -1006,7 +988,6 @@
 				paramsData.prefabricate = type
 				paramsData.clientId = this.customerInfo.id
 				paramsData.remark = this.remark1
-				console.log(paramsData)
 				empCreateRecycleForm(paramsData).then(res => {
 					if (res.code === 200) {
 						this.$u.toast('开单成功');
@@ -1023,19 +1004,16 @@
 				})
 				let imagesList = []
 				Promise.all(promisearr).then((res) => {
-					console.log(res)
 					res.map(itemm => {
 						imagesList.push(itemm.fileName)
 					})
 				}).finally(() => {
-					console.log(imagesList.join(','))
 					this.unploadImg(imagesList.join(','), type)
 				})
 			},
 			// 上传分享图片
 			upShareimg() {
 				let that = this;
-				console.log(that.TabCur)
 				if (that.TabCur == 0) {
 
 					let promisearr = this.imgList.map(item => {
@@ -1092,7 +1070,6 @@
 			},
 			// 销售开单
 			deliveryTap(list) {
-				console.log(this.fileList1)
 				let that = this;
 				let ids = that.goodsList.map((item, index) => {
 					return item.sn_id;

@@ -4,7 +4,7 @@
 		<!--标题栏-->
 		<bar-search-title bgColor="bg-white" content="名称/序列号" @seachTap="searchTap">
 			<block slot="right">
-				<text class="cuIcon-scan" @tap="snTap" />
+				<text class="iconfont icon-saomiao" @tap="snTap" />
 			</block>
 		</bar-search-title>
 		<!-- <LiFilter :isType="0" @change="changebar" @select="selectbar" :datalist="filterData" :height="0.6"
@@ -16,9 +16,10 @@
 		<view class="margin-sm">
 			<view class="cu-card article">
 				<view class="flex bg-white radius-6 " v-for="(item,index) in dataList" style="overflow: hidden;">
-					<image :src=" $httpImage + item.frontPhoto" mode="aspectFill" style="width: 280rpx; height: 280rpx;">
+					<image :src=" $httpImage + item.backPhoto" mode="aspectFill" style="width: 280rpx; height: 280rpx;">
 					</image>
-					<view class="" style="padding: 34rpx 26rpx 20rpx 26rpx; display: flex; flex-direction: column;justify-content: space-between; flex: 1 1 auto;">		
+					<view class=""
+						style="padding: 34rpx 26rpx 20rpx 26rpx; display: flex; flex-direction: column;justify-content: space-between; flex: 1 1 auto;">
 						<view class="desc">
 							<view class="">
 								<view class="title">
@@ -27,11 +28,12 @@
 								<view class="margin-top-sm">
 									<view class="text-sm text-929294">
 										销售价:<text class="text-red">{{item.sellPrice}}</text>元
+										成本价:<text class="text-red">{{item.costPrice}}</text>元
 										<!-- <span class="margin-left-sm">库存:<text class="text-red">{{item.stock}}</text></span> -->
 										<!--<text class="margin-left-sm cuIcon-edit text-orange" @tap="showModal(item)" data-target="Modal">调价</text>-->
 									</view>
-									<view class="text-sm text-929294 margin-top-sm">序列号：{{item.deviceNo}} 
-									<!-- <text class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)"></text> -->
+									<view class="text-sm text-929294 margin-top-sm">序列号：{{item.deviceNo}}
+										<!-- <text class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)"></text> -->
 									</view>
 									<!-- <view class="text-sm">
 										<text class="margin-right-sm">成本价：{{item.cost_price}}元</text>
@@ -42,7 +44,7 @@
 							</view>
 						</view>
 						<view class="flex justify-end" style="">
-							<view class="cu-btn round text-bold sm" @tap="copy(item.sn)">
+							<view class="cu-btn round text-bold sm" @tap="copy(item.deviceNo)">
 								<text>复制序列号</text>
 							</view>
 							<view class="cu-btn round margin-left-sm text-bold sm" @tap="showModal(item)" data-target="Modal">
@@ -50,7 +52,7 @@
 							</view>
 						</view>
 					</view>
-					
+
 				</view>
 
 			</view>
@@ -66,30 +68,27 @@
 						<view class="cu-list grid col-3">
 							<view class="cu-item">
 								销售价
-								<input class="text-red" type="number" v-model="sellPrice" placeholder="销售价"
-									name="input"></input>
+								<input class="text-red" type="number" v-model="sellPrice" placeholder="销售价" name="input"></input>
 							</view>
 							<view class="cu-item">
 								调拨价
-								<input class="text-blue" type="number" v-model="allotPrice" placeholder="调拨价"
-									name="input"></input>
+								<input class="text-blue" type="number" v-model="allotPrice" placeholder="调拨价" name="input"></input>
 							</view>
 							<view class="cu-item">
 								回收价
-								<input class="text-green" type="number" v-model="recyclePrice" placeholder="回收价"
-									name="input"></input>
+								<input class="text-green" type="number" v-model="recyclePrice" placeholder="回收价" name="input"></input>
 							</view>
-							
+
 						</view>
 						<view class="cu-form-group" v-if="isDistribution">
 							<view class="title">是否分销</view>
 							<switch @change="SwitchB" :class="switchB?'checked':''" :checked="switchB?true:false"></switch>
 						</view>
-						<view class="cu-form-group" >
+						<view class="cu-form-group">
 							<view class="title">是否热销</view>
 							<switch @change="SwitchC" :class="switchC?'checked':''" :checked="switchC?true:false"></switch>
 						</view>
-						<view class="cu-form-group" >
+						<view class="cu-form-group">
 							<view class="title">是否特卖</view>
 							<switch @change="SwitchD" :class="switchD?'checked':''" :checked="switchD?true:false"></switch>
 						</view>
@@ -132,6 +131,7 @@
 		},
 		data() {
 			return {
+				deviceId: null,
 				isDistribution: false,
 				sellPrice: '',
 				allotPrice: '',
@@ -210,7 +210,7 @@
 			// #ifdef APP-PLUS
 			this.filtertopnum = 10;
 			// #endif
-			this.erpProductGetBasicDataFuc()
+			// this.erpProductGetBasicDataFuc()
 			this.erpusertaskproductFuc();
 			this.filterData
 		},
@@ -232,24 +232,24 @@
 		methods: {
 			SwitchB(e) {
 				this.switchB = e.detail.value
-				if (this.switchB) {
-					this.switchC = false;
-					this.switchD = false;
-				}
+				// if (this.switchB) {
+				// 	this.switchC = false;
+				// 	this.switchD = false;
+				// }
 			},
 			SwitchC(e) {
 				this.switchC = e.detail.value
-				if (this.switchC) {
-					this.switchB = false;
-					this.switchD = false;
-				}
+				// if (this.switchC) {
+				// 	this.switchB = false;
+				// 	this.switchD = false;
+				// }
 			},
 			SwitchD(e) {
 				this.switchD = e.detail.value
-				if (this.switchD) {
-					this.switchC = false;
-					this.switchB = false;
-				}
+				// if (this.switchD) {
+				// 	this.switchC = false;
+				// 	this.switchB = false;
+				// }
 			},
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {
@@ -282,7 +282,7 @@
 										"系列",
 										"机型"
 									],
-									"data":data.category
+									"data": data.category
 								}
 							]
 						};
@@ -299,33 +299,33 @@
 				console.log('----------select----------');
 				console.log(e);
 				// e.nodes
-				if(e.root.value == 'a'){
+				if (e.root.value == 'a') {
 					// 仓库
-					e.nodes.map((item,index)=>{
+					e.nodes.map((item, index) => {
 						console.log(index);
-						if(index == 0){
-							this.warehouse_id = item.value;  //主
-						}else if(index == 1){
-							this.partition_id = item.value;  //子
+						if (index == 0) {
+							this.warehouse_id = item.value; //主
+						} else if (index == 1) {
+							this.partition_id = item.value; //子
 						}
 					})
-				}else if(e.root.value == 'b'){
+				} else if (e.root.value == 'b') {
 					// 筛选
-					e.nodes.map((item,index)=>{
+					e.nodes.map((item, index) => {
 						console.log(index);
-						if(index == 0){
-							this.category_id = item.value;  //"分类",
-						}else if(index == 1){
-							this.brand_id = item.value;  //品牌
-						}else if(index == 2){
-							this.series_id = item.value;  //系列
-						}else if(index == 3){
-							this.machine_id = item.value;  //机型
+						if (index == 0) {
+							this.category_id = item.value; //"分类",
+						} else if (index == 1) {
+							this.brand_id = item.value; //品牌
+						} else if (index == 2) {
+							this.series_id = item.value; //系列
+						} else if (index == 3) {
+							this.machine_id = item.value; //机型
 						}
 					})
 				}
 				this.erpusertaskproductFuc('refresh');
-				
+
 			},
 			//接收菜单结果
 			confirm(e) {
@@ -363,6 +363,8 @@
 				let paramsData = {
 					'pageSize': this.pageIndex,
 					'pageNum': this.pageLimit,
+					'deviceId': this.deviceId,
+					'deviceNo': this.storeName
 				}
 				getAdjustPriceList(paramsData).then(res => {
 					let data = res.rows;
@@ -391,8 +393,9 @@
 						// 微信小程序
 						if (res.errMsg == "scanCode:ok") {
 							// 扫描到的信息
-							let code = res.result
-							that.storeName = code;
+							const data = JSON.parse(res.result)
+							console.log(data.a)
+							that.deviceId = data.a
 							that.erpusertaskproductFuc();
 						} else {
 							console.log("未识别到二维码，请重新尝试！")
@@ -425,7 +428,7 @@
 				//回调后决定消失或继续编辑
 			},
 			copy(sn) {
-				if(!sn){
+				if (!sn) {
 					this.$u.toast('无序列号！');
 					return;
 				}
@@ -453,18 +456,23 @@
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
-	page{
+
+	page {
 		background: #F0F0F0;
 	}
-	.cu-card.article>.cu-item{
+
+	.cu-card.article>.cu-item {
 		padding-bottom: 0;
 	}
-	.cu-card.article>.cu-item .title{
-		padding:0;
-		line-height:60rpx;
+
+	.cu-card.article>.cu-item .title {
+		padding: 0;
+		line-height: 60rpx;
 	}
+
 	.cu-card.article>.cu-item .content {
-		padding:0;
+		padding: 0;
+
 		uni-image {
 			width: 6.8em;
 			height: 6.8em;

@@ -1,12 +1,12 @@
 <template>
 	<view class="my-box">
-		<bar-title bgColor="bg-white" adress="/pages/tabbar/my">
+		<!-- <bar-title bgColor="bg-white" adress="/pages/tabbar/my">
 			<block slot="content">我卖出的</block>
 			<block slot="right"></block>
-		</bar-title>
+		</bar-title> -->
 		<view class="view-content">
 			<!--订单tab-->
-			<view class="bg-white nav-tab-view">
+			<!-- <view class="bg-white nav-tab-view">
 				<scroll-view scroll-x class="nav z" scroll-with-animation :scroll-left="tab_scroll">
 					<block v-for="(item,index) in nav_list" :key="index">
 						<view class="cu-item" :class="index == tab_cur?'select':''" @tap="tabSelect" :data-id="index">
@@ -15,6 +15,12 @@
 						</view>
 					</block>
 				</scroll-view>
+			</view> -->
+			<view class="navbar">
+				<view v-for="(item, index) in nav_list" :key="index" class="nav-item" :class="{current: tab_cur === index}"
+					@click="tabSelect(index)">
+					{{item}}
+				</view>
 			</view>
 			<!--订单列表-->
 			<!-- 质检 -->
@@ -107,16 +113,10 @@
 									</view>
 									<!-- <view class="tag_3 flex-col"></view> -->
 								</view>
-								<view class="block_3 flex-row">
-									<!-- <button class="button_1 flex-col" @click="onClick_1(item.receiptId)">
-										<text class="text_12">查看详情</text>
+								<view class="block_3 flex-row" style="justify-content: flex-end">
+									<button class="button_1 flex-col" @click="test(item)">
+										<text class="text_12">查看物流</text>
 									</button>
-									<button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
-										<text class="text_13">拒绝并退回</text>
-									</button>
-									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
-										<text class="text_14">同意并打款</text>
-									</button> -->
 								</view>
 							</view>
 						</view>
@@ -164,20 +164,11 @@
 									</view>
 									<!-- <view class="tag_3 flex-col"></view> -->
 								</view>
-								<!-- <view class="block_2 flex-row">
-									<text class="text_11" v-html="">回收价{{item.transactionPrice}}</text>
-									<view class="tag_4 flex-col"></view>
-								</view> -->
 								<view class="block_3 flex-row" style="justify-content: flex-end">
 									<button class="button_1 flex-col">
 										<text class="text_12">代付款</text>
 									</button>
-									<!-- <button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
-										<text class="text_13">拒绝并退回</text>
-									</button>
-									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
-										<text class="text_14">同意并打款</text>
-									</button> -->
+
 								</view>
 							</view>
 						</view>
@@ -225,31 +216,21 @@
 									</view>
 									<!-- <view class="tag_3 flex-col"></view> -->
 								</view>
-								<!-- <view class="block_2 flex-row">
-									<text class="text_11" v-html="">回收价{{item.receiptPrice}}</text>
-									<view class="tag_4 flex-col"></view>
-								</view> -->
 								<view class="block_3 flex-row" style="justify-content: flex-end">
 
 									<button class="button_1 flex-col">
-										<text class="text_12">查看物流</text>
+										<text class="text_12" @tap="tuihuo(item)">查看物流</text>
 									</button>
 									<button class="button_1 flex-col" @tap="okShou(item)">
 										<text class="text_12">确认收货</text>
 									</button>
-									<!-- <button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
-										<text class="text_13">拒绝并退回</text>
-									</button>
-									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
-										<text class="text_14">同意并打款</text>
-									</button> -->
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			<!-- 退货 -->
+			<!-- 评价 -->
 			<view class="page flex-col" v-if="tab_cur == 4">
 				<view class="box_1 flex-row">
 					<view class="box_4 flex-col">
@@ -290,31 +271,13 @@
 									</view>
 									<!-- <view class="tag_3 flex-col"></view> -->
 								</view>
-								<!-- <view class="block_2 flex-row">
-									<text class="text_11" v-html="">回收价{{item.receiptPrice}}</text>
-									<view class="tag_4 flex-col"></view>
-								</view> -->
-								<view class="block_3 flex-row" style="justify-content: flex-end">
-									<button class="button_1 flex-col">
-										<text class="text_12">查看物流</text>
-									</button>
-									<!-- <button class="button_1 flex-col">
-										<text class="text_12">退回中</text>
-									</button> -->
-									<!-- <button class="button_2 flex-col" @click="onClick_2(item.receiptId)">
-										<text class="text_13">拒绝并退回</text>
-									</button>
-									<button class="button_3 flex-col" @click="onClick_3(item.receiptId)">
-										<text class="text_14">同意并打款</text>
-									</button> -->
-								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-
+		<logistics :show="test1111" @showFalse="showFalse" :logisticsInfo="logisticsInfo" :active="active"></logistics>
 		<!--占位底部距离-->
 		<!-- <view class="cu-tabbar-height"></view> -->
 		<!--用户手机号-->
@@ -322,6 +285,7 @@
 </template>
 
 <script>
+	import logistics from '@/components/common/logistics/dataList.vue';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _order_data from '@/static/data/order_list.js'; //虚拟数据
 	import {
@@ -330,15 +294,21 @@
 		refuseReceipt,
 		agreeReceipt,
 		selectRecycleOrderSellList,
-		confirmReturnReceive
+		confirmReturnReceive,
+		selectLogisticsInfo,
+		selectReturnLogisticsInfo
 	} from '@/api/commons.js';
 	export default {
 		name: 'my',
 		components: {
 			barTitle,
+			logistics
 		},
 		data() {
 			return {
+				active: null,
+				logisticsInfo: [],
+				test1111: false,
 				jeisuanList: [],
 				tuihuoList: [],
 				receiptList: [],
@@ -388,13 +358,58 @@
 		},
 		onShow() {},
 		methods: {
+			showFalse() {
+				this.test1111 = false
+			},
+			tuihuo(item) {
+				selectReturnLogisticsInfo({
+					recycleOrderId: item.recycleOrderId
+				}).then(res => {
+					const {
+						logisticsInfo,
+					} = res.data;
+					// 判断邮寄信息是否查询成功
+					if (logisticsInfo && logisticsInfo.data && logisticsInfo.code == 200) {
+						const data = logisticsInfo.data.map((item) => {
+							return {
+								title: item.AcceptStation,
+								desc: item.AcceptTime,
+							};
+						});
+						this.active = logisticsInfo.data.length - 1;
+						this.logisticsInfo = data;
+					}
+				})
+				this.test1111 = true
+			},
+			test(item) {
+				selectLogisticsInfo({
+					recycleOrderId: item.recycleOrderId
+				}).then(res => {
+					const {
+						logisticsInfo,
+					} = res.data;
+					// 判断邮寄信息是否查询成功
+					if (logisticsInfo && logisticsInfo.data && logisticsInfo.code == 200) {
+						const data = logisticsInfo.data.map((item) => {
+							return {
+								title: item.AcceptStation,
+								desc: item.AcceptTime,
+							};
+						});
+						this.active = logisticsInfo.data.length - 1;
+						this.logisticsInfo = data;
+					}
+				})
+				this.test1111 = true
+			},
 			// 确认收货
 			okShou(item) {
 				console.log(item)
-				confirmReturnReceive(item.orderId).then(res => {
+				confirmReturnReceive(item.recycleOrderId).then(res => {
 					if (res.code === 200) {
 						uni.showToast({
-							title: '收货成功'
+							title: '退货成功'
 						})
 						this.selectRecycleOrderSellList4()
 					}
@@ -486,7 +501,7 @@
 			// 	// console.log(that.dataList);
 			// },
 			tabSelect(e) {
-				let index = e.currentTarget.dataset.id;
+				let index = e;
 				this.tab_cur = index;
 				this.tab_scroll = (index - 1) * 60;
 				uni.pageScrollTo({
@@ -555,6 +570,42 @@
 <style lang="scss" scoped>
 	@import './common.css';
 	@import './index.rpx.css';
+
+	.navbar {
+		display: flex;
+		height: 40px;
+		padding: 0 5px;
+		background: #fff;
+		box-shadow: 0 1px 5px rgba(0, 0, 0, 0.06);
+		position: relative;
+		z-index: 10;
+
+		.nav-item {
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			font-size: 15px;
+			color: $font-color-dark;
+			position: relative;
+
+			&.current {
+				color: $base-color;
+
+				&:after {
+					content: '';
+					position: absolute;
+					left: 50%;
+					bottom: 0;
+					transform: translateX(-50%);
+					width: 44px;
+					height: 0;
+					border-bottom: 2px solid $base-color;
+				}
+			}
+		}
+	}
 
 	.my-box {
 		width: 100%;

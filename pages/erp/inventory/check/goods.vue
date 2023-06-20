@@ -3,7 +3,7 @@
 		<!--标题栏-->
 		<bar-search-title bgColor="bg-white" content="名称/序列号" @seachTap="searchTap">
 			<block slot="right">
-				<text class="cuIcon-scan" @tap="snTap" />
+				<text class="iconfont icon-saomiao" @tap="snTap" />
 			</block>
 		</bar-search-title>
 		<scroll-view scroll-x class="bg-white nav text-center">
@@ -128,6 +128,7 @@
 		},
 		onLoad(options) {
 			this.checkTaskId = options.checkTaskId;
+			console.log(options.checkTaskId)
 			this.checkTaskType = options.checkTaskType;
 		},
 		onShow() {
@@ -179,7 +180,8 @@
 				let parms = {
 					checkItemId: this.itemList.checkItemId,
 					checkVoucher,
-					fittingsNumber: this.fittingsNumber
+					fittingsNumber: this.fittingsNumber,
+					checkType: 1
 				}
 				uploadCheckVoucher(parms).then(res => {
 					if (res.code === 200) {
@@ -217,8 +219,30 @@
 						// 微信小程序
 						if (res.errMsg == "scanCode:ok") {
 							// 扫描到的信息
-							let code = res.result
-							that.storeName = code;
+							const data = JSON.parse(res.result)
+							console.log(data.a)
+							console.log(that.checkTaskId)
+							let parms = {
+								checkTaskId: that.checkTaskId,
+								deviceId: data.a,
+								checkType: 0
+							}
+							uploadCheckVoucher(parms).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										icon: 'none',
+										title: '取样成功',
+									});
+									that.getDataList();
+									that.getDataList1();
+									that.yunShowImg1 = false
+								} else {
+									uni.showToast({
+										icon: 'none',
+										title: res.msg,
+									});
+								}
+							})
 						} else {
 							console.log("未识别到二维码，请重新尝试！")
 							uni.$u.toast('未识别到二维码，请重新尝试！')

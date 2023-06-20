@@ -39,7 +39,21 @@ const store = new Vuex.Store({
 		},
 		business: {
 			RECYCLE_PENDING: 0,
-			RECYCLE_PROCESSED: 0
+			RECYCLE_PROCESSED: 0,
+			RECYCLE_RETURNING: 0,
+			RECYCLE_RETURNED: 0,
+			SHOP_PAYING: 0,
+			SHOP_SHIPMENTS: 0,
+			SHOP_RECEIVING: 0,
+			SHOP_AFTERMARKET: 0,
+			TODO_ADJUST_PRICE: 0,
+			TODO_ALLOT: 0,
+			TODO_APPROVE_PUTAWAY: 0,
+			TODO_SORTING: 0,
+			TODO_APPROVE_OFFER: 0,
+			TODO_UPDATE_OFFER: 0,
+			TODO_REORGANIZE: 0,
+			TODO_ALL: 0
 		},
 		address: {
 			longitude: null,
@@ -90,11 +104,56 @@ const store = new Vuex.Store({
 			state.address.city = provider.address.city;
 		},
 		setBusiness(state, provider) {
+			console.log(state.business, provider)
+			if (provider.totalNumber) {
+				state.business.TODO_ALL = provider.totalNumber
+			}
 			if (provider.businessType === 'RECYCLE_PENDING') {
 				state.business.RECYCLE_PENDING = provider.number;
-			} else if (provider.businessType === 'RECYCLE_PROCESSED') {
+			}
+			if (provider.businessType === 'RECYCLE_PROCESSED') {
 				state.business.RECYCLE_PROCESSED = provider.number;
 			}
+			if (provider.businessType === 'RECYCLE_RETURNING') {
+				state.business.RECYCLE_RETURNING = provider.number;
+			}
+			if (provider.businessType === 'RECYCLE_RETURNED') {
+				state.business.RECYCLE_RETURNED = provider.number;
+			}
+			if (provider.businessType === 'SHOP_PAYING') {
+				state.business.SHOP_PAYING = provider.number;
+			}
+			if (provider.businessType === 'SHOP_SHIPMENTS') {
+				state.business.SHOP_SHIPMENTS = provider.number;
+			}
+			if (provider.businessType === 'SHOP_RECEIVING') {
+				state.business.SHOP_RECEIVING = provider.number;
+			}
+			if (provider.businessType === 'SHOP_AFTERMARKET') {
+				state.business.SHOP_AFTERMARKET = provider.number;
+			}
+			if (provider.businessType === 'TODO_ADJUST_PRICE') {
+				state.business.TODO_ADJUST_PRICE = provider.number;
+			}
+			if (provider.businessType === 'TODO_ALL') {
+				state.business.TODO_ALLOT = provider.number;
+			}
+			if (provider.businessType === 'TODO_APPROVE_PUTAWAY') {
+				state.business.TODO_APPROVE_PUTAWAY = provider.number;
+			}
+			if (provider.businessType === 'TODO_SORTING') {
+				state.business.TODO_SORTING = provider.number;
+			}
+			if (provider.businessType === 'TODO_APPROVE_OFFER') {
+				state.business.TODO_APPROVE_OFFER = provider.number;
+			}
+			if (provider.businessType === 'TODO_UPDATE_OFFER') {
+				state.business.TODO_UPDATE_OFFER = provider.number;
+			}
+			if (provider.businessType === 'TODO_REORGANIZE') {
+				state.business.TODO_REORGANIZE = provider.number;
+			}
+
 		},
 		setRoles(state, provider) {
 			if (provider === 'consumer') {

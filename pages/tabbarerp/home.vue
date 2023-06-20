@@ -43,25 +43,25 @@
 			<view class="cu-list grid col-4 no-border">
 				<view class="cu-item" @tap="payment">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.SHOP_PAYING!=0">{{loginfo.SHOP_PAYING || 0}}</view>
 					</view>
 					<text>代付款</text>
 				</view>
 				<view class="cu-item" @tap="delivery">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.SHOP_SHIPMENTS!=0">{{loginfo.SHOP_SHIPMENTS || 0}}</view>
 					</view>
 					<text>代发货</text>
 				</view>
 				<view class="cu-item" @tap="receipt">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.SHOP_RECEIVING!=0">{{loginfo.SHOP_RECEIVING || 0}}</view>
 					</view>
 					<text>代收货</text>
 				</view>
 				<view class="cu-item" @tap="refund">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.SHOP_AFTERMARKET!=0">{{loginfo.SHOP_AFTERMARKET || 0}}</view>
 					</view>
 					<text>退款/售后</text>
 				</view>
@@ -87,13 +87,13 @@
 				</view>
 				<view class="cu-item" @tap="goRecycleList(3)">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.RECYCLE_RETURNING!=0">{{loginfo.RECYCLE_RETURNING || 0}}</view>
 					</view>
 					<text>待退回</text>
 				</view>
 				<view class="cu-item" @tap="goRecycleList(4)">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.RECYCLE_RETURNED!=0">{{loginfo.RECYCLE_RETURNED || 0}}</view>
 					</view>
 					<text>已退回</text>
 				</view>
@@ -107,38 +107,39 @@
 			<view class="cu-list grid col-5 no-border">
 				<view class="cu-item" @tap="taskPriceTap">
 					<view class="iconfont icon-cashorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.TODO_ADJUST_PRICE!=0">{{loginfo.TODO_ADJUST_PRICE || 0}}</view>
 					</view>
 					<text>待调价</text>
 				</view>
 				<view class="cu-item" @tap="transferlistTap">
 					<view class="iconfont icon-myselect text-red">
-						<view class="cu-tag badge" v-if="loginfo.transnum!=0">{{loginfo.transnum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.TODO_ALLOT!=0">{{loginfo.TODO_ALLOT || 0}}</view>
 					</view>
 					<text>待调拨</text>
 				</view>
 				<view class="cu-item" @tap="shenheTap">
 					<view class="iconfont icon-checktouploadorange text-red">
-						<view class="cu-tag badge" v-if="loginfo.shenhenum!=0">{{loginfo.shenhenum || 2}}</view>
+						<view class="cu-tag badge" v-if="loginfo.TODO_APPROVE_PUTAWAY!=0">{{loginfo.TODO_APPROVE_PUTAWAY || 0}}
+						</view>
 					</view>
 					<text>审上架</text>
 				</view>
 				<view class="cu-item" @tap="qualityTaskTap">
 					<view class="iconfont icon-selectandcheck text-red">
-						<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.TODO_SORTING!=0">{{loginfo.TODO_SORTING || 0}}</view>
 					</view>
 					<text>待分拣</text>
 				</view>
 
 				<view class="cu-item" @tap="taskattrPriceTap">
 					<view class="iconfont icon-recyclepricecheck text-red">
-						<view class="cu-tag badge" v-if="loginfo.qualitynum!=0">{{loginfo.qualitynum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.TODO_APPROVE_OFFER!=0">{{loginfo.TODO_APPROVE_OFFER || 0}}</view>
 					</view>
 					<text>审报价</text>
 				</view>
 				<view class="cu-item" @tap="attrPriceTap">
 					<view class="iconfont icon-tubiao-64 text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.TODO_UPDATE_OFFER!=0">{{loginfo.TODO_UPDATE_OFFER || 0}}</view>
 					</view>
 					<text>改报价</text>
 				</view>
@@ -150,7 +151,7 @@
 				</view> -->
 				<view class="cu-item" @tap="maintenance">
 					<view class="iconfont icon-tubiao-64 text-red">
-						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
+						<view class="cu-tag badge" v-if="loginfo.TODO_REORGANIZE!=0">{{loginfo.TODO_REORGANIZE || 0}}</view>
 					</view>
 					<text>整备仓</text>
 				</view>
@@ -300,6 +301,12 @@
 							color: 'red',
 							badge: 0,
 							name: '挂单列表',
+						},
+						{
+							cuIcon: 'icon-refund',
+							color: 'red',
+							badge: 0,
+							name: '调价列表',
 						},
 						{
 							cuIcon: 'icon-myselect',
@@ -640,9 +647,12 @@
 						var value = 'pendingList/list';
 					}
 					if (index == 4) {
-						var value = 'allot/allot_push';
+						var value = 'adjustmentList/list';
 					}
 					if (index == 5) {
+						var value = 'allot/allot_push';
+					}
+					if (index == 6) {
 						var value = 'sell/out';
 					}
 

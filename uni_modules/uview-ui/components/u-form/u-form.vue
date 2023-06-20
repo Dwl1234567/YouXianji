@@ -50,7 +50,7 @@
 			},
 			// 监听属性的变化，通知子组件u-form-item重新获取信息
 			propsChange(n) {
-				if (this.children?.length) {
+				if (this.children.length) {
 					this.children.map((child) => {
 						// 判断子组件(u-form-item)如果有updateParentData方法的话，就就执行(执行的结果是子组件重新从父组件拉取了最新的值)
 						typeof child.updateParentData == "function" &&
@@ -102,7 +102,7 @@
 			resetModel(obj) {
 				// 历遍所有u-form-item，根据其prop属性，还原model的原始快照
 				this.children.map((child) => {
-					const prop = child?.prop;
+					const prop = child.prop;
 					const value = uni.$u.getProperty(this.originalModel, prop);
 					uni.$u.setProperty(this.model, prop, value);
 				});
@@ -150,7 +150,7 @@
 							for (let i = 0; i < rules.length; i++) {
 								const ruleItem = rules[i];
 								// 将u-form-item的触发器转为数组形式
-								const trigger = [].concat(ruleItem?.trigger);
+								const trigger = [].concat(ruleItem.trigger);
 								// 如果是有传入触发事件，但是此form-item却没有配置此触发器的话，不执行校验操作
 								if (event && !trigger.includes(event)) continue;
 								// 实例化校验对象，传入构造规则
@@ -166,7 +166,7 @@
 											childErrors.push(...errors);
 										}
 										child.message =
-											childErrors[0]?.message ?? null;
+											childErrors[0].message ?? null;
 									}
 								);
 							}

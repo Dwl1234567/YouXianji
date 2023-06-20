@@ -308,3 +308,43 @@ export function confirmReturnReceive(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 查询回收订单物流信息
+ *
+ */
+export function selectLogisticsInfo(data) {
+	return request.get('/yxj/app/recycle/selectLogisticsInfo', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询回收订单退货物流信息
+ *
+ */
+export function selectReturnLogisticsInfo(data) {
+	return request.get('/yxj/app/recycle/selectReturnLogisticsInfo', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店所在的城市列表
+ *
+ */
+export function selectStoreCityList(data) {
+	return request.get('/yxj/app/common/selectStoreCityList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 根据城市id获取门店列表
+ *
+ */
+export function selectStoreByCityId(data) {
+	return request.get('/yxj/app/common/selectStoreByCityId', data, {
+		noLogin: true
+	});
+}

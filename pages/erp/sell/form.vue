@@ -634,7 +634,7 @@
 			},
 			tabSelect(e) {
 				// console.log(e.currentTarget);
-				// if (e.currentTarget?.dataset?.id) {
+				// if (e.currentTarget.dataset.id) {
 				// 	this.curTabIndex = e.currentTarget.dataset.id;
 				// }
 				let index = e.currentTarget.dataset.id;

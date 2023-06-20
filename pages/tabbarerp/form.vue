@@ -106,6 +106,14 @@
 			<input placeholder="请输入回收价" v-model="ActualreceiptsAll" name="input"></input>
 		</view>
 		<view class="cu-form-group">
+			<view class="title">组合成本</view>
+			<input placeholder="请输入组合成本" v-model="combinationPrice" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">门店杂费</view>
+			<input placeholder="" v-model="online.pettyExpenses" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
 			<view class="title">调拨价</view>
 			<input placeholder="请输入调拨价" v-model="diaobojianum" name="input"></input>
 		</view>
@@ -113,10 +121,7 @@
 			<view class="title">销售价</view>
 			<input placeholder="请输入销售价" v-model="xiaoshoujianum" name="input"></input>
 		</view>
-		<view class="cu-form-group">
-			<view class="title">组合成本</view>
-			<input placeholder="请输入组合成本" v-model="combinationPrice" name="input" disabled="true"></input>
-		</view>
+
 
 		<!--点点单-->
 		<view class="cu-form-group">
@@ -309,6 +314,7 @@
 				],
 				// u-radio-group的v-model绑定的值如果设置为某个radio的name，就会被默认选中
 				radiovalue1: 0,
+				pettyExpenses: 0,
 				combinationPrice: '',
 				online: {},
 				isDistribution: false,
@@ -445,24 +451,24 @@
 			},
 			SwitchB(e) {
 				this.switchB = e.detail.value
-				if (this.switchB) {
-					this.switchC = false;
-					this.switchD = false;
-				}
+				// if (this.switchB) {
+				// 	this.switchC = false;
+				// 	this.switchD = false;
+				// }
 			},
 			SwitchC(e) {
 				this.switchC = e.detail.value
-				if (this.switchC) {
-					this.switchB = false;
-					this.switchD = false;
-				}
+				// if (this.switchC) {
+				// 	this.switchB = false;
+				// 	this.switchD = false;
+				// }
 			},
 			SwitchD(e) {
 				this.switchD = e.detail.value
-				if (this.switchD) {
-					this.switchC = false;
-					this.switchB = false;
-				}
+				// if (this.switchD) {
+				// 	this.switchC = false;
+				// 	this.switchB = false;
+				// }
 			},
 			SwitchA(e) {
 				this.switchA = e.detail.value
@@ -513,7 +519,6 @@
 					sellPrice: this.xiaoshoujianum,
 					warehouseId: this.warehouseId,
 					directSellAble: this.radiovalue1,
-					distributionAble: this.switchB ? 1 : 0,
 					frontPhoto: this.phoneImgArr[0],
 					backPhoto: this.phoneImgArr[1],
 					topPhoto: this.phoneImgArr[2],
@@ -524,6 +529,7 @@
 					otherPhoto: this.phoneImgArr[7],
 					hotAble: this.switchC ? 1 : 0,
 					specialSaleAble: this.switchD ? 1 : 0,
+					distributionAble: this.switchB ? 1 : 0,
 					qualityInfo: JSON.stringify(uni.getStorageSync('Priceprams')),
 					qualityInfoList: JSON.stringify(this.qualityInfoList),
 					recycleGuidePrice: this.guidePrice,
@@ -769,7 +775,7 @@
 			},
 			tabSelect(e) {
 				// console.log(e.currentTarget);
-				// if (e.currentTarget?.dataset?.id) {
+				// if (e.currentTarget.dataset.id) {
 				// 	this.curTabIndex = e.currentTarget.dataset.id;
 				// }
 				let index = e.currentTarget.dataset.id;

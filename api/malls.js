@@ -339,13 +339,3 @@ export function immediatelyPayment(data) {
 		noLogin: true
 	});
 }
-
-/**
- * 用户确认退回收货接口
- *
- */
-export function confirmReturnReceive(data) {
-	return request.get('/yxj/app/recycle/confirmReturnReceive/' + data, {
-		noLogin: true
-	});
-}

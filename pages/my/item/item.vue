@@ -62,7 +62,7 @@
 				立即提现
 			</view>
 
-			<view class="level margin-tb-xl" v-if="dataInfo.userMemberInfo"
+			<view class="level margin-tb-xl" v-if="dataInfo"
 				:style="{backgroundImage: 'url('+ $httpImage + dataInfo.userMemberInfo.indexPhoto +')', backgroundSize: '100%', backgroundRepeat: 'no-repeat'}">
 				<view class=" margin-top-xxs text-center text-xxl text-bold text-white">
 					{{dataInfo.userMemberInfo.levelName}}
@@ -78,7 +78,7 @@
 					</view>
 					<view class="flex margin-top-xxs">
 						<view class="cu-progress round">
-							<view class="bg-red"
+							<view class="bg-red" v-if="dataInfo.userMemberInfo.ancestorDifference"
 								:style="{width: dataInfo.userMemberInfo.ancestorDifference ? dataInfo.userMemberInfo.ancestorDifference :''}">
 							</view>
 						</view>

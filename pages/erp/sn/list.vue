@@ -4,7 +4,7 @@
 		<!--标题栏-->
 		<bar-search-title bgColor="bg-white" :seachkey="storeName" content="名称/序列号" @seachTap="searchTap">
 			<block slot="right">
-				<text class="cuIcon-scan" @tap="snTap" />
+				<text class="iconfont icon-saomiao" @tap="snTap" />
 			</block>
 		</bar-search-title>
 		<dataList :dataList="goodsInfo"></dataList>
@@ -27,6 +27,7 @@
 		},
 		data() {
 			return {
+				deviceId: null,
 				goodsInfo: [],
 				financeList: [],
 				qualityList: [],
@@ -49,11 +50,12 @@
 			erpproductSnDataFuc() {
 				let that = this;
 
-				if (!that.storeName) {
-					uni.$u.toast('请填写商品序列号')
-				}
+				// if (!that.storeName) {
+				// 	uni.$u.toast('请填写商品序列号')
+				// }
 				let paramsData = {
-					'deviceNo': that.storeName
+					'deviceNo': that.storeName,
+					'deviceId': that.deviceId
 				}
 				selectDeviceNoTrace(paramsData).then(res => {
 					if (res.code == 200) {
@@ -86,8 +88,9 @@
 						// 微信小程序
 						if (res.errMsg == "scanCode:ok") {
 							// 扫描到的信息
-							let code = res.result
-							that.storeName = code;
+							const data = JSON.parse(res.result)
+							console.log(data.a)
+							that.deviceId = data.a
 							that.erpproductSnDataFuc();
 						} else {
 							console.log("未识别到二维码，请重新尝试！")

@@ -1100,3 +1100,13 @@ export function testAliPay(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 支付宝支付
+ *
+ */
+export function secondGoods(data) {
+	return request.get('/yxj/app/secondGoods/' + data, {
+		noLogin: true
+	});
+}

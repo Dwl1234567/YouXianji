@@ -8,6 +8,7 @@ Vue.use(uView);
 // #ifndef VUE3
 import Vue from 'vue'
 import store from './store'
+import socket from './socket/index.js'
 Vue.config.productionTip = false
 App.mpType = 'app'
 
@@ -17,7 +18,7 @@ Vue.prototype.$mGraceChecker = $mGraceChecker;
 Vue.prototype.$httpImage = HTTP_REQUEST_IMAGEURL;
 //全局引入悬浮球
 import dragButton from '@/components/drag-button';
-Vue.component('drag-button',dragButton)
+Vue.component('drag-button', dragButton)
 
 // 平台号
 // #ifdef APP-PLUS
@@ -71,110 +72,110 @@ const msg = (title, duration = 3000, mask = false, icon = 'none') => {
 	}, duration)
 }
 // 判断是否为空值
-const isEmpty = (obj) =>{
-    try{
-        if(obj == null || obj == undefined) {
-            return true;
-        }
-        //判断数字是否是NaN
-        if(typeof obj === "number") {
-            if(isNaN(obj)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        //判断参数是否是布尔、函数、日期、正则，是则返回false
-        if(typeof obj === "boolean" || typeof obj === "function" || obj instanceof Date || obj instanceof RegExp) {
-            return false;
-        }
-        //判断参数是否是字符串，去空，如果长度为0则返回true
-        if(typeof obj === "string") {
-            if(obj.trim().length == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
- 
-        if(typeof obj === 'object') {
-            //判断参数是否是数组，数组为空则返回true
-            if(obj instanceof Array) {
-                if(obj.length == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
- 
-            //判断参数是否是对象，判断是否是空对象，是则返回true
-            if(obj instanceof Object) {
-                //判断对象属性个数
-                if(Object.getOwnPropertyNames(obj).length == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-    } catch(e) {
-        console.log(e);
-        return false;
-    }
+const isEmpty = (obj) => {
+	try {
+		if (obj == null || obj == undefined) {
+			return true;
+		}
+		//判断数字是否是NaN
+		if (typeof obj === "number") {
+			if (isNaN(obj)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		//判断参数是否是布尔、函数、日期、正则，是则返回false
+		if (typeof obj === "boolean" || typeof obj === "function" || obj instanceof Date || obj instanceof RegExp) {
+			return false;
+		}
+		//判断参数是否是字符串，去空，如果长度为0则返回true
+		if (typeof obj === "string") {
+			if (obj.trim().length == 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		if (typeof obj === 'object') {
+			//判断参数是否是数组，数组为空则返回true
+			if (obj instanceof Array) {
+				if (obj.length == 0) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+			//判断参数是否是对象，判断是否是空对象，是则返回true
+			if (obj instanceof Object) {
+				//判断对象属性个数
+				if (Object.getOwnPropertyNames(obj).length == 0) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+	} catch (e) {
+		console.log(e);
+		return false;
+	}
 }
- 
+
 // 判断是否不为空值
- 
+
 const isNotEmpty = (obj) => {
-    try{
-        if(obj == null || obj == undefined) {
-            return false;
-        }
-        //判断数字是否是NaN
-        if(typeof obj === "number") {
-            if(isNaN(obj)) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-        //判断参数是否是布尔、函数、日期、正则，是则返回true
-        if(typeof obj === "boolean" || typeof obj === "function" || obj instanceof Date || obj instanceof RegExp) {
-            return true;
-        }
-        //判断参数是否是字符串，去空，如果长度为0则返回false
-        if(typeof obj === "string") {
-            if(obj.trim().length == 0) {
-                return false;
-            } else {
-                return true;
-            }
-        }
- 
-        if(typeof obj === 'object') {
-            //判断参数是否是数组，数组为空则返回false
-            if(obj instanceof Array) {
-                if(obj.length == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
- 
-            //判断参数是否是对象，判断是否是空对象，是则返回false
-            if(obj instanceof Object) {
-                //判断对象属性个数
-                if(Object.getOwnPropertyNames(obj).length == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        }
-    } catch(e) {
-        console.log(e);
-        return false;
-    }
+	try {
+		if (obj == null || obj == undefined) {
+			return false;
+		}
+		//判断数字是否是NaN
+		if (typeof obj === "number") {
+			if (isNaN(obj)) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		//判断参数是否是布尔、函数、日期、正则，是则返回true
+		if (typeof obj === "boolean" || typeof obj === "function" || obj instanceof Date || obj instanceof RegExp) {
+			return true;
+		}
+		//判断参数是否是字符串，去空，如果长度为0则返回false
+		if (typeof obj === "string") {
+			if (obj.trim().length == 0) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		if (typeof obj === 'object') {
+			//判断参数是否是数组，数组为空则返回false
+			if (obj instanceof Array) {
+				if (obj.length == 0) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+
+			//判断参数是否是对象，判断是否是空对象，是则返回false
+			if (obj instanceof Object) {
+				//判断对象属性个数
+				if (Object.getOwnPropertyNames(obj).length == 0) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
+	} catch (e) {
+		console.log(e);
+		return false;
+	}
 }
 
 // 返回上一页
@@ -231,15 +232,15 @@ const request = async (url, method = 'GET', data = {}, showMsg = true) => {
 		data: data,
 		timeout: 5000
 	});
-	if (url == '/pay/submit'){
+	if (url == '/pay/submit') {
 		console.log(res);
 	}
-	return new Promise(function(revolve){
+	return new Promise(function(revolve) {
 		if (error) {
 			showMsg && msg(JSON.stringify(res));
 			revolve(false);
 		}
-		
+
 		if (res) {
 			if (res.header.hasOwnProperty('Set-Cookie')) {
 				let cookie = res.header['Set-Cookie'].replace("; path=/", "");
@@ -256,7 +257,7 @@ const request = async (url, method = 'GET', data = {}, showMsg = true) => {
 					} else {
 						uni.hideToast();
 					}
-					
+
 					revolve(res.data.data);
 				} else {
 					if (res.data.hasOwnProperty('msg')) {
@@ -272,7 +273,7 @@ const request = async (url, method = 'GET', data = {}, showMsg = true) => {
 			}
 		}
 	});
-	
+
 }
 // 跳转判断是否登录
 const navTo = (url, check = true) => {
@@ -286,6 +287,7 @@ const navTo = (url, check = true) => {
 Vue.config.productionTip = false
 Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
+Vue.prototype.$socket = socket;
 Vue.prototype.$api = {
 	msg,
 	prePage,
@@ -298,7 +300,7 @@ Vue.prototype.$api = {
 };
 
 const app = new Vue({
-    ...App,
+	...App,
 	store
 })
 
@@ -307,11 +309,13 @@ app.$mount()
 
 
 // #ifdef VUE3
-import { createSSRApp } from 'vue'
+import {
+	createSSRApp
+} from 'vue'
 export function createApp() {
-  const app = createSSRApp(App)
-  return {
-    app
-  }
+	const app = createSSRApp(App)
+	return {
+		app
+	}
 }
 // #endif

@@ -344,3 +344,20 @@ export function kefuQiangdan(data) {
 export function getUserInfo(data) {
 	return request.post('/yxj/app/user/getUserInfo', data);
 }
+
+
+/**
+ * 查询我卖出的角标
+ * 
+ */
+export function selectMySellCount(data) {
+	return request.get('/yxj/app/recycle/selectMySellCount', data);
+}
+
+/**
+ * 查询我买到的的角标
+ * 
+ */
+export function selectMyBuyCount(data) {
+	return request.get('/yxj/app/shoppingOrder/selectMyBuyCount', data);
+}

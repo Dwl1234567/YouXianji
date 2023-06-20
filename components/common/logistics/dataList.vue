@@ -48,42 +48,30 @@
 		padding: 26rpx 28rpx 28rpx 28rpx;
 	}
 </style>
-
-<!-- if (!this.isWx) {
-					testAliPay({
-						orderPaymentId: this.orderPaymentId
-					}).then(res => {
-						if (res.code === 200) {
-							uni.requestPayment({
-								provider: 'alipay',
-								orderInfo: res.data,
-								success: function(ress) {
-									paymentReturn({
-										orderPaymentId: this.orderPaymentId,
-										tradeno: ress.tradeno
-									}).then(resss => {
-										if (resss.code === 200) {
-											uni.showToast({
-												icon: 'none',
-												title: '支付成功',
-											});
-										}
-									})
-									console.log('success:' + JSON.stringify(res));
-								},
-								fail: function(err) {
-									if (err.code == -100) {
-										uni.showToast({
-											icon: 'none',
-											title: '支付失败',
-										});
-									}
-									console.log('fail:' + JSON.stringify(err));
-								}
-							})
-						}
-					})
-				} -->
+<!-- showFalse() {
+				this.test1111 = false
+			}, -->
+<!-- test(item) {
+				selectLogisticsInfo({
+					sortOrderId: item.sortOrderId
+				}).then(res => {
+					const {
+						logisticsInfo,
+					} = res.data;
+					// 判断邮寄信息是否查询成功
+					if (logisticsInfo && logisticsInfo.data && logisticsInfo.code == 200) {
+						const data = logisticsInfo.data.map((item) => {
+							return {
+								title: item.AcceptStation,
+								desc: item.AcceptTime,
+							};
+						});
+						this.active = logisticsInfo.data.length - 1;
+						this.logisticsInfo = data;
+					}
+				})
+				this.test1111 = true
+			}, -->
 
 <!-- 	active: null,
 			logisticsInfo: [],

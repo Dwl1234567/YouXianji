@@ -751,7 +751,7 @@
 			// 监听逻辑层配置变化
 			updateEcharts(newValue, oldValue, ownerInstance, instance) {
 				//修复app端yAxis或者xAxis ,axisLabel.formatter无效问题
-				// if ( newValue?.yAxis?.axisLabel) {
+				// if ( newValue.yAxis.axisLabel) {
 				// 	newValue.yAxis.axisLabel.formatter = function formatter(value) {
 				// 		return `${value}°C`
 				// 	}

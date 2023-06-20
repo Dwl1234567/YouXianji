@@ -1,6 +1,6 @@
 <template>
 	<view class="" style="padding: 20rpx;">
-		<view class="group_2 flex-col" v-for="item in dataList">
+		<view class="group_2 flex-col" v-for="item in dataList" @tap="goDetail(item)">
 			<view class="text-wrapper_2 flex-row justify-between" v-if="item.createTime">
 				<text class="text_8">时间:{{item.createTime}}</text>
 			</view>
@@ -71,7 +71,11 @@
 				}
 			}
 		},
-		methods: {}
+		methods: {
+			goDetail(e) {
+				this.$emit('goDetail', e)
+			}
+		}
 	}
 </script>
 

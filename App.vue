@@ -80,6 +80,9 @@
 			});
 		},
 		onShow: function() {
+			console.log(this.$socket)
+			console.log(222)
+			this.$socket.open()
 			let that = this
 			let ws = {
 				time: null,
@@ -87,48 +90,45 @@
 				SocketTask: null,
 				ErrorMsg: []
 			}
-			// 建立链接
-			ws.SocketTask = uni.connectSocket({
-				url: this.build_url('ws'),
-				header: {
-					'content-type': 'application/json',
-					'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjlmZTE1MWI5LTA0MDctNGQwOS05YTk1LTlkYmI3ODlmOGMzMyJ9.mAGKWkPNl1et1XXgUxKiSx8y8NvnS7XYiCCzihYIGt1Y0miwTLIP7OdxOvgC_pvreGiYTG0EyGDj1BW7Y_RM_Q'
-				},
-				success: res => {
-					that.sendFirst()
-				},
-				complete: res => {}
-			});
-			console.log(ws)
-			uni.onSocketOpen(function(res) {
-				ws.open = true;
-				that.$store.commit('setWs', ws);
-				console.log('WebSocket连接已打开！');
-				ws.time = setInterval(that.ws_send, 10000); //定时发送心跳
-			});
-			uni.onSocketError(function(res) {
-				ws.open = false
-				that.$store.commit('setWs', ws);
-				console.log('WebSocket连接打开失败，请检查！');
-				if (!ws.open) {
-					that.connect_socket()
-				}
-			});
-			uni.onSocketMessage(function(res) {
-				let msg = JSON.parse(res.data)
-				if (msg.code === 200) {
-					if (!msg.data) {
-						that.sendFirst()
-					} else if (msg.data.messageType == 6) {
-						msg.data.businessCornerMarkList.map(item => {
-							that.$store.commit('setBusiness', item);
-						})
-
-					}
-
-				}
-			});
-
+			// // 建立链接
+			// ws.SocketTask = uni.connectSocket({
+			// 	url: this.build_url('ws'),
+			// 	header: {
+			// 		'content-type': 'application/json',
+			// 		'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjlmZTE1MWI5LTA0MDctNGQwOS05YTk1LTlkYmI3ODlmOGMzMyJ9.mAGKWkPNl1et1XXgUxKiSx8y8NvnS7XYiCCzihYIGt1Y0miwTLIP7OdxOvgC_pvreGiYTG0EyGDj1BW7Y_RM_Q'
+			// 	},
+			// 	success: res => {
+			// 		that.sendFirst()
+			// 	},
+			// 	complete: res => {}
+			// });
+			// console.log(ws)
+			// uni.onSocketOpen(function(res) {
+			// 	ws.open = true;
+			// 	that.$store.commit('setWs', ws);
+			// 	console.log('WebSocket连接已打开！');
+			// 	ws.time = setInterval(that.ws_send, 10000); //定时发送心跳
+			// });
+			// uni.onSocketError(function(res) {
+			// 	ws.open = false
+			// 	that.$store.commit('setWs', ws);
+			// 	console.log('WebSocket连接打开失败，请检查！');
+			// 	if (!ws.open) {
+			// 		that.connect_socket()
+			// 	}
+			// });
+			// uni.onSocketMessage(function(res) {
+			// 	let msg = JSON.parse(res.data)
+			// 	if (msg.code === 200) {
+			// 		if (!msg.data) {
+			// 			that.sendFirst()
+			// 		} else if (msg.data.messageType == 6) {
+			// 			msg.data.businessCornerMarkList.map(item => {
+			// 				that.$store.commit('setBusiness', item);
+			// 			})
+			// 		}
+			// 	}
+			// });
 		},
 		onHide: function() {
 			// console.log('App Hide')

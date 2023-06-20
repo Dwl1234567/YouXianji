@@ -75,7 +75,7 @@ export default {
 			e.preventDefault && e.preventDefault()
 			if (this.moving || this.disabled) {
 				// 释放上一次的资源
-				if (this.panEvent?.token != 0) {
+				if (this.panEvent.token != 0) {
 					BindingX.unbind({
 						token: this.panEvent.token,
 						// pan为手势事件

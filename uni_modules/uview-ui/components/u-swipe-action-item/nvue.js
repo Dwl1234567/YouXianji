@@ -114,9 +114,9 @@ export default {
 		// 释放bindingX
 		unbindBindingX() {
 			// 释放上一次的资源
-			if (this?.panEvent?.token != 0) {
+			if (this.panEvent.token != 0) {
 				bindingX.unbind({
-					token: this.panEvent?.token,
+					token: this.panEvent.token,
 					// pan为手势事件
 					eventType: 'pan'
 				})

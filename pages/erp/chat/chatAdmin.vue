@@ -299,7 +299,6 @@
 		},
 		onLoad(opt) {
 			this.ws = Vue.prototype.$store.state.ws
-			console.log(this.ws.open)
 			this.senderId = opt.senderId
 			this.showHistory()
 			// token = opt.token ? opt.token : token
@@ -420,7 +419,6 @@
 				}
 				that.ws_send(load_message);
 				that.messageList.push(data);
-				console.log(that.messageList)
 				this.selectModel = false
 				that.scrollToBottom()
 			},
@@ -437,12 +435,9 @@
 			scrollToBottom() {
 				this.$nextTick(() => {
 					uni.createSelectorQuery().in(this).select('#scroll-view-content').boundingClientRect((res) => {
-						console.log(res, '0000000000000')
 						let top = res.height - this.scrollViewHeight;
 						if (top > 0) {
-							console.log(top, '99999999')
 							this.scrollTop = top + 10000;
-							console.log(this.scrollTop)
 						}
 					}).exec()
 				})
@@ -552,13 +547,11 @@
 				if (!value) {
 					this.showTool = false;
 					// this.writeBottom = -100;
-					console.log(222)
 					this.showBottom = false
 				} else {
 					this.showTool = value;
 					// this.writeBottom = 170;
 					this.showBottom = true
-					console.log(222)
 					this.scroll_into_footer();
 				}
 			},
@@ -711,7 +704,6 @@
 				var that = this
 
 				if (this.ws.SocketTask && this.ws.socketOpen) {
-					console.log('无需链接')
 					return;
 				}
 
@@ -748,7 +740,6 @@
 
 				// 收到消息
 				uni.onSocketMessage(function(res) {
-					console.log()
 					let msg = JSON.parse(res.data)
 					if (msg.code === 200) {
 						if (msg.data && msg.data.messageType == 1) {
@@ -838,15 +829,17 @@
 			},
 			// 发送ws消息
 			ws_send: function(message) {
-				var that = this
-				if (that.ws.open) {
-					uni.sendSocketMessage({
-						data: JSON.stringify(message)
-					});
-				} else {
-					console.log('消息发送出错', message, )
-					that.ws.ErrorMsg.push(message);
-				}
+				// console.log()
+				this.$socket.ws_sends(message)
+				// var that = this
+				// if (that.ws.open) {
+				// 	uni.sendSocketMessage({
+				// 		data: JSON.stringify(message)
+				// 	});
+				// } else {
+				// 	console.log('消息发送出错', message, )
+				// 	that.ws.ErrorMsg.push(message);
+				// }
 			},
 			send_message: function(message, message_type) {
 				var that = this
@@ -857,6 +850,7 @@
 					})
 					return;
 				}
+				// console.log(this.$socket.)
 				// 检查 websocket 是否连接
 				if (!that.ws.open) {
 					uni.showToast({
@@ -895,6 +889,7 @@
 					context: message,
 					contextType: '3',
 				}
+				console.log(this.$socket)
 				that.ws_send(load_message);
 				const data = {
 					datetime: '刚刚',
@@ -1373,10 +1368,8 @@
 				var that = this
 				that.kefuMessageFocus = false;
 				if (!that.showTool) {
-					// that.writeBottom = -100;
-					console.log(222)
+					that.writeBottom = 0;
 					this.showBottom = false
-					console.log(this.showBottom)
 				}
 
 				if (parseInt(that.config.input_status_display) == 0) {

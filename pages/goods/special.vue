@@ -225,7 +225,7 @@
 								let delNodeCount = 0;
 
 								for (let i = box_index + 1; i <= this.downFilterData[page_index].submenu.length; i++) {
-									if (this.downFilterData[page_index].submenu[i]?.cascade > 0) {
+									if (this.downFilterData[page_index].submenu[i].cascade > 0) {
 										delNodeCount++;
 									}
 								}

@@ -53,7 +53,7 @@
 						<!--标题-->
 						<view class="bg-white view-box title-view-box radius-2 margin-sm">
 							<!--分销按钮-->
-							<view class="btn-group flex flex-wrap align-center">
+							<view class="btn-group flex flex-wrap align-center" v-if="userInfo.distributionAble">
 								<view class="cu-btns bg-FFEBEB radius-3 text-red" @click="renderScript.emitData">一键保存图片</view>
 								<!-- <view class="cu-btn bg-deepblue radius-4" @click="settingQrImgBase64">一键保存图片</view> -->
 								<view class="cu-btns bg-F0F0F0 radius-3 margin-left-sm text-101010" @click="copydesc">
@@ -140,11 +140,11 @@
 					<view id="pinglunBlock" class="bg-white margin-sm padding  radius-2" :style="{paddingTop: '0'}">
 						<!-- <view class="" v-for="(items,index) in 10" :key="index">评论123</view> -->
 						<view class="cu-bar bg-white">
-							<text class="text-bold">商品评价</text>
+							<text class="text-bold">商品评价({{rateList.count}})</text>
 						</view>
 						<block v-for="(items,index) in rateList.shoppingOrderEvaluates" :key="index">
 							<view class="view-box" style="padding: 0rpx;">
-								<view class="flex flex-wrap text-sm" style="margin-top: 32rpx;">
+								<view class="flex-wrap text-sm" style="margin-top: 32rpx;">
 									<view class="basis-1 margin-right-sm" style="display: flex;align-items: center;">
 										<view class="cu-avatar sm round" :style="'backgroundImage: url(' + $httpImage + items.avatar + ')'"
 											style="width: 53rpx; height: 53rpx;" />
@@ -152,6 +152,9 @@
 											style="font-size: 27rpx;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;color: #4F4F50;">
 											{{items.nickName}}
 										</view>
+									</view>
+									<view>
+										已购：{{items.modelName}}
 									</view>
 									<view class="basis-9" style="margin-top: 26rpx;">
 
@@ -817,7 +820,7 @@
 			// this.getDetail(this.goodsid, flash_id);
 			// 添加用户足迹
 			let loginInfo = JSON.parse(uni.getStorageSync('app_config_data') || '{}'); // 解决缓存值为空导致JSON.parse解析语法报错
-			if (loginInfo?.hasLogin) {
+			if (loginInfo.hasLogin) {
 				setuservisit({
 					type: 1,
 					goods_id: options.id,

@@ -101,7 +101,7 @@
 					style.height = this.size.height + 'px'
 					// style.top = this.size.height / 2 + 'px'
 				}
-				style.backgroundColor = this.parent.children?.[this.index + 1]?.error ? uni.$u.color.error : this.index <
+				style.backgroundColor = this.parent.children.[this.index + 1].error ? uni.$u.color.error : this.index <
 					this
 					.parentData
 					.current ? this.parentData.activeColor : this.parentData.inactiveColor

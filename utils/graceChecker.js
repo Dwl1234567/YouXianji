@@ -74,7 +74,7 @@ module.exports = {
 					}
 					break;
 				case 'betweenF':
-					var reg = /^-?[0-9][0-9]?.+[0-9]+$/;
+					var reg = /^-?[0-9][0-9].+[0-9]+$/;
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
 						return false;
@@ -147,7 +147,7 @@ module.exports = {
 		return true;
 	},
 	isNumber: function(checkVal) {
-		let reg = /^-?[1-9][0-9]?.?[0-9]*$/;
+		let reg = /^-?[1-9][0-9].?[0-9]*$/;
 		return reg.test(checkVal);
 	}
 };

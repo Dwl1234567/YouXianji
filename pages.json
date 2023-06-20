@@ -1018,7 +1018,7 @@
 		{
 			"path": "pages/order/recycle/list",
 			"style": {
-				"navigationStyle": "custom",
+				// "navigationStyle": "custom",
 				"navigationBarTitleText": "我卖出的"
 			}
 		}, //我卖出的订单详情

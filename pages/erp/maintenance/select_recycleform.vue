@@ -106,6 +106,22 @@
 			<input placeholder="请输入回收价" v-model="ActualreceiptsAll" name="input" disabled></input>
 		</view>
 		<view class="cu-form-group">
+			<view class="title">组合成本</view>
+			<input placeholder="请输入组合成本" v-model="combinationPrice" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">回收佣金</view>
+			<input placeholder="" v-model="formList.totalRecycleCommission" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">门店杂费</view>
+			<input placeholder="" v-model="formList.pettyExpenses" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">维修费用</view>
+			<input placeholder="" v-model="formList.maintenancePrice" name="input" disabled="true"></input>
+		</view>
+		<view class="cu-form-group">
 			<view class="title">调拨价</view>
 			<input placeholder="请输入调拨价" v-model="diaobojianum" name="input"></input>
 		</view>
@@ -113,10 +129,7 @@
 			<view class="title">销售价</view>
 			<input placeholder="请输入销售价" v-model="xiaoshoujianum" name="input"></input>
 		</view>
-		<view class="cu-form-group">
-			<view class="title">组合成本</view>
-			<input placeholder="请输入组合成本" v-model="combinationPrice" name="input" disabled="true"></input>
-		</view>
+
 
 		<!--点点单-->
 		<view class="cu-form-group">
@@ -444,10 +457,11 @@
 					// uni.setStorageSync('basicPriceId', res.data.basicPriceId);
 					// this.basicPriceId = res.data.basicPriceId;
 					this.formList = res.data;
+					this.combinationPrice = res.data.totalRecycleCommission + res.data.pettyExpenses + res.data.recyclePrice
 					this.ActualreceiptsAll = Number(res.data.recyclePrice);
 					this.diaobojianum = Number(res.data.allotPrice);
 					this.xiaoshoujianum = Number(res.data.sellPrice);
-					this.combinationPrice = res.data.combinationPrice
+					// this.combinationPrice = res.data.combinationPrice
 					this.goodssn = res.data.deviceNo
 				});
 			},
@@ -461,24 +475,24 @@
 			},
 			SwitchB(e) {
 				this.switchB = e.detail.value
-				if (this.switchB) {
-					this.switchC = false;
-					this.switchD = false;
-				}
+				// if (this.switchB) {
+				// 	this.switchC = false;
+				// 	this.switchD = false;
+				// }
 			},
 			SwitchC(e) {
 				this.switchC = e.detail.value
-				if (this.switchC) {
-					this.switchB = false;
-					this.switchD = false;
-				}
+				// if (this.switchC) {
+				// 	this.switchB = false;
+				// 	this.switchD = false;
+				// }
 			},
 			SwitchD(e) {
 				this.switchD = e.detail.value
-				if (this.switchD) {
-					this.switchC = false;
-					this.switchB = false;
-				}
+				// if (this.switchD) {
+				// 	this.switchC = false;
+				// 	this.switchB = false;
+				// }
 			},
 			SwitchA(e) {
 				this.switchA = e.detail.value
@@ -794,7 +808,7 @@
 			},
 			tabSelect(e) {
 				// console.log(e.currentTarget);
-				// if (e.currentTarget?.dataset?.id) {
+				// if (e.currentTarget.dataset.id) {
 				// 	this.curTabIndex = e.currentTarget.dataset.id;
 				// }
 				let index = e.currentTarget.dataset.id;

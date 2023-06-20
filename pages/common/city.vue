@@ -15,7 +15,7 @@
 			</view>
 			<view class="hot-item">
 				<view v-for="(item,index) in cityList" :key="index" :id="item.id" class="item-block">
-					<button class="cu-btn bg-white cu-btn-w80" @click="switchCity($event, item)">{{item.name}}</button>
+					<button class="cu-btn bg-white cu-btn-w80" @click="switchCity($event, item)">{{item.cityName}}</button>
 				</view>
 			</view>
 		</view>
@@ -24,9 +24,9 @@
 
 <script>
 	import {
-		cityList,
-	} from "@/api/common.js"
-	
+		selectStoreCityList,
+	} from "@/api/commons.js"
+
 	export default {
 		data() {
 			return {
@@ -41,16 +41,16 @@
 		},
 		onLoad(query) {
 			console.log(query)
-			this.city.id =  query.id
-			this.city.name =  query.name
-			
+			this.city.id = query.id
+			this.city.name = query.name
+
 			// 请求城市列表接口
 			let params = {}
-			cityList(params).then((res) => {
-				if (res.data?.list) {
-					this.cityList = res.data.list
+			selectStoreCityList(params).then((res) => {
+				if (res.code === 200) {
+					this.cityList = res.data
 				}
-				
+
 				console.log(res);
 			}).catch((err) => {
 				console.log(err);
@@ -60,16 +60,10 @@
 			// 切换城市
 			switchCity(event, val) {
 				uni.removeStorageSync('storeByCity')
-				
+				console.log(val)
 				if (val !== undefined) {
-					uni.setStorageSync('storeByCity', JSON.stringify({
-						id: val.id,
-						name: val.name,
-						longitude: val.lng,
-						latitude: val.lat,
-					}))
+					uni.setStorageSync('storeByCity', val)
 				}
-				
 				uni.navigateBack()
 			}
 		}
@@ -78,23 +72,27 @@
 
 <style lang="scss">
 	.local-row {
-		margin:40rpx;
+		margin: 40rpx;
 	}
+
 	.local-item {
 		margin-top: 20rpx;
 	}
+
 	.hot-row {
-		margin:40rpx;
+		margin: 40rpx;
 		margin-top: 0rpx;
 	}
+
 	.hot-item {
 		display: flex;
 		margin-top: 20rpx;
-		
+
 		.item-block {
 			margin-right: 20rpx;
 		}
 	}
+
 	.cu-btn-w200 {
 		width: 200rpx;
 	}

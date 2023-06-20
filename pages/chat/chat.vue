@@ -165,7 +165,7 @@
 							</view>
 						</view>
 
-						<view class="list">
+						<view class="list" v-if="showBottom">
 							<view class="list-dingdan" @tap="selectModelshows">
 								<image src="@/static/fasongdingdan.png"></image>
 							</view>
@@ -245,6 +245,7 @@
 		},
 		data() {
 			return {
+				showBottom: false,
 				shopList: [],
 				isHistory: true,
 				receiverId: null,
@@ -281,7 +282,7 @@
 				errorTips: '链接中...',
 				selectModel: false,
 				selectModelData: [],
-				writeBottom: -100,
+				writeBottom: 0,
 				kefu_scroll_top: 0,
 				kefu_scroll_with_animation: true,
 				record_scroll_height: 0,
@@ -373,7 +374,7 @@
 			}
 		},
 		computed() {
-			console.log(Vue.prototype.$store.state.ws)
+			// console.log(Vue.prototype.$store.state.ws)
 		},
 		methods: {
 			// 发送卡片消息
@@ -418,7 +419,8 @@
 			// 打开产品弹框
 			selectModelshow() {
 				// this.selectModel = true
-				this.writeBottom = 0
+				// this.writeBottom = 0
+				this.showBottom = true
 			},
 			scrollToBottom() {
 				this.$nextTick(() => {
@@ -543,10 +545,12 @@
 			switch_show_tool: function(value) {
 				if (!value) {
 					this.showTool = false;
-					this.writeBottom = -100;
+					// this.writeBottom = -100;
+					this.showBottom = false
 				} else {
 					this.showTool = value;
-					this.writeBottom = 170;
+					// this.writeBottom = 170;
+					this.showBottom = true
 					this.scroll_into_footer();
 				}
 			},
@@ -1348,9 +1352,15 @@
 			// 输入框聚焦
 			textarea_focus: function(e) {
 				var that = this
+				var that = this
 				this.showTool = false;
 				that.scroll_into_footer(0, 99993)
-				that.writeBottom = e.detail.height ? e.detail.height : -100;
+				if (e.detail.height) {
+					that.writeBottom = e.detail.height
+				} else {
+					that.writeBottom = 0
+					this.showBottom = true;
+				}
 			},
 			// 输入框输入
 			textarea_input: function(e) {
@@ -1390,7 +1400,8 @@
 				var that = this
 				that.kefuMessageFocus = false;
 				if (!that.showTool) {
-					that.writeBottom = -100;
+					that.writeBottom = 0;
+					this.showBottom = false
 				}
 
 				if (parseInt(that.config.input_status_display) == 0) {

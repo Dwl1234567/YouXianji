@@ -428,6 +428,9 @@
 												icon: 'none',
 												title: '支付成功',
 											});
+											this.loadData();
+											this.show = false;
+
 										}
 									})
 									console.log('success:' + JSON.stringify(res));
@@ -438,6 +441,7 @@
 											icon: 'none',
 											title: '支付失败',
 										});
+										this.loadData();
 									}
 									console.log('fail:' + JSON.stringify(err));
 								}

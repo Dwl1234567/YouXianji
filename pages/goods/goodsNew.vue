@@ -577,7 +577,7 @@
 			this.getDetail(this.goodsid, flash_id);
 			// 添加用户足迹
 			let loginInfo = JSON.parse(uni.getStorageSync('app_config_data') || '{}'); // 解决缓存值为空导致JSON.parse解析语法报错
-			if (loginInfo?.hasLogin) {
+			if (loginInfo.hasLogin) {
 				setuservisit({
 					type: 3,
 					goods_id: options.id,
