@@ -27,14 +27,28 @@
 					</view>
 					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
 					<view class="button">
-						<view class="receipt" @tap="agree(item, '2')">拒绝</view>
-						<view class="receipt" @tap="agree(item, '3')">同意</view>
+						<view class="receipt" @tap.stop="showTo(item, '2')">拒绝</view>
+						<view class="receipt" @tap.stop="showTo(item, '3')">同意</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<!--弹窗-->
-
+		<u-popup :show="show" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">填写拒绝理由</view>
+				<view class="yunShow-item">
+					<view class="left">理由</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="approveOpinion"></u--input>
+					</view>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="addempReturnStore">确定</view>
+			</view>
+		</u-popup>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
@@ -57,6 +71,10 @@
 		},
 		data() {
 			return {
+				recycleFormId: null,
+				recycleFormStatus: null,
+				show: false,
+				approveOpinion: "",
 				listTouchStart: 0,
 				listTouchDirection: null,
 				ifBottomRefresh: false,
@@ -94,23 +112,40 @@
 			});
 		},
 		methods: {
+			addempReturnStore() {
+				this.agree(this.recycleFormId, this.recycleFormStatus)
+			},
+			close() {
+				this.show = false
+			},
 			goDetail(e) {
 				console.log(e)
 				uni.navigateTo({
 					url: '/pages/erp/purchase/form?recycleFormId=' + e.recycleFormId
 				})
 			},
+			showTo(e, index) {
+				this.recycleFormId = e
+				this.recycleFormStatus = index
+				if (index == 2) {
+					this.show = true
+				} else {
+					this.agree(e, index)
+				}
+			},
 			// 抛售
 			agree(e, index) {
 				empApproveRecycleForm({
 					recycleFormId: e.recycleFormId,
 					recycleFormStatus: index,
+					approveOpinion: this.approveOpinion
 				}).then((res) => {
 					if (res.code === 200) {
 						uni.showToast({
 							icon: 'none',
 							title: '操作成功',
 						});
+						this.close();
 						this.getDataList();
 					}
 				});

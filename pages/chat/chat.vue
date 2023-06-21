@@ -902,6 +902,7 @@
 				}
 				console.log(load_message)
 				that.ws_send(load_message);
+				that.kefuMessage = '';
 				const data = {
 					datetime: '刚刚',
 					data: [{

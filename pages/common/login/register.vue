@@ -2,7 +2,7 @@
 <template>
 	<view class="t-login">
 		<!-- 页面装饰图片 -->
-		<image class="img-a" src="/static/背景.png"></image>
+		<image class="img-a" src="/static/beijing.png"></image>
 		<!-- 标题 -->
 		<view class="login-content" style="z-index: 100; position: relative;">
 			<view class="t-b">{{ title }}</view>
@@ -14,7 +14,7 @@
 					<input type="number" name="code" maxlength="6" placeholder="请输入验证码" v-model="yzm" />
 					<view class="t-c" @tap="getCode()">{{tips}}</view>
 					<!-- <view v-else class="t-c" style="background-color: #A7A7A7;">重新发送({{ second }})</view> -->
-			
+
 				</view>
 				<button @tap="reg()">注 册</button>
 				<view class="login" @tap="login()">登 录</view>
@@ -29,7 +29,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 
 		<!-- 验证码倒计时 -->
 		<u-code :seconds="second" @end="end" @start="start" ref="uCode" @change="codeChange"></u-code>
@@ -37,12 +37,12 @@
 </template>
 <script>
 	import {
-	    mapMutations  
+		mapMutations
 	} from 'vuex';
 	import {
 		regCode,
 		register,
-		kefureg 
+		kefureg
 	} from "@/api/common.js";
 	export default {
 		data() {
@@ -83,14 +83,14 @@
 					return;
 				}
 				//....此处省略，这里需要调用后台验证一下验证码是否正确，根据您的需求来
-				
+
 				let params = {
 					'mobile': that.phone,
 					'code': that.yzm,
-					'source' : 2
+					'source': 2
 					// 'invatecode':''
 				}
-				
+
 				// kefureg(params).then(res => {
 				// 	if(res.code == 1){
 				// 		uni.showToast({
@@ -107,21 +107,21 @@
 				// 	uni.$u.toast(err.msg);
 				// })
 				register(params).then(res => {
-					if(res.code == 1){
-						uni.showToast({
-							title: '注册成功！',
-							icon: 'none'
-						});
-						this.$store.commit('login', res.data)
-						uni.navigateTo({
-							url: '../../home/home'
-						})
-					}
-				})
-				.catch(err=>{
-					uni.$u.toast(err.msg);
-				})
-				
+						if (res.code == 1) {
+							uni.showToast({
+								title: '注册成功！',
+								icon: 'none'
+							});
+							this.$store.commit('login', res.data)
+							uni.navigateTo({
+								url: '../../home/home'
+							})
+						}
+					})
+					.catch(err => {
+						uni.$u.toast(err.msg);
+					})
+
 			},
 			codeChange(text) {
 				this.tips = text;
@@ -152,20 +152,20 @@
 					// 'invatecode':''
 				}
 				regCode(params).then(res => {
-					if (res.code == 1) {
-						// 这里此提示会被this.start()方法中的提示覆盖
-						uni.$u.toast('验证码已发送');
-						// 通知验证码组件内部开始倒计时
-						this.$refs.uCode.start();
-						
-					}
-				})
-				.catch(err=>{
-					uni.$u.toast(err.msg);
-				})
-				.finally(arr=>{
-					uni.hideLoading();
-				})
+						if (res.code == 1) {
+							// 这里此提示会被this.start()方法中的提示覆盖
+							uni.$u.toast('验证码已发送');
+							// 通知验证码组件内部开始倒计时
+							this.$refs.uCode.start();
+
+						}
+					})
+					.catch(err => {
+						uni.$u.toast(err.msg);
+					})
+					.finally(arr => {
+						uni.hideLoading();
+					})
 			},
 			end() {
 				// uni.$u.toast('倒计时结束');

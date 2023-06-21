@@ -444,7 +444,7 @@
 				if (!this.warehouseId || !this.warehouseId) {
 					uni.showToast({
 						icon: 'error',
-						title: '请选择仓库',
+						title: '获取仓库失败',
 					})
 					return
 				}

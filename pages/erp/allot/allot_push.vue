@@ -2,7 +2,7 @@
 	<view>
 		<!--同回收 区别：设置了一些默认值 type=2、remark->
 		<!--标题栏-->
-		<bar-title bgColor="bg-white" isBack>
+		<bar-title bgColor="bg-white" isBack adress="/pages/tabbarerp/home">
 			<block slot="content">调拨货品</block>
 		</bar-title>
 
@@ -28,6 +28,25 @@
 				<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in goodsList"
 					:key="index" @touchstart="ListTouchStart" @touchmove="ListTouchMove" @touchend="ListTouchEnd"
 					:data-target="'move-box-' + index">
+					<image class="cu-avatar lg" :src="$httpImage + item.backPhoto" mode="widthFix" />
+					<view class="content">
+						<view class="text-grey">{{item.title}}</view>
+						<view class="text-grey">序列号：{{item.deviceNo}}</view>
+						<view class="text-gray text-sm">
+							收:<text class="text-red margin-right-xs">{{item.recyclePrice}}</text> 调:<text
+								class="margin-right-xs">{{item.allotPrice}}</text> 销:<text
+								class="margin-right-xs">{{item.sellPrice}}</text>
+						</view>
+					</view>
+					<view class="move">
+						<view class="bg-red" @tap="delectTap(index)">删除</view>
+					</view>
+				</view>
+			</view>
+			<!-- <view class="cu-list menu-avatar">
+				<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in goodsList"
+					:key="index" @touchstart="ListTouchStart" @touchmove="ListTouchMove" @touchend="ListTouchEnd"
+					:data-target="'move-box-' + index">
 
 					<view class="cu-item-box">
 						<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ ($httpImage + item.backPhoto) +')'}]">
@@ -43,26 +62,23 @@
 								成本价：<text class="text-red margin-right-xs">{{item.recyclePrice + item.maintainPrice}}</text>
 							</view>
 						</view>
-						<!-- <view class="action">
-							<button class="cu-btn print line-red" @click="dayinFuc(item)">打印</button>
-						</view> -->
 						<view class="move">
-							<!-- <view class="bg-blue" @tap="editTap">编辑</view> -->
-							<!-- <view class="bg-grey" @tap="delectTap">打印</view> -->
 							<view class="bg-red" @tap="delectTap(index)">删除</view>
 						</view>
-
 					</view>
-					<!-- <view class="margin-left">
-						选择入库仓库：
-						<button class="cu-btn ruku line-gray"
-							@click="rukuFuc(index)">{{item.warehouse_name ? item.warehouse_name :'未入仓'}}</button>
-					</view> -->
 				</view>
-			</view>
+			</view> -->
 			<view class="cu-form-group">
 				<view class="title">调拨总数</view>
 				{{goodsList.length}}
+			</view>
+			<view class="cu-form-group">
+				<view class="title">调拨总价</view>
+				{{allmoney}}元
+			</view>
+			<view class="cu-form-group">
+				<view class="title">调拨总价</view>
+				{{allmoney}}元
 			</view>
 			<view class="cu-form-group">
 				<view class="title">调拨总价</view>
@@ -207,7 +223,6 @@
 			}
 		},
 		onLoad() {
-			console.log(123)
 			const mendian = uni.getStorageSync('mendian_list');
 			if (mendian) {
 				this.storeId = mendian.storeId
@@ -221,9 +236,7 @@
 				})
 			}
 		},
-		onShow() {
-			console.log(222)
-		},
+		onShow() {},
 		watch: {
 			goodsList() {
 				this.allmoney = 0
@@ -231,6 +244,11 @@
 					this.allmoney = Number(this.allmoney) + item.recyclePrice + item.maintainPrice
 				})
 			}
+		},
+		onUnload() {
+			this.goodsList = []
+			uni.removeStorageSync('model_list')
+			uni.removeStorageSync('mendian_list')
 		},
 		methods: {
 			// 跳转门店选择 

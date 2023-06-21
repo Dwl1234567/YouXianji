@@ -39,16 +39,21 @@
 			<view class="arrow" v-for="(item,index) in dataList1" :key="index">
 				<view class="content">
 					<text class="text-grey title" v-if="item.modelName">{{item.modelName}}</text>
+					<text class="text-grey title" v-if="item.fittingsName">{{item.fittingsName}}</text>
 				</view>
 				<view class="action">
 					<view class=""><text class="text-grey text-sm text"
 							v-if="item.basicPriceLabel">{{item.basicPriceLabel}}</text></view>
 					<view class=""><text class="text-grey text-sm text" v-if="item.deviceNo">序列号{{item.deviceNo}}</text></view>
+					<view class=""><text class="text-grey text-sm text" v-if="item.fittingsColor">颜色：{{item.fittingsColor}}</text>
+					</view>
 				</view>
 				<view class="time">
 					<view>盘点时间:{{item.checkTime}}</view>
 					<view>盘点人：{{item.checkPeopleName}}</view>
+					<view class="">盘点数量：{{item.fittingsNumber}}</view>
 				</view>
+				<view class="over" @tap="seePic(item)">查看</view>
 			</view>
 			<!-- 下拉加载提示 -->
 			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -168,18 +173,29 @@
 
 		},
 		methods: {
+			seePic(item) {
+				const pic = item.checkVoucher.split(',')
+				//需要分割url并去除空数组
+				let a = pic.map((item) => {
+					return this.$httpImage + item;
+				});
+				uni.previewImage({
+					current: 0,
+					urls: a,
+				});
+			},
 			close() {
 				this.yunShowImg1 = false
 			},
 			// 确认上传凭证
 			uploadCheckVoucher() {
-				let checkVoucher = ''
+				let checkVoucher = []
 				this.fileList1.map(item => {
-					checkVoucher = item.url
+					checkVoucher.push(item.url)
 				})
 				let parms = {
 					checkItemId: this.itemList.checkItemId,
-					checkVoucher,
+					checkVoucher: checkVoucher.join(','),
 					fittingsNumber: this.fittingsNumber,
 					checkType: 1
 				}
@@ -485,10 +501,6 @@
 
 		.content {
 			margin-bottom: 34rpx
-		}
-
-		.time {
-			display: flex;
 		}
 
 		.action {

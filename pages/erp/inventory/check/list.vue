@@ -26,19 +26,20 @@
 					<view class=""><text class="text-grey text-sm text">发布时间{{item.startTime}}</text></view>
 					<view class=""><text class="text-grey text-sm text">截止时间{{item.endTime}}</text></view>
 				</view>
-				<view class="over" @tap="endTask(item.checkTaskId)">结束</view>
+				<view class="over" @tap.stop="endTask(item.checkTaskId)">结束</view>
 			</view>
 			<!-- 下拉加载提示 -->
 			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="cu-list menu" v-if="1==TabCur">
-			<view class="cu-item arrow" v-for="(item,index) in dataList1" :key="index" @tap="tabGoods(item)">
+			<view class="arrow" v-for="(item,index) in dataList" :key="index">
 				<view class="content">
-					<text class="text-grey">{{item.remark}}</text>
+					<text
+						class="text-grey title">{{item.checkTaskType == 0 ? '整备' : item.checkTaskType == 1 ? '上架' : '配件'}}</text>
 				</view>
 				<view class="action">
-					<view class=""><text class="text-grey text-sm">{{item.createtime}}</text></view>
-					<view class=""><text class="text-grey text-sm">{{item.endtime}}</text></view>
+					<view class=""><text class="text-grey text-sm text">发布时间{{item.startTime}}</text></view>
+					<view class=""><text class="text-grey text-sm text">截止时间{{item.endTime}}</text></view>
 				</view>
 			</view>
 			<!-- 下拉加载提示 -->
@@ -47,7 +48,8 @@
 		<view class="cu-list menu" v-if="2==TabCur">
 			<view class="arrow" v-for="(item,index) in dataList2" :key="index" @tap="tabGoods(item)">
 				<view class="content">
-					<text class="text-grey title">{{item.warehouseName}}</text>
+					<text
+						class="text-grey title">{{item.checkTaskType == 0 ? '整备' : item.checkTaskType == 1 ? '上架' : '配件'}}</text>
 				</view>
 				<view class="action">
 					<view class=""><text class="text-grey text-sm text">发布时间{{item.startTime}}</text></view>
@@ -146,6 +148,7 @@
 							icon: 'none',
 							title: '操作成功',
 						});
+						this.getDataList()
 					}
 				})
 			},

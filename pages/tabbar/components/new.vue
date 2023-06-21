@@ -41,13 +41,8 @@
 					<view class="basis-xxl">
 						<scroll-view scroll-x class="nav z" scroll-with-animation :scroll-left="headTab.scrollLeft">
 							<block v-for="(item,index) in headTab.list" :key="index">
-								<view
-									class="cu-item"
-									:class="index==headTab.TabCur?'select':''"
-									@tap="tabSelect"
-									:data-index="index"
-									:data-id="item.id"
-								>
+								<view class="cu-item" :class="index==headTab.TabCur?'select':''" @tap="tabSelect" :data-index="index"
+									:data-id="item.id">
 									<view>{{item.name}}</view>
 									<view class="tab-dot bg-white"></view>
 								</view>
@@ -98,11 +93,8 @@
 						<view class="align-start" style="width: 50vw">
 							<view class="text-center video radius" @click="videoTap()">
 								<!--短视频-->
-								<image
-									class=""
-									src="https://storage.youxianji.cc/images/20221012172029634686dd87fb7.png"
-									mode="widthFix"
-								/>
+								<image class="" src="https://storage.youxianji.cc/images/20221012172029634686dd87fb7.png"
+									mode="widthFix" />
 							</view>
 						</view>
 						<view class="align-end" style="width: 50vw">
@@ -149,15 +141,15 @@
 
 			<view class="padding-lr-sm bg-white products">
 				<view class="products-item">
-					<image src="/static/home/安全保障@1.5x.svg"></image>
+					<image src="/static/home/1.svg"></image>
 					<text>正品保障</text>
 				</view>
 				<view class="products-item">
-					<image src="/static/home/快速高效@1.5x.svg"></image>
+					<image src="/static/home/2.svg"></image>
 					<text>极速发货</text>
 				</view>
 				<view class="products-item">
-					<image src="/static/home/售后 (2)@1.5x.svg"></image>
+					<image src="/static/home/3.svg"></image>
 					<text>售后无忧</text>
 				</view>
 				<!-- <image class="" src="/static/home/baozhang.png" mode="widthFix" style="width: 100%; height: auto" /> -->
@@ -165,11 +157,8 @@
 
 			<view class="tab-list">
 				<!--商品列表-->
-				<goods-list
-					:list_data="goodsData"
-					@listTap="goodsListTap"
-					:show="goodsTabData.TabCur!=3 && goodsTabData.TabCur!=4?true:false"
-				></goods-list>
+				<goods-list :list_data="goodsData" @listTap="goodsListTap"
+					:show="goodsTabData.TabCur!=3 && goodsTabData.TabCur!=4?true:false"></goods-list>
 			</view>
 
 			<!--占位底部距离-->
@@ -179,11 +168,8 @@
 
 		<view class="view-content" :class="headTab.TabCur!=0?'show':''">
 			<!--宫格分类-->
-			<grid-sort-list
-				v-if="headTab.list[0]"
-				:list_data="headTab.list[headTab.TabCur].serieslist"
-				@listTap="gridSortTap"
-			></grid-sort-list>
+			<grid-sort-list v-if="headTab.list[0]" :list_data="headTab.list[headTab.TabCur].serieslist"
+				@listTap="gridSortTap"></grid-sort-list>
 
 			<!--广告-->
 			<view class="margin">
@@ -215,12 +201,8 @@
 		</view>
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 		<!--弹出框-->
-		<modal-img
-			:show="modalShow"
-			src="/static/delect_images/home/sundry/reward.png"
-			@imgTap="imgTap"
-			@closeTap="closeTap"
-		></modal-img>
+		<modal-img :show="modalShow" src="/static/delect_images/home/sundry/reward.png" @imgTap="imgTap"
+			@closeTap="closeTap"></modal-img>
 
 		<!--返回顶部-->
 		<view class="add-btn-view-box">
@@ -267,7 +249,9 @@
 		ProductFuscreen,
 		ProductFulists,
 	} from '@/api/shop.js';
-	import { getIndexPrice } from '@/api/common.js';
+	import {
+		getIndexPrice
+	} from '@/api/common.js';
 	export default {
 		name: 'home',
 		components: {
@@ -355,7 +339,7 @@
 			this.goodsTabData.list = _home_data.goodsTab();
 
 			uni.getSystemInfo({
-				success: function (res) {
+				success: function(res) {
 					if (res.model) {
 						that.phoneModel = res.model;
 						that.phoneModelname = res.model;
@@ -413,7 +397,7 @@
 				// 允许从相机和相册扫码
 				uni.scanCode({
 					scanType: ['qrCode'], //条形码
-					success: function (res) {
+					success: function(res) {
 						// 微信小程序
 						if (res.errMsg == 'scanCode:ok') {
 							// 扫描到的信息
@@ -438,12 +422,10 @@
 					that.swiperInfo.list = res.data;
 				});
 				CategoryMenu({}).then((res) => {
-					let data = [
-						{
-							id: '0',
-							name: '首页',
-						},
-					];
+					let data = [{
+						id: '0',
+						name: '首页',
+					}, ];
 					data.push(...res.data);
 					that.headTab.list = data;
 				});
@@ -608,8 +590,8 @@
 			gridSortTap(e) {
 				// 点击品牌
 				uni.navigateTo({
-					url:
-						'/pages/home/sort_list?sid=' + e.data.id + '&bid=' + this.headTab.TabCatID + '&cid=' + e.data.category_id,
+					url: '/pages/home/sort_list?sid=' + e.data.id + '&bid=' + this.headTab.TabCatID + '&cid=' + e.data
+						.category_id,
 				});
 			},
 			goToTap() {
@@ -673,14 +655,17 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-evenly;
+
 		.products-item {
 			display: flex;
 			align-items: center;
+
 			image {
 				margin-right: 5px;
 				width: 20px;
 				height: 20px;
 			}
+
 			text {
 				font-family: PingFangSC-Regular;
 				font-size: 12px;
@@ -689,6 +674,7 @@
 			}
 		}
 	}
+
 	.head-search-box {
 		position: fixed;
 		width: 100%;
@@ -697,24 +683,29 @@
 		padding-top: var(--status-bar-height);
 		transition: top 0.25s;
 		padding-bottom: 10rpx;
+
 		.tab {
 			margin-top: 20px;
 			display: flex;
 			justify-content: space-evenly;
 			align-items: center;
+
 			.tab-item {
 				font-size: 19px;
 				color: #101010;
 				font-weight: 400;
 			}
+
 			.option {
 				font-size: 23px;
 				color: #101010;
 				font-weight: 500;
 			}
 		}
+
 		.search-box {
 			position: relative;
+
 			.search-form {
 				.sbtn {
 					height: 32px;
@@ -723,6 +714,7 @@
 					right: 14px;
 					background-image: linear-gradient(90deg, #ff6868 0%, #ea1515 100%);
 				}
+
 				text {
 					font-family: PingFangSC-Regular;
 					font-size: 17px;
@@ -731,12 +723,14 @@
 					position: absolute;
 					left: 55px;
 				}
+
 				.icon-saomiao {
 					position: absolute;
 					left: 15px !important;
 					color: red;
 				}
 			}
+
 			.cuIcon-scan {
 				font-size: 20px;
 				margin-right: 5px;
@@ -752,6 +746,7 @@
 					flex-basis: 90%;
 					width: 90%;
 					z-index: 1;
+
 					.nav {
 						padding-left: 10px;
 					}
@@ -785,6 +780,7 @@
 		top: 0;
 		display: none;
 		transition: 0s;
+
 		.swiper-background {
 			position: absolute;
 			height: 888rpx;
@@ -795,6 +791,7 @@
 			//transition: opacity .25s;
 		}
 	}
+
 	.swiper-background-box.show {
 		display: block;
 		transition: 0s;
@@ -847,9 +844,11 @@
 
 		.screen-swiper {
 			height: 262px;
+
 			uni-image {
 				border-radius: 6rpx;
 			}
+
 			.swiper-padding {
 				//padding: 0 25rpx;
 			}
@@ -935,15 +934,18 @@
 	}
 
 	.block {
+
 		// height: 260px;
 		.video {
 			width: 100%;
 			height: 127px;
 			color: #0081ff;
+
 			image {
 				max-height: 127px;
 			}
 		}
+
 		.baojia-bar {
 			width: 100%;
 			height: 127px;
@@ -953,6 +955,7 @@
 			border-radius: 6px;
 			padding: 0 10rpx;
 			text-align: center;
+
 			.process-info {
 				//box-shadow: 0px 0px 10rpx 0px rgba(136, 136, 136, 0.5);
 				color: #929292;
@@ -998,6 +1001,7 @@
 			}
 		}
 	}
+
 	.block-1,
 	.block-2 {
 		margin-left: 6rpx;

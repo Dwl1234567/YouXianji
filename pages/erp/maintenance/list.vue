@@ -35,6 +35,7 @@
 					</text>
 					<text class="text_13" v-if="item.maintainApprove">维修内容：{{item.maintainApprove.context}}</text>
 					<view class="button">
+						<view class="receipt" @tap.stop="dayin(item)">打印标签</view>
 						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap.stop="sell(item)">抛售</view>
 						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap.stop="shelves(item)">上架</view>
 						<view class="receipt" v-if="item.reorganizeStatus == 1" @tap.stop="billing(item)">销售开单</view>
@@ -54,7 +55,8 @@
 	import {
 		selectReoragnizeList,
 		undersell,
-		putaway
+		putaway,
+		phoneprintLabel
 	} from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -104,6 +106,17 @@
 			});
 		},
 		methods: {
+			dayin(e) {
+				phoneprintLabel({
+					recycleFormId: e.recycleFormId
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '打印成功'
+						})
+					}
+				})
+			},
 			goDetail(e) {
 				console.log(e)
 				uni.navigateTo({

@@ -2,7 +2,7 @@
 <template>
 	<view class="t-login">
 		<!-- 页面装饰图片 -->
-		<image class="img-a" src="/static/背景.png"></image>
+		<image class="img-a" src="/static/beijing.png"></image>
 		<!-- <image class="img-b" src="https://zhoukaiwen.com/img/loginImg/3.png"></image> -->
 		<!-- 标题 -->
 		<view class="login-content" style="z-index: 100; position: relative">
@@ -83,29 +83,22 @@
 				yzm: '111111', //验证码
 			};
 		},
-		onLoad() {},
-		methods: {
-			async toLogin() {
-				this.logining = true;
-				let params = {
-					mobile: this.phone,
-					password: this.yzm,
-				};
-				UserLogin(params).then((res) => {
-					let data = res.data;
-					if (data) {
+		onLoad() {
+			console.log('登陆页面')
 
-						this.$store.commit('login', data);
-						this.logining = true;
-						setTimeout(function() {
-							uni.switchTab({
-								url: '/pages/tabbar/home',
-							});
-						}, 2000);
-					} else {
-						this.logining = false;
-					}
-				});
+		},
+		methods: {
+			toLogin() {
+				// uni.login({
+				// 	provider: 'weixin',
+				// 	success: function(loginRes) {
+				// 		// 登录成功
+				// 	},
+				// 	fail: function(err) {
+				// 		// 登录授权失败  
+				// 		// err.code是错误码
+				// 	}
+				// });
 			},
 			//当前登录按钮操作
 			login() {

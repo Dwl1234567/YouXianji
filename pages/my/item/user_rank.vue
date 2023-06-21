@@ -5,7 +5,7 @@
 			<block slot="content">推广人排行</block>
 		</bar-title>
 		<view class="back">
-			<image src="../../../static/画板@3x.png" class="backImg" mode="aspectFill"></image>
+			<image src="../../../static/huaban.png" class="backImg" mode="aspectFill"></image>
 			<view class="head_tit text-left">
 				<view>收益排行榜</view>
 			</view>

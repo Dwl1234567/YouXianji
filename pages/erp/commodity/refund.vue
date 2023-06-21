@@ -67,7 +67,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="querenbutton" @tap="initiatePayment">确认付款</view>
+				<view class="querenbutton" @tap="initiatePayment">确认</view>
 			</view>
 		</u-popup>
 		<u-popup :show="returnShow" mode="bottom" @close="close" @open="open" zIndex="888" overlayStyle="z-index: 888">

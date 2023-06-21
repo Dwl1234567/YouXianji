@@ -55,7 +55,13 @@
 			<text class="text_13" v-if="item.newSellPrice">新销售价：{{item.newSellPrice}}元</text>
 			<text class="text_13" v-if="item.sellPeople">销售人：{{item.sellPeople}}元</text>
 			<text class="text_13" v-if="item.returnPrice">退款价：{{item.returnPrice}}元</text>
+			<view class="group_5 flex-row justify-between" v-if="isSn == 1">
+				<button class="button_3 flex-col" @tap.stop="goSn(item)">
+					<text class="text_17">串码追踪</text>
+				</button>
+			</view>
 		</view>
+
 	</view>
 </template>
 
@@ -69,11 +75,20 @@
 				default: () => {
 					return []
 				}
+			},
+			isSn: {
+				type: Number,
+				default: () => {
+					return 0
+				}
 			}
 		},
 		methods: {
 			goDetail(e) {
 				this.$emit('goDetail', e)
+			},
+			goSn(e) {
+				this.$emit('goSn', e)
 			}
 		}
 	}

@@ -19,6 +19,7 @@ const socket = {
 				'Authorization': uni.getStorageSync('token')
 			},
 			success: res => {
+				console.log('开始建立链接')
 				that.sendFirst()
 			},
 			complete: res => {}
@@ -33,7 +34,7 @@ const socket = {
 			console.log('WebSocket连接打开失败，请检查！');
 			that.data.ws.open = false
 			store.commit('setWs', that.data.ws);
-			if (!that.data.ws.open) {
+			if (!that.data.ws.open && uni.getStorageSync('userinfo')) {
 				that.connect_socket()
 			}
 		});
@@ -41,7 +42,7 @@ const socket = {
 			console.log('WebSocket连接打开失败，请检查！');
 			that.data.ws.open = false
 			store.commit('setWs', that.data.ws);
-			if (!that.data.ws.open) {
+			if (!that.data.ws.open && uni.getStorageSync('userinfo')) {
 				that.connect_socket()
 			}
 		});
@@ -54,6 +55,17 @@ const socket = {
 					store.commit('setBusiness', msg.data);
 					msg.data.businessCornerMarkList.map(item => {
 						store.commit('setBusiness', item);
+					})
+					uni.createPushMessage({
+						title: '123',
+						content: '123',
+						sound: 'system',
+						success: (res => {
+							console.log('成功创建', res);
+						}),
+						fail: (res => {
+							console.log('成功失败', res)
+						}),
 					})
 				}
 			}
@@ -100,6 +112,7 @@ const socket = {
 	},
 	// 初始化获取消息
 	sendFirst() {
+		console.log('开启初始化消息')
 		const message = {
 			messageType: '6',
 			storeId: uni.getStorageSync('userinfo').storeId,
@@ -115,9 +128,7 @@ const socket = {
 		var protocol = Config.https_switch ? 'https://' : 'http://';
 		// var token = that.tokenList.kefu_token ? '&token=' + that.tokenList.kefu_token : '';
 		var token = uni.getStorageSync('token')
-		console.log(token)
 		var encryptionStr = new Buffer(token).toString('base64');
-		console.log(encryptionStr)
 		var buildObj = {
 			// + '/?modulename=index' + token +
 			// 	kefu_tourists_token).replace(

@@ -17,17 +17,6 @@
 				</view>
 
 			</view>
-			<!-- <text class="text_13" v-if="item.recyclePeopleName">回收人：{{item.recyclePeopleName}}</text> -->
-			<!-- <text class="text_13" v-if="item.sortingPeopleName">分拣人：{{item.sortingPeopleName}}</text> -->
-			<!-- <text class="text_13" v-if="item.storeName">门店名称：{{item.storeName}}</text> -->
-			<!-- <text class="text_13" v-if="item.undersellApprove.channel">抛售渠道：{{item.undersellApprove.channel}}</text> -->
-			<!-- <text class="text_13" v-if="item.undersellApprove.undersellPrice">
-				抛售预估价：{{item.undersellApprove.undersellPrice}}
-			</text> -->
-			<!-- <text class="text_13" v-if="item.maintainApprove.channel">维修渠道：{{item.maintainApprove.channel}}</text> -->
-			<!-- <text class="text_13" v-if="item.maintainApprove.maintainPrice">
-				维修价：{{item.maintainApprove.maintainPrice}}
-			</text> -->
 			<text class="text_13" v-if="item.recyclePeopleName">回收人：{{item.recyclePeopleName}}元</text>
 			<text class="text_13" v-if="item.sellPeopleName">销售人：{{item.sellPeopleName}}元</text>
 			<text class="text_13" v-if="item.returnPrice">退款金额：{{item.returnPrice}}元</text>

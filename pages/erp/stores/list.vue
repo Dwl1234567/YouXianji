@@ -11,53 +11,7 @@
 
 
 		<view class="padding-bottom-sm padding-top-sm">
-			<data-list :dataList="dataList" @goDetail="goDetail"></data-list>
-			<!-- <view class="cu-card article">
-				<view class="cu-item bg-white margin-sm radius-4" v-for="(item,index) in dataList">
-					<view class="title">
-						<view class="text-cut">{{item.name}}</view>
-					</view>
-					<view class="content">
-						<image :src="item.image" mode="aspectFill">
-						</image>
-						<view class="desc">
-							<view class="text-content">
-								<view class="text-sm">销售价:<text class="text-red">{{item.sales_price}}</text>元
-									库存:{{item.stock}}<text class="margin-left-sm cuIcon-edit text-orange" @tap="showModal(item)"
-										data-target="Modal">调价</text></view>
-								<view class="text-sm">序列号：{{item.sn}}
-									<text class="margin-left-sm cuIcon-copy text-orange" @tap="copy(item.sn)">复制</text>
-								</view>
-								<view class="text-sm">销售价：{{item.sales_price}}元</view>
-								<view class="text-sm">入库时间：{{item.updatetime}}</view>
-							</view>
-							<view>
-								<view class="cu-tag bg-red light sm round">手机</view>
-								<view class="cu-tag bg-blue light sm round">苹果</view>
-							</view>
-						</view>
-					</view>
-				</view>
-
-			</view> -->
-			<!-- <view class="cu-modal" :class="modalName=='Modal'?'show':''">
-				<view class="cu-dialog">
-					<view class="cu-bar bg-white justify-end">
-						<view class="content">{{tiaojiaInfo.name}}</view>
-						<view class="action" @tap="hideModal">
-							<text class="cuIcon-close text-red"></text>
-						</view>
-					</view>
-					<view class="padding-xl">
-						<input class="border" v-model="tiaojiaInfo.sales_price" placeholder="请输入价格" name="input"
-							value="10000"></input>
-					</view>
-					<view class="cu-bar bg-white">
-						<view class="action margin-0 flex-sub " @tap="hideModal">取消调价</view>
-						<view class="action margin-0 flex-sub text-green solid-left" @tap="edit()">确定调价</view>
-					</view>
-				</view>
-			</view> -->
+			<data-list :dataList="dataList" @goDetail="goDetail" @goSn="goSn" :isSn="1"></data-list>
 		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -148,6 +102,12 @@
 			});
 		},
 		methods: {
+			goSn(e) {
+				console.log(e)
+				uni.navigateTo({
+					url: '/pages/erp/sn/list?deviceNo=' + e.deviceNo
+				})
+			},
 			goDetail(e) {
 				console.log(e)
 				uni.navigateTo({
@@ -378,6 +338,8 @@
 					}
 					that.ifBottomRefresh = false
 					that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
+				}).finally(() => {
+					uni.stopPullDownRefresh();
 				})
 			},
 			searchTap(e) {

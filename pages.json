@@ -1018,7 +1018,7 @@
 		{
 			"path": "pages/order/recycle/list",
 			"style": {
-				// "navigationStyle": "custom",
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "我卖出的"
 			}
 		}, //我卖出的订单详情
@@ -1213,6 +1213,13 @@
 			}
 		},
 		{
+			"path": "pages/tabbarerp/editDianDian",
+			"style": {
+				"navigationBarTitleText": "开单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			//回收单产品表单提交
 			"path": "pages/erp/maintenance/select_recycleform",
 			"style": {
@@ -1395,6 +1402,15 @@
 		// 挂单列表
 		{
 			"path": "pages/erp/pendingList/list",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 预制开单列表
+		{
+			"path": "pages/erp/prefabricateList/list",
 			"style": {
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom",

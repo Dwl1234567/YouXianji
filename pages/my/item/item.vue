@@ -166,7 +166,7 @@
 			return {
 				list: [{
 						title: '推广名片',
-						img: "../../../static/item/名片.png",
+						img: "../../../static/item/111.png",
 						url: "/pages/my/item/card"
 					},
 					{
@@ -176,7 +176,7 @@
 					},
 					{
 						title: '佣金记录',
-						img: "../../../static/item/名片备份.png",
+						img: "../../../static/item/222.png",
 						url: "/pages/my/item/money_log"
 					},
 					{

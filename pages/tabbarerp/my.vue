@@ -1,6 +1,6 @@
 <template>
 	<view class="my-box">
-		<image src="../../static/我的备份@1x.png" mode="" class="background"></image>
+		<image src="../../static/beifen.png" mode="" class="background"></image>
 		<view class="head-box" style="padding: 0 13px 50px;">
 			<!--标题栏-->
 			<!--小程序端不显示-->

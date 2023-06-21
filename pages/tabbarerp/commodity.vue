@@ -19,7 +19,7 @@
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
 				<view class="group_3 flex-col" @tap="updatecustomer(item)">
-					<view class="text-wrapper_1 flex-row justify-between"></view>
+					<view class="text-wrapper_1 flex-row justify-between">创建时间：{{item.createTime}}</view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
 						<image :src="$httpImage + item.modelPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
@@ -30,6 +30,7 @@
 							<text class="text_9">序列号：{{item.deviceNo}}</text>
 							<text class="text_9">成本价：{{item.costPrice}}</text>
 							<text class="text_9">销售价：{{item.sellPrice}}</text>
+							<text class="text_9">回收人：{{item.recyclePeopleName}}</text>
 						</view>
 					</view>
 					<view class="button">

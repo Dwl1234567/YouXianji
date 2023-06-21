@@ -1110,3 +1110,33 @@ export function secondGoods(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 支付宝支付
+ *
+ */
+export function printSellForm(data) {
+	return request.get('/yxj/app/fittingsForm/printSellForm', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 打印配件标签
+ *
+ */
+export function printLabel(data) {
+	return request.get('/yxj/app/fittingsOrder/printLabel', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 打印机器标签
+ *
+ */
+export function phoneprintLabel(data) {
+	return request.get('/yxj/app/recycleForm/printLabel', data, {
+		noLogin: true
+	});
+}

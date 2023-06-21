@@ -90,6 +90,28 @@
 			<view class="title">销售价</view>
 			<input placeholder="请输入销售价" v-model="formList.sellPrice" name="input" disabled="true"></input>
 		</view>
+		<view v-if="formList.sellFormFittingsList" v-for="(item,index) in formList.sellFormFittingsList">
+			<view class="cu-form-group">
+				<view class="title">配件名称</view>
+				<input placeholder="请输入销售价" v-model="item.fittingsName" name="input" disabled="true"></input>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">配件颜色</view>
+				<input placeholder="请输入销售价" v-model="item.fittingsColor" name="input" disabled="true"></input>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">配件数量</view>
+				<input placeholder="请输入销售价" v-model="item.fittingsNumber" name="input" disabled="true"></input>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">配件成本</view>
+				<input placeholder="请输入销售价" v-model="item.fittingsCostPrice" name="input" disabled="true"></input>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">配件销售价</view>
+				<input placeholder="请输入销售价" v-model="item.fittingsSellPrice" name="input" disabled="true"></input>
+			</view>
+		</view>
 
 		<!--点点单-->
 		<view class="cu-form-group">
@@ -183,7 +205,8 @@
 		empCreateRecycleForm,
 		getStoreOnlineCostConfig,
 		selectRecycleFormDetail,
-		secondGoods
+		secondGoods,
+		selectSellFormDetail
 	} from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
@@ -197,6 +220,7 @@
 		},
 		data() {
 			return {
+				sellFormId: null,
 				goodsId: null,
 				radiolist2: [{
 						name: '分拣',
@@ -295,6 +319,7 @@
 			}
 		},
 		onLoad(options) {
+			this.sellFormId = options.sellFormId
 			this.recycleFormId = options.recycleFormId
 			this.goodsId = options.goodsId
 			this.recycleOrderId = options.recycleOrderId
@@ -345,7 +370,6 @@
 						}
 					})
 				} else if (this.goodsId) {
-
 					secondGoods(this.goodsId).then(res => {
 						if (res.code === 200) {
 							this.formList = res.data
@@ -358,6 +382,23 @@
 							this.phoneImgArr.push(res.data.rightPhoto)
 							this.phoneImgArr.push(res.data.cameraPhoto)
 							this.phoneImgArr.push(res.data.otherPhoto)
+						}
+					})
+				} else if (this.sellFormId) {
+					selectSellFormDetail({
+						sellFormId: this.sellFormId
+					}).then(res => {
+						if (res.code === 200) {
+							this.formList = res.data
+							this.qualityInfoList = JSON.parse(res.data.qualityInfo.qualityInfoList)
+							this.phoneImgArr.push(res.data.qualityInfo.frontPhoto)
+							this.phoneImgArr.push(res.data.qualityInfo.backPhoto)
+							this.phoneImgArr.push(res.data.qualityInfo.topPhoto)
+							this.phoneImgArr.push(res.data.qualityInfo.bottomPhoto)
+							this.phoneImgArr.push(res.data.qualityInfo.leftPhoto)
+							this.phoneImgArr.push(res.data.qualityInfo.rightPhoto)
+							this.phoneImgArr.push(res.data.qualityInfo.cameraPhoto)
+							this.phoneImgArr.push(res.data.qualityInfo.otherPhoto)
 						}
 					})
 				}

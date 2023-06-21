@@ -889,8 +889,8 @@
 					context: message,
 					contextType: '3',
 				}
-				console.log(this.$socket)
 				that.ws_send(load_message);
+				that.kefuMessage = '';
 				const data = {
 					datetime: '刚刚',
 					data: [{

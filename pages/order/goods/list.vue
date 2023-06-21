@@ -108,8 +108,8 @@
 								</view>
 								<view class="zfbPay">
 									<view class="left">
-										<image src="/static/支付宝@2x.png" mode=""></image>
-										<text>微信</text>
+										<image src="/static/zhifubao.png" mode=""></image>
+										<text>支付宝</text>
 									</view>
 									<view class="right">
 										<image :src="!isWx ? '/static/checkYuan.png' : '/static/yuan.png'" @tap="checkWx"></image>

@@ -44,9 +44,33 @@
 			};
 		},
 		onLaunch: function() {
+			console.log('App Launch');
+			// uni.onSocketMessage(function(res) {
+			// 	let msg = JSON.parse(res.data)
+			// 	console.log(msg, '消息')
+			// 	if (msg.code === 200) {
+			// 		if (msg.data.messageType == 6 || msg.data.messageType == 7) {
+			// 			uni.createPushMessage({
+			// 				title: '123',
+			// 				content: '123',
+			// 				sound: 'system',
+			// 				success: (res => {
+			// 					console.log('成功创建', res);
+			// 				}),
+			// 				fail: (res => {
+			// 					console.log('成功失败', res)
+			// 				}),
+			// 			})
+			// 			store.commit('setBusiness', msg.data);
+			// 			msg.data.businessCornerMarkList.map(item => {
+			// 				store.commit('setBusiness', item);
+			// 			})
+			// 		}
+			// 	}
+			// });
+
 			this.globalData = appConfig
 			_tool.mpb_log("2.6.15.20200421");
-			console.log('App Launch');
 			uni.getSystemInfo({
 				success: function(e) {
 					// #ifndef MP
@@ -80,9 +104,9 @@
 			});
 		},
 		onShow: function() {
-			console.log(this.$socket)
-			console.log(222)
-			this.$socket.open()
+			if (uni.getStorageSync('userinfo')) {
+				this.$socket.open()
+			}
 			let that = this
 			let ws = {
 				time: null,

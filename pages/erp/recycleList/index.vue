@@ -59,19 +59,22 @@
 						<button class="button_3 flex-col" v-if="item.orderStatus == 1">
 							<text class="text_17">待确认</text>
 						</button>
-						<button class="button_3 flex-col" @tap="payShows(item.recycleOrderId)" v-else-if="item.orderStatus == 2">
+						<button class="button_3 flex-col" @tap="payShows(item.recycleOrderId)" v-if="item.orderStatus == 2">
 							<text class="text_17">去付款</text>
 						</button>
-						<button class="button_3 flex-col" v-else-if="item.orderStatus == 3" @tap="kaidan(item)">
+						<button class="button_3 flex-col" v-if="item.orderStatus == 3" @tap="kaidan(item)">
 							<text class="text_17">开单</text>
 						</button>
-						<button class="button_3 flex-col" @tap="goBack(item.recycleOrderId)" v-else-if="item.orderStatus == 4">
+						<button class="button_3 flex-col" @tap="goBack(item.recycleOrderId)" v-if="item.orderStatus == 4">
 							<text class="text_17">确认退回</text>
 						</button>
-						<button class="button_3 flex-col" v-else-if="item.orderStatus == 5">
+						<button class="button_3 flex-col" v-if="item.orderStatus == 5">
 							<text class="text_17">退回中</text>
 						</button>
-						<button class="button_3 flex-col" @tap="goDetail(item.recycleOrderId)" v-else>
+						<button class="button_3 flex-col" @tap="goDetail(item.recycleOrderId)" v-if="item.orderStatus == 0">
+							<text class="text_17">查看订单</text>
+						</button>
+						<button class="button_3 flex-col" @tap="goDetails(item.recycleOrderId)" v-if="item.orderStatus == 6">
 							<text class="text_17">查看订单</text>
 						</button>
 					</view>
@@ -240,6 +243,9 @@
 		},
 		onLoad(option) {
 			this.tab = option.type;
+			this.selectRecycleOrderList();
+		},
+		onPullDownRefresh() {
 			this.selectRecycleOrderList();
 		},
 		// 触底加载新页面
@@ -413,7 +419,9 @@
 					} else {
 						this.recycleList = res.rows;
 					}
-				});
+				}).finally(() => {
+					uni.stopPullDownRefresh();
+				})
 			},
 			// 员工抢单
 			empRobRecycleOrder(recycleOrderId) {
@@ -426,7 +434,12 @@
 			},
 			goDetail(item) {
 				uni.navigateTo({
-					url: '/pages/erp/recycleList/recycleListDetail/recycleListDetail?recycleOrderId=' + item,
+					url: '/pages/erp/recycleList/recycleListDetail/recycleListDetail?recycleOrderId=' + item + '&isEdit=false',
+				});
+			},
+			goDetails(item) {
+				uni.navigateTo({
+					url: '/pages/erp/recycleList/recycleListDetail/recycleListDetail?recycleOrderId=' + item + '&isEdit=true',
 				});
 			},
 			checkTab(e) {

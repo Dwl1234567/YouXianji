@@ -574,14 +574,15 @@
 				};
 			})
 			this.customer = uni.getStorageSync('updatecustomer')
-			this.deviceId = this.customer.deviceId
-			this.recycleFormId = this.customer.recycleFormId
-			this.qualityInfoId = this.customer.qualityInfoId
+			if (this.customer) {
+				this.deviceId = this.customer.deviceId
+				this.recycleFormId = this.customer.recycleFormId
+				this.qualityInfoId = this.customer.qualityInfoId
+			}
 			if (uni.getStorageSync('updatecustomer')) {
 				this.goodsList = [uni.getStorageSync('updatecustomer')]
 			}
 			this.house = uni.getStorageSync('updatehouse')
-
 		},
 		methods: {
 			// 删除图片
@@ -801,7 +802,7 @@
 			},
 			customerTap() {
 				uni.navigateTo({
-					url: '/pages/erp/customer/customer'
+					url: '/pages/erp/customer/customer?isShow=' + false
 				})
 			},
 			supplierTap() {
@@ -991,9 +992,12 @@
 				empCreateRecycleForm(paramsData).then(res => {
 					if (res.code === 200) {
 						this.$u.toast('开单成功');
-						this.hsdangoodsList = []
-						this.customerInfo = {}
-						uni.removeStorageSync('data')
+						if (type == 0) {
+							this.hsdangoodsList = []
+							this.customerInfo = {}
+							uni.removeStorageSync('data')
+						}
+
 					}
 				})
 			},
@@ -1091,6 +1095,7 @@
 					})
 				}
 				const storeId = uni.getStorageSync('userinfo').storeId
+				console.log(that.recycleFormId)
 				fittingsForm({
 					sellVoucher: list, // 销售凭证
 					totalPrice: that.totalPrice, // 总成本价

@@ -11,7 +11,7 @@
 			<view class="tabble margin-top-xl text-lg text-500">回收流程</view>
 			<image src="../../static/home/liucheng.png" class="img radius-2 margin-top-xl" mode="aspectFill"></image>
 			<view v-if="phoneModel" class="process-info margin-top-xs bg-white radius-2">
-				<image src="/static/位图.png" mode="aspectFill" class="backImgs"></image>
+				<image src="/static/weitu.png" mode="aspectFill" class="backImgs"></image>
 				<view class="proces-content padding-lr-xl">
 					<view class="flex justify-between" style="align-items: center">
 						<view class="text-xl text-101010 text-500">

@@ -47,6 +47,7 @@
 						<text class="text_13">销售人：{{item.sellPeople}}</text>
 						<text class="text_13">销售价：{{item.fundsReceived}}</text>
 						<view class="button">
+							<view class="receipt" v-if="item.createById == userInfo.userId" @tap="billing(item)">打印</view>
 							<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="sell(item)">抛售</view>
 							<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="shelves(item)">上架</view>
 							<view class="receipt" v-if="item.reorganizeStatus == 1" @tap="billing(item)">销售开单</view>
@@ -113,7 +114,8 @@
 
 <script>
 	import {
-		selectUserSellFormList
+		selectUserSellFormList,
+		printSellForm
 	} from '@/api/erp.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -123,6 +125,7 @@
 		},
 		data() {
 			return {
+				userInfo: {},
 				show: false,
 				value1: Number(new Date()),
 				time: '',
@@ -164,6 +167,7 @@
 			// storeInfo = JSON.parse(storeInfo);
 			// this.storeId = storeInfo.store_id;
 			// 进入页面刷新
+			this.userInfo = uni.getStorageSync('userinfo')
 			this.getDataList();
 			// uni.startPullDownRefresh();
 		},
@@ -204,6 +208,17 @@
 			}
 		},
 		methods: {
+			billing(item) {
+				printSellForm({
+					sellFormId: item.sellFormId
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '打印成功'
+						})
+					}
+				})
+			},
 			goDetail(sellFormId) {
 				// uni.navigateTo({
 				// 	url: '/pages/erp/sell/form?sellFormId=' + sellFormId,

@@ -71,7 +71,9 @@
 		kefuInitUser
 	} from '@/api/user.js';
 	import {
-		secondGoodsList
+		secondGoodsList,
+		isBindOpenid,
+		bindOpenid
 	} from '@/api/malls.js';
 	export default {
 		name: 'home',
@@ -149,6 +151,7 @@
 			};
 		},
 		onShow() {
+			this.isBindOpenid();
 			this.getProduct()
 			this.$nextTick(() => {
 				let address = uni.getStorageSync('address');
@@ -200,6 +203,52 @@
 			this.getProduct();
 		},
 		methods: {
+			isBindOpenid() {
+				let that = this
+				isBindOpenid().then(res => {
+					if (res.code === 200) {
+						if (!res.data) {
+							console.log(222)
+							uni.showModal({
+								title: '温馨提示',
+								content: '请绑定微信以方便接受后续消息提示',
+								showCancel: false,
+								success(res) {
+									uni.login({
+										provider: 'weixin',
+										success: function(loginRes) {
+											console.log(loginRes.authResult.openid);
+											that.bindOpenids(loginRes.authResult.openid)
+										},
+										fail(res) {
+											if (res.code == -8) {
+												uni.showToast({
+													icon: 'none',
+													duration: 5000,
+													title: '客户端未安装，请安装客户端后使用'
+												})
+											}
+										}
+									});
+								},
+							})
+						}
+
+					}
+				})
+			},
+			bindOpenids(openId) {
+				bindOpenid({
+					openId: openId
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '绑定成功',
+						})
+						this.isBindOpenid();
+					}
+				})
+			},
 			checkBrandId(e) {
 				this.goodsData = []
 				this.bandId = e != 0 ? e : null;

@@ -38,7 +38,12 @@
 				storeName: '',
 			}
 		},
-		onLoad(e) {},
+		onLoad(e) {
+			if (e.deviceNo) {
+				this.storeName = e.deviceNo
+				this.erpproductSnDataFuc()
+			}
+		},
 		onReady() {
 			//_tool.setBarColor(true);
 			uni.pageScrollTo({
@@ -65,17 +70,15 @@
 							that.dispalyClass = 'display-block';
 						}
 					}
-					console.log(that.goodsInfo);
-					//let data = res.data.data;
-
 				})
 
 			},
 
 			searchTap(e) {
-				console.log('搜索结果', e)
 				this.storeName = e;
-				this.erpproductSnDataFuc();
+				if (e.length >= 6) {
+					this.erpproductSnDataFuc();
+				}
 			},
 			snTap() {
 				console.log('扫描二维码获取序列号筛选结果')
@@ -119,6 +122,10 @@
 	@import "@/uni_modules/mpb-ui/shop/app.scss";
 	/* #endif */
 	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
+
+	page {
+		background: #f0f0f0;
+	}
 
 	.display-none {
 		display: none;

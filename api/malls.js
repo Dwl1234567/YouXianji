@@ -339,3 +339,33 @@ export function immediatelyPayment(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 是否绑定openId
+ *
+ */
+export function isBindOpenid(data) {
+	return request.get('/yxj/app/user/isBindOpenid', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 绑定openid
+ *
+ */
+export function bindOpenid(data) {
+	return request.get('/yxj/app/user/bindOpenid', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 购物车删除
+ *
+ */
+export function deleteshoppingCart(data) {
+	return request.delete('/yxj/app/shoppingCart/' + data, {
+		noLogin: true
+	});
+}

@@ -105,7 +105,7 @@
 						<text class="text_40">{{item.value}}</text>
 					</view>
 				</view>
-				<view class="box_9 flex-row justify-between" v-if="userId == recycleOrder.receiver">
+				<view class="box_9 flex-row justify-between" v-if="userId == recycleOrder.receiver && isEdit == 'false'">
 					<button class="button_1 flex-col" @click="onClick_2">
 						<text class="text_45">回执</text>
 					</button>
@@ -130,6 +130,7 @@
 	export default {
 		data() {
 			return {
+				isEdit: false,
 				urls: [],
 				list: {},
 				deviceNo: '',
@@ -165,7 +166,13 @@
 				constants: {},
 			};
 		},
+		//下拉刷新
+		onPullDownRefresh() {
+			this.empSelectRecycleOrderDetail(this.recycleOrderId);
+		},
 		onLoad(option) {
+			this.isEdit = option.isEdit
+			console.log(option.isEdit)
 			this.recycleOrderId = option.recycleOrderId;
 			this.userId = uni.getStorageSync('userinfo').userId;
 			this.empSelectRecycleOrderDetail(option.recycleOrderId);
@@ -241,7 +248,9 @@
 						uni.setStorageSync('createById', recycleOrder.createById);
 						uni.setStorageSync('deviceId', recycleOrder.deviceId);
 					}
-				});
+				}).finally(() => {
+					uni.stopPullDownRefresh();
+				})
 			},
 			copyText() {
 				const text = this.recycleOrder.userAccount.accountNo;

@@ -60,6 +60,18 @@
 			</view>
 		</view>
 		<!--弹窗-->
+		<u-popup :show="dayinShow" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">打印数量</view>
+				<view class="yunShow-img">
+					<u--input placeholder="请输入内容" :border="'surround'" v-model="number"></u--input>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="confirmWarehousings">确定</view>
+			</view>
+		</u-popup>
 		<!-- 上传凭证 -->
 		<u-popup :show="yunShowImgMain" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
 			<view class="yunShow-top">
@@ -85,7 +97,8 @@
 		fittingsOrderList,
 		undersell,
 		putaway,
-		confirmWarehousing
+		confirmWarehousing,
+		printLabel
 	} from '@/api/erp.js';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -98,6 +111,9 @@
 		},
 		data() {
 			return {
+				number: null,
+				itemList: {},
+				dayinShow: false,
 				fittingsOrderId: 0,
 				yunShowImgMain: false,
 				fileList1: [],
@@ -142,6 +158,26 @@
 			});
 		},
 		methods: {
+			close() {
+				this.dayinShow = false
+				this.yunShowImgMain = false
+			},
+			// 打印
+			sell(e) {
+				this.itemList = e
+				this.dayinShow = true
+			},
+			confirmWarehousings() {
+				printLabel({
+					fittingsOrderId: this.itemList.fittingsOrderId,
+					printNumber: this.number
+				}).then(res => {
+					uni.showToast({
+						title: '成功打印' + this.number + '张标签'
+					})
+					this.cloes()
+				})
+			},
 			// 查看凭证
 			seebilling(e) {
 				let urll = e.fittingsVoucher.split(',');

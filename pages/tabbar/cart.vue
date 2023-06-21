@@ -88,7 +88,7 @@
 			</view>
 			<button class="no-border cu-btn" @click="createOrder" v-if="!checkout"
 				style="padding: 17rpx 122rpx;background: linear-gradient(90deg, #F3C81A 0%, #FFB629 100%);border-radius: 42rpx;color: #FFFFFF;">结算</button>
-			<button class="no-border cu-btn" @click="createOrder" v-else
+			<button class="no-border cu-btn" @click="deleteOrder" v-else
 				style="padding: 17rpx 122rpx;background: #FF1A1A;border-radius: 42rpx;color: #FFFFFF;">删除</button>
 		</view>
 		<!--小程序端显示-->
@@ -121,7 +121,8 @@
 	} from '@/api/mall.js';
 	import {
 		shoppingCartList,
-		shoppingOrder
+		shoppingOrder,
+		deleteshoppingCart
 	} from '@/api/malls.js';
 	import {
 		mapState
@@ -387,6 +388,25 @@
 				});
 				// this.allChoose = choose;
 				this.total = total.toFixed(2);
+			},
+			// 删除订单
+			deleteOrder() {
+				let isTrue = true;
+				const shoppingOrderItemList = [];
+				this.cartList.map((item) => {
+					if (item.disabled) {
+						isTrue = false
+						shoppingOrderItemList.push(item.goodsInfo.goodsId);
+					}
+				});
+				deleteshoppingCart(shoppingOrderItemList.join(',')).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '删除成功'
+						})
+						this.getCart()
+					}
+				})
 			},
 			//创建订单
 			createOrder() {

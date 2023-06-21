@@ -28,8 +28,8 @@
 									<text class="text_11">调拨价:{{item.allotPrice}}元</text>
 								</view>
 							</view>
-							<text class="text_13">申请调拨门店：{{item.storeName}}</text>
-							<text class="text_13">申请人：{{item.nickName}}</text>
+							<text class="text_13" v-if="item.storeName">申请调拨门店：{{item.storeName}}</text>
+							<text class="text_13" v-if="item.nickName">申请人：{{item.nickName}}</text>
 						</view>
 					</view>
 				</view>

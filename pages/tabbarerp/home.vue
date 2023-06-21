@@ -306,6 +306,12 @@
 							cuIcon: 'icon-refund',
 							color: 'red',
 							badge: 0,
+							name: '预制列表',
+						},
+						{
+							cuIcon: 'icon-refund',
+							color: 'red',
+							badge: 0,
 							name: '调价列表',
 						},
 						{
@@ -647,12 +653,15 @@
 						var value = 'pendingList/list';
 					}
 					if (index == 4) {
-						var value = 'adjustmentList/list';
+						var value = 'prefabricateList/list';
 					}
 					if (index == 5) {
-						var value = 'allot/allot_push';
+						var value = 'adjustmentList/list';
 					}
 					if (index == 6) {
+						var value = 'allot/allot_push';
+					}
+					if (index == 7) {
 						var value = 'sell/out';
 					}
 

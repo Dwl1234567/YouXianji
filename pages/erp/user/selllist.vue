@@ -214,7 +214,7 @@
 			},
 			goDetail(sellFormId) {
 				uni.navigateTo({
-					url: '/pages/erp/sell/form?sellFormId=' + sellFormId,
+					url: '/pages/erp/purchase/form?sellFormId=' + sellFormId,
 				});
 			},
 			day(e) {

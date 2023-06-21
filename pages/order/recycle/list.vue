@@ -1,9 +1,9 @@
 <template>
 	<view class="my-box">
-		<!-- <bar-title bgColor="bg-white" adress="/pages/tabbar/my">
+		<bar-title bgColor="bg-white" adress="/pages/tabbar/my">
 			<block slot="content">我卖出的</block>
 			<block slot="right"></block>
-		</bar-title> -->
+		</bar-title>
 		<view class="view-content">
 			<!--订单tab-->
 			<!-- <view class="bg-white nav-tab-view">

@@ -97,7 +97,7 @@
 			</view>
 			<view class="zfbPay">
 				<view class="left">
-					<image src="/static/支付宝@2x.png" mode=""></image>
+					<image src="/static/zhifubao.png" mode=""></image>
 					<text>支付宝</text>
 				</view>
 				<view class="right">
@@ -189,7 +189,9 @@
 		onLoad(option) {
 			this.orderPaymentId = option.id;
 			this.cartList = uni.getStorageSync('cartList');
-			console.log(this.cartList)
+			this.cartList.map(item => {
+				this.total = item.goodsInfo.sellPrice + this.total
+			})
 			this.getDefaultAddresss();
 		},
 		onPullDownRefresh() {},
