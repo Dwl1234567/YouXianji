@@ -35,6 +35,7 @@
 							<!-- <text class="text_9">颜色：{{item.fittingsConfig.fittingsColor}}</text> -->
 							<text class="text_9">序列号：{{item.deviceNo}}</text>
 							<text class="text_9">销售价：{{item.sellPrice}}</text>
+							<text class="text_9">库龄时长：{{item.storageAge}}天</text>
 						</view>
 					</view>
 					<!-- <view class="group_5 flex-row justify-between"> -->

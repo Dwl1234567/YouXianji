@@ -263,7 +263,7 @@
 	import {
 		getNearestStoreList
 	} from '@/api/commons.js';
-
+	import Vue from 'vue';
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		name: 'sell',
@@ -367,6 +367,39 @@
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
+		onShow() {
+			// #ifdef APP-PLUS
+			this.getstoresstorelatelystore();
+			let type = '';
+			uni.getSystemInfo({
+				success: function(res) {
+					if (res.osName == 'ios') {
+						type = 'wgs84'
+					} else {
+						type = 'gcj02'
+					}
+				}
+			});
+			uni.getLocation({
+				type: type,
+				geocode: true, //设置该参数为true可直接获取经纬度及城市信息
+				success: function(res) {
+					console.log('地址为------->', res);
+					that.latitude = res.latitude;
+					that.longitude = res.longitude;
+					uni.setStorageSync('location', res)
+					that.$store.commit('setAddress', res);
+				},
+				fail: function(res) {
+					uni.showToast({
+						title: '获取地址失败，将导致部分功能不可用',
+						icon: 'none',
+					});
+				},
+				complete() {},
+			});
+			// #endif
+		},
 		onLoad(data) {
 			let that = this;
 			// #ifdef MP
@@ -380,36 +413,7 @@
 			// #ifndef APP-PLUS
 			this.getstoresstorelatelystore();
 			// #endif
-			// #ifdef APP-PLUS
-			this.getstoresstorelatelystore();
-			let type = '';
-			uni.getSystemInfo({
-				success: function(res) {
-					if (res.osName == 'ios') {
-						type = 'wgs84'
-					} else {
-						type = 'gcj02'
-					}
-				}
-			});
-			console.log(type, 22222)
-			uni.getLocation({
-				type: type,
-				geocode: true, //设置该参数为true可直接获取经纬度及城市信息
-				success: function(res) {
-					console.log(res, '22222222222222222222222');
-					that.latitude = res.latitude;
-					that.longitude = res.longitude;
-				},
-				fail: function(res) {
-					uni.showToast({
-						title: '获取地址失败，将导致部分功能不可用',
-						icon: 'none',
-					});
-				},
-				complete() {},
-			});
-			// #endif
+
 		},
 		methods: {
 			// 门店切换

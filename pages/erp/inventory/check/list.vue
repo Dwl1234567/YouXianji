@@ -32,7 +32,7 @@
 			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="cu-list menu" v-if="1==TabCur">
-			<view class="arrow" v-for="(item,index) in dataList1" :key="index">
+			<view class="arrow" v-for="(item,index) in dataList1" :key="index" @tap="tabGoods(item, '2')">
 				<view class="content">
 					<text
 						class="text-grey title">{{item.checkTaskType == 0 ? '整备' : item.checkTaskType == 1 ? '上架' : '配件'}}</text>

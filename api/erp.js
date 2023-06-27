@@ -1220,3 +1220,13 @@ export function selectClassificationLabelByModel(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 挂单撤单
+ *
+ */
+export function fittingsFormRevoke(data) {
+	return request.get('/yxj/app/fittingsForm/revoke', data, {
+		noLogin: true
+	});
+}

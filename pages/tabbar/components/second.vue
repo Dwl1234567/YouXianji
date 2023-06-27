@@ -285,6 +285,9 @@
 						name: '综合排序',
 						type: 'hierarchy',
 						submenu: [{
+								name: '综合排序', //全部设为默认，选中时标签栏显示为全部
+								value: null,
+							}, {
 								name: '价格由低到高', //全部设为默认，选中时标签栏显示为全部
 								value: '1',
 							},
@@ -298,6 +301,9 @@
 						name: '价格区间',
 						type: 'hierarchy',
 						submenu: [{
+								name: '不限价格',
+								value: null,
+							}, {
 								name: '0-1000',
 								value: '0',
 							},
@@ -316,9 +322,12 @@
 						],
 					},
 					{
-						name: '成色', //选择
+						name: '商品成色', //选择
 						type: 'hierarchy',
 						submenu: [{
+								name: '不限成色', //设为默认
+								value: null,
+							}, {
 								name: '99成新', //设为默认
 								value: '0',
 							},

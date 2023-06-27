@@ -22,6 +22,7 @@
 							<text class="text_11">组合成本价:{{item.combinationPrice}}元</text>
 						</view>
 					</view>
+					<text class="text_13" v-if="item.storageAge">库龄时长：{{item.storageAge}}天</text>
 					<text class="text_13">回收人：{{item.recyclePeopleName}}</text>
 					<text class="text_13" v-if="item.sortingPeopleName">分拣人：{{item.sortingPeopleName}}</text>
 					<text class="text_13" v-if="item.storeName">门店名称：{{item.storeName}}</text>

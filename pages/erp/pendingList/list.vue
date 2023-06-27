@@ -35,6 +35,9 @@
 					<text class="text_13">创建人：{{item.sellPeople}}</text>
 					<text class="text_13">备注：{{item.remark}}</text>
 					<view class="group_5 flex-row justify-between">
+						<button class="button_2 flex-col" @click="onClick_1(item)" v-if="item.createById">
+							<text class="text_16">撤单</text>
+						</button>
 						<button class="button_2 flex-col" @click="onClick_1(item)" v-if="item.pendingOrderVoucher">
 							<text class="text_16">查看凭证</text>
 						</button>
@@ -58,7 +61,8 @@
 	import {
 		selectSellFormList,
 		getAllClassification,
-		toReoragnize
+		toReoragnize,
+		fittingsFormRevoke
 	} from '@/api/erp.js';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -147,13 +151,20 @@
 				});
 			},
 			onClick_1(item) {
-				let fealList = item.pendingOrderVoucher.split(',').map(item => {
-					return this.$httpImage + item
+				fittingsFormRevoke({
+					sellFormId: item.sellFormId
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '撤单成功',
+							duration: 500,
+							success() {
+								this.getDataList()
+							}
+						})
+
+					}
 				})
-				uni.previewImage({
-					current: 0,
-					urls: fealList,
-				});
 			},
 			onClick_2(item) {
 				uni.setStorageSync('updatecustomer', item);
