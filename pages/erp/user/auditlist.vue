@@ -32,6 +32,11 @@
 				<view style="padding: 40rpx 28rpx;" class="boxs" v-for="(item,index) in dataList" :key="index">
 					<view class="title">{{item.modelName}}</view>
 					<view class="text">时间:{{item.updateTime}}</view>
+					<view class="text">提交人:{{item.employeeName}}</view>
+					<view class="button" @tap="seeAtt(item)"
+						style="margin-right:10rpx; background: white !important;color: black;border: 1rpx solid #979797;">查看
+					</view>
+
 				</view>
 			</view>
 			<view class="buttons" @tap="submitAttr" v-if="dataList.length && TabCur == 0">提交</view>

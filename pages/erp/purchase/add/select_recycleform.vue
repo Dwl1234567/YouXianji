@@ -144,36 +144,6 @@
 		</view>
 
 		<!--选择SKU 与仓库-->
-		<!-- <view class="cu-bar bg-white">
-			<view class='action'>
-				<text class="title">入库信息</text>
-				<text class="margin-left-xs text-sm"></text>
-			</view>
-		</view>
-		<view class="bg-white padding-lr">
-			<view class="">
-				仓库
-			</view>
-			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId"
-					v-if="item.parentId == 0" @tap="checkHouseId(item.warehouseId)"
-					:class="parentId == item.warehouseId ? 'camgkuCheck' : ''">
-					{{item.warehouseName}}
-				</view>
-			</view>
-
-			<view class="">
-				分仓
-			</view>
-			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" v-for="item in warehouseLists" :key="item.warehouseId"
-					v-if="item.parentId == parentId" @tap="checkHouseFenId(item.warehouseId)"
-					:class="warehouseId == item.warehouseId ? 'camgkuCheck' : ''">
-					{{item.warehouseName}}
-				</view>
-			</view>
-
-		</view> -->
 		<!-- <view style="position: relative;">
 			<LiFilter :isType="0" :alias="['分类','品牌','系列','机型']" @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1" :isFixtop="false" ></LiFilter>
 		</view> -->

@@ -1,6 +1,6 @@
 <template>
 	<view class="" style="padding: 20rpx;">
-		<view class="group_2 flex-col" v-for="item in dataList" @tap="goDetail(item)">
+		<view class="group_2 flex-col" v-for="(item,index) in dataList" @tap="goDetail(item)" :key="index">
 			<view class="text-wrapper_2 flex-row justify-between" v-if="item.createTime">
 				<text class="text_8">时间:{{item.createTime}}</text>
 			</view>
@@ -59,6 +59,10 @@
 				<button class="button_3 flex-col" @tap.stop="goSn(item)">
 					<text class="text_17">串码追踪</text>
 				</button>
+				<button class="button_3 flex-col" @tap.stop="dayin(item)">
+					<text class="text_17">打印标签</text>
+				</button>
+				<!-- <view class="receipt" @tap.stop="dayin(item)">打印标签</view> -->
 			</view>
 		</view>
 
@@ -89,6 +93,9 @@
 			},
 			goSn(e) {
 				this.$emit('goSn', e)
+			},
+			dayin(e) {
+				this.$emit('dayin', e)
 			}
 		}
 	}

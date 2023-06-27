@@ -27,7 +27,7 @@
 				<view class="transform" style="margin-right: 28rpx">
 					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 				</view>
-				<view class="group_3 flex-col" @tap="updatecustomer(item)">
+				<view class="group_3 flex-col">
 					<view class="text-wrapper_1 flex-row justify-between"></view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
@@ -42,7 +42,7 @@
 						</view>
 					</view>
 					<view class="group_5 flex-row justify-between">
-						<button class="button_2 flex-col" @click="onClick_2(item)">
+						<button class="button_2 flex-col" @tap.stop="onClick_2(item)">
 							<text class="text_16">移动到整备</text>
 						</button>
 					</view>
@@ -159,12 +159,12 @@
 					}
 				})
 			},
-			updatecustomer(item) {
-				uni.setStorageSync('updatecustomer', item);
-				uni.navigateTo({
-					url: '/pages/tabbarerp/push',
-				});
-			},
+			// updatecustomer(item) {
+			// 	uni.setStorageSync('updatecustomer', item);
+			// 	uni.navigateTo({
+			// 		url: '/pages/tabbarerp/push',
+			// 	});
+			// },
 			// 切换进步
 			valChange(item) {
 				console.log(this.dataList);

@@ -21,7 +21,8 @@
 			<newView @checkView="checkView"></newView>
 		</view> -->
 		<view>
-			<secondView @checkView="checkView" :goodsData="goodsData" @checkBrandId="checkBrandId"></secondView>
+			<secondView @checkView="checkView" :goodsData="goodsData" @checkBrandId="checkBrandId" @search="searcha">
+			</secondView>
 		</view>
 		<!--返回顶部-->
 		<view class="add-btn-view-box">
@@ -142,7 +143,10 @@
 				pageIndex: 1,
 				pageLimit: 10,
 				userInfo: {},
-				loadmore: 'more', //more 还有数据   noMore 无数据
+				orderRule: null,
+				priceBetween: null,
+				conditionInfo: null,
+				loadmore: 'noMore', //more 还有数据   noMore 无数据
 				contentText: {
 					contentdown: '加载更多数据',
 					contentrefresh: '加载中...',
@@ -159,7 +163,6 @@
 			});
 		},
 		onLoad() {
-
 			let that = this;
 			let userInfo = uni.getStorageSync('userInfo');
 
@@ -199,16 +202,21 @@
 		},
 		onReachBottom() {
 			if (this.loadmore == 'noMore') return;
-			// this.pageIndex += 1;
+			this.pageIndex += 1;
 			this.getProduct();
 		},
 		methods: {
+			searcha(e) {
+				this.orderRule = e.orderRule;
+				this.priceBetween = e.priceBetween;
+				this.conditionInfo = e.conditionInfo;
+				this.getProduct()
+			},
 			isBindOpenid() {
 				let that = this
 				isBindOpenid().then(res => {
 					if (res.code === 200) {
 						if (!res.data) {
-							console.log(222)
 							uni.showModal({
 								title: '温馨提示',
 								content: '请绑定微信以方便接受后续消息提示',
@@ -250,6 +258,7 @@
 				})
 			},
 			checkBrandId(e) {
+
 				this.goodsData = []
 				this.bandId = e != 0 ? e : null;
 				this.getProduct()
@@ -292,17 +301,30 @@
 			getProduct() {
 				let that = this;
 				let params = {
-					firstFlag: that.firstFlag,
-					bandId: that.bandId
+					bandId: this.bandId,
+					firstFlag: this.pageIndex == 1 ? true : false,
+					pageNum: this.pageIndex,
+					pageSize: this.pageLimit
 				};
+				params.orderRule = this.orderRule;
+				params.priceBetween = this.priceBetween;
+				params.conditionInfo = this.conditionInfo;
 				secondGoodsList(params)
 					.then((res) => {
-						console.log(res.data, '3333333333')
-						let data = res.data;
-						that.goodsData.push(...data);
-						this.firstFlag = false;
+						let data = res.rows;
+						if (data) {
+							//判断是触底加载还是第一次进入页面的加载
+							if (that.ifBottomRefresh) {
+								that.goodsData = that.goodsData.concat(data);
+							} else {
+								that.goodsData = data;
+							}
+							that.ifBottomRefresh = false;
+							that.loadmore = res.total == that.goodsData.length ? 'noMore' : 'more';
+						}
 					})
 					.finally(() => {
+						this.firstFlag = false
 						uni.stopPullDownRefresh();
 					});
 			},
@@ -327,6 +349,7 @@
 			},
 			//触底了
 			setReachBottom() {
+				console.log(222)
 				this.getProduct();
 				//设置加载
 			},
@@ -553,7 +576,7 @@
 					height: 32px;
 					line-height: 32px;
 					position: absolute;
-					right: 37px;
+					right: 66rpx;
 					background-image: linear-gradient(90deg, #ff6868 0%, #ea1515 100%);
 				}
 

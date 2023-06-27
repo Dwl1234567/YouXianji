@@ -104,54 +104,218 @@ const store = new Vuex.Store({
 			state.address.city = provider.address.city;
 		},
 		setBusiness(state, provider) {
-			console.log(state.business, provider)
 			if (provider.totalNumber) {
 				state.business.TODO_ALL = provider.totalNumber
 			}
 			if (provider.businessType === 'RECYCLE_PENDING') {
 				state.business.RECYCLE_PENDING = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '回收待处理消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'RECYCLE_PROCESSED') {
 				state.business.RECYCLE_PROCESSED = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '回收已处理消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'RECYCLE_RETURNING') {
 				state.business.RECYCLE_RETURNING = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '回收待退回消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'RECYCLE_RETURNED') {
 				state.business.RECYCLE_RETURNED = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '回收已退回消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'SHOP_PAYING') {
 				state.business.SHOP_PAYING = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '商城待付款消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'SHOP_SHIPMENTS') {
 				state.business.SHOP_SHIPMENTS = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '商城待发货消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'SHOP_RECEIVING') {
 				state.business.SHOP_RECEIVING = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '商城待收货消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'SHOP_AFTERMARKET') {
 				state.business.SHOP_AFTERMARKET = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '商城待售后消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'TODO_ADJUST_PRICE') {
 				state.business.TODO_ADJUST_PRICE = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '待调价消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
-			if (provider.businessType === 'TODO_ALL') {
+			if (provider.businessType === 'TODO_ALLOT') {
 				state.business.TODO_ALLOT = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '待调拨消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'TODO_APPROVE_PUTAWAY') {
 				state.business.TODO_APPROVE_PUTAWAY = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '审上架消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'TODO_SORTING') {
 				state.business.TODO_SORTING = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '待分拣消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'TODO_APPROVE_OFFER') {
 				state.business.TODO_APPROVE_OFFER = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '审报价消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'TODO_UPDATE_OFFER') {
 				state.business.TODO_UPDATE_OFFER = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '改报价消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'TODO_REORGANIZE') {
 				state.business.TODO_REORGANIZE = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '整备仓消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 
 		},

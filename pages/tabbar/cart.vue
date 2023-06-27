@@ -396,7 +396,7 @@
 				this.cartList.map((item) => {
 					if (item.disabled) {
 						isTrue = false
-						shoppingOrderItemList.push(item.goodsInfo.goodsId);
+						shoppingOrderItemList.push(item.cartId);
 					}
 				});
 				deleteshoppingCart(shoppingOrderItemList.join(',')).then(res => {

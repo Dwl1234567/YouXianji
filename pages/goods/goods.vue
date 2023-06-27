@@ -77,7 +77,9 @@
 							</view>
 							<view class="title-view">
 								<!-- <text class="cu-tag bg-red radius sm">{{product.colourname}}</text> -->
-								<text class="text-black text-bold">{{product.title}}</text>
+								<text class="text-bold text-black" style=" white-space: pre-wrap;"
+									v-if="product.modelName">{{product.modelName}}{{product.basePriceLabel}}</text>
+								<text class="text-bold text-black" style=" white-space: pre-wrap;">{{product.title}}</text>
 							</view>
 							<view class="text-lg margin-bottom-sm">
 								<text class="sm text-gray">{{product.tags}}</text>
@@ -958,6 +960,7 @@
 						this.modelId = res.data.modelId
 						this.qualityInfoList = JSON.parse(res.data.qualityInfoList)
 						this.Pricepramitems = JSON.parse(res.data.oldQualityInfoList)
+						console.log(this.Pricepramitems)
 						this.product = res.data;
 						this.product.images_text = images_text;
 						this.onCanvas();

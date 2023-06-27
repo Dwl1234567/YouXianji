@@ -53,7 +53,8 @@
 		<!--选项列表-->
 		<block v-for="(item,index) in nav_list" :key="index">
 			<view class="process-box" v-show="tab_cur == index">
-				<scroll-view scroll-y="true" class="scroll-Y" v-for="item in basicPrice" v-if="index == 0">
+				<scroll-view scroll-y="true" class="scroll-Y" v-for="(item,indexs) in basicPrice" v-if="index == 0"
+					:key="indexs">
 					<!-- {{recyitem}} -->
 					<SelectDataFirst title="机器SKU" :checklist="item" @itemclick="moneyFucs"></SelectDataFirst>
 					<!-- {{basicPrice}} -->

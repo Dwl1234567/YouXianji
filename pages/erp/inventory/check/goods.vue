@@ -30,7 +30,7 @@
 							v-if="item.fittingsNumber">数量：{{item.fittingsNumber}}个</text>
 					</view>
 				</view>
-				<view class="over" @tap="yunShow(item)">取样</view>
+				<view class="over" @tap="yunShow(item)" v-if="isView != 2">取样</view>
 			</view>
 			<!-- 下拉加载提示 -->
 			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -51,7 +51,8 @@
 				<view class="time">
 					<view>盘点时间:{{item.checkTime}}</view>
 					<view>盘点人：{{item.checkPeopleName}}</view>
-					<view class="">盘点数量：{{item.fittingsNumber}}</view>
+					<view class="">数量：{{item.fittingsNumber}}</view>
+					<view class="">盘点数量：{{item.checkNumber}}</view>
 				</view>
 				<view class="over" @tap="seePic(item)">查看</view>
 			</view>
@@ -95,6 +96,7 @@
 		},
 		data() {
 			return {
+				isView: 0,
 				fittingsNumber: null,
 				total: 0,
 				total1: 0,
@@ -133,7 +135,7 @@
 		},
 		onLoad(options) {
 			this.checkTaskId = options.checkTaskId;
-			console.log(options.checkTaskId)
+			this.isView = options.isView
 			this.checkTaskType = options.checkTaskType;
 		},
 		onShow() {
@@ -185,6 +187,7 @@
 				});
 			},
 			close() {
+				this.fittingsNumber = null
 				this.yunShowImg1 = false
 			},
 			// 确认上传凭证
@@ -205,9 +208,10 @@
 							icon: 'none',
 							title: '取样成功',
 						});
+						this.fileList1 = []
 						this.getDataList();
 						this.getDataList1();
-						this.yunShowImg1 = false
+						this.close()
 					}
 				})
 			},

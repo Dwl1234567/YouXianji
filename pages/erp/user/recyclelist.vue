@@ -20,7 +20,7 @@
 				</view>
 			</view> -->
 			<view class="block_3 flex-col">
-				<view class="group_2 flex-col" v-for="item in recycleList">
+				<view class="group_2 flex-col" v-for="(item,index) in recycleList" :key="index">
 					<view class="text-wrapper_2 flex-row justify-between">
 						<text class="text_8">时间:{{item.createTime}}</text>
 					</view>

@@ -21,7 +21,7 @@
 					<view v-for="(items,indexs) in item.adjustPriceTaskItemList" :key="indexs" class="item_3">
 						<view class="item_4">{{items.valueName}}</view>
 						<view class="item_4">{{items.oldPrice}}</view>
-						<view class="item_4" v-if="see">{{items.newPrice}}</view>
+						<view class="item_4" v-if="see == true">{{items.newPrice}}</view>
 						<view class="item_4" v-else><input type="text" v-model="items.newPrice" @blur="inpuBlur"></view>
 					</view>
 				</view>
@@ -50,6 +50,7 @@
 		},
 		data() {
 			return {
+				index: null,
 				taskId: 0,
 				see: false,
 				TabCur: 0,
@@ -70,13 +71,10 @@
 			}
 		},
 		onLoad(options) {
+			this.index = options.index
 			this.taskId = options.taskId
 			this.see = options.see
 			this.getDataList(options.taskId)
-			//加载虚拟数据
-			// this.$nextTick(() => {
-			// 	uni.startPullDownRefresh({})
-			// })
 		},
 		mounted() {
 			_tool.setBarColor(true);

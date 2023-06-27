@@ -136,36 +136,7 @@
 		</view>
 
 		<!--选择SKU 与仓库-->
-		<!-- <view class="cu-bar bg-white">
-			<view class='action'>
-				<text class="title">入库信息</text>
-				<text class="margin-left-xs text-sm"></text>
-			</view>
-		</view>
-		<view class="bg-white padding-lr">
-			<view class="">
-				仓库
-			</view>
-			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" :class="parentId == item.warehouseId ? 'camgkuCheck' : ''"
-					v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == 0"
-					@tap="checkHouseId(item.warehouseId)">
-					{{item.warehouseName}}
-				</view>
-			</view>
 
-			<view class="">
-				分仓
-			</view>
-			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" :class="warehouseId == item.warehouseId ? 'camgkuCheck' : ''"
-					v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == parentId"
-					@tap="checkHouseFenId(item.warehouseId)">
-					{{item.warehouseName}}
-				</view>
-			</view>
-
-		</view> -->
 		<!-- <view style="position: relative;">
 			<LiFilter :isType="0" :alias="['分类','品牌','系列','机型']" @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1" :isFixtop="false" ></LiFilter>
 		</view> -->
@@ -244,6 +215,13 @@
 			<view class="title">是否特卖</view>
 			<switch @change="SwitchD" :class="switchD?'checked':''" :checked="switchD?true:false"></switch>
 		</view>
+		<view class="cu-form-group" @tap="selectFenlei">
+			<view class="title">分类标签</view>
+			<view class="">
+				{{Labels}}
+			</view>
+			<!-- <switch @change="SwitchD" :class="switchD?'checked':''" :checked="switchD?true:false"></switch> -->
+		</view>
 
 
 		<view class="hight-view" />
@@ -266,6 +244,23 @@
 				<u-button type="default" @click="checkimgshow = false" :customStyle="{height:'120rpx'}" text="取消"></u-button>
 			</view>
 		</u-popup>
+		<u-popup :show="show" mode="bottom" @close="close" @open="open">
+			<view class="prop">
+				<view class="title">选择拒绝理由</view>
+				<view class="pay">
+					<view class="wxPay" v-for="(item,index) in reList">
+						<view class="left">
+							<text>{{item.labelName}}</text>
+						</view>
+						<view class="right">
+							<image :src="item.dispaly ? '/static/checkYuan.png' : '/static/yuan.png'" @tap="checkWx(item,index)">
+							</image>
+						</view>
+					</view>
+				</view>
+				<view class="querenbutton" @tap="initiatePayment">确认</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -274,15 +269,12 @@
 		upload
 	} from "@/api/upload.js";
 	import {
-		erppurchaseclickattrview,
-		erpProductGetBasicData,
-		erpclickattredit
-	} from "@/api/erpapi.js"
-	import {
 		getInfoByRecycleOrderId,
 		selectDefaultWarehouse,
 		empCreateRecycleForm,
-		getStoreOnlineCostConfig
+		getStoreOnlineCostConfig,
+		recyclePreFormAdd,
+		selectClassificationLabelByModel
 	} from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
@@ -296,6 +288,10 @@
 		},
 		data() {
 			return {
+				Labels: '',
+				reList: [],
+				show: false,
+				editId: null,
 				radiolist2: [{
 						name: '分拣',
 						disabled: false,
@@ -332,14 +328,14 @@
 				dataInfo: '',
 				goodstitle: '',
 				goodssn: '',
-				ActualreceiptsJson: '', //实收款json
-				weixinnum: '',
-				alipaynum: '',
-				xianjinnum: '',
-				dihuonum: '',
-				diaobojianum: '',
-				xiaoshoujianum: '',
-				ActualreceiptsAll: '',
+				ActualreceiptsJson: 0, //实收款json
+				weixinnum: 0,
+				alipaynum: 0,
+				xianjinnum: 0,
+				dihuonum: 0,
+				diaobojianum: 0,
+				xiaoshoujianum: 0,
+				ActualreceiptsAll: 0,
 				guidePrice: 0, //回收指导价格
 				imgList: [],
 				checkimgshow: false,
@@ -395,6 +391,7 @@
 		onLoad(options) {
 			this.modelId = options.goodsId
 			this.recycleOrderId = options.recycleOrderId
+			this.editId = options.recycleOrderId
 			// this.editid = options.id;
 			// this.erppurchaseclickattrviewFuc(options.id)
 			// this.erpProductGetBasicDataFuc();
@@ -402,6 +399,10 @@
 			this.qualityInfoList = uni.getStorageSync('Pricepramitems')
 			this.warehouseList()
 			this.getStoreOnlineCostConfig()
+			if (options.recycleOrderId) {
+				this.recyclePreFormAdd(options.recycleOrderId)
+			}
+			this.selectClassificationLabelByModel()
 		},
 		watch: {
 			xiaoshoujianum() {
@@ -422,6 +423,7 @@
 					recycleRatio
 				} = this.online
 				// 组合成本 =  回收价 + 杂费
+				console.log(Number(this.ActualreceiptsAll), pettyExpenses)
 				this.combinationPrice = Number(this.ActualreceiptsAll) + pettyExpenses
 				if (chengben > fenxiao) {
 					this.isDistribution = true
@@ -441,6 +443,54 @@
 			});
 		},
 		methods: {
+			checkWx(e, index) {
+				if (this.reList[index].dispaly) {
+					this.reList[index].dispaly = false
+				} else {
+					this.reList[index].dispaly = true
+				}
+				const names = []
+				this.reList.map((item, index) => {
+					if (item.dispaly) {
+						names.push(item.labelName)
+					}
+				})
+				this.Labels = names.splice(0, 2).join(',')
+			},
+			selectClassificationLabelByModel() {
+				selectClassificationLabelByModel(this.modelId).then(res => {
+					res.data.map(item => {
+						item.dispaly = false
+					})
+					this.reList = res.data
+				})
+			},
+			selectFenlei() {
+				this.show = true
+			},
+			close() {
+				this.show = false
+			},
+			recyclePreFormAdd(id) {
+				recyclePreFormAdd(id).then(res => {
+					if (res.code === 200) {
+						this.formList.title = res.data.title
+						this.goodssn = res.data.deviceNo
+						this.ActualreceiptsAll = res.data.recyclePrice
+						this.combinationPrice = res.data.combinationPrice
+						this.diaobojianum = res.data.allotPrice
+						this.xiaoshoujianum = res.data.sellPrice
+						this.phoneImgArr[0] = res.data.frontPhoto
+						this.phoneImgArr[1] = res.data.backPhoto
+						this.phoneImgArr[2] = res.data.topPhoto
+						this.phoneImgArr[3] = res.data.bottomPhoto
+						this.phoneImgArr[4] = res.data.leftPhoto
+						this.phoneImgArr[5] = res.data.rightPhoto
+						this.phoneImgArr[6] = res.data.cameraPhoto
+						this.phoneImgArr[7] = res.data.otherPhoto
+					}
+				})
+			},
 			// 获取门店杂费
 			getStoreOnlineCostConfig() {
 				getStoreOnlineCostConfig().then(res => {
@@ -504,7 +554,12 @@
 					})
 					return
 				}
-				console.log(this.qualityInfoList)
+				let classificationLabelList = []
+				this.reList.map(item => {
+					if (item.dispaly) {
+						classificationLabelList.push(item)
+					}
+				})
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
 				let storeId = uni.getStorageSync('userinfo').storeId
 				let deviceLabel = uni.getStorageSync('goodsdesc')
@@ -538,7 +593,8 @@
 					title: this.formList.title,
 					storeId,
 					basicPriceId,
-					combinationPrice: this.combinationPrice
+					combinationPrice: this.combinationPrice,
+					classificationLabelList
 				}
 				console.log(paramsData)
 				uni.setStorageSync('data', paramsData)
@@ -554,9 +610,16 @@
 				uni.removeStorageSync('Priceprams')
 				uni.removeStorageSync('recycleOrderId')
 				uni.removeStorageSync('createById')
-				uni.navigateTo({
-					url: '/pages/tabbarerp/push?tab=1'
-				})
+				if (this.editId) {
+					uni.navigateTo({
+						url: '/pages/tabbarerp/push?tab=1&recycleFormId=' + this.editId
+					})
+				} else {
+					uni.navigateTo({
+						url: '/pages/tabbarerp/push?tab=1'
+					})
+				}
+
 			},
 			// 获取筛选项
 			erpProductGetBasicDataFuc() {
@@ -786,6 +849,68 @@
 </script>
 
 <style lang="scss">
+	.querenbutton {
+		background: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%);
+		border-radius: 13rpx 13rpx 13rpx 11rpx;
+		font-size: 36rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #4f4f50;
+		height: 84rpx;
+		line-height: 84rpx;
+		text-align: center;
+	}
+
+	.prop {
+		padding: 34rpx 47rpx 120rpx 47rpx;
+
+		.title {
+			font-size: 34rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #4f4f50;
+			line-height: 48rpx;
+			text-align: center;
+		}
+
+		.textarea {
+			height: 155rpx !important;
+			border: 2rpx solid #d8d8d8;
+			border-radius: 11rpx;
+			margin-top: 28rpx;
+			margin-bottom: 43rpx;
+		}
+
+		.upload {
+			margin-bottom: 28rpx;
+		}
+	}
+
+	.wxPay {
+		margin-bottom: 34rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.left {
+			display: flex;
+			align-items: center;
+
+			image {
+				width: 57rpx;
+				height: 57rpx;
+				margin-right: 11rpx;
+			}
+		}
+
+		.right {
+			image {
+				width: 38rpx;
+				height: 38rpx;
+			}
+		}
+	}
+
 	.scroll-view_H {
 		white-space: nowrap;
 		display: flex;

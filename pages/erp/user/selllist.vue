@@ -45,9 +45,10 @@
 							</view>
 						</view>
 						<text class="text_13">回收人：{{item.recyclePeople}}</text>
-						<text class="text_13">回收价：{{item.recyclePrice}}元</text>
+						<text class="text_13">组合成本：{{item.combinationPrice}}元</text>
 						<text class="text_13">销售人：{{item.sellPeople}}</text>
 						<text class="text_13">销售价：{{item.fundsReceived}}</text>
+						<text class="text_13">业绩：{{item.profit}}</text>
 						<view class="button">
 							<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="sell(item)">抛售</view>
 							<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="shelves(item)">上架</view>

@@ -1,10 +1,10 @@
 <template>
 	<view>
-		<view class="group_2 flex-col" v-for="item in dataList">
+		<view class="group_2 flex-col" v-for="(item,index) in dataList" :key="index">
 			<view class="text-wrapper_1 flex-row justify-between">
 				<text class="text_7">时间:{{item.createTime}}</text>
 			</view>
-			<view class="section_1 flex-row" v-for="items in item.returnRegistrationItemList">
+			<view class="section_1 flex-row" v-for="(items, index) in item.returnRegistrationItemList" :key="index">
 				<view class="" v-if="items.itemType == 0" style="display: flex;">
 					<image :src="$httpImage + items.photo" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
 					</image>

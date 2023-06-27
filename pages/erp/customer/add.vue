@@ -7,7 +7,7 @@
 			<uni-forms-item label="手机" required name="phonenumber" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.phonenumber" placeholder="请输入手机" />
 			</uni-forms-item>
-			<uni-forms-item label="身份证" name="idCard" class="cu-form-group">
+			<uni-forms-item label="身份证" required name="idCard" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.idCard" placeholder="请输入身份证" />
 			</uni-forms-item>
 			<uni-forms-item label="性别" class="cu-form-group">
@@ -66,13 +66,19 @@
 						rules: [{
 							required: true,
 							errorMessage: '手机不能为空'
-						},{
+						}, {
 							validateFunction: function(rule, value, data, callback) {
 								if (!/^[1][3,4,5,7,8,9][0-9]{9}$/.test(value)) {
 									callback('请输入正确的手机号!')
 								}
 								return true
-							}	
+							}
+						}]
+					},
+					idCard: {
+						rules: [{
+							required: true,
+							errorMessage: '身份证不能为空'
 						}]
 					},
 				}
@@ -98,11 +104,11 @@
 						...this.customFormData
 					}).then(res => {
 						uni.showToast({
-							title:'添加成功！',
-							icon:"none"
+							title: '添加成功！',
+							icon: "none"
 						})
 						uni.navigateTo({
-							url:'/pages/erp/customer/customer'
+							url: '/pages/erp/customer/customer'
 						})
 					})
 				}).catch(err => {

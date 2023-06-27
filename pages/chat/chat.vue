@@ -302,6 +302,7 @@
 				console.log('链接出错', res)
 			});
 			uni.onSocketMessage(function(res) {
+				console.log(res, 'chat消息')
 				let msg = JSON.parse(res.data)
 				if (msg.code === 200) {
 					if (msg.data && msg.data.messageType == 1) {
@@ -315,7 +316,6 @@
 								nickName: msg.data.nickName
 							}]
 						}
-						that.setMessageList(datas)
 						that.messageList.push(datas)
 						that.scrollToBottom()
 					}
@@ -738,51 +738,6 @@
 					that.ws.Timer = setInterval(that.ws_send, 28000); //定时发送心跳
 				});
 
-				// 收到消息
-				uni.onSocketMessage(function(res) {
-					let msg = JSON.parse(res.data)
-					console.log(msg.code === 200)
-					if (msg.code === 200) {
-						if (msg.data && msg.data.messageType == 1) {
-							uni.setStorageSync('receiverId', msg.data.senderId)
-							const datas = {
-								datetime: '刚刚',
-								data: [{
-									contextType: msg.data.contextType,
-									message: msg.data.context,
-									sender: 'you',
-									senderName: msg.data.senderName
-								}]
-							}
-							that.setMessageList(datas)
-							that.messageList.push(datas)
-							that.scrollToBottom()
-						}
-						if (msg.data && msg.data.messageType == 3) {
-							// that.messageList.push(msg.data.pageHideCloseWs)
-							let datas = {
-								datetime: '',
-								data: []
-							}
-							msg.data.historyList.map(item => {
-								let items = {
-									contextType: item.contextType,
-									message: item.context,
-									sender: uni.getStorageSync('userinfo').userId === item.senderId ? 'me' : 'you',
-									senderName: item.senderName
-								}
-								datas.data.push(items);
-							})
-							that.messageList.push(datas);
-							that.scrollToBottom()
-						}
-					}
-
-					// let actions = that.domsg()
-					// let action = actions[msg.msgtype] || actions['default']
-					// action.call(this, msg)
-				})
-
 				// 出错
 				uni.onSocketError(function(res) {
 					that.ws.socketOpen = false;
@@ -841,6 +796,7 @@
 				// 		a: 'ping'
 				// 	};
 				// }
+				console.log(message, '手机message')
 				uni.sendSocketMessage({
 					data: JSON.stringify(message)
 				});

@@ -136,19 +136,24 @@
 
 			<view class="padding-lr-sm bg-white products">
 				<view class="products-item">
-					<image src="/static/home/安全保障@1.5x.svg"></image>
+					<image src="/static/home/1.svg"></image>
 					<text>正品保障</text>
 				</view>
 				<view class="products-item">
-					<image src="/static/home/快速高效@1.5x.svg"></image>
+					<image src="/static/home/2.svg"></image>
 					<text>极速发货</text>
 				</view>
 				<view class="products-item">
-					<image src="/static/home/售后 (2)@1.5x.svg"></image>
+					<image src="/static/home/3.svg"></image>
 					<text>售后无忧</text>
 				</view>
 				<!-- <image class="" src="/static/home/baozhang.png" mode="widthFix" style="width: 100%; height: auto" /> -->
 			</view>
+			<!-- 			<u-sticky offset-top="90"> -->
+			<filterDropdown ref="filterDropdown" :menuTop="filtertopnum" :filterData="shopownerFilterData"
+				:defaultSelected="defaultSelected" :updateMenuName="true" @confirm="confirm" dataFormat="Object">
+			</filterDropdown>
+			<!-- </u-sticky> -->
 
 			<view class="tab-list">
 				<!--商品列表-->
@@ -229,6 +234,7 @@
 	import videoList from '@/components/common/list/video-list';
 	import gridSortList from '@/components/common/list/grid-sort-list';
 	import modalImg from '@/components/common/basics/modal-img';
+	import filterDropdown from '@/components/HM-filterDropdownNew/HM-filterDropdown.vue'; //旧筛选组件
 	//======================================================================
 	import _home_data from '@/static/data/home.js'; //虚拟数据
 	import _tool from '@/utils/tools.js';
@@ -263,6 +269,7 @@
 			liveList,
 			videoList,
 			// footerTabbar,
+			filterDropdown,
 			gridSortList,
 			modalImg,
 		},
@@ -274,6 +281,64 @@
 		},
 		data() {
 			return {
+				shopownerFilterData: [{
+						name: '综合排序',
+						type: 'hierarchy',
+						submenu: [{
+								name: '价格由低到高', //全部设为默认，选中时标签栏显示为全部
+								value: '1',
+							},
+							{
+								name: '价格由高到低',
+								value: '2',
+							}
+						],
+					},
+					{
+						name: '价格区间',
+						type: 'hierarchy',
+						submenu: [{
+								name: '0-1000',
+								value: '0',
+							},
+							{
+								name: '1001-3000',
+								value: '1',
+							},
+							{
+								name: '3001-6000',
+								value: '2',
+							},
+							{
+								name: '6000+',
+								value: '3',
+							},
+						],
+					},
+					{
+						name: '成色', //选择
+						type: 'hierarchy',
+						submenu: [{
+								name: '99成新', //设为默认
+								value: '0',
+							},
+							{
+								name: '95成新', //设为默认
+								value: '2',
+							},
+							{
+								name: '9成新', //设为默认
+								value: '3',
+							},
+							{
+								name: '9成新以下', //设为默认
+								value: '4',
+							},
+						],
+					},
+				],
+				defaultSelected: [],
+				filtertopnum: '391', //筛选条高度
 				modelList: [],
 				firstFlag: true,
 				newViews: true,
@@ -365,15 +430,41 @@
 		onShow() {},
 		onLoad() {},
 		onPullDownRefresh() {
-			// this.pageIndex = 1;
-			// this.getProduct();
+			this.pageIndex = 1;
+			this.getProduct();
 		},
 		onReachBottom() {
-			// if (this.loadmore == 'noMore') return;
-			// // this.pageIndex += 1;
-			// this.getProduct();
+			if (this.loadmore == 'noMore') return;
+			this.pageIndex += 1;
+			this.getProduct();
+		},
+		onPageScroll(e) {
+			console.log(e)
 		},
 		methods: {
+			scorllTop() {
+				const query = uni.createSelectorQuery()
+				query
+					.select('.filterDropdown')
+					.boundingClientRect((data) => {
+						console.log(data, 'data')
+						let pageScrollTop = Math.round(data.top)
+						// uni.pageScrollTo({
+						// 	scrollTop: pageScrollTop, //滚动的距离
+						// 	duration: 0, //过渡时间
+						// })
+					})
+					.exec()
+			},
+			confirm(e) {
+				const query = {
+					orderRule: e.value[0][0],
+					priceBetween: e.value[1][0],
+					conditionInfo: e.value[2][0]
+				}
+
+				this.$emit('search', query)
+			},
 			checkView(e) {
 				if (e === 'new') {
 					uni.setStorageSync('isNew', 1);
@@ -437,7 +528,6 @@
 			},
 			// 获取产品列表
 			// getProduct() {
-			// 	console.log(222);
 			// 	let that = this;
 			// 	let params = {
 			// 		firstFlag: this.firstFlag,
@@ -462,7 +552,6 @@
 						this.headInfo.opacity = num;
 						//触顶了
 						if (scrollTop == 0) {
-							console.log('触顶了刷新');
 							//设置刷新
 							that.loadData();
 						}
@@ -590,7 +679,7 @@
 			gridSortTap(e) {
 				// 点击品牌
 				uni.navigateTo({
-					url: '/pages/home/sort_list?seriesId=' + e.data.seriesId,
+					url: '/pages/home/sort_list?seriesId=' + e.data.seriesId + '&seriesName=' + e.data.seriesName,
 				});
 			},
 			goToTap() {
@@ -636,7 +725,6 @@
 				}
 			},
 			async kefuInitUser() {
-				console.log(this.userInfo, '222222');
 				const res = await kefuInitUser({});
 			},
 			// 联系客服
@@ -714,7 +802,7 @@
 					height: 32px;
 					line-height: 32px;
 					position: absolute;
-					right: 37px;
+					right: 66rpx;
 					background-image: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%);
 				}
 

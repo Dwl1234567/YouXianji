@@ -1,11 +1,6 @@
 <template>
-	<view
-		class="HMfilterDropdown"
-		:class="{'setDropdownBottom':maskVisibility}"
-		:style="{'top':menuTop+'rpx'}"
-		@touchmove.stop.prevent="discard"
-		@tap.stop="discard"
-	>
+	<view class="HMfilterDropdown" :class="{'setDropdownBottom':maskVisibility}" :style="{'top':menuTop+'rpx'}"
+		@touchmove.stop.prevent="discard" @tap.stop="discard">
 		<!-- 顶部菜单 -->
 		<view class="nav">
 			<block v-for="(item,index) in menu" :key="index">
@@ -22,19 +17,12 @@
 				<!-- 多级菜单 -->
 				<block v-if="(page.type=='hierarchy'||page.type=='hierarchy-column')&& page.submenu.length>0">
 					<!-- 第一级菜单 -->
-					<scroll-view
-						class="sub-menu-list"
+					<scroll-view class="sub-menu-list"
 						:class="{'first':activeMenuArr[page_index].length>1,'alone':activeMenuArr[page_index].length<=1}"
-						:scroll-y="true"
-						:scroll-into-view="'first_id'+firstScrollInto"
-					>
+						:scroll-y="true" :scroll-into-view="'first_id'+firstScrollInto">
 						<block v-for="(sub,index) in page.submenu" :key="sub.value">
-							<view
-								class="sub-menu"
-								:id="'first_id'+index"
-								:class="{'on':activeMenuArr[page_index][0]==index}"
-								@tap="selectHierarchyMenu(page_index,index,null,null)"
-							>
+							<view class="sub-menu" :id="'first_id'+index" :class="{'on':activeMenuArr[page_index][0]==index}"
+								@tap="selectHierarchyMenu(page_index,index,null,null)">
 								<view class="menu-name">
 									<text>{{sub.name}}</text>
 									<text class="iconfont selected"></text>
@@ -45,42 +33,28 @@
 					<block v-if="page.type=='hierarchy'">
 						<block v-for="(sub,index) in page.submenu" :key="sub.value">
 							<!-- 第二级菜单 -->
-							<scroll-view
-								class="sub-menu-list not-first"
-								:scroll-y="true"
+							<scroll-view class="sub-menu-list not-first" :scroll-y="true"
 								v-if="activeMenuArr[page_index][0]==index&&sub.submenu.length>0"
-								:scroll-into-view="'second_id'+secondScrollInto"
-							>
+								:scroll-into-view="'second_id'+secondScrollInto">
 								<block v-for="(sub_second,second_index) in sub.submenu" :key="sub_second.value">
-									<view
-										class="sub-menu"
-										:id="'second_id'+second_index"
-										:class="{'on':activeMenuArr[page_index][1]==second_index}"
-									>
-										<view
-											class="menu-name"
-											@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)"
-										>
+									<view class="sub-menu" :id="'second_id'+second_index"
+										:class="{'on':activeMenuArr[page_index][1]==second_index}">
+										<view class="menu-name"
+											@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)">
 											<text>{{sub_second.name}}</text>
 											<text class="iconfont selected"></text>
 										</view>
 										<!-- 第三级菜单 -->
-										<view
-											class="more-sub-menu"
-											v-if="sub_second.submenu&&sub.submenu.length>0&&sub_second.submenu.length>0"
-										>
+										<view class="more-sub-menu"
+											v-if="sub_second.submenu&&sub.submenu.length>0&&sub_second.submenu.length>0">
 											<block v-for="(sub2,sub2_index) in sub_second.submenu" :key="sub2.value">
-												<text
-													v-if="sub_second.showAllSub || (sub2_index<8)"
+												<text v-if="sub_second.showAllSub || (sub2_index<8)"
 													:class="{'on':activeMenuArr[page_index][1]==second_index&&activeMenuArr[page_index][2]==sub2_index}"
-													@tap.stop="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)"
-												>
+													@tap.stop="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)">
 													{{sub2.name}}
 												</text>
-												<text
-													v-if="sub_second.showAllSub!=true && sub2_index==8 && sub_second.submenu.length>9"
-													@tap.stop="showMoreSub(second_index)"
-												>
+												<text v-if="sub_second.showAllSub!=true && sub2_index==8 && sub_second.submenu.length>9"
+													@tap.stop="showMoreSub(second_index)">
 													更多
 													<text class="iconfont triangle"></text>
 												</text>
@@ -96,22 +70,14 @@
 					<block v-else-if="page.type=='hierarchy-column'">
 						<!-- 第二级菜单 -->
 						<block v-for="(sub,index) in page.submenu" :key="index">
-							<scroll-view
-								class="sub-menu-list not-first"
-								:scroll-y="true"
+							<scroll-view class="sub-menu-list not-first" :scroll-y="true"
 								v-if="activeMenuArr[page_index][0]==index&&sub.submenu.length>0"
-								:scroll-into-view="'second_id'+secondScrollInto"
-							>
+								:scroll-into-view="'second_id'+secondScrollInto">
 								<block v-for="(sub_second,second_index) in sub.submenu" :key="second_index">
-									<view
-										class="sub-menu"
-										:id="'second_id'+second_index"
-										:class="{'on':activeMenuArr[page_index][1]==second_index}"
-									>
-										<view
-											class="menu-name"
-											@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)"
-										>
+									<view class="sub-menu" :id="'second_id'+second_index"
+										:class="{'on':activeMenuArr[page_index][1]==second_index}">
+										<view class="menu-name"
+											@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)">
 											<text>{{sub_second.name}}</text>
 										</view>
 									</view>
@@ -121,22 +87,14 @@
 						<!-- 第三级菜单 -->
 						<block v-for="(sub,index) in page.submenu">
 							<block v-for="(sub_second,second_index) in sub.submenu">
-								<scroll-view
-									class="sub-menu-list not-first third"
-									:scroll-y="true"
+								<scroll-view class="sub-menu-list not-first third" :scroll-y="true"
 									v-if="activeMenuArr[page_index][0]==index&&activeMenuArr[page_index][1]==second_index&&sub_second.submenu.length>0"
-									:scroll-into-view="'third_id'+thirdScrollInto"
-								>
+									:scroll-into-view="'third_id'+thirdScrollInto">
 									<block v-for="(sub2,sub2_index) in sub_second.submenu" :key="sub2_index">
-										<view
-											class="sub-menu"
-											:id="'third_id'+sub2_index"
-											:class="{'on':activeMenuArr[page_index][2]==sub2_index}"
-										>
-											<view
-												class="menu-name"
-												@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)"
-											>
+										<view class="sub-menu" :id="'third_id'+sub2_index"
+											:class="{'on':activeMenuArr[page_index][2]==sub2_index}">
+											<view class="menu-name"
+												@tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)">
 												<text>{{sub2.name}}</text>
 											</view>
 										</view>
@@ -154,12 +112,8 @@
 							<view class="box" v-for="(box,box_index) in page.submenu" :key="box_index">
 								<view class="title">{{box.name}}</view>
 								<view class="labels">
-									<view
-										v-for="(label,label_index) in box.submenu"
-										:key="label_index"
-										@tap="selectFilterLabel(page_index,box_index,label_index)"
-										:class="{'on':label.selected}"
-									>
+									<view v-for="(label,label_index) in box.submenu" :key="label_index"
+										@tap="selectFilterLabel(page_index,box_index,label_index)" :class="{'on':label.selected}">
 										{{label.name}}
 									</view>
 								</view>
@@ -179,12 +133,8 @@
 							<view class="box" v-for="(box,box_index) in page.submenu" :key="box_index">
 								<view class="title">{{box.name}}</view>
 								<view class="labels">
-									<view
-										v-for="(label,label_index) in box.submenu"
-										:key="label_index"
-										@tap="selectRadioLabel(page_index,box_index,label_index, box)"
-										:class="{'on':label.selected}"
-									>
+									<view v-for="(label,label_index) in box.submenu" :key="label_index"
+										@tap="selectRadioLabel(page_index,box_index,label_index, box)" :class="{'on':label.selected}">
 										{{label.name}}
 									</view>
 								</view>
@@ -295,11 +245,11 @@
 				this.menu = tmpMenu;
 				//初始化选中项数组
 				tmpMenuActiveArr =
-					this.defaultActive.length > 0
-						? this.defaultActive
-						: this.activeMenuArr.length > 0
-						? this.activeMenuArr
-						: tmpMenuActiveArr;
+					this.defaultActive.length > 0 ?
+					this.defaultActive :
+					this.activeMenuArr.length > 0 ?
+					this.activeMenuArr :
+					tmpMenuActiveArr;
 				this.defaultActive = [];
 				this.activeMenuArr.splice(0, this.activeMenuArr.length, ...JSON.parse(JSON.stringify(tmpMenuActiveArr)));
 				// this.activeMenuArr = JSON.parse(JSON.stringify(tmpMenuActiveArr));
@@ -428,7 +378,7 @@
 				this.filterLabelChange(page_index, box_index, label_index, box);
 
 				let that = this;
-				setTimeout(function () {
+				setTimeout(function() {
 					that.$forceUpdate();
 				}, 200);
 			},
@@ -530,9 +480,9 @@
 								item[j] = s;
 								s.forEach((v, k) => {
 									value[i][j][k] =
-										v == null || v >= this.subData[i].submenu[j].submenu.length
-											? null
-											: this.subData[i].submenu[j].submenu[v].value;
+										v == null || v >= this.subData[i].submenu[j].submenu.length ?
+										null :
+										this.subData[i].submenu[j].submenu[v].value;
 									if (this.subData[i].type == 'radio' && value[i][j][k] == null) {
 										value[i][j] = [];
 										index[i][j] = [];
@@ -674,6 +624,7 @@
 			getMaxFloor(treeData) {
 				let floor = 0;
 				let max = 0;
+
 				function each(data, floor) {
 					data.forEach((e) => {
 						max = floor > max ? floor : max;
@@ -703,19 +654,23 @@
 		left: 0;
 		// top:100px;
 		overflow-y: hidden;
+
 		&.setDropdownBottom {
 			// height: 345px;
 			bottom: 0;
 		}
+
 		view {
 			display: flex;
 			flex-wrap: nowrap;
 		}
 	}
+
 	.region {
 		flex: 1;
 		height: 44px;
 	}
+
 	.nav {
 		width: 100%;
 		height: 45px;
@@ -723,6 +678,7 @@
 		z-index: 12;
 		background-color: #ffffff;
 		flex-direction: row;
+
 		.first-menu {
 			width: 100%;
 			font-size: 13px;
@@ -739,12 +695,14 @@
 					color: #ec652b;
 				}
 			}
+
 			.name {
 				height: 20px;
 				text-align: center;
 				text-overflow: clip;
 				overflow: hidden;
 			}
+
 			.iconfont {
 				width: 13px;
 				height: 13px;
@@ -754,6 +712,7 @@
 			}
 		}
 	}
+
 	.sub-menu-class {
 		width: 100%;
 		position: absolute;
@@ -766,6 +725,7 @@
 		overflow: hidden;
 		flex-direction: row;
 		transition: transform 0.15s linear;
+
 		&.hide {
 			display: none;
 		}
@@ -774,31 +734,37 @@
 			transform: translate3d(0, calc(44px + 1rpx), 0);
 		}
 	}
+
 	.sub-menu-list {
 		width: 100%;
 		height: 345px;
 		flex-direction: column;
+
 		.sub-menu {
 			min-height: 44px;
 			font-size: 13px;
 			flex-direction: column;
 			padding-right: 15px;
-			> .menu-name {
+
+			>.menu-name {
 				height: 44px;
 				flex-direction: row;
 				align-items: center;
 				justify-content: space-between;
-				> .iconfont {
+
+				>.iconfont {
 					display: none;
 					font-size: 18px;
 					color: #ec652b;
 				}
 			}
 		}
+
 		&.first {
 			flex-shrink: 0;
 			width: 236rpx;
 			background-color: #f0f0f0;
+
 			.sub-menu {
 				padding-left: 15px;
 
@@ -806,12 +772,15 @@
 					background-color: #fff;
 				}
 			}
+
 			box-shadow: 5rpx 0 5rpx rgba($color: #000000, $alpha: 0.1);
 		}
+
 		&.alone {
 			max-height: 345px;
 			min-height: 170px;
 			height: auto;
+
 			.sub-menu {
 				min-height: calc(44px - 1rpx);
 				margin-left: 15px;
@@ -820,44 +789,53 @@
 				&.on {
 					color: #ec652b;
 
-					> .menu-name {
-						> .iconfont {
+					>.menu-name {
+						>.iconfont {
 							display: block;
 						}
 					}
 				}
 			}
 		}
+
 		&.third {
 			// box-shadow: 5rpx 0 20rpx rgba($color: #000000, $alpha: 0.2) inset;
 		}
+
 		&.not-first {
 			box-shadow: 5rpx 0 5rpx rgba($color: #000000, $alpha: 0.1);
+
 			.sub-menu {
 				min-height: calc(44px - 1rpx);
 				margin-left: 15px;
 				border-bottom: solid 1rpx #e5e5e5;
-				> .menu-name {
+
+				>.menu-name {
 					height: calc(44px - 1rpx);
-					> .iconfont {
+
+					>.iconfont {
 						display: none;
 						font-size: 18px;
 						color: #ec652b;
 					}
 				}
+
 				&.on {
 					color: #ec652b;
-					> .menu-name {
-						> .iconfont {
+
+					>.menu-name {
+						>.iconfont {
 							display: block;
 						}
 					}
 				}
+
 				.more-sub-menu {
 					flex-direction: row;
 					flex-wrap: wrap;
 					padding-bottom: 9px;
-					> text {
+
+					>text {
 						height: 30px;
 						border-radius: 3px;
 						background-color: #f5f5f5;
@@ -870,13 +848,16 @@
 						flex: 0 0 calc(33.33% - 6px);
 						overflow: hidden;
 						font-size: 12px;
+
 						&:nth-child(3n) {
 							margin-right: 0;
 						}
+
 						&.on {
 							border-color: #f6c8ac;
 							color: #ec652b;
 						}
+
 						.iconfont {
 							color: #9b9b9b;
 						}
@@ -885,6 +866,7 @@
 			}
 		}
 	}
+
 	.filter {
 		width: 100%;
 		height: 345px;
@@ -892,10 +874,12 @@
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
+
 		.menu-box {
 			width: 698rpx;
 			height: calc(345px - 75px);
 			flex-shrink: 1;
+
 			.box {
 				width: 100%;
 				padding-top: 16px;
@@ -906,6 +890,7 @@
 					font-size: 13px;
 					color: #888;
 				}
+
 				.labels {
 					flex-direction: row;
 					flex-wrap: wrap;
@@ -915,7 +900,8 @@
 						background-color: #ec652b;
 						color: #fff;
 					}
-					> view {
+
+					>view {
 						box-sizing: border-box;
 						width: calc((698rpx - 30rpx * 3) / 4);
 						height: 30px;
@@ -928,6 +914,7 @@
 						flex-direction: row;
 						justify-content: center;
 						align-items: center;
+
 						&:nth-child(4n) {
 							margin-right: 0;
 						}
@@ -935,6 +922,7 @@
 				}
 			}
 		}
+
 		.btn-box {
 			flex-shrink: 0;
 			width: 698rpx;
@@ -943,7 +931,8 @@
 			align-items: center;
 			// justify-content: space-between;
 			justify-content: center; // add by david 20221202
-			> view {
+
+			>view {
 				width: 320rpx;
 				height: 40px;
 				border-radius: 40px;
@@ -952,16 +941,19 @@
 				align-items: center;
 				justify-content: center;
 			}
+
 			.reset {
 				color: #ec652b;
 				display: none; // add by david 20221202
 			}
+
 			.submit {
 				color: #fff;
 				background-color: #ec652b;
 			}
 		}
 	}
+
 	.mask {
 		z-index: 10;
 		position: fixed;
@@ -971,28 +963,34 @@
 		bottom: 0;
 		background-color: rgba(0, 0, 0, 0);
 		transition: background-color 0.15s linear;
+
 		&.show {
 			background-color: rgba(0, 0, 0, 0.5);
 		}
+
 		&.hide {
 			display: none;
 		}
 	}
+
 	/* 字体图标 */
 	@font-face {
 		font-family: 'HM-FD-font';
 		src: url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAALAAAsAAAAABpQAAAJzAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgp4gQIBNgIkAwwLCAAEIAWEbQc5G8sFERWMIbIfCbbzqA4hp7InSBibVsYGb4J42o82b3e/nJlHMw/NHbGOlwKJRCRpwzPtpAECCOZubdqxjYpQLMlVg+70/08edrgQOtx2ukpVyApZn+dyehPoQObHo3O85rYx9vOjXoBxQIHugW2yIkqIW2QXcScu4jwE8CSWbKSmrqUHFwOaJoCsLM5P4haSGIxRcRHshrUGucLCVcfqI3AZfV/+USguKCwNmtsxVztDxU/n55C+3W0Z4QQpEOTNFqCBbMCAjDUWB9CIwWk87aa70cYgqLkyd3dEmm+18R8eKATEBrV7A5CulBT8dKiWOYZk412XNcDdKSEKSGODnyKIDl+dmVt9/Dx4pu/xyeutkMlHISGPTsPCnoTNP9nOT6wTtDdlO6dPr47efvj942lkYuQzrhMKEjq9N6y98P3340gmlJ/RStUD6F31CAEEPtUW94/7rf+7XgaAz57X0ZHXAGsFFwVgw38yALuMb0IBbVyNamFYEw4oKMDTj3AHRQP5Pt4dci9VwSVkRNQh5r7CLskZadhsWHhRDBsXczk8ZYk3ewnCxmQeQKa3BOHvA8XXO2j+vqRhf7CE+sPmn4anvoL29JLa4qqaUQkmoK+QG2osCckq7txi2leK86aIPyJ3eQZ8xytXYmyQ51jQndJAxIJlqiGSLsOqImiZCjTiZCJt6Lq26U2OoXqwUo0hRaAE0K5AziANy/uLVeXzWyjVqyjcoeupjxDr5MMDn8MDkLG9Aenu5ZrOSSoghAUsRmogkkahSoWAtnlUARnCkY3It0Iu7mWhdmd9Z/19BwBP6GidEi0G56opckXTGZVSPxgAAAA=');
 	}
+
 	.iconfont {
 		font-family: 'HM-FD-font' !important;
 		font-size: 13px;
 		font-style: normal;
 		color: #757575;
+
 		&.triangle {
 			&:before {
 				content: '\e65a';
 			}
 		}
+
 		&.selected {
 			&:before {
 				content: '\e607';

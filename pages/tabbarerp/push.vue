@@ -36,14 +36,14 @@
 					<view class="cu-form-group" v-if="!reorganizeId && !sellFormId">
 						<view class="title">货品</view>
 						<view class="cu-capsule radius">
-							<view class="padding-right" @tap="scanTap">
+							<!-- <view class="padding-right" @tap="scanTap">
 								<view class="cu-tag bg-deepblue">
 									<text class="cuIcon-scan text-white"></text>
 								</view>
 								<view class="cu-tag line-deepblue">
 									扫
 								</view>
-							</view>
+							</view> -->
 
 							<view class="" @tap="selectSellTap">
 								<view class="cu-tag bg-red">
@@ -154,7 +154,7 @@
 					<view class="guadan" :class="switchGD?'show':''">
 						<view class="cu-form-group">
 							<view class="title">截止选择</view>
-							<picker mode="date" :value="putendtime" start="2015-09-01" end="2020-09-01" @change="DateChange">
+							<picker mode="date" :value="putendtime" @change="DateChange">
 								<view class="picker">
 									{{putendtime}}
 								</view>
@@ -215,8 +215,8 @@
 					<view class="cu-list menu-avatar">
 						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''"
 							v-for="(item,index) in hsdangoodsList" :key="index" @touchstart="ListTouchStart"
-							@touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index">
-							<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ item.image +')'}]">
+							@touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index" @tap="goDetail">
+							<view class="cu-avatar lg" :style="[{backgroundImage:'url('+ item.backPhoto +')'}]">
 							</view>
 							<view class="content">
 								<view class="text-grey">{{item.title}}</view>
@@ -408,18 +408,11 @@
 	//import _sell_data from '@/static/data/sell.js';	//虚拟数据
 	import _tool from '@/utils/tools.js'; //工具函数
 	import {
-		erpProductGetdata,
-		erpDayin,
-		updatesingletransfer,
-		selladd,
-		erppurchaseclickattrview,
-		erppurchaseadd,
-		erppurchaseclickattrview1
-	} from "@/api/erpapi.js"
-	import {
 		fittingsForm,
 		selectReoragnizeSellInfo,
-		empCreateRecycleForm
+		empCreateRecycleForm,
+		recyclePreForm,
+		recyclePreFormAdd
 	} from "@/api/erp.js"
 	import {
 		raiseUpload
@@ -432,6 +425,8 @@
 		},
 		data() {
 			return {
+				dd: null,
+				modelId: null,
 				fileList1: [],
 				sellFormId: null,
 				reorganizeId: null,
@@ -450,7 +445,7 @@
 				switchGD: false,
 				modalName: null,
 				modalName2: null,
-				customerInfo: '',
+				customerInfo: {},
 				goodsList: [], //销售单
 				hsgoodsList: [], //回收单
 				hsdangoodsList: [], //回收货品
@@ -492,14 +487,19 @@
 			}
 		},
 		onUnload() {
+			this.hsdangoodsList = []
+			this.customerInfo = {}
+			uni.removeStorageSync('data')
 			uni.removeStorageSync('updatehouse')
 			uni.removeStorageSync('updatecustomer')
 		},
 		watch: {
 			customer() {
-				this.ReceivablesMoney = 0
-				this.totalPrice = 0
-				if (!this.reorganizeId) {
+				if (!this.sellFormId) {
+					this.ReceivablesMoney = 0
+					this.totalPrice = 0
+				}
+				if (!this.reorganizeId && !this.sellFormId) {
 					this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
 						Number(this.ReceivablesMoney) : 0;
 					this.totalPrice = this.customer.costPrice;
@@ -510,15 +510,16 @@
 							this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
 						})
 					}
-				} else {
+				} else if (!this.sellFormId) {
 					this.selectReoragnizeSellInfo(this.reorganizeId)
 				}
-
 			},
 			house() {
-				this.ReceivablesMoney = 0
-				this.totalPrice = 0
-				if (!this.reorganizeId) {
+				if (!this.sellFormId) {
+					this.ReceivablesMoney = 0
+					this.totalPrice = 0
+				}
+				if (!this.reorganizeId && !this.sellFormId) {
 					this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
 						Number(this.ReceivablesMoney) : 0;
 					this.totalPrice = this.customer.costPrice;
@@ -529,7 +530,7 @@
 							this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
 						})
 					}
-				} else {
+				} else if (!this.sellFormId) {
 					this.selectReoragnizeSellInfo(this.reorganizeId)
 				}
 
@@ -541,6 +542,11 @@
 			//this.typeListData();
 			if (options.tab == 1) {
 				this.TabCur = 1
+				this.dd = options.recycleFormId
+				this.recycleFormId = options.recycleFormId
+				if (options.recycleFormId) {
+					this.recyclePreFormAdd(options.recycleFormId)
+				}
 			}
 			const data = uni.getStorageSync('data')
 			if (data) {
@@ -557,9 +563,14 @@
 			this.reorganizeId = options.reorganizeId
 			this.sellFormId = options.sellFormId
 			if (options.sellFormId) {
+				this.customerInfo.clientName = uni.getStorageSync('updatecustomer').clienterName
+				this.customerInfo.clientId = uni.getStorageSync('updatecustomer').clienterId
+				this.remark = uni.getStorageSync('updatecustomer').remark
 				this.deviceId = uni.getStorageSync('updatecustomer').deviceId
 				this.recycleFormId = uni.getStorageSync('updatecustomer').recycleFormId
 				this.qualityInfoId = uni.getStorageSync('updatecustomer').qualityInfoId
+				this.ReceivablesMoney = uni.getStorageSync('updatecustomer').debtPrice
+				this.totalPrice = uni.getStorageSync('updatecustomer').debtPrice
 			}
 			this.typeListData = typeListData;
 			if (options.reorganizeId) {
@@ -569,22 +580,53 @@
 		onShow() {
 			let that = this;
 			uni.$once('updatecustomer', function(data) {
+				console.log(222)
 				that.customerInfo = {
 					...data
 				};
 			})
+
+			if (uni.getStorageSync('updatecustomer')) {
+				this.goodsList = [uni.getStorageSync('updatecustomer')]
+			}
+			this.house = uni.getStorageSync('updatehouse')
 			this.customer = uni.getStorageSync('updatecustomer')
 			if (this.customer) {
 				this.deviceId = this.customer.deviceId
 				this.recycleFormId = this.customer.recycleFormId
 				this.qualityInfoId = this.customer.qualityInfoId
 			}
-			if (uni.getStorageSync('updatecustomer')) {
-				this.goodsList = [uni.getStorageSync('updatecustomer')]
-			}
-			this.house = uni.getStorageSync('updatehouse')
 		},
 		methods: {
+			// 修改回收
+			goDetail() {
+				if (this.dd) {
+					uni.navigateTo({
+						url: '/pages/tabbarerp/editDianDian?recycleOrderId=' + this.recycleFormId + '&modelId=' + this.modelId
+					})
+				}
+
+			},
+			// 获取回收单详情
+			recyclePreFormAdd(id) {
+				recyclePreFormAdd(id).then(res => {
+					this.hsdangoodsList = [res.data]
+					this.modelId = res.data.modelId
+					this.hsweixinnum = res.data.recycleFormPayment.wxPaymentPrice
+					this.hsalipaynum = res.data.recycleFormPayment.zfbPaymentPrice
+					this.hsxianjinnum = res.data.recycleFormPayment.cashPaymentPrice
+					this.hsdihuonum = res.data.recycleFormPayment.bankCardPrice
+					this.hsyinggaiMoney = res.data.recycleFormPayment.wxPaymentPrice + res.data.recycleFormPayment
+						.zfbPaymentPrice + res.data.recycleFormPayment.cashPaymentPrice + res.data.recycleFormPayment
+						.bankCardPrice
+					const imgList1 = []
+					res.data.recycleFormPayment.paymentVoucher.split(',').map(item => {
+						imgList1.push(this.$httpImage + item)
+					})
+					console.log(imgList1)
+					this.imgList1 = imgList1
+				})
+			},
 			// 删除图片
 			deletePic(event) {
 				this[`fileList${event.name}`].splice(event.index, 1);
@@ -642,7 +684,7 @@
 						this.qualityInfoId = res.data.qualityInfoId
 						this.recycleFormId = res.data.recycleFormId
 						this.totalPrice = res.data.costPrice;
-						this.ReceivablesMoney = res.data.combinationPrice
+						this.ReceivablesMoney = res.data.sellPrice
 						if (this.house) {
 							this.house.map(item => {
 								this.totalPrice = Number(this.totalPrice) + (Number(item.fittingsCostPrice) * Number(item.value))
@@ -655,7 +697,7 @@
 			},
 			// 截止挂单时间
 			DateChange(e) {
-				let data = e.detail.value;
+				this.putendtime = e.detail.value;
 			},
 			// 应收款
 			changemoney() {
@@ -989,17 +1031,32 @@
 				paramsData.prefabricate = type
 				paramsData.clientId = this.customerInfo.id
 				paramsData.remark = this.remark1
-				empCreateRecycleForm(paramsData).then(res => {
-					if (res.code === 200) {
-						this.$u.toast('开单成功');
-						if (type == 0) {
-							this.hsdangoodsList = []
-							this.customerInfo = {}
-							uni.removeStorageSync('data')
-						}
+				if (type == 0) {
+					empCreateRecycleForm(paramsData).then(res => {
+						if (res.code === 200) {
+							this.$u.toast('开单成功');
+							if (type == 0) {
+								this.hsdangoodsList = []
+								this.customerInfo = {}
+								uni.removeStorageSync('data')
+							}
 
-					}
-				})
+						}
+					})
+				} else {
+					recyclePreForm(paramsData).then(res => {
+						if (res.code === 200) {
+							this.$u.toast('开单成功');
+							if (type == 1) {
+								this.hsdangoodsList = []
+								this.customerInfo = {}
+								uni.removeStorageSync('data')
+							}
+
+						}
+					})
+				}
+
 			},
 			upbiaojiTap(type) {
 
@@ -1060,6 +1117,14 @@
 				}
 
 			},
+			ViewImage(e) {
+				const a = [e.currentTarget.dataset.url]
+				console.log(a)
+				uni.previewImage({
+					urls: a,
+					current: 0
+				});
+			},
 			DelImg(e) {
 				let that = this;
 				uni.showModal({
@@ -1067,6 +1132,7 @@
 					content: '确定要删除吗？',
 					success: res => {
 						if (res.confirm) {
+							that.imgList1.splice(e.currentTarget.dataset.index, 1)
 							that.imgList.splice(e.currentTarget.dataset.index, 1)
 						}
 					}

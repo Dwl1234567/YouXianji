@@ -56,6 +56,9 @@
 		kefulogin
 	} from '@/api/common.js';
 	import {
+		getNearestStoreList
+	} from '@/api/commons.js';
+	import {
 		UserLogin
 	} from '@/api/mall.js';
 	export default {
@@ -85,7 +88,9 @@
 		},
 		onLoad() {
 			console.log('登陆页面')
-
+		},
+		onShow() {
+			this.$socket.close()
 		},
 		methods: {
 			toLogin() {
@@ -170,12 +175,11 @@
 								setTimeout(() => {
 									this.getUserInfo();
 									this.$store.commit('login', );
-									this.load()
-									this.$store.commit('setAddress', data);
+									// this.$store.commit('setAddress', data);
 								}, 1200)
 							}
 							// console.log(uni.getStorageSync('url'), 'uni.getStorageSync();');
-
+							this.getstoresstorelatelystore()
 							if (uni.getStorageSync('url')) {
 								uni.navigateTo({
 									url: uni.getStorageSync('url'),
@@ -190,6 +194,21 @@
 					.catch((err) => {
 						uni.$u.toast(err.msg);
 					});
+			},
+			// 获取最近门店
+			getstoresstorelatelystore() {
+				getNearestStoreList({
+					latitude: this.latitude,
+					longitude: this.longitude,
+				}).then((res) => {
+					this.latelystoreInfoAll = res.data;
+					this.latelystoreInfo = res.data[0];
+					this.storeId = res.data[0].storeId;
+					uni.setStorageSync('storeId', res.data[0].storeId);
+					uni.setStorageSync('nearbyStores', res.data);
+					// this.shop_latitide = res.data.latitude;
+					// this.shop_longtude = res.data.longitude;
+				});
 			},
 			// 初始化链接
 			load: function() {
@@ -266,6 +285,8 @@
 					});
 					uni.setStorageSync('userinfo', res.data);
 					this.$store.commit('setUserInfo', res.data);
+					console.log('login')
+					this.$socket.open()
 				});
 			},
 			// 建立链接

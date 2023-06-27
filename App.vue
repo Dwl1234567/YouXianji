@@ -105,6 +105,7 @@
 		},
 		onShow: function() {
 			if (uni.getStorageSync('userinfo')) {
+				console.log('app/vue')
 				this.$socket.open()
 			}
 			let that = this

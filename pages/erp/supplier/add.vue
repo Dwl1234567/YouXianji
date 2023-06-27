@@ -4,10 +4,10 @@
 			<uni-forms-item label="供应商名称" labelWidth="120" required name="name" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.supplierName" placeholder="请输入供应商名称" />
 			</uni-forms-item>
-			<uni-forms-item label="联系人" labelWidth="120" name="contact" class="cu-form-group">
+			<uni-forms-item label="联系人" required labelWidth="120" name="contact" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.supplierLinkname" placeholder="请输入联系人" />
 			</uni-forms-item>
-			<uni-forms-item label="联系人手机号" labelWidth="120" name="phone" class="cu-form-group">
+			<uni-forms-item label="联系人手机号" required labelWidth="120" name="phone" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.supplierPhone" placeholder="请输入联系人手机号" />
 			</uni-forms-item>
 			<uni-forms-item label="备注" class="cu-form-group">
@@ -21,7 +21,9 @@
 </template>
 
 <script>
-	import { addsupplier } from '@/api/erp.js';
+	import {
+		addsupplier
+	} from '@/api/erp.js';
 	export default {
 		components: {},
 		data() {
@@ -30,8 +32,7 @@
 				textareaAValue: '',
 				radio: '0',
 				// 单选数据源
-				sexs: [
-					{
+				sexs: [{
 						text: '男',
 						value: 0,
 					},
@@ -53,12 +54,22 @@
 				// 自定义表单校验规则
 				customRules: {
 					supplierName: {
-						rules: [
-							{
-								required: true,
-								errorMessage: '供应商名称不能为空',
-							},
-						],
+						rules: [{
+							required: true,
+							errorMessage: '供应商名称不能为空',
+						}, ],
+					},
+					supplierLinkname: {
+						rules: [{
+							required: true,
+							errorMessage: '联系人不能为空',
+						}, ],
+					},
+					supplierPhone: {
+						rules: [{
+							required: true,
+							errorMessage: '手机号不能为空',
+						}, ],
 					},
 				},
 			};

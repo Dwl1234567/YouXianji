@@ -136,7 +136,7 @@
 		methods: {
 
 			tapgoods(info) {
-				const list = uni.getStorageSync('model_list') || []
+				const list = []
 				if (list) {
 					let isTrue = false
 					list.map(item => {

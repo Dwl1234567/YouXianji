@@ -1327,7 +1327,6 @@
 					this.showBottom = true;
 				}
 				// that.writeBottom = e.detail.height ? e.detail.height : this.showBottom = true;
-				// console.log(222)
 				// this.showBottom = true
 			},
 			// 输入框输入

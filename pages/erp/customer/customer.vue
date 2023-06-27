@@ -9,7 +9,7 @@
 			<!--标题栏-->
 			<bar-title bgColor="bg-white" adress="/pages/tabbarerp/push">
 				<block slot="content">客户列表</block>
-				<block slot="right" v-if="isShow == true">
+				<block slot="right" v-if="isShow != 'false'">
 					<button class="cu-btn sm line-red round" @tap="addCustomer">
 						<text class="cuIcon-add" />
 						添加客户

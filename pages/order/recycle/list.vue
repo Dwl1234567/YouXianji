@@ -39,7 +39,7 @@
 											<image :src="$httpImage + item.modelPhoto" mode="widthFix"></image>
 										</view>
 										<view class="text-group_1 flex-col">
-											<text class="text_5">{{item.modelName}}</text>
+											<text class="text_5">{{item.modelName}} {{item.label}}</text>
 											<text class="text_6">{{item.deviceLabel}}</text>
 											<text class="text_7">序列号：{{item.deviceNo}}</text>
 											<view class="text-wrapper_2 flex-row justify-between">

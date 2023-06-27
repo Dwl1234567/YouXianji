@@ -385,10 +385,12 @@
 			},
 			//创建订单
 			createOrder() {
-				console.log({
-					orderPaymentId: Number(this.orderPaymentId),
-					paymentType: this.isWx ? '1' : '0',
-				});
+				if (this.addressId) {
+					uni.showToast({
+						title: '没有地址请添加地址'
+					})
+					return
+				}
 				if (!this.isWx) {
 					testAliPay({
 						orderPaymentId: this.orderPaymentId,

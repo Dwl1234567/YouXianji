@@ -9,6 +9,19 @@ const socket = {
 			ErrorMsg: []
 		},
 	},
+	close() {
+		const that = this
+		uni.closeSocket({
+			success: res => {
+				that.data.ws = {
+					time: null,
+					open: false,
+					SocketTask: null,
+					ErrorMsg: []
+				}
+			}
+		})
+	},
 	open() {
 		// 建立链接
 		const that = this
@@ -20,52 +33,48 @@ const socket = {
 			},
 			success: res => {
 				console.log('开始建立链接')
-				that.sendFirst()
 			},
 			complete: res => {}
 		});
+
 		uni.onSocketOpen(function(res) {
+			console.log('WebSocket连接已打开！', res);
 			that.data.ws.open = true;
 			store.commit('setWs', that.data.ws);
-			console.log('WebSocket连接已打开！');
 			that.data.ws.time = setInterval(that.ws_send, 10000); //定时发送心跳
 		});
 		uni.onSocketError(function(res) {
-			console.log('WebSocket连接打开失败，请检查！');
+			console.log('WebSocket连接打开失败，请检查！', res);
 			that.data.ws.open = false
 			store.commit('setWs', that.data.ws);
 			if (!that.data.ws.open && uni.getStorageSync('userinfo')) {
-				that.connect_socket()
+				setTimeout(() => {
+					that.connect_socket()
+				}, 10000)
+
 			}
 		});
 		uni.onSocketClose(function(res) {
-			console.log('WebSocket连接打开失败，请检查！');
+			console.log('WebSocket连接打开失败，请检查！', res);
 			that.data.ws.open = false
 			store.commit('setWs', that.data.ws);
 			if (!that.data.ws.open && uni.getStorageSync('userinfo')) {
-				that.connect_socket()
+				setTimeout(() => {
+					that.connect_socket()
+				}, 10000)
 			}
 		});
 		uni.onSocketMessage(function(res) {
+			console.log(res, '接收到的消息')
 			let msg = JSON.parse(res.data)
 			if (msg.code === 200) {
+
 				if (!msg.data) {
 					that.sendFirst()
 				} else if (msg.data.messageType == 6 || msg.data.messageType == 7) {
 					store.commit('setBusiness', msg.data);
 					msg.data.businessCornerMarkList.map(item => {
 						store.commit('setBusiness', item);
-					})
-					uni.createPushMessage({
-						title: '123',
-						content: '123',
-						sound: 'system',
-						success: (res => {
-							console.log('成功创建', res);
-						}),
-						fail: (res => {
-							console.log('成功失败', res)
-						}),
 					})
 				}
 			}
@@ -85,7 +94,6 @@ const socket = {
 	},
 	// 建立链接
 	connect_socket: function() {
-		console.log(this)
 		uni.connectSocket({
 			url: this.build_url('ws'),
 			header: {
@@ -93,7 +101,6 @@ const socket = {
 				'Authorization': uni.getStorageSync('token')
 			},
 			success: res => {
-				console.log(2222222)
 				this.sendFirst()
 			},
 			complete: res => {}
@@ -102,10 +109,11 @@ const socket = {
 
 	// 心跳
 	ws_send() {
-		console.log(3333)
 		const message = {
-			messageType: '0'
+			messageType: '0',
+			senderId: uni.getStorageSync('userinfo').userId
 		}
+		console.log(message, '发送心跳')
 		uni.sendSocketMessage({
 			data: JSON.stringify(message)
 		});
@@ -115,11 +123,19 @@ const socket = {
 		console.log('开启初始化消息')
 		const message = {
 			messageType: '6',
-			storeId: uni.getStorageSync('userinfo').storeId,
+			storeId: uni.getStorageSync('userinfo').employeeAble ? uni.getStorageSync('userinfo').storeId : uni
+				.getStorageSync('storeId'),
 			senderId: uni.getStorageSync('userinfo').userId
 		}
+		console.log(message)
 		uni.sendSocketMessage({
-			data: JSON.stringify(message)
+			data: JSON.stringify(message),
+			success(res) {
+				console.log(res)
+			},
+			fail(res) {
+				console.log(res)
+			}
 		});
 	},
 	// 地址重组器

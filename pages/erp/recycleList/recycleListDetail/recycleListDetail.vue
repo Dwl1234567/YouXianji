@@ -89,18 +89,18 @@
 							</view>
 						</scroll-view>
 					</view>
-					<view class="text-wrapper_15 flex-row justify-between" v-for="item in qualityInfoList"
-						v-if="item.indexs == 1 && tab === 1">
+					<view class="text-wrapper_15 flex-row justify-between" v-for="(item,index) in qualityInfoList"
+						v-if="item.indexs == 1 && tab === 1" :key="index">
 						<text class="text_39">{{item.key}}</text>
 						<text class="text_40">{{item.value}}</text>
 					</view>
-					<view class="text-wrapper_15 flex-row justify-between" v-for="item in qualityInfoList"
-						v-if="item.indexs == 2 && tab === 2">
+					<view class="text-wrapper_15 flex-row justify-between" v-for="(item,index) in qualityInfoList"
+						v-if="item.indexs == 2 && tab === 2" :key="index">
 						<text class="text_39">{{item.key}}</text>
 						<text class="text_40">{{item.value}}</text>
 					</view>
-					<view class="text-wrapper_15 flex-row justify-between" v-for="item in qualityInfoList"
-						v-if="item.indexs == 3 && tab === 3">
+					<view class="text-wrapper_15 flex-row justify-between" v-for="(item,index) in qualityInfoList"
+						v-if="item.indexs == 3 && tab === 3" :key="index">
 						<text class="text_39">{{item.key}}</text>
 						<text class="text_40">{{item.value}}</text>
 					</view>

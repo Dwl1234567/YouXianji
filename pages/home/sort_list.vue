@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!--标题栏-->
-		<bar-search-title bgColor="bg-white" content="苹果8p" @contentTap="searchTap">
+		<bar-search-title bgColor="bg-white" :content="seriesName" @contentTap="searchTap">
 			<block slot="right">
 				<text class="cuIcon-service" />
 			</block>
@@ -60,6 +60,7 @@
 		},
 		data() {
 			return {
+				seriesName: null,
 				TabCur: 0,
 				goodsList: [],
 				bid: '',
@@ -97,15 +98,15 @@
 								value: '0',
 							},
 							{
-								name: '1001-2000',
+								name: '1001-3000',
 								value: '1',
 							},
 							{
-								name: '2001-3000',
+								name: '3001-6000',
 								value: '2',
 							},
 							{
-								name: '3001-4000',
+								name: '6000+',
 								value: '3',
 							},
 						],
@@ -181,6 +182,7 @@
 		onLoad(e) {
 			this.initDownFilter(e)
 			console.log(e)
+			this.seriesName = e.seriesName
 			this.modelId = e.modelId
 			this.seriesId = e.seriesId
 			//临时数据
@@ -282,9 +284,9 @@
 			// this.testData = tempdata;
 
 
-			// // #ifdef APP-PLUS
-			// this.filtertopnum = 160;
-			// // #endif
+			// #ifdef APP-PLUS
+			this.filtertopnum = 160;
+			// #endif
 			// console.log(e);
 			if (e.cid) {
 				this.cid = e.cid;
@@ -354,11 +356,12 @@
 			getgoodsList() {
 				let that = this;
 				let paramsData = that.queryInfo;
+				paramsData.firstFlag = that.queryInfo.pageNum == 1 ? true : false
 				paramsData.orderRule = this.orderRule;
 				paramsData.priceBetween = this.priceBetween;
 				paramsData.conditionInfo = this.conditionInfo;
 				paramsData.seriesId = that.seriesId;
-				paramsData.modelId = that.modelId;
+				// paramsData.modelId = that.modelId;
 				selectStoreGoods(paramsData)
 					.then((res) => {
 						let data = res.rows;

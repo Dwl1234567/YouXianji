@@ -409,7 +409,6 @@
 			// this.addBasicOrderFuc();
 		},
 		onShow() {
-			console.log(2222)
 			this.getUserAddressFuc();
 			this.getBankListFuc();
 		},
@@ -621,7 +620,6 @@
 			// 获取银行列表
 			getBankListFuc() {
 				let that = this;
-				console.log(222)
 				userAccountList().then(res => {
 					if (res.code == 200) {
 						that.paylist = res.rows;

@@ -155,6 +155,24 @@
 					</view>
 					<text>整备仓</text>
 				</view>
+				<view class="cu-item" @tap="prefabricateList">
+					<view class="iconfont icon-tubiao-64 text-red">
+						<!-- <view class="cu-tag badge" v-if="loginfo.TODO_REORGANIZE!=0">{{loginfo.TODO_REORGANIZE || 0}}</view> -->
+					</view>
+					<text>预开单</text>
+				</view>
+				<view class="cu-item" @tap="pendingList">
+					<view class="iconfont icon-tubiao-64 text-red">
+						<!-- <view class="cu-tag badge" v-if="loginfo.TODO_REORGANIZE!=0">{{loginfo.TODO_REORGANIZE || 0}}</view> -->
+					</view>
+					<text>挂单表</text>
+				</view>
+				<view class="cu-item" @tap="stockAge">
+					<view class="iconfont icon-tubiao-64 text-red">
+						<!-- <view class="cu-tag badge" v-if="loginfo.TODO_REORGANIZE!=0">{{loginfo.TODO_REORGANIZE || 0}}</view> -->
+					</view>
+					<text>库龄表</text>
+				</view>
 				<!-- <view class="cu-item" @tap="adjustmentList">
 					<view class="iconfont icon-tubiao-64 text-red">
 						<view class="cu-tag badge" v-if="loginfo.taskpricenum!=0">{{loginfo.taskpricenum || 0}}</view>
@@ -296,18 +314,18 @@
 							badge: 0,
 							name: '商城列表',
 						},
-						{
-							cuIcon: 'icon-refund',
-							color: 'red',
-							badge: 0,
-							name: '挂单列表',
-						},
-						{
-							cuIcon: 'icon-refund',
-							color: 'red',
-							badge: 0,
-							name: '预制列表',
-						},
+						// {
+						// 	cuIcon: 'icon-refund',
+						// 	color: 'red',
+						// 	badge: 0,
+						// 	name: '挂单列表',
+						// },
+						// {
+						// 	cuIcon: 'icon-refund',
+						// 	color: 'red',
+						// 	badge: 0,
+						// 	name: '预制列表',
+						// },
 						{
 							cuIcon: 'icon-refund',
 							color: 'red',
@@ -479,6 +497,24 @@
 			this.sendFirst();
 		},
 		methods: {
+			// 库龄
+			stockAge() {
+				uni.navigateTo({
+					url: '/pages/erp/stockAge/list',
+				});
+			},
+			// 挂单
+			pendingList() {
+				uni.navigateTo({
+					url: '/pages/erp/pendingList/list',
+				});
+			},
+			// 预制单列表
+			prefabricateList() {
+				uni.navigateTo({
+					url: '/pages/erp/prefabricateList/list',
+				});
+			},
 			// 代付款
 			payment() {
 				uni.navigateTo({
@@ -649,19 +685,19 @@
 					if (index == 2) {
 						var value = 'mallList/list';
 					}
+					// if (index == 3) {
+					// 	var value = 'pendingList/list';
+					// }
+					// if (index == 4) {
+					// 	var value = 'prefabricateList/list';
+					// }
 					if (index == 3) {
-						var value = 'pendingList/list';
-					}
-					if (index == 4) {
-						var value = 'prefabricateList/list';
-					}
-					if (index == 5) {
 						var value = 'adjustmentList/list';
 					}
-					if (index == 6) {
+					if (index == 4) {
 						var value = 'allot/allot_push';
 					}
-					if (index == 7) {
+					if (index == 5) {
 						var value = 'sell/out';
 					}
 

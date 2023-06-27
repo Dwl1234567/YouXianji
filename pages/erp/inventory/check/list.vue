@@ -32,7 +32,7 @@
 			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="cu-list menu" v-if="1==TabCur">
-			<view class="arrow" v-for="(item,index) in dataList" :key="index">
+			<view class="arrow" v-for="(item,index) in dataList1" :key="index">
 				<view class="content">
 					<text
 						class="text-grey title">{{item.checkTaskType == 0 ? '整备' : item.checkTaskType == 1 ? '上架' : '配件'}}</text>
@@ -46,7 +46,7 @@
 			<uni-load-more :status="loadmore1" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="cu-list menu" v-if="2==TabCur">
-			<view class="arrow" v-for="(item,index) in dataList2" :key="index" @tap="tabGoods(item)">
+			<view class="arrow" v-for="(item,index) in dataList2" :key="index" @tap="tabGoods(item, '2')">
 				<view class="content">
 					<text
 						class="text-grey title">{{item.checkTaskType == 0 ? '整备' : item.checkTaskType == 1 ? '上架' : '配件'}}</text>
@@ -81,16 +81,16 @@
 				dataList1: [],
 				dataList2: [],
 				queryInfo: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
 				queryInfo1: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
 				queryInfo2: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				loadmore1: 'more', //more 还有数据   noMore 无数据
@@ -116,26 +116,31 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			if (this.TabCur == 0) {
-				this.queryInfo.page = 1; //重置分页页码
+				this.queryInfo.pageNum = 1; //重置分页页码
+			} else if (this.TabCur == 1) {
+				this.queryInfo1.pageNum = 1; //重置分页页码
 			} else {
-				this.queryInfo1.page = 1; //重置分页页码
+				this.queryInfo2.pageNum = 1; //重置分页页码
 			}
 			this.getDataList();
-
 		},
 		onReachBottom() {
 			if (this.TabCur == 0) {
 				if (this.loadmore == 'noMore') return
-				this.queryInfo.page += 1;
+				this.queryInfo.pageNum += 1;
 				this.ifBottomRefresh = true
 				this.getDataList();
-			} else {
+			} else if (this.TabCur == 1) {
 				if (this.loadmore1 == 'noMore') return
-				this.queryInfo1.page += 1;
+				this.queryInfo1.pageNum += 1;
 				this.ifBottomRefresh1 = true
 				this.getDataList();
+			} else {
+				if (this.loadmore2 == 'noMore') return
+				this.queryInfo2.pageNum += 1;
+				this.ifBottomRefresh2 = true
+				this.getDataList();
 			}
-
 		},
 		methods: {
 			// 结束按钮
@@ -162,15 +167,15 @@
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 
 			},
-			tabGoods(info) {
+			tabGoods(info, index) {
 				uni.navigateTo({
 					url: "/pages/erp/inventory/check/goods?checkTaskId=" + info.checkTaskId + "&checkTaskType=" + info
-						.checkTaskType
+						.checkTaskType + '&isView=' + index
 				});
 			},
 			getDataList() {
 				let that = this;
-				let paramsData = that.TabCur == 0 ? that.queryInfo : that.queryInfo1;
+				let paramsData = that.TabCur == 0 ? that.queryInfo : that.TabCur == 1 ? that.queryInfo1 : that.queryInfo2;
 				paramsData.checkTaskStatus = that.TabCur;
 				storeCheckTaskList(paramsData).then(res => {
 						let data = res.rows;
@@ -185,7 +190,7 @@
 								that.ifBottomRefresh = false
 								that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 							} else if (that.TabCur == 1) {
-								if (that.ifBottomRefresh) {
+								if (that.ifBottomRefresh1) {
 									that.dataList1 = that.dataList1.concat(data)
 								} else {
 									that.dataList1 = data
@@ -193,7 +198,7 @@
 								that.ifBottomRefresh1 = false
 								that.loadmore1 = res.total == that.dataList1.length ? 'noMore' : 'more'
 							} else if (that.TabCur == 2) {
-								if (that.ifBottomRefresh) {
+								if (that.ifBottomRefresh2) {
 									that.dataList2 = that.dataList2.concat(data)
 								} else {
 									that.dataList2 = data

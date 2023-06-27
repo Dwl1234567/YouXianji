@@ -12,7 +12,7 @@
 						:style="[{backgroundImage:'url('+ goods_info.image +')'}]" /> -->
 					<image :src="$httpImage + photo" mode="aspectFit" class="cu-avatar lg radius"></image>
 					<view class="goods-info-view">
-						<view class="text-black text-cut name">{{goods_info.name}}</view>
+						<view class="text-black text-cut name">{{modelName }}</view>
 						<view class="tags">{{goodsdesc}}</view>
 						<view class="text-price" v-if="forecastMoney > capacity20Money">
 							<text class="text-xxl">{{forecastMoney}}</text>
@@ -58,12 +58,8 @@
 					<!-- {{recyitem}} -->
 					<SelectDataFirst title="机器SKU" :checklist="recyitem" @itemclick="moneyFucs"></SelectDataFirst>
 				</scroll-view>
-				<scroll-view
-					v-for="(recyitem,recyindex) in retrieveList[index]"
-					:key="recyindex"
-					scroll-y="true"
-					class="scroll-Y"
-				>
+				<scroll-view v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex" scroll-y="true"
+					class="scroll-Y">
 					<!-- {{recyitem}} -->
 					<SelectData :title="recyitem.name" :checklist="recyitem.value" @itemclick="moneyFuc"></SelectData>
 				</scroll-view>
@@ -81,17 +77,28 @@
 				:customStyle="{height:'88rpx',borderRadius:'30rpx',color:'#ffffff',backgroundColor:'#e54d42'}"
 				@tap="deliveryTap"></u-button>
 		</view>
-		--></view>
+		-->
+	</view>
 </template>
 
 <script>
 	import barTitle from '@/components/common/basics/bar-title';
-	import { GodsgoodsDetail, GodsgoodsPrice, getUserMobile } from '@/api/common.js';
-	import { getPriceTemplateByModel } from '@/api/retrieve.js';
+	import {
+		GodsgoodsDetail,
+		GodsgoodsPrice,
+		getUserMobile
+	} from '@/api/common.js';
+	import {
+		getPriceTemplateByModel
+	} from '@/api/retrieve.js';
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
 	import SelectDataFirst from '@/components/RecyclingList/SelectDataFirst.vue';
-	import { openQyKefu } from '@/utils/util.js';
-	import { mapState } from 'vuex';
+	import {
+		openQyKefu
+	} from '@/utils/util.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		components: {
 			SelectDataFirst,
@@ -261,7 +268,7 @@
 							title: '提示',
 							content: err,
 							showCancel: false,
-							success: function (res) {
+							success: function(res) {
 								if (res.confirm) {
 									console.log('用户点击确定');
 									uni.navigateBack({
@@ -312,8 +319,7 @@
 			// 获取报价
 			getGodsgoodsPrice() {
 				uni.navigateTo({
-					url:
-						'/pages/tabbarerp/form?photo=' +
+					url: '/pages/tabbarerp/form?photo=' +
 						this.photo +
 						'&goodsId=' +
 						this.goodsId +
@@ -331,17 +337,17 @@
 			async deliveryTap() {
 				this.getGodsgoodsPrice();
 			},
-			upper: function (e) {
+			upper: function(e) {
 				console.log(e);
 			},
-			lower: function (e) {
+			lower: function(e) {
 				console.log(e);
 			},
-			scroll: function (e) {
+			scroll: function(e) {
 				console.log(e);
 				this.old.scrollTop = e.detail.scrollTop;
 			},
-			goTop: function (e) {
+			goTop: function(e) {
 				this.scrollTop = this.old.scrollTop;
 				this.$nextTick(() => {
 					this.scrollTop = 0;
@@ -367,7 +373,7 @@
 					// e.detail.encryptedData //加密的用户信息
 					// e.detail.iv //加密算法的初始向量时要用到
 					uni.checkSession({
-						success: function () {
+						success: function() {
 							let usertoken = uni.getStorageSync('UID');
 							let parmas = {
 								user_token: usertoken,
@@ -384,7 +390,7 @@
 								}
 							});
 						},
-						fail: function (err) {
+						fail: function(err) {
 							console.log(err + '检查code错误');
 							uni.login({
 								success(res) {

@@ -11,7 +11,7 @@
 
 
 		<view class="padding-bottom-sm padding-top-sm">
-			<data-list :dataList="dataList" @goDetail="goDetail" @goSn="goSn" :isSn="1"></data-list>
+			<data-list :dataList="dataList" @goDetail="goDetail" @goSn="goSn" :isSn="1" @dayin="dayin"></data-list>
 		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -29,6 +29,7 @@
 	import _tool from '@/utils/tools.js'; //工具函数
 	import {
 		selectStoreGoods,
+		phoneprintLabel
 	} from "@/api/erp.js"
 	export default {
 		components: {
@@ -102,6 +103,17 @@
 			});
 		},
 		methods: {
+			dayin(e) {
+				phoneprintLabel({
+					recycleFormId: e.recycleFormId
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '打印成功'
+						})
+					}
+				})
+			},
 			goSn(e) {
 				console.log(e)
 				uni.navigateTo({

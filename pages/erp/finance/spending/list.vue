@@ -34,8 +34,11 @@
 							<view>
 								<view class="text_1">{{item.financeName}}</view>
 								<view class="text_1">{{item.basePriceLabel}}</view>
-								<view class="text_2">序列号：{{item.deviceNo}}</view>
+								<view class="text_2" v-if="item.deviceNo">序列号：{{item.deviceNo}}</view>
 								<view class="text_2" style="margin-top: 10rpx;">时间：{{item.createTime}}</view>
+								<view class="text_2" style="margin-top: 10rpx;" v-if="item.number">数量：{{item.number}}个</view>
+								<view class="text_2" style="margin-top: 10rpx;" v-if="item.fittingsCostPrice">
+									单价：{{item.fittingsCostPrice}}元</view>
 							</view>
 						</view>
 						<view class="right">
@@ -82,37 +85,6 @@
 	import barTitle from '@/components/common/basics/bar-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	// 科目类别
-	const billtypeInfo = [{
-		value: 1,
-		lable: '工资'
-	}, {
-		value: 2,
-		lable: '采购'
-	}, {
-		value: 3,
-		lable: '差旅'
-	}, {
-		value: 4,
-		lable: '交通'
-	}, {
-		value: 5,
-		lable: '招待'
-	}, {
-		value: 6,
-		lable: '运营'
-	}, {
-		value: 7,
-		lable: '租赁'
-	}, {
-		value: 8,
-		lable: '办公'
-	}, {
-		value: 9,
-		lable: '销售'
-	}, {
-		value: 10,
-		lable: '快递'
-	}]
 	export default {
 		components: {
 			barTitle
@@ -122,7 +94,7 @@
 				allPrice: '',
 				show: false,
 				formatDatas: '',
-				value1: new Date(),
+				value1: Number(new Date()),
 				time: '',
 				ifBottomRefresh: false,
 				dataList: [],
@@ -164,21 +136,20 @@
 			this.getDataList();
 		},
 		filters: {
-			FbilltypeInfo(value) {
-				if (!value) return ''
-				let text = ''
-				billtypeInfo.map((item, index) => {
-					if (item.value == value) {
-						text = item.lable;
-					}
-				})
-				return text;
-			}
+			// FbilltypeInfo(value) {
+			// 	if (!value) return ''
+			// 	let text = ''
+			// 	billtypeInfo.map((item, index) => {
+			// 		if (item.value == value) {
+			// 			text = item.lable;
+			// 		}
+			// 	})
+			// 	return text;
+			// }
 		},
 		methods: {
 			day(e) {
 				var today = new Date(e);
-
 				//日期
 				var DD = String(today.getDate()).padStart(2, '0'); // 获取日
 				var MM = String(today.getMonth() + 1).padStart(2, '0'); //获取月份，1 月为 0
@@ -191,24 +162,24 @@
 				today = yyyy + '-' + MM;
 				return today;
 			},
-			formatter(type, value) {
+			formatter(type, a) {
 				if (type === 'year') {
-					return `${value}年`;
+					return `${a}年`;
 				}
 				if (type === 'month') {
-					return `${value}月`;
+					return `${a}月`;
 				}
 				if (type === 'day') {
-					return `${value}日`;
+					return `${a}日`;
 				}
-				return value;
+				return a;
 			},
 			close() {
 				this.show = false;
 			},
-			aaa(value) {
+			aaa(a) {
 				setTimeout(() => {
-					console.log(this.day(this.value1), value);
+					console.log(this.day(this.value1), a);
 					this.time = this.day(this.value1);
 					this.show = false;
 					this.getDataList();

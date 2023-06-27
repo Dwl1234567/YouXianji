@@ -20,14 +20,18 @@
 				<view style="padding: 40rpx 28rpx;" class="boxs" v-for="(item,index) in dataList" :key="index">
 					<view class="title">{{item.modelName}}</view>
 					<view class="text">时间:{{item.updateTime}}</view>
-					<view class="button" @tap="editAtt(item)">修改</view>
+					<view class="button" @tap="editAtt(item, 0)">修改</view>
 				</view>
 
 			</view>
 			<view class="box" style="padding: 40rpx 28rpx; background-color: white;border-radius: 11rpx;" v-if="TabCur == 1">
-				<view style="padding: 40rpx 28rpx;" class="boxs" v-for="(item,index) in dataList" :key="index">
-					<view class="title">{{item.modelName}}</view>
-					<view class="text">时间:{{item.updateTime}}</view>
+				<view class="box" v-if="TabCur == 1" style="background-color: white;border-radius: 11rpx;">
+					<view style="padding: 40rpx 28rpx;" class="boxs" v-for="(item,index) in dataList" :key="index">
+						<view class="title">{{item.modelName}}</view>
+						<view class="text">时间:{{item.updateTime}}</view>
+						<view class="button" @tap="editAtt(item, 1)">查看</view>
+					</view>
+
 				</view>
 			</view>
 			<view class="buttons" @tap="submitAttr" v-if="dataList.length && TabCur == 0">提交</view>
@@ -101,9 +105,10 @@
 				submitAdjustPrice(data)
 				this.getDataList()
 			},
-			editAtt(row) {
+			editAtt(row, index) {
+				const see = index == 1 ? true : false
 				uni.navigateTo({
-					url: '/pages/erp/user/editAttrlist?taskId=' + row.taskId
+					url: '/pages/erp/user/editAttrlist?taskId=' + row.taskId + '&see=' + see
 				})
 			},
 			// 获取列表
@@ -135,8 +140,6 @@
 					})
 			},
 			tabSelect(e) {
-				console.log(e.currentTarget.dataset.id)
-
 				this.TabCur = e.currentTarget.dataset.id;
 				this.getDataList()
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60

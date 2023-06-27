@@ -33,7 +33,7 @@
 						</view>
 					</view>
 					<view class="button">
-						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="sell(item)">抛售</view>
+						<view class="receipt" @tap="sell(item)">修改配件</view>
 						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="shelves(item)">上架</view>
 						<view class="receipt" v-if="item.reorganizeStatus == 1" @tap="billing(item)">销售开单</view>
 					</view>
@@ -41,7 +41,21 @@
 			</view>
 		</view>
 		<!--弹窗-->
-
+		<u-popup :show="yunShowImg1" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
+			<view class="yunShow-top">
+				<view class="yunShow-title">修改数量</view>
+				<view class="yunShow-item">
+					<view class="left">配件数量</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="fittingsNumber"></u--input>
+					</view>
+				</view>
+			</view>
+			<view class="yunShow-bottom">
+				<view class="close" @tap="close">取消</view>
+				<view class="ok" @tap="uploadCheckVoucher">确定</view>
+			</view>
+		</u-popup>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
@@ -51,7 +65,8 @@
 	import Vue from 'vue';
 	import {
 		fittingsList,
-		selectTopWarehouseList
+		selectTopWarehouseList,
+		fittingsEdit
 	} from '@/api/erp.js';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -64,6 +79,9 @@
 		},
 		data() {
 			return {
+				fittingsNumber: null,
+				yunShowImg1: false,
+				itemList: {},
 				topWarehouseId: null,
 				listData: [{
 					configId: null,
@@ -107,6 +125,28 @@
 			});
 		},
 		methods: {
+			uploadCheckVoucher() {
+				fittingsEdit({
+					fittingsId: this.itemList.fittingsId,
+					fittingsNumber: this.fittingsNumber
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '修改成功'
+						})
+						this.getDataList()
+						this.close()
+					}
+				})
+			},
+			// 修改配件
+			sell(item) {
+				this.itemList = item
+				this.yunShowImg1 = true
+			},
+			close() {
+				this.yunShowImg1 = false
+			},
 			// 切换头部筛选
 			check(e) {
 				this.topWarehouseId = e.configId;

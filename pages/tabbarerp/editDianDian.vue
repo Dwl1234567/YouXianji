@@ -53,7 +53,7 @@
 		<!--选项列表-->
 		<block v-for="(item,index) in nav_list" :key="index">
 			<view class="process-box" v-show="tab_cur == index">
-				<scroll-view scroll-y="true" class="scroll-Y" v-for="item in basicPrice" v-if="index == 0">
+				<scroll-view scroll-y="true" class="scroll-Y" v-for="(item,index) in basicPrice" v-if="index == 0" :key="index">
 					<!-- {{recyitem}} -->
 					<SelectDataFirst title="机器SKU" :checklist="item" @itemclick="moneyFucs"></SelectDataFirst>
 					<!-- {{basicPrice}} -->
@@ -93,7 +93,7 @@
 		getPriceTemplateByModel
 	} from '@/api/retrieve.js';
 	import {
-		getInfoByRecycleOrderId
+		recyclePreFormAdd
 	} from '@/api/erp.js';
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
 	import SelectDataFirst from '@/components/RecyclingList/SelectDataFirst.vue';
@@ -146,7 +146,7 @@
 			this.goodsId = option.modelId;
 			this.modelName = option.modelName;
 			this.type = option.type;
-			this.getInfoByRecycleOrderId(option.recycleOrderId);
+			this.recyclePreFormAdd(option.recycleOrderId);
 			this.getGodsgoodsDetail();
 		},
 		onShow() {
@@ -167,8 +167,8 @@
 			...mapState(['hasLogin']),
 		},
 		methods: {
-			getInfoByRecycleOrderId(recycleOrderId) {
-				getInfoByRecycleOrderId(recycleOrderId).then((res) => {
+			recyclePreFormAdd(recycleOrderId) {
+				recyclePreFormAdd(recycleOrderId).then((res) => {
 					this.qualityInfo = JSON.parse(res.data.qualityInfo);
 					uni.setStorageSync('basicPriceId', res.data.basicPriceId);
 					this.basicPriceId = res.data.basicPriceId;
@@ -379,11 +379,27 @@
 			},
 			//去发货
 			async deliveryTap() {
+				// uni.navigateTo({
+				// 	url: '/pages/erp/purchase/add/select_recycleform?forecastMoney=' +
+				// 		this.forecastMoney +
+				// 		'&recycleOrderId=' +
+				// 		this.recycleOrderId,
+				// });
 				uni.navigateTo({
-					url: '/pages/erp/purchase/add/select_recycleform?forecastMoney=' +
+					url: '/pages/tabbarerp/form?photo=' +
+						this.photo +
+						'&goodsId=' +
+						this.goodsId +
+						'&modelName=' +
+						this.modelName +
+						'&forecastMoney=' +
 						this.forecastMoney +
+						'&priceId=' +
+						this.priceId +
+						'&goodsdesc=' +
+						this.goodsdesc +
 						'&recycleOrderId=' +
-						this.recycleOrderId,
+						this.recycleOrderId
 				});
 			},
 			upper: function(e) {},

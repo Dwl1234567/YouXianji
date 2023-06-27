@@ -9,7 +9,7 @@
 						<!--标题-->
 						<view class="text-black text-cut">
 							<text class="cu-tag bg-red radius sm" v-if="item.autarky">自营</text>
-							<text class="text-bold">{{item.title}}</text>
+							<text class="text-bold" style=" white-space: pre-wrap;">{{item.modelName}} {{item.basePriceLabel}}</text>
 						</view>
 						<!--标签-->
 						<view class="text-gray text-cut text-sm">

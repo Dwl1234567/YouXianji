@@ -7,8 +7,8 @@
 				</view>
 				<view class="search-form round">
 					<text class="cuIcon-search" />
-					<input @input="searchInput" :value="searchKey" :adjust-position="false" type="text"
-						placeholder="苹果7" confirm-type="search" />
+					<input @input="searchInput" :value="searchKey" :adjust-position="false" type="text" placeholder="苹果7"
+						confirm-type="search" />
 					<text class="cuIcon-close close-icon" v-if="search_close" @tap="closeInput" />
 				</view>
 				<view class="action">
@@ -26,13 +26,14 @@
 		<!--搜索区域-->
 		<view class="padding search-list-view" v-if="!deleteView">
 			<!--搜索记录-->
-			<view class="search-list-view" v-if = "historyList.length > 0">
+			<view class="search-list-view" v-if="historyList.length > 0">
 				<view class="search-bar-view">
 					<text class="text-black">历史搜索</text>
 					<text class="cuIcon-delete text-gray icon-right" @tap="deleteTap" />
 				</view>
 				<view class="btn-view">
-					<button class="cu-btn round" v-for="item in historyList" @click="historyClick(item)">{{item}}</button>
+					<button class="cu-btn round" v-for="(item, index) in historyList" @click="historyClick(item)"
+						:key="index">{{item}}</button>
 				</view>
 			</view>
 
@@ -42,7 +43,8 @@
 					<text class="text-black">推荐搜索</text>
 				</view>
 				<view class="btn-view">
-					<button class="cu-btn round" v-for="item in recommendList" @click="recomendClick(item)">{{item}}</button>
+					<button class="cu-btn round" v-for="(item, index) in recommendList" @click="recomendClick(item)"
+						:key="index">{{item}}</button>
 				</view>
 			</view>
 		</view>
@@ -61,7 +63,7 @@
 				<view class="btn-view">
 					<button class="cu-btn round" v-for="(item,index) in historyList" @click="removehisClick(index)">
 						<text>{{item}}</text>
-						<text class="cuIcon-roundclosefill close-icon"  />
+						<text class="cuIcon-roundclosefill close-icon" />
 					</button>
 				</view>
 			</view>
@@ -86,12 +88,12 @@
 				searchKey: '',
 				deleteView: false,
 				seachList: [],
-				historyList:[
+				historyList: [
 					'iphone',
 					'mete',
 					'mac',
 				],
-				recommendList:[
+				recommendList: [
 					'耳机',
 					'笔记本',
 					'小米',
@@ -101,7 +103,7 @@
 			}
 		},
 		onLoad() {
-			
+
 		},
 		onReady() {
 			_tool.setBarColor(true);
@@ -111,14 +113,14 @@
 			});
 		},
 		methods: {
-			goodsSortListTap(e){
+			goodsSortListTap(e) {
 				console.log(e);
 				uni.navigateTo({
 					url: '/pages/goods/goods?id=' + e.data.id
 				});
 			},
 			searchRecycleDataFuc(key = '') {
-				if(!this.searchKey){
+				if (!this.searchKey) {
 					return;
 				}
 				let paramsData = {
@@ -146,7 +148,7 @@
 				uni.navigateBack()
 				// #endif
 			},
-			seachFuc(){
+			seachFuc() {
 				this.searchRecycleDataFuc();
 			},
 			searchInput(event) {
@@ -159,18 +161,18 @@
 				}
 				console.log(value)
 			},
-			historyClick(name){
+			historyClick(name) {
 				this.searchKey = name;
 				this.searchRecycleDataFuc();
 			},
-			recomendClick(name){
+			recomendClick(name) {
 				this.searchKey = name;
 				this.searchRecycleDataFuc();
 			},
-			removehisClick(index){
-				this.historyList.splice(index,1);
+			removehisClick(index) {
+				this.historyList.splice(index, 1);
 			},
-			allclearhis(){
+			allclearhis() {
 				this.historyList = [];
 			},
 			closeInput() {

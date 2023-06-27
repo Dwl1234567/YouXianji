@@ -50,7 +50,7 @@
 			that.sendFirst();
 			uni.onSocketMessage(function(res) {
 				let msg = JSON.parse(res.data)
-				console.log(msg, '44444444')
+				console.log(msg, '列表接收消息')
 				if (msg.code === 200) {
 					if (msg.data && msg.data.messageType == 4) {
 						that.messagesUserList = []
@@ -69,7 +69,6 @@
 					storeId: uni.getStorageSync('userinfo').storeId,
 					senderId: uni.getStorageSync('userinfo').userId
 				}
-				console.log(222)
 				uni.sendSocketMessage({
 					data: JSON.stringify(message)
 				});

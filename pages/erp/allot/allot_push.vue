@@ -76,14 +76,14 @@
 				<view class="title">调拨总价</view>
 				{{allmoney}}元
 			</view>
-			<view class="cu-form-group">
-				<view class="title">调拨总价</view>
-				{{allmoney}}元
+			<!-- <view class="cu-form-group">
+				<view class="title">新调拨价</view>
+				<input type="text" style="text-align: right;" v-model="newAllotPrice">元
 			</view>
 			<view class="cu-form-group">
-				<view class="title">调拨总价</view>
-				{{allmoney}}元
-			</view>
+				<view class="title">新销售价</view>
+				<input type="text" style="text-align: right;" v-model="newSellPrice">元
+			</view> -->
 			<!-- <view class="cu-form-group">
 				<view class="title">实付款</view>
 				<view class="cu-capsule radius" @tap="showModal" data-target="Modal">
@@ -188,6 +188,8 @@
 		},
 		data() {
 			return {
+				newAllotPrice: 0,
+				newSellPrice: 0,
 				storeId: null,
 				mendians: '选择门店',
 				thatgoodsindex: '',
@@ -232,7 +234,8 @@
 			if (modelList) {
 				this.goodsList = modelList
 				modelList.map(item => {
-					this.allmoney = Number(this.allmoney) + item.recyclePrice + item.maintainPrice
+					console.log(item)
+					this.allmoney = Number(this.allmoney) + item.allotPrice
 				})
 			}
 		},
@@ -241,7 +244,7 @@
 			goodsList() {
 				this.allmoney = 0
 				this.goodsList.map(item => {
-					this.allmoney = Number(this.allmoney) + item.recyclePrice + item.maintainPrice
+					this.allmoney = Number(this.allmoney) + item.allotPrice
 				})
 			}
 		},
@@ -338,9 +341,10 @@
 				})
 
 				let params = {
-					approveStore: this.storeId,
-					storeAllotList: goodsinfojson,
-					remark: this.remark
+					"recycleFormId": this.goodsList[0].recycleFormId,
+					"remark": this.remark,
+					"newAllotPrice": this.newAllotPrice,
+					"newSellPrice": this.newSellPrice
 				}
 				console.log(params, '222222');
 				storeAllot(params).then(res => {

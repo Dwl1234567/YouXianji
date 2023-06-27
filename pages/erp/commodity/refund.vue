@@ -101,6 +101,7 @@
 		selectReturnReason,
 		agreeReturn,
 		uploadAfterSaleVoucher,
+		refuseReturn
 	} from '@/api/erp.js';
 	export default {
 		data() {
@@ -127,6 +128,21 @@
 			this.empSelectList();
 		},
 		methods: {
+			// 拒绝退款
+			initiatePayment() {
+				refuseReturn({
+					orderId: this.itemList.orderId,
+					refurseRemark: this.isWx
+				}).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '拒绝成功'
+						})
+						this.close();
+						this.empSelectList();
+					}
+				})
+			},
 			// 退货上传凭证
 			uploadAfterSaleVoucher() {
 				const photo = this.fileList2.map((item) => {

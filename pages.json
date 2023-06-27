@@ -1399,6 +1399,15 @@
 				"enablePullDownRefresh": false
 			}
 		},
+		// 库龄列表
+		{
+			"path": "pages/erp/stockAge/list",
+			"style": {
+				"navigationBarTitleText": "库龄表",
+				// "navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
 		// 挂单列表
 		{
 			"path": "pages/erp/pendingList/list",

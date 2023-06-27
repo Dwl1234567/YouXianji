@@ -32,11 +32,14 @@
 					<text class="text_13">实收款：{{item.fundsReceived}}</text>
 					<text class="text_13">欠款：{{item.debtPrice}}</text>
 					<text class="text_13">客户：{{item.clienterName}}</text>
+					<text class="text_13">创建人：{{item.sellPeople}}</text>
+					<text class="text_13">备注：{{item.remark}}</text>
 					<view class="group_5 flex-row justify-between">
 						<button class="button_2 flex-col" @click="onClick_1(item)" v-if="item.pendingOrderVoucher">
 							<text class="text_16">查看凭证</text>
 						</button>
-						<button class="button_2 flex-col" @click="onClick_2(item)" style="margin-left: 10rpx;">
+						<button class="button_2 flex-col" @click="onClick_2(item)" style="margin-left: 10rpx;"
+							v-if="userId == item.createById">
 							<text class="text_16">销售开单</text>
 						</button>
 					</view>
@@ -68,6 +71,7 @@
 		},
 		data() {
 			return {
+				userId: null,
 				deviceId: null,
 				value: 0,
 				classificationId: null,
@@ -92,6 +96,7 @@
 			};
 		},
 		onLoad(options) {
+			this.userId = uni.getStorageSync('userinfo').userId
 			this.getAllClassification();
 			this.getDataList();
 		},
@@ -151,17 +156,11 @@
 				});
 			},
 			onClick_2(item) {
+				uni.setStorageSync('updatecustomer', item);
 				uni.navigateTo({
 					url: '/pages/tabbarerp/push?sellFormId=' + item.sellFormId
 				})
-				uni.setStorageSync('updatecustomer', item);
 			},
-			// updatecustomer(item) {
-			// 	uni.setStorageSync('updatecustomer', item);
-			// 	uni.navigateTo({
-			// 		url: '/pages/tabbarerp/push',
-			// 	});
-			// },
 			// 切换进步
 			valChange(item) {
 				console.log(this.dataList);

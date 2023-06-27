@@ -36,6 +36,8 @@
 								<view class="text_1">{{item.basePriceLabel}}</view>
 								<view class="text_2">序列号：{{item.deviceNo}}</view>
 								<view class="text_2" style="margin-top: 10rpx;">时间：{{item.createTime}}</view>
+								<view class="text_2" style="margin-top: 10rpx;" v-if="item.fittingsCostPrice">
+									单价：{{item.fittingsCostPrice}}元</view>
 							</view>
 						</view>
 						<view class="right">
@@ -122,7 +124,7 @@
 				allPrice: '',
 				show: false,
 				formatDatas: '',
-				value1: new Date(),
+				value1: Number(new Date()),
 				time: '',
 				ifBottomRefresh: false,
 				dataList: [],

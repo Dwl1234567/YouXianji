@@ -1140,3 +1140,83 @@ export function phoneprintLabel(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 拒绝退货接口
+ *
+ */
+export function refuseReturn(data) {
+	return request.post('/yxj/app/secondGoodsReturn/refuseReturn', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 预制开单
+ *
+ */
+export function recyclePreForm(data) {
+	return request.post('/yxj/app/recyclePreForm', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 预制开单列表
+ *
+ */
+export function recyclePreFormList(data) {
+	return request.get('/yxj/app/recyclePreForm/list', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 预制开单列表
+ *
+ */
+export function recyclePreFormAdd(data) {
+	return request.get('/yxj/app/recyclePreForm/' + data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 修改配件数量
+ *
+ */
+export function fittingsEdit(data) {
+	return request.put('/yxj/app/fittings', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询我的线上销售列表
+ *
+ */
+export function selecyMyOnLineSellFormList(data) {
+	return request.get('/yxj/app/fittingsForm/selecyMyOnLineSellFormList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询库龄列表
+ *
+ */
+export function selectStorageList(data) {
+	return request.get('/yxj/app/recycleForm/selectStorageList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 根据机型id获取分类标签
+ *
+ */
+export function selectClassificationLabelByModel(data) {
+	return request.get('/yxj/app/common/selectClassificationLabelByModel/' + data, {
+		noLogin: true
+	});
+}

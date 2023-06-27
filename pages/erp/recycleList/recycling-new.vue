@@ -54,17 +54,13 @@
 		<!--选项列表-->
 		<block v-for="(item,index) in nav_list" :key="index">
 			<view class="process-box" v-show="tab_cur == index">
-				<scroll-view scroll-y="true" class="scroll-Y" v-for="item in basicPrice">
+				<scroll-view scroll-y="true" class="scroll-Y" v-for="(item,indexs) in basicPrice" :key="index" v-if="index== 0">
 					<!-- {{recyitem}} -->
 					<SelectDataFirst title="机器SKU" :checklist="item" @itemclick="moneyFucs"></SelectDataFirst>
 					<!-- {{basicPrice}} -->
 				</scroll-view>
-				<scroll-view
-					v-for="(recyitem,recyindex) in retrieveList[index]"
-					:key="recyindex"
-					scroll-y="true"
-					class="scroll-Y"
-				>
+				<scroll-view v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex" scroll-y="true"
+					class="scroll-Y">
 					<!-- {{recyitem}} -->
 					<SelectData :title="recyitem.name" :checklist="recyitem.value" @itemclick="moneyFuc"></SelectData>
 					<!-- {{recyitem}} -->
@@ -83,17 +79,28 @@
 				:customStyle="{height:'88rpx',borderRadius:'30rpx',color:'#ffffff',backgroundColor:'#e54d42'}"
 				@tap="deliveryTap"></u-button>
 		</view>
-		--></view>
+		-->
+	</view>
 </template>
 
 <script>
 	import barTitle from '@/components/common/basics/bar-title';
-	import { GodsgoodsDetail, GodsgoodsPrice, getUserMobile } from '@/api/common.js';
-	import { getPriceTemplateByModel } from '@/api/retrieve.js';
+	import {
+		GodsgoodsDetail,
+		GodsgoodsPrice,
+		getUserMobile
+	} from '@/api/common.js';
+	import {
+		getPriceTemplateByModel
+	} from '@/api/retrieve.js';
 	import SelectData from '@/components/RecyclingList/SelectData.vue';
 	import SelectDataFirst from '@/components/RecyclingList/SelectDataFirst.vue';
-	import { openQyKefu } from '@/utils/util.js';
-	import { mapState } from 'vuex';
+	import {
+		openQyKefu
+	} from '@/utils/util.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		components: {
 			SelectDataFirst,
@@ -279,13 +286,12 @@
 							title: '提示',
 							content: err,
 							showCancel: false,
-							success: function (res) {
+							success: function(res) {
 								if (res.confirm) {
 									uni.navigateBack({
 										delta: -1,
 									});
-								} else if (res.cancel) {
-								}
+								} else if (res.cancel) {}
 							},
 						});
 					});
@@ -349,8 +355,7 @@
 			// 获取报价
 			getGodsgoodsPrice() {
 				uni.navigateTo({
-					url:
-						'form?type=' +
+					url: 'form?type=' +
 						this.type +
 						'&goodsId=' +
 						this.goodsId +
@@ -363,19 +368,18 @@
 			//去发货
 			async deliveryTap() {
 				uni.navigateTo({
-					url:
-						'/pages/erp/recycleList/comparisonChart/comparisonChart?forecastMoney=' +
+					url: '/pages/erp/recycleList/comparisonChart/comparisonChart?forecastMoney=' +
 						this.forecastMoney +
 						'&priceId=' +
 						this.priceId,
 				});
 			},
-			upper: function (e) {},
-			lower: function (e) {},
-			scroll: function (e) {
+			upper: function(e) {},
+			lower: function(e) {},
+			scroll: function(e) {
 				this.old.scrollTop = e.detail.scrollTop;
 			},
-			goTop: function (e) {
+			goTop: function(e) {
 				this.scrollTop = this.old.scrollTop;
 				this.$nextTick(() => {
 					this.scrollTop = 0;
@@ -407,7 +411,7 @@
 					// e.detail.encryptedData //加密的用户信息
 					// e.detail.iv //加密算法的初始向量时要用到
 					uni.checkSession({
-						success: function () {
+						success: function() {
 							let usertoken = uni.getStorageSync('UID');
 							let parmas = {
 								user_token: usertoken,
@@ -424,7 +428,7 @@
 								}
 							});
 						},
-						fail: function (err) {
+						fail: function(err) {
 							uni.login({
 								success(res) {
 									let usertoken = uni.getStorageSync('UID');

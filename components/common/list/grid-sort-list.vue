@@ -1,20 +1,30 @@
 <template>
 	<view class="grid-sort-view">
 		<view class="bg-white cu-list grid col-5 no-border">
-			<block v-for="(item,index) in list_data" :key="index" v-if="index < 10">
+			<!-- <block v-for="(item,index) in list_data" :key="index" v-if="index < 10">
 				<view class="cu-item" @tap="listTap(item,index)">
 					<view class="grid-icon">
 						<image :src=" $httpImage + item.photo" mode="widthFix" />
 					</view>
 					<text>{{item.seriesName}}</text>
 				</view>
-			</block>
-			<view class="cu-item" @tap="moreTap()">
+			</block> -->
+			<scroll-view scroll-x class="nav z" scroll-with-animation :scroll-left="0">
+				<block v-for="(item,index) in list_data" :key="index" v-if="index < 10">
+					<view class="cu-item" @tap="listTap(item,index)">
+						<view class="grid-icon" style="width: 75px;height: 75px;">
+							<image :src=" $httpImage + item.photo" mode="widthFix" />
+						</view>
+						<text style="font-size: 13px; color: black;">{{item.seriesName}}</text>
+					</view>
+				</block>
+			</scroll-view>
+			<!-- <view class="cu-item" @tap="moreTap()">
 				<view class="grid-icon">
 					<image src="/static/img/more.png" mode="widthFix" />
 				</view>
 				<text>更多</text>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -51,7 +61,7 @@
 <style lang="scss" scoped>
 	.grid-sort-view {
 		.grid-icon {
-			margin: 0 30rpx;
+			// margin: 0 30rpx;
 		}
 	}
 </style>

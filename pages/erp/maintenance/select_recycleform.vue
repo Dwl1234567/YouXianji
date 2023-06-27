@@ -144,36 +144,7 @@
 		</view>
 
 		<!--选择SKU 与仓库-->
-		<!-- <view class="cu-bar bg-white">
-			<view class='action'>
-				<text class="title">入库信息</text>
-				<text class="margin-left-xs text-sm"></text>
-			</view>
-		</view>
-		<view class="bg-white padding-lr">
-			<view class="">
-				仓库
-			</view>
-			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" :class="parentId == item.warehouseId ? 'camgkuCheck' : ''"
-					v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == 0"
-					@tap="checkHouseId(item.warehouseId)">
-					{{item.warehouseName}}
-				</view>
-			</view>
 
-			<view class="">
-				分仓
-			</view>
-			<view class="canngku flex">
-				<view class="cangkuItem margin-left-sm" :class="warehouseId == item.warehouseId ? 'camgkuCheck' : ''"
-					v-for="item in warehouseLists" :key="item.warehouseId" v-if="item.parentId == parentId"
-					@tap="checkHouseFenId(item.warehouseId)">
-					{{item.warehouseName}}
-				</view>
-			</view>
-
-		</view> -->
 		<!-- <view style="position: relative;">
 			<LiFilter :isType="0" :alias="['分类','品牌','系列','机型']" @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1" :isFixtop="false" ></LiFilter>
 		</view> -->
@@ -457,11 +428,10 @@
 					// uni.setStorageSync('basicPriceId', res.data.basicPriceId);
 					// this.basicPriceId = res.data.basicPriceId;
 					this.formList = res.data;
-					this.combinationPrice = res.data.totalRecycleCommission + res.data.pettyExpenses + res.data.recyclePrice
 					this.ActualreceiptsAll = Number(res.data.recyclePrice);
 					this.diaobojianum = Number(res.data.allotPrice);
 					this.xiaoshoujianum = Number(res.data.sellPrice);
-					// this.combinationPrice = res.data.combinationPrice
+					this.combinationPrice = res.data.combinationPrice
 					this.goodssn = res.data.deviceNo
 				});
 			},

@@ -71,6 +71,9 @@ function baseRequest(url, method, data, {
 		header['cookie'] = cookie;
 	}
 	return new Promise((reslove, reject) => {
+		uni.showLoading({
+			title: '加载中'
+		});
 		uni.request({
 			// #ifndef H5
 			url: Url + url,
@@ -87,7 +90,7 @@ function baseRequest(url, method, data, {
 				console.log("请求参数->", data);
 				console.log("成功返回->", res);
 				// #endif
-
+				uni.hideLoading();
 				let code = res.data.code; //code 200 成功 0 失败
 				if (noVerify)
 					reslove(res.data, res);
@@ -102,6 +105,7 @@ function baseRequest(url, method, data, {
 					toLogin();
 				} else if (code == 402) {
 					reslove(res.data, res);
+					store.commit('setRoles', 'clear');
 					uni.navigateTo({
 						url: '/pages/common/login/login',
 					});
@@ -113,6 +117,7 @@ function baseRequest(url, method, data, {
 				reject(res.data.msg || '系统错误');
 			},
 			fail: (err) => {
+				uni.hideLoading();
 				console.log("接口地址->", Url + url);
 				console.log("失败返回->", err);
 				let data = {

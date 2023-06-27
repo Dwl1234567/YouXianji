@@ -6,7 +6,7 @@ import request from '@/utils/request.js';
  *
  */
 export function secondGoodsList(data) {
-	return request.get('/yxj/app/secondGoods/getRandomGoods', data, {
+	return request.get('/yxj/app/secondGoods/getQueryGoodsList', data, {
 		noLogin: true
 	});
 }
@@ -245,7 +245,7 @@ export function selectByModelId(data) {
  *
  */
 export function getAllBrand(data) {
-	return request.get('/yxj/app/common/getAllBrand', data, {
+	return request.get('/yxj/app/common/selectHasDeviceBrandList', data, {
 		noLogin: true
 	});
 }
@@ -255,7 +255,7 @@ export function getAllBrand(data) {
  *
  */
 export function getSeriesList(data) {
-	return request.get('/yxj/app/common/getSeriesList', data, {
+	return request.get('/yxj/app/common/selectHasDeviceSeriesList', data, {
 		noLogin: true
 	});
 }
@@ -285,7 +285,7 @@ export function selectModelTree(data) {
  *
  */
 export function selectStoreGoods(data) {
-	return request.get('/yxj/app/secondGoods/selectStoreGoods', data, {
+	return request.get('/yxj/app/secondGoods/getQueryGoodsList', data, {
 		noLogin: true
 	});
 }

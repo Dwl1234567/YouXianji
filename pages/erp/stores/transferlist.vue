@@ -64,42 +64,40 @@
 			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="cu-card article" v-if="1==TabCur">
-			<view class="cu-item margin-sm padding-sm bg-white radius-3" v-for="(item,index) in dataList1" :key="index">
-				<view class="content">
-					<image :src="item.image" mode="aspectFill"></image>
-					<view class="desc">
-						<view class="title">
-							<view class="text-cut">{{item.title}}</view>
-						</view>
-						<view class="text-xs">
-							<view class="flex justify-between">
-								<view class="">序列号：{{item.sn}}
-									<!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>-->
-								</view>
-								<view class="">调拨时间：{{item.createtime}}</view>
-							</view>
-							<view class="flex justify-between">
-								<view class="">成本价：{{item.cost_price}}</view>
-								<view class="">调拨价：<text class="text-red">{{item.peer_price}}</text>元</view>
-							</view>
-							<view class="flex justify-between">
-								<view class="">销售价：{{item.sales_price}}</view>
-								<view class="">库存：1</view>
-							</view>
-						</view>
+			<view style="padding: 10px 20rpx">
+				<!-- :class="admin ? 'transform' : 'transformRight'" -->
+				<view v-for="(item, index) in dataList1" style="display: flex; align-items: center; margin-bottom: 10px">
+					<!-- :class="admin ? '' : 'transform'" -->
+					<view style="margin-right: 28rpx" class="transform">
+						<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 					</view>
-				</view>
-				<view class="flex justify-between margin-bottom-sm">
-					<view class="padding-top-sm padding-left padding-right">
-						<view class="cu-tag bg-green light sm">{{item.store_name}}</view>
-						<text class="text-xs margin-lr-xs">的</text>
-						<view class="cu-tag bg-blue light sm">{{item.allot_name}}</view>
-						<text class="text-xs margin-left-xs"> 发起的调货</text>
-					</view>
-					<view class="padding-top-xs">
-						<view class="cu-btn round margin-xs line-red text-bold sm">
-							<text>已接受</text>
+					<view class="group_3 flex-col">
+						<view class="text-wrapper_1 flex-row justify-between">
+							<text class="text_7">时间:{{item.createTime}}</text>
 						</view>
+						<view class="section_1 flex-row">
+							<view class=""></view>
+							<image :src="$httpImage + item.backPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
+							</image>
+							<view class="text-wrapper_2 flex-col">
+								<text class="text_8">{{item.modelName}}</text>
+								<text class="text_9">{{item.label}}</text>
+								<text class="text_10">序列号:{{item.deviceNo}}</text>
+								<text class="text_11">调拨价:{{item.allotPrice}}元</text>
+							</view>
+						</view>
+						<text class="text_13">申请调拨门店：{{item.storeName}}</text>
+						<text class="text_13">申请人：{{item.nickName}}</text>
+						<!-- 判断调拨门店 或 店长 或 回收人同意 -->
+						<!-- <view class="button"
+							v-if="storeId == item.approveStore && (roles.store_admin || userId == item.recyclePeople)">
+							<view class="receipt" @tap="agreeAlloteApprove(item, 2)">
+								拒绝
+							</view>
+							<view class="receipt" @tap="agreeAlloteApprove(item, 1)">
+								接受
+							</view>
+						</view> -->
 					</view>
 				</view>
 			</view>
@@ -107,49 +105,40 @@
 			<uni-load-more :status="loadmore1" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="cu-card article" v-if="2==TabCur">
-			<view class="cu-item margin-sm padding-sm bg-white radius-3" v-for="(item,index) in dataList2" :key="index">
-				<view class="content">
-					<image :src="item.image" mode="aspectFill"></image>
-					<view class="desc">
-						<view class="title">
-							<view class="text-cut">{{item.title}}</view>
-						</view>
-						<view class="text-xs">
-							<view class="flex justify-between">
-								<view class="">序列号：{{item.sn}}
-									<!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>-->
-								</view>
-								<view class="">调拨时间：{{item.createtime}}</view>
-							</view>
-							<view class="flex justify-between">
-								<view class="">成本价：{{item.cost_price}}</view>
-								<view class="">调拨价：<text class="text-red">{{item.peer_price}}</text>元</view>
-							</view>
-							<view class="flex justify-between">
-								<view class="">销售价：{{item.sales_price}}</view>
-								<view class="">库存：1</view>
-							</view>
-						</view>
+			<view style="padding: 10px 20rpx">
+				<!-- :class="admin ? 'transform' : 'transformRight'" -->
+				<view v-for="(item, index) in dataList2" style="display: flex; align-items: center; margin-bottom: 10px">
+					<!-- :class="admin ? '' : 'transform'" -->
+					<view style="margin-right: 28rpx" class="transform">
+						<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 					</view>
-				</view>
-				<view class="flex justify-between">
-					<view class="padding-top-sm padding-left padding-right">
-						<view class="cu-tag bg-green light sm">{{item.store_name}}</view>
-						<text class="text-xs margin-lr-xs">的</text>
-						<view class="cu-tag bg-blue light sm">{{item.allot_name}}</view>
-						<text class="text-xs margin-left-xs"> 发起的调货</text>
-					</view>
-					<view class="padding-top-xs">
-						<view class="cu-btn round margin-xs line-deepblue text-bold sm">
-							<text>已拒绝</text>
+					<view class="group_3 flex-col">
+						<view class="text-wrapper_1 flex-row justify-between">
+							<text class="text_7">时间:{{item.createTime}}</text>
 						</view>
-					</view>
-				</view>
-				<view class="bg-grey light margin-left margin-right padding-xs radius text-sm margin-bottom-sm">
-					<view class="flex">
-						<view class="flex-sub">
-							{{item.remark}}
+						<view class="section_1 flex-row">
+							<view class=""></view>
+							<image :src="$httpImage + item.backPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
+							</image>
+							<view class="text-wrapper_2 flex-col">
+								<text class="text_8">{{item.modelName}}</text>
+								<text class="text_9">{{item.label}}</text>
+								<text class="text_10">序列号:{{item.deviceNo}}</text>
+								<text class="text_11">调拨价:{{item.allotPrice}}元</text>
+							</view>
 						</view>
+						<text class="text_13">申请调拨门店：{{item.storeName}}</text>
+						<text class="text_13">申请人：{{item.nickName}}</text>
+						<!-- 判断调拨门店 或 店长 或 回收人同意 -->
+						<!-- <view class="button"
+							v-if="storeId == item.approveStore && (roles.store_admin || userId == item.recyclePeople)">
+							<view class="receipt" @tap="agreeAlloteApprove(item, 2)">
+								拒绝
+							</view>
+							<view class="receipt" @tap="agreeAlloteApprove(item, 1)">
+								接受
+							</view>
+						</view> -->
 					</view>
 				</view>
 			</view>

@@ -18,26 +18,26 @@
 					<view class="text-wrapper_1 flex-row justify-between"></view>
 					<view class="section_1 flex-row">
 						<view class=""></view>
-						<image :src="$httpImage + item.modelPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
+						<image :src="$httpImage + item.backPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
 						</image>
 						<view class="text-wrapper_2 flex-col">
 							<text class="text_8">{{item.modelName}}</text>
 							<text class="text_9">{{item.label}}</text>
 							<!-- <text class="text_9">颜色：{{item.fittingsConfig.fittingsColor}}</text> -->
 							<text class="text_9">序列号：{{item.deviceNo}}</text>
-							<text class="text_9">销售价：{{item.totalPrice}}</text>
 						</view>
 					</view>
-					<text class="text_13">应收款：{{item.accountReceived}}</text>
-					<text class="text_13">实收款：{{item.fundsReceived}}</text>
-					<text class="text_13">欠款：{{item.debtPrice}}</text>
-					<text class="text_13">客户：{{item.clienterName}}</text>
+					<text
+						class="text_13">回收价：{{item.recycleFormPayment.wxPaymentPrice + item.recycleFormPayment.zfbPaymentPrice + item.recycleFormPayment.bankCardPrice + item.recycleFormPayment.cashPaymentPrice}}</text>
+					<text class="text_13">客户：{{item.clientName}}</text>
+					<text class="text_13">创建人：{{item.recyclePeople}}</text>
 					<view class="group_5 flex-row justify-between">
 						<button class="button_2 flex-col" @click="onClick_1(item)" v-if="item.pendingOrderVoucher">
 							<text class="text_16">查看凭证</text>
 						</button>
-						<button class="button_2 flex-col" @click="onClick_2(item)" style="margin-left: 10rpx;">
-							<text class="text_16">销售开单</text>
+						<button class="button_2 flex-col" @click="onClick_2(item)" style="margin-left: 10rpx;"
+							v-if="item.createById == userId">
+							<text class="text_16">开单</text>
 						</button>
 					</view>
 				</view>
@@ -53,7 +53,7 @@
 <script>
 	import Vue from 'vue';
 	import {
-		selectSellFormList,
+		recyclePreFormList,
 		getAllClassification,
 		toReoragnize
 	} from '@/api/erp.js';
@@ -68,6 +68,7 @@
 		},
 		data() {
 			return {
+				userId: null,
 				deviceId: null,
 				value: 0,
 				classificationId: null,
@@ -92,6 +93,7 @@
 			};
 		},
 		onLoad(options) {
+			this.userId = uni.getStorageSync('userinfo').userId
 			this.getAllClassification();
 			this.getDataList();
 		},
@@ -151,10 +153,10 @@
 				});
 			},
 			onClick_2(item) {
-				uni.navigateTo({
-					url: '/pages/tabbarerp/push?sellFormId=' + item.sellFormId
-				})
 				uni.setStorageSync('updatecustomer', item);
+				uni.navigateTo({
+					url: '/pages/tabbarerp/push?recycleFormId=' + item.recycleFormId + '&tab=1'
+				})
 			},
 			// updatecustomer(item) {
 			// 	uni.setStorageSync('updatecustomer', item);
@@ -202,7 +204,7 @@
 				paramsData.pendingOrder = 1;
 				paramsData.deviceId = this.deviceId
 				paramsData.deviceNo = this.storeName
-				selectSellFormList(paramsData)
+				recyclePreFormList(paramsData)
 					.then((res) => {
 						let data = res.rows;
 						if (data) {

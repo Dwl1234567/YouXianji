@@ -4,10 +4,10 @@
 			<uni-forms-item label="回收方名称" labelWidth="120" required name="name" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.recyclerName" placeholder="请输入回收方名称" />
 			</uni-forms-item>
-			<uni-forms-item label="联系人" labelWidth="120" name="contact" class="cu-form-group">
+			<uni-forms-item label="联系人" labelWidth="120" required name="contact" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.linkPeople" placeholder="请输入联系人" />
 			</uni-forms-item>
-			<uni-forms-item label="联系人手机号" labelWidth="120" name="phone" class="cu-form-group">
+			<uni-forms-item label="联系人手机号" labelWidth="120" required name="phone" class="cu-form-group">
 				<uni-easyinput v-model="customFormData.linkPhone" placeholder="请输入联系人手机号" />
 			</uni-forms-item>
 			<uni-forms-item label="备注" class="cu-form-group">
@@ -56,6 +56,18 @@
 						rules: [{
 							required: true,
 							errorMessage: '回收方名称不能为空'
+						}]
+					},
+					linkPeople: {
+						rules: [{
+							required: true,
+							errorMessage: '联系人不能为空'
+						}]
+					},
+					linkPhone: {
+						rules: [{
+							required: true,
+							errorMessage: '手机号不能为空'
 						}]
 					},
 				}
