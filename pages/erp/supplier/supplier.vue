@@ -5,13 +5,13 @@
 			<!-- #ifdef MP -->
 			<!--<view class="text-center text-black zaiui-small-routine-title">客户列表</view>-->
 			<!-- #endif -->
-			
+
 			<!--标题栏-->
 			<bar-title bgColor="bg-white">
 				<block slot="content">供应商列表</block>
 				<block slot="right">
-					<button class="cu-btn sm line-red round"  @tap="snTap">
-						<text class="cuIcon-add"/>
+					<button class="cu-btn sm line-red round" @tap="snTap">
+						<text class="cuIcon-add" />
 						添加供应商
 					</button>
 				</block>
@@ -26,7 +26,7 @@
 				<button class="cu-btn bg-red round" @click="seachFuc">搜索</button>
 			</view>
 		</view>
-		
+
 		<view class="cu-list menu">
 			<block v-for="(item,index) in dataList" :key="index">
 				<view class="cu-item bg-white radius-4 margin-sm" @click="choosecust(item)">
@@ -49,7 +49,7 @@
 <script>
 	import {
 		supplierList
-	}from "@/api/erp.js"
+	} from "@/api/erp.js"
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -59,7 +59,7 @@
 			return {
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
-				seachtext:'',
+				seachtext: '',
 				dataList: [],
 				queryInfo: {
 					pageNum: 1,
@@ -71,9 +71,15 @@
 					"contentrefresh": "加载中...",
 					"contentnomore": "暂无更多数据。"
 				},
-				ifBottomRefresh:false,
-				chooseStatus:0
+				ifBottomRefresh: false,
+				chooseStatus: 0
 			};
+		},
+		onBackPress() {
+			console.log('物理返回')
+			uni.navigateTo({
+				url: '/pages/tabbarerp/home',
+			});
 		},
 		onLoad(options) {
 			this.chooseStatus = options.chooseStatus;
@@ -82,7 +88,7 @@
 			this.getDataList();
 		},
 		onReady() {
-			
+
 		},
 		onPullDownRefresh() {
 			this.queryInfo.pageNum = 1; //重置分页页码
@@ -95,24 +101,24 @@
 			this.getDataList();
 		},
 		methods: {
-			choosecust(info){
-				if(this.chooseStatus){
+			choosecust(info) {
+				if (this.chooseStatus) {
 					return;
 				}
-				uni.$emit('updatesupplier',info)
+				uni.$emit('updatesupplier', info)
 				uni.navigateBack({
 					delta: 1
 				})
 			},
-			seachFuc(){
+			seachFuc() {
 				this.getDataList();
 			},
-			snTap(){
+			snTap() {
 				uni.navigateTo({
-					url:'/pages/erp/supplier/add'
+					url: '/pages/erp/supplier/add'
 				})
 			},
-			isMobile (mobile) {
+			isMobile(mobile) {
 				let regExp = /^1[3-9]\d{9}$/;
 				return regExp.test(mobile)
 			},
@@ -127,7 +133,7 @@
 						let data = res.rows;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
-			
+
 							if (that.ifBottomRefresh) {
 								that.dataList = that.dataList.concat(data)
 							} else {
@@ -135,7 +141,7 @@
 							}
 							that.ifBottomRefresh = false
 							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
-			
+
 						}
 					})
 					.finally(() => {

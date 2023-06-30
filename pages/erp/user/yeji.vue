@@ -26,14 +26,16 @@
 			<view class="h-table">
 				<view class="h-tr h-tr-3 h-thead">
 					<view class="h-td">项目</view>
-					<view class="h-td">业绩</view>
+					<view class="h-td">销售额</view>
 					<view class="h-td">成本</view>
-					<view class="h-td">毛利</view>
+					<view class="h-td">业绩</view>
+					<view class="h-td">提点</view>
 				</view>
 				<view class="h-tr h-tr-3" v-for="(item,index) in dataList" :key="index">
 					<view class="h-td text-red">{{item.name}}</view>
 					<view class="h-td">{{item.yeji}}</view>
 					<view class="h-td">{{item.chengben}}</view>
+					<view class="h-td">{{item.maoli}}</view>
 					<view class="h-td">{{item.maoli}}</view>
 				</view>
 			</view>
@@ -130,17 +132,53 @@
 				}
 				getPerformance(queryparams).then(res => {
 						this.dataList = [{
-								name: '销售',
+								name: '线上二手回收',
 								yeji: res.data.sellPerformance,
 								chengben: res.data.sellCost,
 								maoli: res.data.totallirun_price
 							},
 							{
-								name: '回收',
+								name: '线下二手回收',
 								yeji: res.data.recyclePerformance,
 								chengben: res.data.recycleCost,
 								maoli: res.data.total_recycle_lirun_price
-							}
+							},
+							{
+								name: '线上二手销售',
+								yeji: res.data.sellPerformance,
+								chengben: res.data.sellCost,
+								maoli: res.data.totallirun_price
+							},
+							{
+								name: '线下二手销售',
+								yeji: res.data.sellPerformance,
+								chengben: res.data.sellCost,
+								maoli: res.data.totallirun_price
+							},
+							{
+								name: '线上配件',
+								yeji: res.data.sellPerformance,
+								chengben: res.data.sellCost,
+								maoli: res.data.totallirun_price
+							},
+							{
+								name: '线下配件',
+								yeji: res.data.sellPerformance,
+								chengben: res.data.sellCost,
+								maoli: res.data.totallirun_price
+							},
+							{
+								name: '线上全新机',
+								yeji: res.data.sellPerformance,
+								chengben: res.data.sellCost,
+								maoli: res.data.totallirun_price
+							},
+							{
+								name: '线下全新机',
+								yeji: res.data.sellPerformance,
+								chengben: res.data.sellCost,
+								maoli: res.data.totallirun_price
+							},
 						];
 					})
 					.finally(() => {

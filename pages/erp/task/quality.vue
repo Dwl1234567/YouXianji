@@ -582,6 +582,12 @@
 				roles: [],
 			};
 		},
+		onBackPress() {
+			console.log('物理返回')
+			uni.switchTab({
+				url: '/pages/tabbar/home',
+			});
+		},
 		onLoad(options) {
 			console.log(this.$u.config.v);
 			// #ifdef APP-PLUS

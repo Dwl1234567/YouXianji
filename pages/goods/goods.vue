@@ -512,12 +512,12 @@
 			<view id="qrcodes">
 				<canvas id="img1" canvas-id="img1" style="width: 324px; height: 324px" />
 				<view class="text">{{product.title}}</view>
-				<view class="price">￥{{product.sales_price}}</view>
+				<view class="price">￥{{product.sellPrice}}</view>
 				<view class="head">
 					<canvas id="img2" canvas-id="img2" style="width: 40px; height: 40px" />
 					<!-- <img :src="this.userInfo.avatar" alt="" crossorigin="anonymous" /> -->
 				</view>
-				<view class="name">优闲集 + {{this.userInfo.nickname}}</view>
+				<view class="name">优闲集 + {{this.userInfo.nickName}}</view>
 				<canvas id="qrcode" canvas-id="qrcode" :style="{'width': '68px', 'height': '68px'}" />
 			</view>
 		</view>
@@ -1130,11 +1130,14 @@
 											// 	icon: 'none'
 											// })
 											for (let i = 0; i < imgurl.length; i++) {
+												console.log('图片上传------->', that.$httpImage + imgurl[i])
 												uni.downloadFile({
-													url: imgurl[i], // 图片地址
+													url: that.$httpImage + imgurl[i], // 图片地址
 													methods: 'GET',
 													success: (res) => {
+														console.log('返回的res', res)
 														var tempFilePath = res.tempFilePath; // 这里拿到后端返回的图片路径
+														console.log('下载图片---->', res.tempFilePath)
 														uni.saveImageToPhotosAlbum({
 															// 然后调用这个方法
 															filePath: tempFilePath,
@@ -1150,6 +1153,7 @@
 																}
 															},
 															fail: (err) => {
+																console.log(err)
 																that.$u.toast(err);
 															},
 															complete: () => {

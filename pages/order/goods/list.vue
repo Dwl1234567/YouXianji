@@ -302,6 +302,9 @@
 		onPullDownRefresh() {
 			this.pullDownRefresh();
 		},
+		onBackPress() {
+			console.log(222)
+		},
 		onShow() {},
 		methods: {
 			// 售后查看凭证

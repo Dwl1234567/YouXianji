@@ -124,6 +124,12 @@
 			}
 			this.getDataList();
 		},
+		onBackPress() {
+			console.log('物理返回')
+			uni.switchTab({
+				url: '/pages/tabbar/home',
+			});
+		},
 		onReachBottom() {
 			if (this.TabCur == 0) {
 				if (this.loadmore == 'noMore') return

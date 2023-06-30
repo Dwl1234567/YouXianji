@@ -327,6 +327,12 @@
 				loadStatus: ['loadmore', 'loadmore', 'loadmore', 'loadmore', 'loadmore'],
 			};
 		},
+		onBackPress() {
+			console.log('物理返回')
+			uni.switchTab({
+				url: '/pages/tabbar/my',
+			});
+		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			let that = this;

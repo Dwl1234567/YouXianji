@@ -5,20 +5,25 @@
 				<text class="cuIcon-scan" @tap="snTap" />
 			</block> -->
 		</bar-search-title>
-		<view class="group_1 flex-row">
-			<!-- <view class="block_1 flex-col">
-				<view class="tabs_1 flex-col">
-					<view class="text-wrapper_1 flex-row justify-between">
-						<text :class="tab === 1 ?'text_3':'text_4'" @tap="checkTab(1)">待处理</text>
-						<text :class="tab === 2 ?'text_3':'text_4'" @tap="checkTab(2)">已处理</text>
-						<text :class="tab === 3 ?'text_3':'text_4'" @tap="checkTab(3)">待退回</text>
-						<text :class="tab === 4 ?'text_3':'text_4'" @tap="checkTab(4)">已退回</text>
-					</view>
-					<view class="section_1 flex-row">
-						<view class="box_1 flex-col"></view>
-					</view>
+		<scroll-view scroll-x class="bg-white nav text-center text-xl">
+			<view class="cu-item padding-lr-sm" :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="1" style="position: relative">
+				线下回收
+				<view class="tab-dot bg-white"></view>
+			</view>
+			<view class="cu-item padding-lr-sm" :class="2==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="2" style="position: relative">
+				线上回收
+				<view class="tab-dot bg-white"></view>
+			</view>
+		</scroll-view>
+		<view class="group_1">
+			<view class="cu-item arrow" style="display: flex; justify-content: space-between; padding: 20rpx 20rpx">
+				<view class="content">筛选时间</view>
+				<view class="action">
+					<view class="picker text-gray" @tap="show = true">{{ time ? time : '请选择月份'}}</view>
 				</view>
-			</view> -->
+			</view>
 			<view class="block_3 flex-col">
 				<view class="group_2 flex-col" v-for="(item,index) in recycleList" :key="index">
 					<view class="text-wrapper_2 flex-row justify-between">
@@ -161,6 +166,7 @@
 				</view>
 			</view>
 		</u-popup>
+		<u-calendar :show="show" mode="range" @confirm="aaa" @close="close"></u-calendar>
 		<u-action-sheet :actions="upimageList" :closeOnClickAction="true" @close="closeUpimg" :cancelText="'取消'"
 			@select="selectUpimg" :show="showupimage"></u-action-sheet>
 	</view>
@@ -184,7 +190,11 @@
 		},
 		data() {
 			return {
+				time: null,
+				startTime: null,
+				endTime: null,
 				deviceNo: null,
+				show: false,
 				TabCur: 1,
 				upimageList: [{
 						name: '拍照',
@@ -247,8 +257,22 @@
 			}
 		},
 		methods: {
+			aaa(value) {
+				this.startTime = value[0];
+				this.endTime = value[1];
+				this.time = value[0] + '-' + value[1];
+				this.selectRecycleOrderList();
+				this.show = false;
+			},
+			close() {
+				this.show = false
+			},
+			tabSelect(e) {
+				this.TabCur = e.currentTarget.dataset.id;
+				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60;
+				this.selectRecycleOrderList()
+			},
 			searchTap(e) {
-				console.log(e)
 				this.deviceNo = e;
 				this.selectRecycleOrderList()
 			},
@@ -397,22 +421,16 @@
 
 			// 获取回收订单列表
 			selectRecycleOrderList(isReach = false) {
-				// if (this.tab == 1) {
-				// 	this.queryPage.orderStatusList = ['0'];
-				// } else if (this.tab == 2) {
-				// 	this.queryPage.orderStatusList = ['1', '2', '3', '7'];
-				// } else if (this.tab == 3) {
-				// 	this.queryPage.orderStatusList = ['4', '5'];
-				// } else {
-				// 	this.queryPage.orderStatusList = ['6'];
-				// }
 				this.queryPage.deviceNo = this.deviceNo
+				this.queryPage.onlineRecycleFlag = this.TabCur - 1
 				getMyRecycleList(this.queryPage).then((res) => {
 					if (isReach) {
 						this.recycleList = this.recycleList.concat(res.rows);
 					} else {
 						this.recycleList = res.rows;
 					}
+				}).finally(() => {
+					uni.stopPullDownRefresh();
 				});
 			},
 			// 员工抢单
@@ -422,7 +440,7 @@
 						this.queryPage.total = res.total;
 						this.selectRecycleOrderList();
 					}
-				});
+				})
 			},
 			goDetail(item) {
 				uni.navigateTo({
@@ -491,6 +509,20 @@
 
 	page {
 		background-color: rgba(240, 240, 240, 1);
+	}
+
+	.cur {
+		.tab-dot {
+			position: absolute;
+			height: 3px !important;
+			border-radius: 20rpx;
+			bottom: 5px;
+			left: 0;
+			right: 0;
+			width: 25px !important;
+			margin: auto;
+			background-image: linear-gradient(90deg, #FF6868 0%, #EA1515 100%);
+		}
 	}
 
 	.block_3 {

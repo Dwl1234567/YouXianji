@@ -7,14 +7,9 @@
 			<view class="search" style="width: 75%">
 				<view class="search-form round">
 					<!-- <text class="margin-left-xs">{{content}}</text> -->
-					<input
-						class="margin-left-xs"
-						v-model="seachKey"
-						confirm-type="search"
-						:placeholder="content"
-						@input="seachTap"
-						@confirm="contentTap"
-					/>
+					<input class="margin-left-xs" v-model="seachKey" confirm-type="search" :placeholder="content"
+						@confirm="contentTap" />
+					<!-- @input="seachTap" -->
 					<button v-show="seachKey?true:false" class="seach-btn cu-btn bg-red sm text-bold radius-3" @click="seachTap">
 						搜索
 					</button>
@@ -141,13 +136,16 @@
 			width: 100%;
 			height: calc(var(--status-bar-height) + 101rpx);
 		}
+
 		.search-form {
 			padding-right: 4rpx;
+
 			.seach-btn {
 				line-height: unset;
 			}
 		}
 	}
+
 	.cu-bar .search-form [class*='cuIcon-roundclosefill'] {
 		margin: 0 0.5em 0 0.3em;
 	}

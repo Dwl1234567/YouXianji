@@ -15,35 +15,35 @@
 			<!-- <cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }">
 				<cover-image class="outline-img" src="/static/goodsphoto.png" style=""></cover-image>
 			</cover-view> -->
-			<cover-view class="outline-box" :style="{ width: windowHeight / 2, height: windowHeight - 80 }" v-if="type == 0">
+			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 0">
 				<cover-image class="outline-img" src="/static/photo/photo9.png"
 					style="width: 318rpx; height: 630rpx;"></cover-image>
 			</cover-view>
-			<cover-view class="outline-box" :style="{ width: windowHeight / 2, height: windowHeight - 80 }" v-if="type == 1">
+			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 1">
 				<cover-image class="outline-img" src="/static/photo/photo2.png"
 					style="width: 318rpx; height: 630rpx;"></cover-image>
 			</cover-view>
-			<cover-view class="outline-box" :style="{ width: windowHeight / 2, height: windowHeight - 80 }" v-if="type == 2">
+			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 2">
 				<cover-image class="outline-img" src="/static/photo/photo3.png"
 					style="width: 61rpx; height: 630rpx;"></cover-image>
 			</cover-view>
-			<cover-view class="outline-box" :style="{ width: windowHeight / 2, height: windowHeight - 80 }" v-if="type == 3">
+			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 3">
 				<cover-image class="outline-img" src="/static/photo/photo4.png"
 					style="width: 61rpx; height: 630rpx;"></cover-image>
 			</cover-view>
-			<cover-view class="outline-box" :style="{ width: windowHeight / 2, height: windowHeight - 80 }" v-if="type == 4">
+			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 4">
 				<cover-image class="outline-img" src="/static/photo/photo5.png"
 					style="width: 61rpx; height: 630rpx;"></cover-image>
 			</cover-view>
-			<cover-view class="outline-box" :style="{ width: windowHeight / 2, height: windowHeight - 80 }" v-if="type == 5">
+			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 5">
 				<cover-image class="outline-img" src="/static/photo/photo6.png"
 					style="width: 61rpx; height: 630rpx;"></cover-image>
 			</cover-view>
-			<cover-view class="outline-box" :style="{ width: windowHeight / 2, height: windowHeight - 80 }" v-if="type == 6">
+			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 6">
 				<cover-image class="outline-img" src="/static/photo/photo7.png"
 					style="width: 318rpx; height: 630rpx;"></cover-image>
 			</cover-view>
-			<cover-view class="outline-box" :style="{ width: windowHeight / 2, height: windowHeight - 80 }" v-if="type == 7">
+			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 7">
 				<cover-image class="outline-img" src="/static/photo/photo8.png"
 					style="width: 318rpx; height: 630rpx;"></cover-image>
 			</cover-view>

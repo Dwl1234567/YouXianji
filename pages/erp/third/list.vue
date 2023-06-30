@@ -81,6 +81,12 @@
 		onShow() {
 			this.getDataList();
 		},
+		onBackPress() {
+			console.log('物理返回')
+			uni.navigateTo({
+				url: '/pages/tabbarerp/home',
+			});
+		},
 		onReady() {
 
 		},

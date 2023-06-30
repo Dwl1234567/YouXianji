@@ -4,12 +4,6 @@ import {
 } from '@/api/malls.js';
 const pay = {
 	pay(e, provider, orderPaymentId) {
-		// let orderInfos = e
-		// if (provider == 'weixin') {
-		// 	orderInfos = {
-
-		// 	}
-		// }
 		uni.requestPayment({
 			provider: provider,
 			orderInfo: e,

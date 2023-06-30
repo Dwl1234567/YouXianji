@@ -7,7 +7,7 @@
 			<!-- #endif -->
 
 			<!--标题栏-->
-			<bar-title bgColor="bg-white" adress="/pages/tabbarerp/push">
+			<bar-title bgColor="bg-white" adress="/pages/tabbarerp/home">
 				<block slot="content">客户列表</block>
 				<block slot="right" v-if="isShow != 'false'">
 					<button class="cu-btn sm line-red round" @tap="addCustomer">
@@ -82,6 +82,12 @@
 			console.log(this.isShow)
 			this.chooseStatus = options.chooseStatus;
 			// this.getDataList();
+		},
+		onBackPress() {
+			console.log('物理返回')
+			uni.navigateTo({
+				url: '/pages/tabbarerp/home',
+			});
 		},
 		onShow() {
 			this.getDataList();

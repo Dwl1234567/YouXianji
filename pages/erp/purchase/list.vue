@@ -11,12 +11,12 @@
 		<scroll-view scroll-x class="bg-white nav text-center text-xl">
 			<view class="cu-item padding-lr-sm" :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
 				data-id="1" style="position: relative">
-				线下销售
+				线下回收
 				<view class="tab-dot bg-white"></view>
 			</view>
 			<view class="cu-item padding-lr-sm" :class="2==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
 				data-id="2" style="position: relative">
-				线上销售
+				线上回收
 				<view class="tab-dot bg-white"></view>
 			</view>
 		</scroll-view>
