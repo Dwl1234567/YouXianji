@@ -10,13 +10,11 @@
 			</block>
 		</bar-search-title>
 		<!--为上面的临时筛选条进行的临时兼容处理-->
-		<view style="padding: 0px 20rpx">
-			<view class="cu-item arrow" style="display: flex; justify-content: space-between">
+		<view style="padding: 20rpx 20rpx">
+			<view class="cu-item arrow" style="display: flex; justify-content: space-between;">
 				<view class="content">筛选时间</view>
 				<view class="action">
-					<picker @change="sexPickerChange" :value="sexIndex" :range="sexPicker">
-						<view class="picker text-gray">{{monthVal ? monthVal + '月' : '请选择月份'}}</view>
-					</picker>
+					<view class="picker text-gray" @tap="show = true">{{ time ? time : '请选择月份'}}</view>
 				</view>
 			</view>
 			<view v-for="(item, index) in dataList"
@@ -42,6 +40,7 @@
 								<view>
 									<text class="text_10">成本价:{{item.fittingsCostPrice}}元</text>
 									<text class="text_11">销售价:{{item.fittingsSellPrice}}元</text>
+									<text class="text_11">采购金额:{{item.fittingsCostPrice * item.fittingsNumber}}元</text>
 								</view>
 							</view>
 							<!-- 							<text class="text_9">颜色：{{item.fittingsConfig.fittingsColor}}</text>
@@ -86,6 +85,7 @@
 				<view class="ok" @tap="confirmWarehousing">确定</view>
 			</view>
 		</u-popup>
+		<u-calendar :show="show" mode="range" @confirm="aaa" @close="close"></u-calendar>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
@@ -111,6 +111,11 @@
 		},
 		data() {
 			return {
+				startTime: null,
+				endTime: null,
+				deviceNo: null,
+				time: null,
+				show: false,
 				number: null,
 				itemList: {},
 				dayinShow: false,
@@ -158,7 +163,20 @@
 			});
 		},
 		methods: {
+			searchTap(e) {
+				console.log(e)
+				this.deviceNo = e
+				this.getDataList();
+			},
+			aaa(value) {
+				this.startTime = value[0];
+				this.endTime = value[1];
+				this.time = value[0] + '-' + value[1];
+				this.getDataList();
+				this.show = false;
+			},
 			close() {
+				this.show = false;
 				this.dayinShow = false
 				this.yunShowImgMain = false
 			},
@@ -244,9 +262,13 @@
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
+				paramsData.startTime = this.startTime;
+				paramsData.endTime = this.endTime;
+				paramsData.fittingsName = this.deviceNo
 				if (this.monthVal) {
 					paramsData.monthVal = Number(this.monthVal);
 				}
+				console.log(paramsData)
 				fittingsOrderList(paramsData)
 					.then((res) => {
 						let data = res.rows;

@@ -268,21 +268,30 @@
 									style="padding: 0 24rpx;font-size: 32rpx;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;">
 									{{product.modelName}}
 								</view>
-								<view style="display: flex;padding: 0 24rpx;margin-top: 30rpx;">
-									<view style="width: 40%;">
+								<view style="display: flex;padding: 0 24rpx;margin-top: 30rpx;flex-wrap: wrap;">
+									<view style="margin-right: 80rpx;margin-bottom: 36rpx;">
 										<view class="titles">
 											机器SKU
 										</view>
 										<view class="texts">
-											{{product.basePriceLabel}}G
+											{{product.basePriceLabel}}
 										</view>
 									</view>
-									<view>
+									<view style="margin-right: 80rpx;margin-bottom: 36rpx;">
 										<view class="titles">
 											物品信息
 										</view>
 										<view class="texts">
 											{{product.deviceLabel}}
+										</view>
+									</view>
+									<view v-for="(item, index) in Pricepramitems" :key="index" v-if="item.indexs === 1"
+										style="margin-right: 80rpx;margin-bottom: 36rpx;">
+										<view class="titles">
+											{{qualityInfoList[index].key}}
+										</view>
+										<view class="texts">
+											{{qualityInfoList[index].value}}
 										</view>
 									</view>
 								</view>
@@ -295,11 +304,14 @@
 								<view class="box_9 flex-col">
 									<view class="section_3 flex-row justify-between" v-for="(item, index) in Pricepramitems"
 										v-if="item.indexs === 1" :key="index">
-										<view class="text-group_4 flex-col">
+										<view class="text-group_4 " style="display: flex;">
 											<text class="text_33">{{qualityInfoList[index].key}}</text>
-											<text class="text_34">{{qualityInfoList[index].value}}</text>
-											<text
-												class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
+											<view class="flex-col">
+												<text class="text_34">{{qualityInfoList[index].value}}</text>
+												<text class="text_36"
+													v-if="qualityInfoList[index].remark">{{qualityInfoList[index].remark}}</text>
+											</view>
+
 										</view>
 										<!-- <view class="box_10 flex-col">
 											<view
@@ -329,11 +341,14 @@
 								<view class="box_9 flex-col">
 									<view class="section_3 flex-row justify-between" v-for="(item, index) in qualityInfoList"
 										v-if="item.indexs == 2">
-										<view class="text-group_4 flex-col">
+										<view class="text-group_4 " style="display: flex;">
 											<text class="text_33">{{qualityInfoList[index].key}}</text>
-											<text class="text_34">{{qualityInfoList[index].value}}</text>
-											<text
-												class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
+											<view class="flex-col">
+												<text class="text_34">{{qualityInfoList[index].value}}</text>
+												<text
+													class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
+											</view>
+
 										</view>
 										<!-- <view class="box_10 flex-col">
 											<view v-if="checkFineness(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
@@ -362,11 +377,14 @@
 								<view class="box_9 flex-col">
 									<view class="section_3 flex-row justify-between" v-for="(item, index) in qualityInfoList"
 										v-if="item.indexs == 3">
-										<view class="text-group_4 flex-col">
+										<view class="text-group_4" style="display: flex;">
 											<text class="text_33">{{qualityInfoList[index].key}}</text>
-											<text class="text_34">{{qualityInfoList[index].value}}</text>
-											<text
-												class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
+											<view class="flex-col">
+												<text class="text_34">{{qualityInfoList[index].value}}</text>
+												<text
+													class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
+											</view>
+
 										</view>
 										<!-- <view class="box_10 flex-col">
 											<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">
@@ -395,11 +413,14 @@
 								<view class="box_9 flex-col">
 									<view class="section_3 flex-row justify-between" v-for="(item, index) in Pricepramitems"
 										v-if="item.indexs == 4">
-										<view class="text-group_4 flex-col">
+										<view class="text-group_4" style="display: flex;">
 											<text class="text_33">{{qualityInfoList[index].key}}</text>
-											<text class="text_34">{{qualityInfoList[index].value}}</text>
-											<text
-												class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
+											<view class="flex-col">
+												<text class="text_34">{{qualityInfoList[index].value}}</text>
+												<text
+													class="text_36">{{qualityInfoList[index].remark ? qualityInfoList[index].remark : '——'}}</text>
+											</view>
+
 										</view>
 										<!-- <view class="box_10 flex-col">
 											<view v-if="checkFunctional(qualityInfoList[index].valueId, Pricepramitems[index].valueId)">

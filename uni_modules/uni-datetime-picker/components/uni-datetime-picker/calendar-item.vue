@@ -13,10 +13,10 @@
 				'uni-calendar-item--after-checked':weeks.afterMultiple,
 				'uni-calendar-item--disable':weeks.disable,
 				}">
-			<text v-if="selected&&weeks.extraInfo" class="uni-calendar-item__weeks-box-circle"></text>
+			<text v-if="selected && weeks.extraInfo" class="uni-calendar-item__weeks-box-circle"></text>
 			<text class="uni-calendar-item__weeks-box-text uni-calendar-item__weeks-box-text-disable uni-calendar-item--checked-text">{{weeks.date}}</text>
 		</view>
-		<view :class="{'uni-calendar-item--isDay': weeks.isDay}"></view>
+		<view :class="{'uni-calendar-item--today': weeks.isToday}"></view>
 	</view>
 </template>
 
@@ -41,10 +41,6 @@
 					return []
 				}
 			},
-			lunar: {
-				type: Boolean,
-				default: false
-			},
 			checkHover: {
 				type: Boolean,
 				default: false
@@ -62,6 +58,8 @@
 </script>
 
 <style lang="scss" >
+	$uni-primary: #007aff !default;
+
 	.uni-calendar-item__weeks-box {
 		flex: 1;
 		/* #ifndef APP-NVUE */
@@ -78,12 +76,7 @@
 		font-size: 14px;
 		// font-family: Lato-Bold, Lato;
 		font-weight: bold;
-		color: #455997;
-	}
-
-	.uni-calendar-item__weeks-lunar-text {
-		font-size: 12px;
-		color: #333;
+		color: darken($color: $uni-primary, $amount: 40%);
 	}
 
 	.uni-calendar-item__weeks-box-item {
@@ -114,7 +107,6 @@
 	}
 
 	.uni-calendar-item__weeks-box .uni-calendar-item--disable {
-		// background-color: rgba(249, 249, 249, $uni-opacity-disabled);
 		cursor: default;
 	}
 
@@ -122,7 +114,7 @@
 		color: #D1D1D1;
 	}
 
-	.uni-calendar-item--isDay {
+	.uni-calendar-item--today {
 		position: absolute;
 		top: 10px;
 		right: 17%;
@@ -138,7 +130,7 @@
 	}
 
 	.uni-calendar-item__weeks-box .uni-calendar-item--checked {
-		background-color: #007aff;
+		background-color: $uni-primary;
 		border-radius: 50%;
 		box-sizing: border-box;
 		border: 3px solid #fff;
@@ -159,7 +151,7 @@
 
 	.uni-calendar-item--multiple .uni-calendar-item--before-checked,
 	.uni-calendar-item--multiple .uni-calendar-item--after-checked {
-		background-color: #409eff;
+		background-color: $uni-primary;
 		border-radius: 50%;
 		box-sizing: border-box;
 		border: 3px solid #F6F7FC;

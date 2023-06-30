@@ -17,7 +17,8 @@
 			<!--小程序端不显示-->
 			<!-- #ifndef MP -->
 			<view class="status_bar">
-				<image src="../../static/myBackground.png"></image>
+				<image src="../../static/myBackground.png">
+				</image>
 			</view>
 			<bar-title :isBack="false" :fixed="false" :bgColor="bgColor">
 				<block slot="right">
@@ -78,19 +79,19 @@
 					</view>
 				</view>
 				<!--用户提示-->
-				<view class="text-sm user-info-tip-box" v-if="userInfo && userInfo.verification != 1" @tap="realNameTap">
+				<!-- <view class="text-sm user-info-tip-box" v-if="userInfo && userInfo.verification != 1" @tap="realNameTap">
 					<view class="text-cut text-gray">偷偷告诉你，实名认证后才能回收下单哦~</view>
 					<text class="cuIcon-right icon" />
-				</view>
+				</view> -->
 				<!--用户数据-->
 				<view class="user-info-num-box margin-tb-sm padding-bottom-sm">
 					<view class="box margin-lr-sm">
 						<view class="cu-list col-3 no-border">
-							<view class="cu-item" @tap="cartTap">
+							<!-- <view class="cu-item" @tap="cartTap">
 								<view class="text-xxl" v-if="login">-</view>
 								<view class="text-xxl text-color-black" v-else>{{userInfo.cartnum}}</view>
 								<text class="text-sm text-color-black text-500">购物车</text>
-							</view>
+							</view> -->
 							<view class="cu-item" @tap="footmarkTap">
 								<view class="text-xxl" v-if="login">-</view>
 								<view class="text-xxl text-color-black" v-else>{{userInfo.visitnum}}</view>
@@ -101,11 +102,11 @@
 								<view class="text-xxl text-color-black" v-else>{{userInfo.visitnum}}</view>
 								<text class="text-sm text-color-black text-500">收藏</text>
 							</view>
-							<view class="cu-item" @tap="sponsoredTap">
+							<!-- <view class="cu-item" @tap="sponsoredTap">
 								<view class="text-xxl" v-if="login">-</view>
 								<view class="text-xxl text-color-black" v-else>{{userInfo.hb_medal}}</view>
 								<text class="text-sm text-color-black text-500">奖章</text>
-							</view>
+							</view> -->
 							<!--
 							<view class="cu-item" @tap="feeTap">
 								<view class="text-xxl" v-if="login">-</view>

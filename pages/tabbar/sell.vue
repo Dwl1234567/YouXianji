@@ -39,7 +39,9 @@
 				<!-- 同城到店回收-块1 -->
 				<view class="cu-item radius-4 bg-white" v-if="latelystoreInfo.storeName">
 					<view class="content" @click="gostoreInfo(item.id)">
-						<image :src="latelystoreInfo.image" mode="aspectFill" style="marginleft: 0px"></image>
+						<image :src="latelystoreInfo.image" mode="aspectFill"
+							style="margin-left: 0px;width: 179rpx;height: 179rpx;">
+						</image>
 						<view class="desc">
 							<view class="title flex justify-between">
 								<view class="text-cut">{{latelystoreInfo.storeName}}</view>
@@ -62,10 +64,10 @@
 									{{latelystoreInfo.phone}}
 								</view>
 								<view class="">
-									<text class="lg text-gray cuIcon-location"></text>
+									<text class="lg text-gray"></text>
 									{{latelystoreInfo.address}}
 								</view>
-								<view @click.stop="show = true">切换</view>
+								<view @click.stop="changeFuwu">切换服务站点</view>
 							</view>
 						</view>
 					</view>
@@ -416,6 +418,12 @@
 
 		},
 		methods: {
+			// 点击门店切换
+			changeFuwu() {
+				this.show = true
+				uni.setStorageSync('storeId', this.latelystoreInfoAll[0].storeId);
+				this.latelystoreInfo = this.latelystoreInfoAll[0];
+			},
 			// 门店切换
 			pickerChange(e) {
 				console.log(e.detail.value[0]);

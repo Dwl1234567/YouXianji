@@ -199,7 +199,7 @@
 		onLoad() {
 			// this.storeId = storeInfo.store_id;
 			// 进入页面刷新
-			this.userId = uni.getStorageSync('userinfo').useId
+			this.userId = uni.getStorageSync('userinfo').userId
 			this.roles = uni.getStorageSync('roles')
 			this.storeId = uni.getStorageSync('userinfo').storeId
 			this.getDataList()

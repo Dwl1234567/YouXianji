@@ -677,6 +677,7 @@
 }
 
 .text_33 {
+	width: 153rpx;
 	overflow-wrap: break-word;
 	font-size: 27rpx;
 	font-family: PingFangSC-Regular, PingFang SC;
@@ -690,8 +691,8 @@
 	font-size: 23rpx;
 	font-family: PingFangSC-Regular, PingFang SC;
 	font-weight: 400;
-	color: #8E8E8E;
-	margin: 15.267175572519085rpx 11.450381679389313rpx 0 0;
+	color: #FF3A31;
+	/* margin: 15.267175572519085rpx 11.450381679389313rpx 0 0; */
 }
 
 .text-group_5 {

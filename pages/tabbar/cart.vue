@@ -51,7 +51,7 @@
 								<text class="text-red text-xxl text-bold">{{item.goodsInfo.sellPrice}}</text>
 								<text style="color: red">{{cartPrice(item.oldPrice, item.nowPrice)}}</text>
 							</view>
-							<u-number-box class="step" v-model="item.value" min="0" @change="valChange(item)"></u-number-box>
+							<!-- <u-number-box class="step" v-model="item.value" min="0" @change="valChange(item)"></u-number-box> -->
 							<!-- <uni-number-box
 								class="step"
 								:min="1"

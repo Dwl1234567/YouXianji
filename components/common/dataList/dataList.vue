@@ -35,7 +35,7 @@
 					</view> -->
 				</view>
 			</view>
-			<text class="text_13" v-if="item.storageAge">库龄时长：{{item.storageAge}}天</text>
+			<text class="text_13">库龄时长：{{item.storageAge}}天</text>
 			<text class="text_13" v-if="item.recyclePrice">回收价:{{item.recyclePrice}}元</text>
 			<text class="text_13" v-if="item.recyclePeople">回收人:{{item.recyclePeople}}</text>
 			<text class="text_13" v-if="item.sellPrice">销售价：{{item.sellPrice}}元</text>

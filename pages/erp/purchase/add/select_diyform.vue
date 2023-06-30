@@ -10,7 +10,7 @@
 			<view class="title">标题</view>
 			<input placeholder="请输入产品标题" v-model="goodstitle" name="input"></input>
 		</view>
-		
+
 		<view class="cu-bar bg-white">
 			<view class='action'>
 				<text class='cuIcon-title text-red'></text>
@@ -114,19 +114,19 @@
 			<view class="title">销售价</view>
 			<input placeholder="请输入销售价" v-model="xiaoshoujianum" name="input"></input>
 		</view>
-		
+
 		<!--点点单-->
 		<view class="cu-form-group">
 			<view class="title">成色</view>
 			<view>
 				<u-radio-group style="display: flex;" v-model="colorvalue" placement="row" @change="groupChange">
-					<u-radio :customStyle="{marginRight: '5px'}" :size="12" :labelSize="13" v-for="(item, index) in radiolist1" :key="index"
-						:label="item.name" :name="item.value" @change="radioChange">
+					<u-radio :customStyle="{marginRight: '5px'}" :size="12" :labelSize="13" v-for="(item, index) in radiolist1"
+						:key="index" :label="item.name" :name="item.value" @change="radioChange">
 					</u-radio>
 				</u-radio-group>
 			</view>
 		</view>
-		
+
 		<!--选择SKU 与仓库-->
 		<view class="cu-bar bg-white">
 			<view class='action'>
@@ -136,10 +136,11 @@
 			</view>
 		</view>
 		<view style="position: relative;">
-			<LiFilter :isType="0"  @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1" :isFixtop="false" ></LiFilter>
+			<LiFilter :isType="0" @change="changebar" @select="selectbar" :datalist="filterbasiclist" :height="1"
+				:isFixtop="false"></LiFilter>
 		</view>
-		
-		
+
+
 		<view class="cu-bar bg-white">
 			<view class='action'>
 				<text class='cuIcon-title text-red'></text>
@@ -149,7 +150,7 @@
 		</view>
 		<view class="bg-white padding-lr">
 			<view class="cu-list grid col-3 no-border padding-lr-sm">
-				
+
 				<block v-for="(tabitem,tabindex) in nav_list" :key="tabindex">
 					<view class="cu-item radius-2" :class="tabindex == tab_cur?'bg-red cur':''" @tap="tabSelect"
 						:data-id="tabindex" style="padding-bottom: 5px;">
@@ -166,29 +167,30 @@
 					<block v-for="(item,index) in nav_list" :key="index">
 						<view class="process-box" v-show="tab_cur == index">
 							<view class="h-tr h-tr-2" v-for="(recyitem,recyindex) in retrieveList[index]" :key="recyindex">
-							  <view class="h-td">
-								<view class="text-bold">
-								  {{recyitem.name}}
+								<view class="h-td">
+									<view class="text-bold">
+										{{recyitem.name}}
+									</view>
+									<view class="">
+										{{recyitem.value}}
+									</view>
 								</view>
-								<view class="">
-								  {{recyitem.value}}
+								<view class="h-td">
+									<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyitem.key)"
+										:value="attrRemark[recyitem.key]"></input>
 								</view>
-							  </view>
-							  <view class="h-td">
-								<input class=" text-sm" placeholder="请输入备注信息" @input="inputData($event, recyitem.key)" :value="attrRemark[recyitem.key]"></input>
-							  </view>
 							</view>
 						</view>
 					</block>
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="cu-form-group">
 			<view class="title">是否直售</view>
 			<switch :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
 		</view>
-		
+
 		<view class="hight-view" />
 		<view class="bg-white orderview-footer-fixed">
 			<view class="flex flex-direction">
@@ -216,10 +218,12 @@
 	} from "@/api/upload.js";
 	import {
 		getUserAddress,
-		insertCustomOrder,getOtherAttr
+		insertCustomOrder,
+		getOtherAttr
 	} from "@/api/common.js";
 	import {
-		erpclickattredit,erpProductGetBasicData
+		erpclickattredit,
+		erpProductGetBasicData
 	} from "@/api/erpapi.js";
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -229,13 +233,13 @@
 		},
 		data() {
 			return {
-				attrname:'',
+				attrname: '',
 				goodstitle: '',
 				goodssn: '',
-				ActualreceiptsJson:'',//实收款json
+				ActualreceiptsJson: '', //实收款json
 				phoneImgArr: [],
 				addpicicon: "none",
-				ActualreceiptsAll:'',
+				ActualreceiptsAll: '',
 				diaobojianum: '',
 				xiaoshoujianum: '',
 				colorvalue: 1,
@@ -256,7 +260,7 @@
 						name: '9新以下'
 					}
 				],
-				filterbasiclist:{},
+				filterbasiclist: {},
 				nav_list: [
 					'物品信息',
 					'成色情况',
@@ -265,18 +269,18 @@
 				],
 				tab_cur: 0,
 				retrieveList: [],
-				attrRemark:{},
+				attrRemark: {},
 				switchA: true,
-				checkimgshow:false,
-				attrid:'',
-				houseList :'',
-				warehouse_id:0,
-				partition_id:0,
+				checkimgshow: false,
+				attrid: '',
+				houseList: '',
+				warehouse_id: 0,
+				partition_id: 0,
 				category_id: 0,
 				brand_id: 0,
 				series_id: 0,
 				machine_id: 0,
-				imgParams:[],//图片
+				imgParams: [], //图片
 			}
 		},
 		onLoad(option) {
@@ -290,15 +294,15 @@
 					attrid: id
 				}).then(res => {
 					this.attrname = res.data.name;
-					console.log('this.attrname',res.data.name);
-					let attr_remark_value = res.data.attr_list??[];
-					this.goodsvalue = res.data.value??[];
-					attr_remark_value.forEach((item, i) =>{
-						this.attrRemark[item.key]='';
+					console.log('this.attrname', res.data.name);
+					let attr_remark_value = res.data.attr_list ?? [];
+					this.goodsvalue = res.data.value ?? [];
+					attr_remark_value.forEach((item, i) => {
+						this.attrRemark[item.key] = '';
 					});
 					this.retrieveList = res.data.otherattr;
-					
-					
+
+
 				})
 			},
 			// 获取筛选项
@@ -319,64 +323,64 @@
 					let skuItem = {
 						title: '选择SKU', //排序头的名称
 						value: 'a',
-						alias:['分类','品牌','系列','机型'],
+						alias: ['分类', '品牌', '系列', '机型'],
 						type: 2, //类型，0：没有下拉选项，1：单项下拉列表，2：多项列表，如地区选择
 						data: skudata
 					};
 					let houseItem = {
 						title: '选择仓库', //排序头的名称
 						value: 'b',
-						alias:['仓库','分仓'],
+						alias: ['仓库', '分仓'],
 						type: 2, //类型，0：没有下拉选项，1：单项下拉列表，2：多项列表，如地区选择
 						data: housedata
 					};
 					tempdata.data.push(skuItem);
 					tempdata.data.push(houseItem);
 					this.filterbasiclist = tempdata;
-					console.log('filterbasiclist',this.filterbasiclist);
+					console.log('filterbasiclist', this.filterbasiclist);
 				})
 			},
 			// 提交
-			erpclickattreditFuc(){
-				if(!this.goodstitle){
+			erpclickattreditFuc() {
+				if (!this.goodstitle) {
 					return this.$u.toast('请输入商品标题!');
 				}
-				if(!this.goodssn){
+				if (!this.goodssn) {
 					return this.$u.toast('请输入SN!');
 				}
-				if(!this.diaobojianum){
+				if (!this.diaobojianum) {
 					return this.$u.toast('请输入调拨价!');
 				}
-				if(!this.xiaoshoujianum){
+				if (!this.xiaoshoujianum) {
 					return this.$u.toast('请输入销售价!');
 				}
-				if(!this.warehouse_id){
+				if (!this.warehouse_id) {
 					return this.$u.toast('请选择仓库!');
 				}
 				//获取属性备注信息 value:JSON.stringify(this.Priceprams),
-				
-				
-				let paramsData={
-					id:this.attrid,
-					name:this.goodstitle,
-					sn:this.goodssn,
-					cost_price:this.ActualreceiptsAll,
-					sales_price:this.xiaoshoujianum,
-					peer_price:this.diaobojianum,
-					images:this.imgParams.join(','),
-					colour:this.colorvalue,
-					warehouse_id:this.warehouse_id,
-					partition_id:this.partition_id,
-					category_id:this.category_id,
-					brand_id:this.brand_id,
-					series_id:this.series_id,
-					machine_id:this.machine_id,
-					attr_remark:JSON.stringify(this.attrRemark),
-					is_ok:this.switchA?1:0
+
+
+				let paramsData = {
+					id: this.attrid,
+					name: this.goodstitle,
+					sn: this.goodssn,
+					cost_price: this.ActualreceiptsAll,
+					sales_price: this.xiaoshoujianum,
+					peer_price: this.diaobojianum,
+					images: this.imgParams.join(','),
+					colour: this.colorvalue,
+					warehouse_id: this.warehouse_id,
+					partition_id: this.partition_id,
+					category_id: this.category_id,
+					brand_id: this.brand_id,
+					series_id: this.series_id,
+					machine_id: this.machine_id,
+					attr_remark: JSON.stringify(this.attrRemark),
+					is_ok: this.switchA ? 1 : 0
 				}
-			
+
 				// return;
-				erpclickattredit(paramsData).then(res=>{
+				erpclickattredit(paramsData).then(res => {
 					this.$u.toast('提交成功！')
 					// uni.redirectTo({
 					// 	url:'/pages/tabbarerp/push?huishouid='+res.data
@@ -401,8 +405,8 @@
 					})
 				})
 			},
-			inputData(event,dataValue){
-				console.log('inputData',event.target.value,dataValue);
+			inputData(event, dataValue) {
+				console.log('inputData', event.target.value, dataValue);
 				this.attrRemark[dataValue] = event.target.value;
 				console.log(this.attrRemark);
 			},
@@ -448,7 +452,7 @@
 				let that = this;
 				that.uploadImgtype = type;
 				uni.navigateTo({
-					url:'/pages/idphoto/idphoto'
+					url: '/pages/idphoto/idphoto?type=' + type
 				})
 			},
 			//设置图片
@@ -508,16 +512,16 @@
 				//console.log('----------select----------');
 				let selectType = e.root;
 				let selectedData = e.nodes;
-				if(selectType.value=='b'){ //仓库处理
-					if(selectedData.length>0){
+				if (selectType.value == 'b') { //仓库处理
+					if (selectedData.length > 0) {
 						this.warehouse_id = selectedData[0]['value'];
 					}
-					if(selectedData.length>1){
+					if (selectedData.length > 1) {
 						this.partition_id = selectedData[1]['value'];
 					}
-					 
-				}else{
-					switch(selectedData.length){
+
+				} else {
+					switch (selectedData.length) {
 						case 4:
 							this.category_id = selectedData[0]['value'];
 							this.brand_id = selectedData[1]['value'];
@@ -538,7 +542,7 @@
 							break;
 					}
 				}
-				
+
 			},
 		}
 	}
@@ -559,9 +563,11 @@
 			}
 		}
 	}
+
 	.hight-view {
 		height: 290rpx;
 	}
+
 	.orderview-footer-fixed {
 		position: fixed;
 		z-index: 99;
@@ -575,31 +581,37 @@
 			margin-left: 10px;
 		}
 	}
-	.h-table .h-td{
-		display:inline-block;
+
+	.h-table .h-td {
+		display: inline-block;
 		text-align: center;
 	}
-	.cu-bar .action .cuIcon-title{
-		font-size:80rpx;
+
+	.cu-bar .action .cuIcon-title {
+		font-size: 80rpx;
 		line-height: 80rpx;
-		margin-right:0 !important;
+		margin-right: 0 !important;
 	}
+
 	.cu-bar .title,
 	.cu-form-group .title {
-		color:#111f3a;
+		color: #111f3a;
 		font-weight: bold;
 		white-space: nowrap;
 	}
-	.pic{
+
+	.pic {
 		background-color: #fff;
-		.cu-avatar{
+
+		.cu-avatar {
 			border-radius: 30rpx;
 			background-color: #f2f1f6;
-			color:#afafb0;
-			font-size:1.2em;
-			.img{
-				width:100%;
-				height:100%;
+			color: #afafb0;
+			font-size: 1.2em;
+
+			.img {
+				width: 100%;
+				height: 100%;
 				//z-index:9999;
 				display: inline-flex;
 				text-align: center;

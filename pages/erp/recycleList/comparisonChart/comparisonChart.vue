@@ -351,7 +351,7 @@
 					let that = this;
 					that.uploadImgtype = type;
 					uni.navigateTo({
-						url: '/pages/idphoto/idphoto',
+						url: '/pages/idphoto/idphoto?type=' + type,
 					});
 				} else {
 					const a = this.optionData.series[0].data[0].value.map((item) => {

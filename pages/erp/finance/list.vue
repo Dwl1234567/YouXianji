@@ -1,9 +1,11 @@
 <template>
 	<view>
 		<!--标题栏-->
-		<bar-title bgColor="bg-white" isBack>
-			<block slot="content">流水账单</block>
-		</bar-title>
+		<bar-search-title bgColor="bg-white" content="名称/序列号" @seachTap="searchTap">
+			<!-- <block slot="right">
+				<text class="iconfont icon-saomiao" @tap="snTap"></text>
+			</block> -->
+		</bar-search-title>
 		<view class="cu-list menu">
 			<view class="ticheng bg-white">
 				<view class="cu-item arrow" style="display: flex; justify-content: space-between; padding: 20rpx;">
@@ -71,8 +73,7 @@
 				</view> -->
 			<!-- </view> -->
 		</view>
-		<u-datetime-picker ref="datetimePicker" :show="show" v-model="value1" mode="year-month" :formatter="formatter"
-			@confirm="aaa(1)" @cancel="close"></u-datetime-picker>
+		<u-calendar :show="show" mode="range" @confirm="aaa" @close="close"></u-calendar>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
@@ -82,7 +83,7 @@
 	import {
 		financeList
 	} from "@/api/erp.js";
-	import barTitle from '@/components/common/basics/bar-title';
+	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
 	// 科目类别
 	const billtypeInfo = [{
@@ -118,10 +119,13 @@
 	}]
 	export default {
 		components: {
-			barTitle
+			barSearchTitle
 		},
 		data() {
 			return {
+				startTime: null,
+				endTime: null,
+				deviceNo: null,
 				allPrice: '',
 				show: false,
 				formatDatas: '',
@@ -179,6 +183,10 @@
 			}
 		},
 		methods: {
+			searchTap(e) {
+				this.deviceNo = e
+				this.getDataList();
+			},
 			day(e) {
 				var today = new Date(e);
 
@@ -210,17 +218,18 @@
 				this.show = false;
 			},
 			aaa(value) {
-				setTimeout(() => {
-					console.log(this.day(this.value1), value);
-					this.time = this.day(this.value1);
-					this.show = false;
-					this.getDataList();
-				}, 100);
+				this.startTime = value[0];
+				this.endTime = value[1];
+				this.time = value[0] + '-' + value[1];
+				this.getDataList();
+				this.show = false;
 			},
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
-				paramsData.queryDateStr = this.time
+				paramsData.startTime = this.startTime;
+				paramsData.endTime = this.endTime;
+				paramsData.deviceNo = this.deviceNo
 				financeList(paramsData).then(res => {
 						this.allPrice = res.data.totalMoney
 						let data = res.data.dataArr.rows;

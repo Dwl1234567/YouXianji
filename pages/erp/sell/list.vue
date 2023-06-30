@@ -1,9 +1,11 @@
 <template>
 	<view>
 		<!--标题栏-->
-		<bar-title bgColor="bg-white" isBack>
-			<block slot="content">销售列表</block>
-		</bar-title>
+		<bar-search-title bgColor="bg-white" content="名称/序列号" @seachTap="searchTap">
+			<!-- <block slot="right">
+				<text class="iconfont icon-saomiao" @tap="snTap"></text>
+			</block> -->
+		</bar-search-title>
 
 		<scroll-view scroll-x class="bg-white nav text-center text-xl">
 			<view class="cu-item padding-lr-sm" :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
@@ -17,7 +19,7 @@
 				<view class="tab-dot bg-white"></view>
 			</view>
 		</scroll-view>
-		<view class="cu-item arrow" style="display: flex; justify-content: space-between; margin-bottom: 10px">
+		<view class="cu-item arrow" style="display: flex; justify-content: space-between; padding: 10px">
 			<view class="content">筛选时间</view>
 			<view class="action">
 				<view class="picker text-gray" @tap="show = true">{{ time ? time : '请选择月份'}}</view>
@@ -39,6 +41,7 @@
 								<text class="text_8">{{item.modelName}}</text>
 								<text class="text_9">{{item.label}}</text>
 								<text class="text_10">序列号:{{item.deviceNo}}</text>
+								<text class="text_10">单号:{{item.sellFormNo}}</text>
 								<text class="text_11">回收价:{{item.recyclePrice}}元</text>
 							</view>
 						</view>
@@ -73,6 +76,7 @@
 								<text class="text_8">{{item.modelName}}</text>
 								<text class="text_9">{{item.label}}</text>
 								<text class="text_10">序列号:{{item.deviceNo}}</text>
+								<text class="text_10">单号:{{item.sellFormNo}}</text>
 								<text class="text_11">回收价:{{item.recyclePrice}}元</text>
 							</view>
 						</view>
@@ -81,6 +85,7 @@
 						<text class="text_13">销售人：{{item.sellPeople}}</text>
 						<text class="text_13">销售价：{{item.fundsReceived}}</text>
 						<text class="text_13">业绩：{{item.profit}}</text>
+
 						<view class="button">
 							<!-- <view class="receipt" v-if="item.createById == userInfo.userId" @tap="billing(item)">打印</view> -->
 						</view>
@@ -91,8 +96,9 @@
 			<!-- 下拉加载提示 -->
 			<uni-load-more :status="loadmore1" :contentText="contentText"></uni-load-more>
 		</view>
-		<u-datetime-picker ref="datetimePicker" :show="show" v-model="value1" mode="year-month" :formatter="formatter"
-			@confirm="aaa(1)" @cancel="close"></u-datetime-picker>
+		<!-- <u-datetime-picker ref="datetimePicker" :show="show" v-model="value1" mode="year-month" :formatter="formatter"
+			@confirm="aaa(1)" @cancel="close"></u-datetime-picker> -->
+		<u-calendar :show="show" mode="range" @confirm="aaa" @close="close"></u-calendar>
 	</view>
 </template>
 
@@ -102,14 +108,22 @@
 		printSellForm,
 		selecyMyOnLineSellFormList
 	} from '@/api/erp.js';
-	import barTitle from '@/components/common/basics/bar-title';
+	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
+	const d = new Date()
+	const year = d.getFullYear()
+	let month = d.getMonth() + 1
+	month = month < 10 ? `0${month}` : month
+	const date = d.getDate()
 	export default {
 		components: {
-			barTitle,
+			barSearchTitle,
 		},
 		data() {
 			return {
+				startTime: null,
+				endTime: null,
+				deviceNo: null,
 				userInfo: {},
 				show: false,
 				value1: Number(new Date()),
@@ -188,6 +202,11 @@
 			}
 		},
 		methods: {
+			searchTap(e) {
+				this.deviceNo = e
+				this.getDataList();
+				this.getDataList1();
+			},
 			billing(item) {
 				printSellForm({
 					sellFormId: item.sellFormId
@@ -240,17 +259,26 @@
 				this.show = false;
 			},
 			aaa(value) {
-				setTimeout(() => {
-					console.log(this.day(this.value1), value);
-					this.time = this.day(this.value1);
-					this.show = false;
-					if (this.TabCur == 1) {
-						this.getDataList();
-					} else {
-						this.getDataList1();
-					}
+				this.startTime = value[0];
+				this.endTime = value[1];
+				this.time = value[0] + '-' + value[1];
+				if (this.TabCur == 1) {
+					this.getDataList();
+				} else {
+					this.getDataList1();
+				}
+				this.show = false;
+				// setTimeout(() => {
+				// 	console.log(this.day(this.value1), value);
+				// 	this.time = this.day(this.value1);
+				// 	this.show = false;
+				// 	if (this.TabCur == 1) {
+				// 		this.getDataList();
+				// 	} else {
+				// 		this.getDataList1();
+				// 	}
 
-				}, 100);
+				// }, 100);
 			},
 			copy(value) {
 				uni.setClipboardData({
@@ -269,7 +297,9 @@
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
-				paramsData.queryDateStr = this.time;
+				paramsData.startTime = this.startTime;
+				paramsData.endTime = this.endTime;
+				paramsData.deviceNo = this.deviceNo
 				selectUserSellFormList(paramsData)
 					.then((res) => {
 						let data = res.rows;

@@ -340,6 +340,7 @@
 			"path": "pages/erp/purchase/list",
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "回收列表"
 			}
 		},

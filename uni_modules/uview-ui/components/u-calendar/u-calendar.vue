@@ -1,59 +1,21 @@
 <template>
-	<u-popup
-		:show="show"
-		mode="bottom"
-		closeable
-		@close="close"
-		:round="round"
-		:closeOnClickOverlay="closeOnClickOverlay"
-	>
+	<u-popup :show="show" mode="bottom" closeable @close="close" :round="round"
+		:closeOnClickOverlay="closeOnClickOverlay">
 		<view class="u-calendar">
-			<uHeader
-				:title="title"
-				:subtitle="subtitle"
-				:showSubtitle="showSubtitle"
-				:showTitle="showTitle"
-			></uHeader>
-			<scroll-view
-				:style="{
+			<uHeader :title="title" :subtitle="subtitle" :showSubtitle="showSubtitle" :showTitle="showTitle"></uHeader>
+			<scroll-view :style="{
 					height: $u.addUnit(listHeight)
-				}"
-				scroll-y
-				@scroll="onScroll"
-				:scrollIntoView="scrollIntoView"
-			>
-				<uMonth
-					:color="color"
-					:rowHeight="rowHeight"
-					:showMark="showMark"
-					:months="months"
-					:mode="mode"
-					:maxCount="maxCount"
-					:startText="startText"
-					:endText="endText"
-					:defaultDate="defaultDate"
-					:minDate="minDate"
-					:maxDate="maxDate"
-					:maxMonth="maxMonth"
-					:readonly="readonly"
-					:maxRange="maxRange"
-					:rangePrompt="rangePrompt"
-					:showRangePrompt="showRangePrompt"
-					:allowSameDay="allowSameDay"
-					ref="month"
-					@monthSelected="monthSelected"
-					@updateMonthTop="updateMonthTop"
-				></uMonth>
+				}" scroll-y @scroll="onScroll" :scrollIntoView="scrollIntoView">
+				<uMonth :color="color" :rowHeight="rowHeight" :showMark="showMark" :months="months" :mode="mode"
+					:maxCount="maxCount" :startText="startText" :endText="endText" :defaultDate="defaultDate" :minDate="minDate"
+					:maxDate="maxDate" :maxMonth="maxMonth" :readonly="readonly" :maxRange="maxRange" :rangePrompt="rangePrompt"
+					:showRangePrompt="showRangePrompt" :allowSameDay="allowSameDay" ref="month" @monthSelected="monthSelected"
+					@updateMonthTop="updateMonthTop"></uMonth>
 			</scroll-view>
 			<slot name="footer" v-if="showConfirm">
 				<view class="u-calendar__confirm">
-					<u-button
-						shape="circle"
-						:text="buttonDisabled ? confirmDisabledText : confirmText"
-						:color="color"
-						@click="confirm"
-						:disabled="buttonDisabled"
-					></u-button>
+					<u-button shape="circle" :text="buttonDisabled ? confirmDisabledText : confirmText" :color="color"
+						@click="confirm" :disabled="buttonDisabled"></u-button>
 				</view>
 			</slot>
 		</view>
@@ -103,7 +65,7 @@
 	 * @event {Function()} close 		日历关闭时触发			可定义页面关闭时的回调事件
 	 * @example <u-calendar  :defaultDate="defaultDateMultiple" :show="show" mode="multiple" @confirm="confirm">
 	</u-calendar>
-	 * */ 
+	 * */
 	export default {
 		name: 'u-calendar',
 		mixins: [uni.$u.mpMixin, uni.$u.mixin, props],
@@ -146,6 +108,7 @@
 		computed: {
 			// 多个条件的变化，会引起选中日期的变化，这里统一管理监听
 			selectedChange() {
+				console.log(this.minDate, this.maxDate)
 				return [this.minDate, this.maxDate, this.defaultDate]
 			},
 			subtitle() {
@@ -181,7 +144,7 @@
 			// month组件内部选择日期后，通过事件通知给父组件
 			monthSelected(e) {
 				this.selected = e
-				if(!this.showConfirm) {
+				if (!this.showConfirm) {
 					// 在不需要确认按钮的情况下，如果为单选，或者范围多选且已选长度大于2，则直接进行返还
 					if (this.mode === 'multiple' || this.mode === 'single' || this.mode === 'range' && this.selected.length >= 2) {
 						this.$emit('confirm', this.selected)
@@ -205,9 +168,9 @@
 			// 设置月份数据
 			setMonth() {
 				// 最小日期的毫秒数
-				const minDate = this.minDate || dayjs().valueOf()
+				const minDate = this.minDate || dayjs(minDate).add(this.maxMonth - 6, 'month').valueOf()
 				// 如果没有指定最大日期，则往后推3个月
-				const maxDate = this.maxDate || dayjs(minDate).add(this.maxMonth - 1, 'month').valueOf()
+				const maxDate = this.maxDate || dayjs(minDate).add(this.maxMonth + 6, 'month').valueOf()
 				// 最小与最大月份
 				let minMonth = dayjs(minDate).month() + 1
 				let maxMonth = dayjs(maxDate).month() + 1
@@ -233,6 +196,7 @@
 									.month() + 1, dayjs(date).date())
 								bottomInfo = lunar.IDayCn
 							}
+							console.log()
 							let config = {
 								day,
 								week,
@@ -271,7 +235,7 @@
 				// 设置对应月份的top值，用于onScroll方法更新月份
 				topArr.map((item, index) => {
 					this.months[index].top = item
-				}) 
+				})
 			}
 		},
 	}

@@ -42,8 +42,8 @@
 		<!--占位底部距离-->
 		<view class="cu-tabbar-height" />
 		<!-- 日期选择控件 -->
-		<u-calendar :show="showdate" mode="range" minDate="2022-01-01" :maxDate="daylist[0].value[0]" defaultDate="[]"
-			:allowSameDay="true" :closeOnClicOverlay="true" @confirm="confirmDate" @close="closeDate"></u-calendar>
+		<u-calendar :show="showdate" mode="range" defaultDate="[]" :allowSameDay="true" :closeOnClicOverlay="true"
+			@confirm="confirmDate" @close="closeDate"></u-calendar>
 
 	</view>
 </template>

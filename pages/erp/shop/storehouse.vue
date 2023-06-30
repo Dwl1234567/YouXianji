@@ -33,7 +33,7 @@
 						</view>
 					</view>
 					<view class="button">
-						<view class="receipt" @tap="sell(item)">修改配件</view>
+						<!-- <view class="receipt" @tap="sell(item)">修改配件</view> -->
 						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="shelves(item)">上架</view>
 						<view class="receipt" v-if="item.reorganizeStatus == 1" @tap="billing(item)">销售开单</view>
 					</view>

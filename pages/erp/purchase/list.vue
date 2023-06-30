@@ -1,10 +1,32 @@
 <template>
 	<view>
-		<filterDropdown ref="filterDropdown" :menuTop="filtertopnum" :filterData="filterData"
+		<!-- <filterDropdown ref="filterDropdown" :menuTop="filtertopnum" :filterData="filterData"
 			:defaultSelected="defaultSelected" :updateMenuName="true" @confirm="confirm" @change="changefilter"
-			dataFormat="Object"></filterDropdown>
-
-		<view class="margin-top padding-bottom-sm padding-top-sm">
+			dataFormat="Object"></filterDropdown> -->
+		<bar-search-title bgColor="bg-white" content="名称/序列号" @seachTap="searchTap">
+			<!-- <block slot="right">
+					<text class="iconfont icon-saomiao" @tap="snTap"></text>
+				</block> -->
+		</bar-search-title>
+		<scroll-view scroll-x class="bg-white nav text-center text-xl">
+			<view class="cu-item padding-lr-sm" :class="1==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="1" style="position: relative">
+				线下销售
+				<view class="tab-dot bg-white"></view>
+			</view>
+			<view class="cu-item padding-lr-sm" :class="2==TabCur?'text-101010 cur':'text-929294'" @tap="tabSelect"
+				data-id="2" style="position: relative">
+				线上销售
+				<view class="tab-dot bg-white"></view>
+			</view>
+		</scroll-view>
+		<view class=" padding-bottom-sm padding-top-sm">
+			<view class="cu-item arrow" style="display: flex; justify-content: space-between; padding: 20rpx 20rpx">
+				<view class="content">筛选时间</view>
+				<view class="action">
+					<view class="picker text-gray" @tap="show = true">{{ time ? time : '请选择月份'}}</view>
+				</view>
+			</view>
 			<view class="margin-top-xl cu-list card-menu">
 				<view style="padding: 10px 20rpx">
 					<!-- :class="admin ? 'transform' : 'transformRight'" -->
@@ -58,6 +80,7 @@
 				</view>
 			</view>
 		</view>
+		<u-calendar :show="show" mode="range" @confirm="aaa" @close="close"></u-calendar>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 	</view>
@@ -70,16 +93,23 @@
 	import {
 		selectRecycleOrderList
 	} from '@/api/erp.js';
+	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	//import barTitle from '@/components/common/basics/bar-title';
 	import filterDropdown from '@/components/HM-filterDropdown/HM-filterDropdown.vue';
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		components: {
 			//barTitle,
+			barSearchTitle,
 			filterDropdown,
 		},
 		data() {
 			return {
+				startTime: null,
+				endTime: null,
+				deviceNo: null,
+				show: false,
+				TabCur: 1,
 				modalName: null,
 				pingzhengImg: [],
 				listTouchStart: 0,
@@ -203,6 +233,29 @@
 			this.getDataList();
 		},
 		methods: {
+			searchTap(e) {
+				this.deviceNo = e
+				this.getDataList();
+			},
+			tabSelect(e) {
+				// console.log(e);
+				if (this.TabCur != e.currentTarget.dataset.id) {
+					// 进入页面刷新
+					uni.startPullDownRefresh();
+				}
+				this.TabCur = e.currentTarget.dataset.id;
+				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60;
+			},
+			close() {
+				this.show = false;
+			},
+			aaa(value) {
+				this.startTime = value[0];
+				this.endTime = value[1];
+				this.time = value[0] + '-' + value[1];
+				this.getDataList();
+				this.show = false;
+			},
 			//接收菜单结果
 			confirm(e) {
 				console.log(e);
@@ -216,9 +269,10 @@
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
-				// paramsData['paystatus'] = that.checkfilterData.value[0][0];
-				// paramsData['status'] = that.checkfilterData.value[1][0];
-				// paramsData['type'] = that.checkfilterData.value[2][0];
+				paramsData.startTime = this.startTime;
+				paramsData.endTime = this.endTime;
+				paramsData.deviceNo = this.deviceNo
+				paramsData.onlineRecycleFlag = this.TabCur - 1
 				selectRecycleOrderList(paramsData)
 					.then((res) => {
 						console.log(res.rows);

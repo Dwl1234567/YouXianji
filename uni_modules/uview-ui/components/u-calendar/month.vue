@@ -14,8 +14,7 @@
 						<text class="u-calendar-month__days__day__select__info"
 							:class="[item1.disabled && 'u-calendar-month__days__day__select__info--disabled']"
 							:style="[textStyle(item1)]">{{ item1.day }}</text>
-						<text v-if="getBottomInfo(index, index1, item1)"
-							class="u-calendar-month__days__day__select__buttom-info"
+						<text v-if="getBottomInfo(index, index1, item1)" class="u-calendar-month__days__day__select__buttom-info"
 							:class="[item1.disabled && 'u-calendar-month__days__day__select__buttom-info--disabled']"
 							:style="[textStyle(item1)]">{{ getBottomInfo(index, index1, item1) }}</text>
 						<text v-if="item1.dot" class="u-calendar-month__days__day__select__dot"></text>
@@ -353,6 +352,7 @@
 				}
 				this.item = item
 				const date = dayjs(item.date).format("YYYY-MM-DD")
+				console.log(date, '选择日期')
 				if (item.disabled) return
 				// 对上一次选择的日期数组进行深度克隆
 				let selected = uni.$u.deepClone(this.selected)
@@ -381,29 +381,32 @@
 							selected = [date]
 						} else if (dayjs(date).isAfter(existsDate)) {
 							// 当前日期减去最大可选的日期天数，如果大于起始时间，则进行提示
-							if(dayjs(dayjs(date).subtract(this.maxRange, 'day')).isAfter(dayjs(selected[0])) && this.showRangePrompt) {
-								if(this.rangePrompt) {
+							if (dayjs(dayjs(date).subtract(this.maxRange, 'day')).isAfter(dayjs(selected[0])) && this
+								.showRangePrompt) {
+								if (this.rangePrompt) {
 									uni.$u.toast(this.rangePrompt)
 								} else {
 									uni.$u.toast(`选择天数不能超过 ${this.maxRange} 天`)
 								}
-								return 
+								return
 							}
 							// 如果当前日期大于已有日期，将当前的添加到数组尾部
 							selected.push(date)
+
 							const startDate = selected[0]
 							const endDate = selected[1]
-							const arr = []
-							let i = 0
-							do {
-								// 将开始和结束日期之间的日期添加到数组中
-								arr.push(dayjs(startDate).add(i, 'day').format("YYYY-MM-DD"))
-								i++
-								// 累加的日期小于结束日期时，继续下一次的循环
-							} while (dayjs(startDate).add(i, 'day').isBefore(dayjs(endDate)))
+							// const arr = []
+							// let i = 0
+							// do {
+							// 	// 将开始和结束日期之间的日期添加到数组中
+							// 	arr.push(dayjs(startDate).add(i, 'day').format("YYYY-MM-DD"))
+							// 	i++
+							// 	// 累加的日期小于结束日期时，继续下一次的循环
+							// } while (dayjs(startDate).add(i, 'day').isBefore(dayjs(endDate)))
 							// 为了一次性修改数组，避免computed中多次触发，这里才用arr变量一次性赋值的方式，同时将最后一个日期添加近来
-							arr.push(endDate)
-							selected = arr
+							// arr.push(endDate)
+							// selected = arr
+							console.log(selected, '日期序列')
 						} else {
 							// 选择区间时，只有一个日期的情况下，且不允许选择起止为同一天的话，不允许选择自己
 							if (selected[0] === date && !this.allowSameDay) return

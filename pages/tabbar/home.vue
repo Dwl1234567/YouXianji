@@ -155,6 +155,7 @@
 			};
 		},
 		onShow() {
+			console.log(this.$pay.pay(2))
 			this.isBindOpenid();
 			this.getProduct()
 			this.$nextTick(() => {

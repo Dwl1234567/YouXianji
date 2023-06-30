@@ -127,18 +127,41 @@
 		},
 		onLoad() {
 			console.log('onLoad')
-			// 进入页面刷新
-			// uni.startPullDownRefresh();
-			// let that = this;
-			// #ifndef APP-PLUS
-			// that.getDataList();
-			// #endif
 
+		},
+		onShow() {
+			console.log('onShow')
+			// // if (this.getCityExeced > 0) {
+			// // 获取当前存储的选择城市
+			// let cityInfo = uni.getStorageSync('storeByCity')
+			// console.log(cityInfo)
+			// if (cityInfo) {
+			// 	console.log(cityInfo.cityName);
+			// 	console.log(this.city.name);
+			// 	if (cityInfo.cityName !== this.city.name) {
+			// 		// 选择的城市与当前页面城市不一致才去请求，重新获取门店
+			// 		// 重新请求store列表接口
+			// 		console.log('getStorageSync storeByCity =>', cityInfo)
+			// 		this.city.cityId = cityInfo.cityId
+			// 		this.city.name = cityInfo.cityName
+			// 		this.query.page = 1 // 重置分页
+			// 		this.uLoadMore.status = 'more' // 重置加载更多组件状态
+			// 		this.storeList = [] // 清空门店列表
+			// 		this.getStoreList()
+			// 	}
+			// }
+			// // }
 			let type = 'gcj02'
 			// #ifdef APP-PLUS
-			if (uni.getSystemInfoSync().platform == "ios") {
-				type = 'wgs84' // ios wgs84才能获取到城市
-			}
+			uni.getSystemInfo({
+				success: function(res) {
+					if (res.osName == 'ios') {
+						type = 'wgs84'
+					} else {
+						type = 'gcj02'
+					}
+				}
+			});
 			// #endif
 			// 通过定位获取城市，再通过城市获取对应门店列表
 			uni.getLocation({
@@ -148,10 +171,10 @@
 					console.log(res)
 					if (res.errCode === undefined && res.address.city) {
 						// 获取当前定位城市
+						console.log('定位------->', res)
 						this.city.name = res.address.city
 						this.city.longitude = res.longitude
 						this.city.latitude = res.latitude
-
 						uni.removeStorageSync('storeByCity')
 						uni.setStorageSync('storeByCity', JSON.stringify({
 							id: 0,
@@ -173,29 +196,6 @@
 				}
 			});
 			this.getStoreList()
-		},
-		onShow() {
-			console.log('onShow')
-			// if (this.getCityExeced > 0) {
-			// 获取当前存储的选择城市
-			let cityInfo = uni.getStorageSync('storeByCity')
-			console.log(cityInfo)
-			if (cityInfo) {
-				console.log(cityInfo.cityName);
-				console.log(this.city.name);
-				if (cityInfo.cityName !== this.city.name) {
-					// 选择的城市与当前页面城市不一致才去请求，重新获取门店
-					// 重新请求store列表接口
-					console.log('getStorageSync storeByCity =>', cityInfo)
-					this.city.cityId = cityInfo.cityId
-					this.city.name = cityInfo.cityName
-					this.query.page = 1 // 重置分页
-					this.uLoadMore.status = 'more' // 重置加载更多组件状态
-					this.storeList = [] // 清空门店列表
-					this.getStoreList()
-				}
-			}
-			// }
 
 		},
 		mounted() {

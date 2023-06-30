@@ -626,7 +626,7 @@
 				let that = this;
 				that.uploadImgtype = type;
 				uni.navigateTo({
-					url: '/pages/idphoto/idphoto'
+					url: '/pages/idphoto/idphoto?type=' + type
 				})
 			},
 			//设置图片

@@ -9,6 +9,7 @@ Vue.use(uView);
 import Vue from 'vue'
 import store from './store'
 import socket from './socket/index.js'
+import pay from './pay/index.js'
 Vue.config.productionTip = false
 App.mpType = 'app'
 
@@ -288,6 +289,7 @@ Vue.config.productionTip = false
 Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
 Vue.prototype.$socket = socket;
+Vue.prototype.$pay = pay;
 Vue.prototype.$api = {
 	msg,
 	prePage,

@@ -115,13 +115,6 @@
 					});
 					return;
 				}
-				if (!/^[1][3,4,5,7,8,9][0-9]{9}$/.test(that.phone)) {
-					uni.showToast({
-						title: '请输入正确手机号',
-						icon: 'none',
-					});
-					return;
-				}
 				if (!that.yzm) {
 					uni.showToast({
 						title: '请输入验证码',
@@ -158,6 +151,7 @@
 								geocode: true, //设置该参数为true可直接获取经纬度及城市信息
 								success: function(res) {
 									data = res
+									that.$store.commit('setAddress', data);
 								},
 								fail: function(res) {
 									uni.showToast({
@@ -175,7 +169,7 @@
 								setTimeout(() => {
 									this.getUserInfo();
 									this.$store.commit('login', );
-									// this.$store.commit('setAddress', data);
+
 								}, 1200)
 							}
 							// console.log(uni.getStorageSync('url'), 'uni.getStorageSync();');
