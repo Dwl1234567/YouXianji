@@ -16,7 +16,7 @@
 				<cover-image class="outline-img" src="/static/goodsphoto.png" style=""></cover-image>
 			</cover-view> -->
 			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 0">
-				<cover-image class="outline-img" src="/static/photo/photo9.png"
+				<cover-image class="outline-img" src="/static/photo/photo10.png"
 					style="width: 318rpx; height: 630rpx;"></cover-image>
 			</cover-view>
 			<cover-view class="outline-box" :style="{ width: windowWidth, height: windowHeight - 80 }" v-if="type == 1">

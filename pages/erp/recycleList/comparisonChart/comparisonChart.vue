@@ -319,7 +319,6 @@
 			this.receiptPrice = option.forecastMoney;
 			// 整理三角雷达图每个角落的max值
 			this.optionData.radar.indicator[0].max = uni.getStorageSync('dataListNum')[0];
-			console.log(this.optionData.radar.indicator[0].max);
 			this.optionData.radar.indicator[1].max = uni.getStorageSync('dataListNum')[1];
 			this.optionData.radar.indicator[2].max = uni.getStorageSync('dataListNum')[2];
 			this.optionData.radar.indicator[3].max = uni.getStorageSync('dataListNum')[3];

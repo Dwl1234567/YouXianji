@@ -14,7 +14,7 @@
 						<text class="text_10">{{item.label}}</text>
 						<text class="text_10">{{item.basePriceLabel}}</text>
 						<text class="text_11">序列号:{{item.deviceNo}}</text>
-						<text class="text_11">成本价:{{item.costPrice}}</text>
+						<text class="text_11" v-if="item.costPrice">成本价:{{item.costPrice}}</text>
 						<text class="text_12" v-if="item.recycleGuidePrice">预估回收价:{{item.recycleGuidePrice}}元</text>
 					</view>
 					<view class="tag_1 flex-col"></view>
@@ -54,7 +54,7 @@
 			<text class="text_13" v-if="item.newAllotPrice">新回收价格：{{item.newAllotPrice}}元</text>
 			<text class="text_13" v-if="item.newAllotPrice">新调拨价：{{item.newAllotPrice}}元</text>
 			<text class="text_13" v-if="item.newSellPrice">新销售价：{{item.newSellPrice}}元</text>
-			<text class="text_13" v-if="item.sellPeople">销售人：{{item.sellPeople}}元</text>
+			<!-- <text class="text_13" v-if="item.sellPeople">销售人：{{item.sellPeople}}元</text> -->
 			<text class="text_13" v-if="item.returnPrice">退款价：{{item.returnPrice}}元</text>
 			<view class="group_5 flex-row justify-between" v-if="isSn == 1">
 				<button class="button_3 flex-col" @tap.stop="goSn(item)">

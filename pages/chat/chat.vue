@@ -1209,8 +1209,8 @@
 					// 	/\|/g, '~');
 					ws: () => {
 						protocol = parseInt(that.config.wss_switch) == 1 ? 'wss://' : 'ws://';
-						// console.log(protocol + '192.168.2.36:8080' + '/websocket/118');
-						return (protocol + '192.168.2.36:8080' + '/websocket/' + encryptionStr)
+						// console.log(protocol + '192.168.31.92:8080' + '/websocket/118');
+						return (protocol + '192.168.31.92:8080' + '/websocket/' + encryptionStr)
 					},
 					initialize: () => {
 						return protocol + Config.baseURL + '/addons/kefu/index/initialize?modulename=index';

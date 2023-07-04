@@ -53,7 +53,9 @@ const store = new Vuex.Store({
 			TODO_APPROVE_OFFER: 0,
 			TODO_UPDATE_OFFER: 0,
 			TODO_REORGANIZE: 0,
-			TODO_ALL: 0
+			TODO_ALL: 0,
+			TODO_PRE_FORM: 0,
+			TODO_PENDING_ORDER: 0,
 		},
 		address: {
 			longitude: null,
@@ -106,6 +108,34 @@ const store = new Vuex.Store({
 		setBusiness(state, provider) {
 			if (provider.totalNumber) {
 				state.business.TODO_ALL = provider.totalNumber
+			}
+			if (provider.businessType === 'TODO_PRE_FORM') {
+				state.business.TODO_PRE_FORM = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '预开单消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
+			}
+			if (provider.businessType === 'TODO_PENDING_ORDER') {
+				state.business.TODO_PENDING_ORDER = provider.number;
+				uni.createPushMessage({
+					title: '优闲集消息',
+					content: '挂单待处理消息',
+					sound: 'system',
+					success: (res => {
+						console.log('成功创建', res);
+					}),
+					fail: (res => {
+						console.log('成功失败', res)
+					}),
+				})
 			}
 			if (provider.businessType === 'RECYCLE_PENDING') {
 				state.business.RECYCLE_PENDING = provider.number;

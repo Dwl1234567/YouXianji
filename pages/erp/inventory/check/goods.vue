@@ -117,12 +117,12 @@
 				dataList: [],
 				dataList1: [],
 				queryInfo: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
 				queryInfo1: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				loadmore1: 'more', //more 还有数据   noMore 无数据
@@ -152,9 +152,9 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			if (this.TabCur == 0) {
-				this.queryInfo.page = 1; //重置分页页码
+				this.queryInfo.pageNum = 1; //重置分页页码
 			} else {
-				this.queryInfo1.page = 1; //重置分页页码
+				this.queryInfo1.pageNum = 1; //重置分页页码
 			}
 			this.getDataList();
 			this.getDataList1();
@@ -163,12 +163,12 @@
 		onReachBottom() {
 			if (this.TabCur == 0) {
 				if (this.loadmore == 'noMore') return
-				this.queryInfo.page += 1;
+				this.queryInfo.pageNum += 1;
 				this.ifBottomRefresh = true
 				this.getDataList();
 			} else {
 				if (this.loadmore1 == 'noMore') return
-				this.queryInfo1.page += 1;
+				this.queryInfo1.pageNum += 1;
 				this.ifBottomRefresh1 = true
 				this.getDataList1();
 			}
@@ -391,9 +391,10 @@
 				}
 			},
 			uploadFilePromise(urls) {
+				console.log(222)
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.2.36:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {

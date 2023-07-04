@@ -277,14 +277,14 @@
 											{{product.basePriceLabel}}
 										</view>
 									</view>
-									<view style="margin-right: 80rpx;margin-bottom: 36rpx;">
+									<!-- 									<view style="margin-right: 80rpx;margin-bottom: 36rpx;">
 										<view class="titles">
 											物品信息
 										</view>
 										<view class="texts">
 											{{product.deviceLabel}}
 										</view>
-									</view>
+									</view> -->
 									<view v-for="(item, index) in Pricepramitems" :key="index" v-if="item.indexs === 1"
 										style="margin-right: 80rpx;margin-bottom: 36rpx;">
 										<view class="titles">
@@ -296,7 +296,7 @@
 									</view>
 								</view>
 
-								<view class="box_14 flex-row justify-between">
+								<!-- <view class="box_14 flex-row justify-between">
 									<text class="text_53">物品信息</text>
 									<image class="icon_2" referrerpolicy="no-referrer"
 										src="/static/lanhu_zhijianbaogaoduibitu/SketchPng585368739d0f7ed317660bd81924b5501e5a0f8bf21d96d231b54cb938daa4c7.png" />
@@ -313,26 +313,8 @@
 											</view>
 
 										</view>
-										<!-- <view class="box_10 flex-col">
-											<view
-												v-if="checkInformation(qualityInfoList[index].valueId, Pricepramitems[index].valueId, index)">
-												<view class="cu-avatar xl radius"
-													:style="{'background-image': phoneImgArr[index].photo == '' ?  addpicicon : 'url('+ $httpImage +phoneImgArr[index].photo+')' }">
-													<view class="img" @tap="viewImg(phoneImgArr,index)">
-														<text class="text"></text>
-													</view>
-													<view class="cu-tag badge"
-														:style="{backgroundColor: phoneImgArr[index].photo == '' ? '#111f3a':'#dd514c'}"
-														@tap="uploadImg(index)">
-														<view :class="phoneImgArr[index].photo == '' ? 'translate45':''">
-															<u-icon name="plus" color="#ffffff" size="10"></u-icon>
-														</view>
-													</view>
-												</view>
-											</view>
-										</view> -->
 									</view>
-								</view>
+								</view> -->
 								<view class="box_14 flex-row justify-between">
 									<text class="text_53">成色情况</text>
 									<image class="icon_2" referrerpolicy="no-referrer"
@@ -1401,7 +1383,7 @@
 								value: 1
 							}])
 							uni.navigateTo({
-								url: '/pages/tabbar/settlement?id=' + res.data,
+								url: '/pages/tabbar/settlement?id=' + res.data + '&goodsId=' + this.goodsId,
 							});
 						}
 					})

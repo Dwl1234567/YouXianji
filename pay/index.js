@@ -4,22 +4,13 @@ import {
 } from '@/api/malls.js';
 const pay = {
 	pay(e, provider, orderPaymentId) {
+		// #ifdef APP-PLUS
 		uni.requestPayment({
 			provider: provider,
 			orderInfo: e,
 			success: function(ress) {
-				paymentReturn({
-					orderPaymentId: orderPaymentId,
-					tradeno: ress.tradeno
-				}).then(resss => {
-					if (resss.code === 200) {
-						uni.showToast({
-							icon: 'none',
-							title: '支付成功',
-						});
-					}
-				})
 				console.log('success:' + JSON.stringify(res));
+				return true
 			},
 			fail: function(err) {
 				if (err.code == -100) {
@@ -29,9 +20,10 @@ const pay = {
 					});
 				}
 				console.log('fail:' + JSON.stringify(err));
+				return false
 			}
 		})
-
+		// #endif
 	}
 
 }

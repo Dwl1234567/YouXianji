@@ -260,6 +260,12 @@
 		<u-popup :show="yunShowImg2" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
 			<view class="yunShow-top">
 				<view class="yunShow-title">上传收款凭证</view>
+				<view class="yunShow-item" v-if="checkTaskType == 2">
+					<view class="left">实收款</view>
+					<view class="input">
+						<u--input placeholder="请输入内容" :border="'surround'" v-model="fundsReceived"></u--input>
+					</view>
+				</view>
 				<view class="yunShow-img">
 					<u-upload :fileList="fileList2" @afterRead="afterRead" @delete="deletePic" name="2" multiple
 						:maxCount="3"></u-upload>
@@ -392,6 +398,7 @@
 		},
 		data() {
 			return {
+				fundsReceived: null,
 				active: null,
 				logisticsInfo: [],
 				test1111: false,
@@ -447,6 +454,10 @@
 						name: '是否直售',
 						type: 'hierarchy',
 						submenu: [{
+								name: '全不选', //全部设为默认，选中时标签栏显示为全部
+								value: '',
+							},
+							{
 								name: '全部', //全部设为默认，选中时标签栏显示为全部
 								value: '0,1,2,3',
 							},
@@ -472,6 +483,9 @@
 						name: '抛售状态',
 						type: 'hierarchy',
 						submenu: [{
+								name: '全不选', //全部设为默认，选中时标签栏显示为全部
+								value: '',
+							}, {
 								name: '全部',
 								value: '5,6,7',
 							},
@@ -493,6 +507,9 @@
 						name: '维修状态', //选择
 						type: 'hierarchy',
 						submenu: [{
+								name: '全不选', //全部设为默认，选中时标签栏显示为全部
+								value: '',
+							}, {
 								name: '全部', //设为默认
 								value: '8,9',
 							},
@@ -584,12 +601,16 @@
 		},
 		onBackPress() {
 			console.log('物理返回')
-			uni.switchTab({
-				url: '/pages/tabbar/home',
-			});
+			let pages = getCurrentPages() // 获取栈实例
+			let page = pages[pages.length - 1] // 获取当前页面的数据，包含页面路由
+			let prevPage = pages[pages.length - 2] // 获取上个页面的数据，包含页面
+			if (prevPage.route != 'pages/tabbarerp/home') {
+				uni.navigateTo({
+					url: '/pages/tabbarerp/home',
+				});
+			}
 		},
 		onLoad(options) {
-			console.log(this.$u.config.v);
 			// #ifdef APP-PLUS
 			// this.filtertopnum = 183;
 			let a = 0;
@@ -813,6 +834,7 @@
 				});
 				let promise = {
 					sortId: this.sortId,
+					fundsReceived: this.fundsReceived,
 					undersellId: this.undersellId,
 					undersellVoucher: img.join(','),
 					collectionVoucher: img2.join(','),
@@ -1273,7 +1295,7 @@
 			uploadFilePromise(urls) {
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.2.36:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {

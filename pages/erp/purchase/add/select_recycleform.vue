@@ -202,7 +202,18 @@
 			</u-radio-group>
 		</view>
 
-
+		<view class="cu-form-group" v-if="isDistribution">
+			<view class="title">是否分销</view>
+			<switch @change="SwitchB" :class="switchB?'checked':''" :checked="switchB?true:false"></switch>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">是否热销</view>
+			<switch @change="SwitchC" :class="switchC?'checked':''" :checked="switchC?true:false"></switch>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">是否特卖</view>
+			<switch @change="SwitchD" :class="switchD?'checked':''" :checked="switchD?true:false"></switch>
+		</view>
 		<view class="hight-view" />
 		<view class="bg-white orderview-footer-fixed">
 			<view class="flex flex-direction">
@@ -253,6 +264,10 @@
 		},
 		data() {
 			return {
+				switchB: false,
+				switchC: false,
+				switchD: false,
+				isDistribution: false,
 				radiolist2: [{
 						name: '分拣',
 						disabled: false,
@@ -360,23 +375,56 @@
 				duration: 0
 			});
 		},
+		watch: {
+			xiaoshoujianum() {
+				const fenxiao = Number(this.xiaoshoujianum) * 0.03;
+				const chengben = (Number(this.xiaoshoujianum) - Number(this.ActualreceiptsAll)) / 2;
+				if (chengben > fenxiao) {
+					this.isDistribution = true
+				} else {
+					this.isDistribution = false
+				}
+			},
+			ActualreceiptsAll() {
+				const fenxiao = Number(this.xiaoshoujianum) * 0.03;
+				const chengben = (Number(this.xiaoshoujianum) - Number(this.ActualreceiptsAll)) / 2;
+				const {
+					pettyExpenses,
+					platformEachPhoneRecyclePrice,
+					recycleRatio
+				} = this.online
+				// 组合成本 =  回收价 + 杂费
+				console.log(Number(this.ActualreceiptsAll), pettyExpenses)
+				this.combinationPrice = Number(this.ActualreceiptsAll) + pettyExpenses
+				if (chengben > fenxiao) {
+					this.isDistribution = true
+				} else {
+					this.isDistribution = false
+				}
+			}
+		},
 		methods: {
-			// 获取门店杂费
-			// getStoreOnlineCostConfig() {
-			// 	getStoreOnlineCostConfig().then(res => {
-			// 		// if (res.code === 200) {
-			// 		// 	const {
-			// 		// 		pettyExpenses,
-			// 		// 		platformEachPhoneRecyclePrice,
-			// 		// 		recycleRatio
-			// 		// 	} = res.data
-			// 		// 	// 组合成本 =  回收价 * 平台佣金比例 + 平台每台佣金 + 杂费
-			// 		// 	this.combinationPrice = Number(this.ActualreceiptsAll) + (Number(this.ActualreceiptsAll) * recycleRatio *
-			// 		// 			0.01) +
-			// 		// 		platformEachPhoneRecyclePrice + pettyExpenses
-			// 		// }
-			// 	})
-			// },
+			SwitchB(e) {
+				this.switchB = e.detail.value
+				// if (this.switchB) {
+				// 	this.switchC = false;
+				// 	this.switchD = false;
+				// }
+			},
+			SwitchC(e) {
+				this.switchC = e.detail.value
+				// if (this.switchC) {
+				// 	this.switchB = false;
+				// 	this.switchD = false;
+				// }
+			},
+			SwitchD(e) {
+				this.switchD = e.detail.value
+				// if (this.switchD) {
+				// 	this.switchC = false;
+				// 	this.switchB = false;
+				// }
+			},
 			SwitchA(e) {
 				this.switchA = e.detail.value
 			},
@@ -455,6 +503,9 @@
 					cameraPhoto: this.phoneImgArr[6],
 					otherPhoto: this.phoneImgArr[7],
 					basicPriceId,
+					hotAble: this.switchC ? 1 : 0,
+					specialSaleAble: this.switchD ? 1 : 0,
+					distributionAble: this.switchB ? 1 : 0,
 					combinationPrice: this.combinationPrice
 				}
 				console.log(paramsData, 3333333333333)

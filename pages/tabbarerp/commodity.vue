@@ -113,7 +113,7 @@
 				this.getDataList()
 			},
 			updatecustomer(item) {
-				uni.setStorageSync('updatecustomer', item);
+				uni.setStorageSync('updatecustomers', item);
 				uni.navigateTo({
 					url: '/pages/tabbarerp/push',
 				});

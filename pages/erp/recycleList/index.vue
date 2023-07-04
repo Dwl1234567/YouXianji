@@ -31,7 +31,8 @@
 								<image :src="$httpImage + item.modelPhoto" mode="widthFix"></image>
 							</view>
 							<view class="text-group_1 flex-col">
-								<text class="text_9">{{item.modelName}}</text>
+								<text class="text_9">{{item.modelName}} </text>
+								<text class="text_10">{{item.label}}</text>
 								<text class="text_10">{{item.deviceLabel}}</text>
 								<text class="text_11">序列号:{{item.deviceNo}}</text>
 								<text class="text_11">回执回收价:{{item.receiptPrice}}元</text>
@@ -189,6 +190,7 @@
 		components: {
 			barTitle
 		},
+
 		data() {
 			return {
 				TabCur: 1,
@@ -247,6 +249,17 @@
 		},
 		onPullDownRefresh() {
 			this.selectRecycleOrderList();
+		},
+		onBackPress() {
+			console.log('物理返回')
+			let pages = getCurrentPages() // 获取栈实例
+			let page = pages[pages.length - 1] // 获取当前页面的数据，包含页面路由
+			let prevPage = pages[pages.length - 2] // 获取上个页面的数据，包含页面
+			if (prevPage.route != 'pages/tabbarerp/home') {
+				uni.navigateTo({
+					url: '/pages/tabbarerp/home',
+				});
+			}
 		},
 		// 触底加载新页面
 		onReachBottom() {

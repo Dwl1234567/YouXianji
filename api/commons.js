@@ -348,3 +348,33 @@ export function selectStoreByCityId(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 查询会员规则信息
+ *
+ */
+export function selectMemberLevelRule(data) {
+	return request.get('/yxj/app/userMemberInfo/selectMemberLevelRule', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 发起支付宝支付购买会员接口
+ *
+ */
+export function createZfbPayment(data) {
+	return request.post('/yxj/app/userMemberInfo/createZfbPayment', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 支付完成回调接口
+ *
+ */
+export function paymentReturn(data) {
+	return request.post('/yxj/app/userMemberInfo/paymentReturn', data, {
+		noLogin: true
+	});
+}

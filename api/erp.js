@@ -5,6 +5,16 @@ import request from '@/utils/request.js';
  * 回收列表获取
  *
  */
+export function empSelectRecycleList(data) {
+	return request.post('/yxj/app/recycleForm/empSelectRecycleList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 回收列表获取
+ *
+ */
 export function selectRecycleOrderList(data) {
 	return request.post('/yxj/app/recycle/empSelectRecycleOrderList', data, {
 		noLogin: true
@@ -1227,6 +1237,47 @@ export function selectClassificationLabelByModel(data) {
  */
 export function fittingsFormRevoke(data) {
 	return request.get('/yxj/app/fittingsForm/revoke', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 配件列表
+ *
+ */
+export function selectSellFittingsList(data) {
+	return request.get('/yxj/app/fittingsForm/selectSellFittingsList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 配件列表打印
+ *
+ */
+export function printSellFittiongsForm(data) {
+	return request.get('/yxj/app/fittingsForm/printSellFittiongsForm', data, {
+		noLogin: true
+	});
+}
+
+
+/**
+ * 配件列表退回
+ *
+ */
+export function returnSellFittingsForm(data) {
+	return request.post('/yxj/app/fittingsForm/returnSellFittingsForm', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询门店线上销售列表
+ *
+ */
+export function selecyStoreOnLineSellFormList(data) {
+	return request.get('/yxj/app/fittingsForm/selecyStoreOnLineSellFormList', data, {
 		noLogin: true
 	});
 }

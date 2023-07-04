@@ -74,6 +74,7 @@ function baseRequest(url, method, data, {
 		uni.showLoading({
 			title: '加载中'
 		});
+		console.log(Url, 'Url---------------------')
 		uni.request({
 			// #ifndef H5
 			url: Url + url,

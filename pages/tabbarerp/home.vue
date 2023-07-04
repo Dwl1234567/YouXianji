@@ -45,19 +45,19 @@
 					<view class="iconfont icon-cashorange text-red">
 						<view class="cu-tag badge" v-if="loginfo.SHOP_PAYING!=0">{{loginfo.SHOP_PAYING || 0}}</view>
 					</view>
-					<text>代付款</text>
+					<text>待付款</text>
 				</view>
 				<view class="cu-item" @tap="delivery">
 					<view class="iconfont icon-cashorange text-red">
 						<view class="cu-tag badge" v-if="loginfo.SHOP_SHIPMENTS!=0">{{loginfo.SHOP_SHIPMENTS || 0}}</view>
 					</view>
-					<text>代发货</text>
+					<text>待发货</text>
 				</view>
 				<view class="cu-item" @tap="receipt">
 					<view class="iconfont icon-cashorange text-red">
 						<view class="cu-tag badge" v-if="loginfo.SHOP_RECEIVING!=0">{{loginfo.SHOP_RECEIVING || 0}}</view>
 					</view>
-					<text>代收货</text>
+					<text>待收货</text>
 				</view>
 				<view class="cu-item" @tap="refund">
 					<view class="iconfont icon-cashorange text-red">
@@ -157,13 +157,13 @@
 				</view>
 				<view class="cu-item" @tap="prefabricateList">
 					<view class="iconfont icon-tubiao-64 text-red">
-						<!-- <view class="cu-tag badge" v-if="loginfo.TODO_REORGANIZE!=0">{{loginfo.TODO_REORGANIZE || 0}}</view> -->
+						<view class="cu-tag badge" v-if="loginfo.TODO_PRE_FORM!=0">{{loginfo.TODO_PRE_FORM || 0}}</view>
 					</view>
 					<text>预开单</text>
 				</view>
 				<view class="cu-item" @tap="pendingList">
 					<view class="iconfont icon-tubiao-64 text-red">
-						<!-- <view class="cu-tag badge" v-if="loginfo.TODO_REORGANIZE!=0">{{loginfo.TODO_REORGANIZE || 0}}</view> -->
+						<view class="cu-tag badge" v-if="loginfo.TODO_PENDING_ORDER!=0">{{loginfo.TODO_PENDING_ORDER || 0}}</view>
 					</view>
 					<text>挂单表</text>
 				</view>
@@ -307,6 +307,12 @@
 							color: 'red',
 							badge: 0,
 							name: '销售列表',
+						},
+						{
+							cuIcon: 'icon-salinglist',
+							color: 'red',
+							badge: 0,
+							name: '配件销售',
 						},
 						{
 							cuIcon: 'icon-refund',
@@ -683,6 +689,9 @@
 						var value = 'sell/list';
 					}
 					if (index == 2) {
+						var value = 'accessory/list';
+					}
+					if (index == 3) {
 						var value = 'mallList/list';
 					}
 					// if (index == 3) {
@@ -691,13 +700,13 @@
 					// if (index == 4) {
 					// 	var value = 'prefabricateList/list';
 					// }
-					if (index == 3) {
+					if (index == 4) {
 						var value = 'adjustmentList/list';
 					}
-					if (index == 4) {
+					if (index == 5) {
 						var value = 'allot/allot_push';
 					}
-					if (index == 5) {
+					if (index == 6) {
 						var value = 'sell/out';
 					}
 

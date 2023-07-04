@@ -33,10 +33,10 @@
 				</view>
 				<view class="h-tr h-tr-3" v-for="(item,index) in dataList" :key="index">
 					<view class="h-td text-red">{{item.name}}</view>
-					<view class="h-td">{{item.yeji}}</view>
+					<view class="h-td">{{item.xiaoshoue}}</view>
 					<view class="h-td">{{item.chengben}}</view>
-					<view class="h-td">{{item.maoli}}</view>
-					<view class="h-td">{{item.maoli}}</view>
+					<view class="h-td">{{item.yeji}}</view>
+					<view class="h-td">{{item.tidian}}</view>
 				</view>
 			</view>
 		</view>
@@ -66,6 +66,9 @@
 		},
 		data() {
 			return {
+				time: null,
+				startTime: null,
+				endTime: null,
 				TitleBar: this.CustomBar,
 				modalName: null,
 				TabCur: 0,
@@ -127,58 +130,64 @@
 				console.log(this.TabCur)
 				let queryparams = {
 					queryType: this.TabCur,
-					starttime: this.daylist[this.TabCur].value[0],
-					endtime: this.daylist[this.TabCur].value[1]
+					startTimeStr: this.startTime,
+					endTimeStr: this.endtime
 				}
 				getPerformance(queryparams).then(res => {
 						this.dataList = [{
 								name: '线上二手回收',
-								yeji: res.data.sellPerformance,
-								chengben: res.data.sellCost,
-								maoli: res.data.totallirun_price
+								xiaoshoue: res.data.onlineRecycleTotalPrice,
+								yeji: res.data.onlineRecyclePerformance,
+								chengben: res.data.onlineRecycleCost,
+								tidian: res.data.onlineRecycleCommission
 							},
 							{
 								name: '线下二手回收',
+								xiaoshoue: res.data.recycleTotalPrice,
 								yeji: res.data.recyclePerformance,
 								chengben: res.data.recycleCost,
-								maoli: res.data.total_recycle_lirun_price
+								tidian: res.data.recycleCommission
 							},
 							{
 								name: '线上二手销售',
-								yeji: res.data.sellPerformance,
-								chengben: res.data.sellCost,
-								maoli: res.data.totallirun_price
+								xiaoshoue: res.data.onlineSellTotalPrice,
+								yeji: res.data.onlineSellPerformance,
+								chengben: res.data.onlineSellCost,
+								tidian: res.data.onlineSellCommission
 							},
 							{
 								name: '线下二手销售',
+								xiaoshoue: res.data.sellTotalPrice,
 								yeji: res.data.sellPerformance,
 								chengben: res.data.sellCost,
-								maoli: res.data.totallirun_price
+								tidian: res.data.sellCommission
 							},
 							{
 								name: '线上配件',
-								yeji: res.data.sellPerformance,
-								chengben: res.data.sellCost,
-								maoli: res.data.totallirun_price
+								xiaoshoue: res.data.onlineSellFittingsTotalPrice,
+								yeji: res.data.onlineSellFittingsPerformance,
+								chengben: res.data.onlineSellFittingsCost,
+								tidian: res.data.onlineSellFittingsCommission
 							},
 							{
 								name: '线下配件',
-								yeji: res.data.sellPerformance,
-								chengben: res.data.sellCost,
-								maoli: res.data.totallirun_price
+								xiaoshoue: res.data.sellFittingsTotalPrice,
+								yeji: res.data.sellFittingsPerformance,
+								chengben: res.data.sellFittingsCost,
+								tidian: res.data.sellFittingsCommission
 							},
-							{
-								name: '线上全新机',
-								yeji: res.data.sellPerformance,
-								chengben: res.data.sellCost,
-								maoli: res.data.totallirun_price
-							},
-							{
-								name: '线下全新机',
-								yeji: res.data.sellPerformance,
-								chengben: res.data.sellCost,
-								maoli: res.data.totallirun_price
-							},
+							// {
+							// 	name: '线上全新机',
+							// 	yeji: res.data.sellPerformance,
+							// 	chengben: res.data.sellCost,
+							// 	maoli: res.data.totallirun_price
+							// },
+							// {
+							// 	name: '线下全新机',
+							// 	yeji: res.data.sellPerformance,
+							// 	chengben: res.data.sellCost,
+							// 	maoli: res.data.totallirun_price
+							// },
 						];
 					})
 					.finally(() => {
@@ -186,15 +195,18 @@
 					})
 			},
 			confirmDate(e) {
-				console.log(e);
-
-				this.daylist[4].value = [];
-				this.daylist[4].value.push(e[0]);
-				this.daylist[4].value.push(e.pop());
-
-				this.daylist[4].key = e[0] + '~' + e.pop();
-				this.showdate = false;
+				this.startTime = e[0];
+				this.endTime = e[1];
+				this.daylist[4].key = e[0] + '~' + e[1];
 				this.getAccountData();
+				this.showdate = false;
+				// this.daylist[4].value = [];
+				// this.daylist[4].value.push(e[0]);
+				// this.daylist[4].value.push(e.pop());
+
+				// this.daylist[4].key = e[0] + '~' + e.pop();
+				// this.showdate = false;
+				// this.getAccountData();
 			},
 			closeDate() {
 				this.showdate = false;

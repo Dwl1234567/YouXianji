@@ -106,6 +106,10 @@
 			// 进入页面刷新
 			this.getDataList()
 		},
+		onShow() {
+			// 进入页面刷新
+			this.getDataList()
+		},
 		onReady() {
 			_tool.setBarColor(true);
 			uni.pageScrollTo({
@@ -126,9 +130,14 @@
 		},
 		onBackPress() {
 			console.log('物理返回')
-			uni.switchTab({
-				url: '/pages/tabbar/home',
-			});
+			let pages = getCurrentPages() // 获取栈实例
+			let page = pages[pages.length - 1] // 获取当前页面的数据，包含页面路由
+			let prevPage = pages[pages.length - 2] // 获取上个页面的数据，包含页面
+			if (prevPage.route != 'pages/tabbarerp/home') {
+				uni.navigateTo({
+					url: '/pages/tabbarerp/home',
+				});
+			}
 		},
 		onReachBottom() {
 			if (this.TabCur == 0) {

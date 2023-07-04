@@ -172,6 +172,7 @@
 		},
 		data() {
 			return {
+				goodsId: null,
 				orderPaymentId: 0,
 				addressN: {},
 				isWx: true,
@@ -187,6 +188,7 @@
 			};
 		},
 		onLoad(option) {
+			this.goodsId = option.goodsId
 			this.orderPaymentId = option.id;
 			this.cartList = uni.getStorageSync('cartList');
 			this.cartList.map(item => {
@@ -271,13 +273,6 @@
 						.finally((com) => {
 							uni.stopPullDownRefresh();
 						});
-					// let data = await this.$api.request('/cart');
-					// uni.stopPullDownRefresh();
-					// this.state = 'loaded';
-					// if (data) {
-					// 	this.cartList = data;
-					// 	this.calcTotal();
-					// }
 				}
 			},
 			cartPrice(oldPrice, nowPrice) {

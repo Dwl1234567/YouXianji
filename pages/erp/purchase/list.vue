@@ -27,8 +27,8 @@
 					<view class="picker text-gray" @tap="show = true">{{ time ? time : '请选择月份'}}</view>
 				</view>
 			</view>
-			<view class="margin-top-xl cu-list card-menu">
-				<view style="padding: 10px 20rpx">
+			<view class=" cu-list card-menu">
+				<view style="">
 					<!-- :class="admin ? 'transform' : 'transformRight'" -->
 					<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px">
 						<!-- :class="admin ? '' : 'transform'" -->
@@ -48,10 +48,11 @@
 									<text class="text_9">{{item.label}}</text>
 									<text class="text_10">序列号:{{item.deviceNo}}</text>
 									<text class="text_11">调拨价:{{item.allotPrice}}元</text>
+									<text class="text_11">回收价:{{item.recyclePrice}}元</text>
+									<text class="text_11">销售价:{{item.sellPrice}}元</text>
 								</view>
 							</view>
-							<text class="text_13" v-if="item.storeName">申请调拨门店：{{item.storeName}}</text>
-							<text class="text_13" v-if="item.nickName">申请人：{{item.nickName}}</text>
+							<text class="text_13" v-if="item.recyclePeopleName">回收人：{{item.recyclePeopleName}}</text>
 						</view>
 					</view>
 				</view>
@@ -91,7 +92,7 @@
 		erppurchasegetlist
 	} from '@/api/erpapi.js';
 	import {
-		selectRecycleOrderList
+		empSelectRecycleList
 	} from '@/api/erp.js';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	//import barTitle from '@/components/common/basics/bar-title';
@@ -105,6 +106,7 @@
 		},
 		data() {
 			return {
+				time: null,
 				startTime: null,
 				endTime: null,
 				deviceNo: null,
@@ -175,7 +177,7 @@
 				dataList: [],
 				queryInfo: {
 					pageNum: 1,
-					pageSize: 20,
+					pageSize: 10,
 					// company_id: '',
 					// store_id: '',
 					// warehouse_id: '',
@@ -273,7 +275,7 @@
 				paramsData.endTime = this.endTime;
 				paramsData.deviceNo = this.deviceNo
 				paramsData.onlineRecycleFlag = this.TabCur - 1
-				selectRecycleOrderList(paramsData)
+				empSelectRecycleList(paramsData)
 					.then((res) => {
 						console.log(res.rows);
 						let data = res.rows;

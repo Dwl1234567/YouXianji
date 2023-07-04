@@ -57,9 +57,9 @@
 					</view>
 
 					<view class="cu-list menu-avatar" v-if="!reorganizeId && !sellFormId">
-						<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in goodsList"
+						<view class="cu-item" :class="modalName==item.recycleFormId?'move-cur':''" v-for="(item,index) in goodsList"
 							:key="index" @touchstart="ListTouchStart" @touchmove="ListTouchMove" @touchend="ListTouchEnd"
-							:data-target="'move-box-' + index">
+							:data-target="item.recycleFormId">
 							<image class="cu-avatar lg" :src="$httpImage + item.modelPhoto" mode="widthFix" />
 							<view class="content">
 								<view class="text-grey">{{item.modelName}}</view>
@@ -110,7 +110,7 @@
 								</view>
 							</view>
 							<view class="move">
-								<view class="bg-red" @tap="delectTap(index)">删除</view>
+								<view class="bg-red" @tap="delectTapHouse(index)">删除</view>
 							</view>
 						</view>
 					</view>
@@ -145,8 +145,7 @@
 							</view>
 						</view>
 					</view>
-
-					<view class="cu-form-group" v-if="!sellFormId">
+					<view class="cu-form-group" v-if="!sellFormId && goodsList.length > 0">
 						<view class="title">是否挂单</view>
 						<switch class='red' @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"
 							color="#e54d42"></switch>
@@ -434,7 +433,7 @@
 				costPrice: 0,
 				deviceId: 0,
 				qualityInfoId: 0,
-				recycleFormId: 0,
+				recycleFormId: null,
 				house: [],
 				TabCur: 0,
 				scrollLeft: 0,
@@ -487,11 +486,13 @@
 			}
 		},
 		onUnload() {
+			console.log('onUnload')
 			this.hsdangoodsList = []
 			this.customerInfo = {}
 			uni.removeStorageSync('data')
 			uni.removeStorageSync('updatehouse')
 			uni.removeStorageSync('updatecustomer')
+			uni.removeStorageSync('updatecustomers')
 		},
 		watch: {
 			customer() {
@@ -502,7 +503,7 @@
 				if (!this.reorganizeId && !this.sellFormId) {
 					this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
 						Number(this.ReceivablesMoney) : 0;
-					this.totalPrice = this.customer.costPrice;
+					this.totalPrice = this.customer.costPrice ? this.customer.costPrice : 0;
 					if (this.house.length) {
 						this.house.map(item => {
 							this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
@@ -522,7 +523,7 @@
 				if (!this.reorganizeId && !this.sellFormId) {
 					this.ReceivablesMoney = this.customer.sellPrice + Number(this.ReceivablesMoney) ? this.customer.sellPrice +
 						Number(this.ReceivablesMoney) : 0;
-					this.totalPrice = this.customer.costPrice;
+					this.totalPrice = this.customer.costPrice ? this.customer.costPrice : 0;
 					if (this.house.length) {
 						this.house.map(item => {
 							this.ReceivablesMoney = (Number(item.fittingsSellPrice) * Number(item.value)) + Number(this
@@ -580,18 +581,24 @@
 		onShow() {
 			let that = this;
 			uni.$once('updatecustomer', function(data) {
-				console.log(222)
-				that.customerInfo = {
+				this.customerInfo = {
 					...data
 				};
 			})
-
+			// 拿到客户
 			if (uni.getStorageSync('updatecustomer')) {
-				this.goodsList = [uni.getStorageSync('updatecustomer')]
+				this.customerInfo = uni.getStorageSync('updatecustomer')
 			}
+			// 拿到货品
+			if (uni.getStorageSync('updatecustomers')) {
+				this.goodsList = [uni.getStorageSync('updatecustomers')]
+			}
+			// 拿到配件
 			this.house = uni.getStorageSync('updatehouse')
-			this.customer = uni.getStorageSync('updatecustomer')
+			// 拿到货品
+			this.customer = uni.getStorageSync('updatecustomers')
 			if (this.customer) {
+				this.goodsList = [uni.getStorageSync('updatecustomers')]
 				this.deviceId = this.customer.deviceId
 				this.recycleFormId = this.customer.recycleFormId
 				this.qualityInfoId = this.customer.qualityInfoId
@@ -661,7 +668,7 @@
 			uploadFilePromise(urls) {
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.2.36:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {
@@ -733,8 +740,13 @@
 				this.hsarrearsMoney = Number(this.hsyinggaiMoney) - Number(this.hsActualreceiptsAll);
 
 			},
+			delectTapHouse(index) {
+				this.house.splice(index, 1);
+				uni.setStorageSync('updatecustomer', this.goodsList)
+			},
 			delectTap(index) {
 				this.goodsList.splice(index, 1);
+				uni.setStorageSync('updatecustomers', this.goodsList)
 			},
 			delectTap1(index) {
 				this.hsgoodsList.splice(index, 1);
@@ -836,6 +848,9 @@
 				this.modalName2 = null
 			},
 			tabSelect(e) {
+				uni.removeStorageSync('updatecustomer')
+				this.goodsList = []
+				this.customerInfo = {}
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
@@ -844,7 +859,8 @@
 			},
 			customerTap() {
 				uni.navigateTo({
-					url: '/pages/erp/customer/customer?isShow=' + false
+					url: '/pages/erp/customer/customer?isShow=' + false + "&tab=" + this.TabCur + '&reorganizeId=' + this
+						.reorganizeId
 				})
 			},
 			supplierTap() {
@@ -1192,6 +1208,7 @@
 						this.goodsList = [];
 						uni.removeStorageSync('updatehouse')
 						uni.removeStorageSync('updatecustomer')
+						uni.removeStorageSync('updatecustomers')
 					}
 				})
 			},

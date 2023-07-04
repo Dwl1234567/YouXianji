@@ -89,7 +89,7 @@
 					</view>
 				</view>
 				<view class="text-center margin-top">
-					<button class="cu-btn sm round bg-orange" @click="upTap(dataInfo.buy.grade)">立即升级</button>
+					<button class="cu-btn sm round bg-orange" @click="upTap(dataInfo)">立即升级</button>
 				</view>
 				<view class="cu-bar solid-bottom margin-top text-xl text-500">
 					等级特权
@@ -220,6 +220,7 @@
 				});
 			},
 			upTap(id) {
+				uni.setStorageSync('itemList', id)
 				uni.navigateTo({
 					url: '/pages/my/item/level_up?id=' + id
 				})

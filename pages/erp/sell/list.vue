@@ -106,7 +106,7 @@
 	import {
 		selectUserSellFormList,
 		printSellForm,
-		selecyMyOnLineSellFormList
+		selecyStoreOnLineSellFormList
 	} from '@/api/erp.js';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -268,17 +268,6 @@
 					this.getDataList1();
 				}
 				this.show = false;
-				// setTimeout(() => {
-				// 	console.log(this.day(this.value1), value);
-				// 	this.time = this.day(this.value1);
-				// 	this.show = false;
-				// 	if (this.TabCur == 1) {
-				// 		this.getDataList();
-				// 	} else {
-				// 		this.getDataList1();
-				// 	}
-
-				// }, 100);
 			},
 			copy(value) {
 				uni.setClipboardData({
@@ -323,7 +312,7 @@
 				let that = this;
 				let paramsData = that.queryInfo1;
 				paramsData.queryDateStr = this.time;
-				selecyMyOnLineSellFormList(paramsData)
+				selecyStoreOnLineSellFormList(paramsData)
 					.then((res) => {
 						let data = res.rows;
 						if (data) {

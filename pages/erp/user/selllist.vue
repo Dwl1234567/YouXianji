@@ -21,7 +21,7 @@
 		</scroll-view>
 		<view class="cu-card article" v-if="1==TabCur">
 			<view style="padding: 20rpx 20rpx">
-				<view class="cu-item arrow" style="display: flex; justify-content: space-between; margin-bottom: 10px">
+				<view class="cu-item arrow" style="display: flex; justify-content: space-between; padding: 10px">
 					<view class="content">筛选时间</view>
 					<view class="action">
 						<view class="picker text-gray" @tap="show = true">{{ time ? time : '请选择月份'}}</view>
@@ -62,46 +62,39 @@
 			<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="cu-card article" v-if="2==TabCur">
-			<view class="cu-item margin-sm padding-sm bg-white radius-3" v-for="(item,index) in dataList1" :key="index">
-				<view class="content">
-					<image :src="item.image" mode="aspectFill"></image>
-					<view class="desc">
-						<view class="title">
-							<view class="text-cut">{{item.title}}</view>
-						</view>
-						<view class="text-xs">
-							<view class="flex justify-between">
-								<view class="">
-									序列号：{{item.sn}}
-									<!--<text class="margin-left-sm cuIcon-copy text-orange"  @tap="copy(item.sn)">复制</text>-->
-								</view>
-								<view class="">调拨时间：{{item.createtime}}</view>
-							</view>
-							<view class="flex justify-between">
-								<view class="">成本价：{{item.cost_price}}</view>
-								<view class="">
-									调拨价：
-									<text class="text-red">{{item.peer_price}}</text>
-									元
-								</view>
-							</view>
-							<view class="flex justify-between">
-								<view class="">销售价：{{item.sales_price}}</view>
-								<view class="">库存：1</view>
-							</view>
-						</view>
+			<view style="padding: 20rpx 20rpx">
+				<view class="cu-item arrow" style="display: flex; justify-content: space-between; padding: 10px">
+					<view class="content">筛选时间</view>
+					<view class="action">
+						<view class="picker text-gray" @tap="show = true">{{ time ? time : '请选择月份'}}</view>
 					</view>
 				</view>
-				<view class="flex justify-between margin-bottom-sm">
-					<view class="padding-top-sm padding-left padding-right">
-						<view class="cu-tag bg-green light sm">{{item.store_name}}</view>
-						<text class="text-xs margin-lr-xs">的</text>
-						<view class="cu-tag bg-blue light sm">{{item.allot_name}}</view>
-						<text class="text-xs margin-left-xs">发起的调货</text>
-					</view>
-					<view class="padding-top-xs">
-						<view class="cu-btn round margin-xs line-red text-bold sm">
-							<text>已接受</text>
+				<view v-for="(item, index) in dataList1" style="display: flex; align-items: center; margin-bottom: 10px"
+					@tap="goDetail(item.sellFormId)">
+					<view class="group_3 flex-col">
+						<view class="text-wrapper_1 flex-row justify-between">
+							<text class="text_7">时间:{{item.createTime}}</text>
+						</view>
+						<view class="section_1 flex-row">
+							<view class=""></view>
+							<image :src="$httpImage + item.modelPhoto" mode="aspectFit" class="cu-avatar lg radius box_5 flex-col">
+							</image>
+							<view class="text-wrapper_2 flex-col">
+								<text class="text_8">{{item.modelName}}</text>
+								<text class="text_9">{{item.label}}</text>
+								<text class="text_10">序列号:{{item.deviceNo}}</text>
+								<text class="text_11">回收价:{{item.recyclePrice}}元</text>
+							</view>
+						</view>
+						<text class="text_13">回收人：{{item.recyclePeople}}</text>
+						<text class="text_13">组合成本：{{item.combinationPrice}}元</text>
+						<text class="text_13">销售人：{{item.sellPeople}}</text>
+						<text class="text_13">销售价：{{item.fundsReceived}}</text>
+						<text class="text_13">业绩：{{item.profit}}</text>
+						<view class="button">
+							<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="sell(item)">抛售</view>
+							<view class="receipt" v-if="item.reorganizeStatus == 0" @tap="shelves(item)">上架</view>
+							<view class="receipt" v-if="item.reorganizeStatus == 1" @tap="billing(item)">销售开单</view>
 						</view>
 					</view>
 				</view>
@@ -109,14 +102,14 @@
 			<!-- 下拉加载提示 -->
 			<uni-load-more :status="loadmore1" :contentText="contentText"></uni-load-more>
 		</view>
-		<u-datetime-picker ref="datetimePicker" :show="show" v-model="value1" mode="year-month" :formatter="formatter"
-			@confirm="aaa(1)" @cancel="close"></u-datetime-picker>
+		<u-calendar :show="show" mode="range" @confirm="aaa" @close="close"></u-calendar>
 	</view>
 </template>
 
 <script>
 	import {
-		selectMySellFormList
+		selectMySellFormList,
+		selecyMyOnLineSellFormList
 	} from '@/api/erp.js';
 	import barSearchTitle from '@/components/common/basics/bar-search-title';
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -126,6 +119,8 @@
 		},
 		data() {
 			return {
+				startTime: null,
+				endTime: null,
 				deviceNo: null,
 				show: false,
 				value1: Number(new Date()),
@@ -182,12 +177,12 @@
 		onPullDownRefresh() {
 			if (this.TabCur == 1) {
 				this.queryInfo.pageNum = 1; //重置分页页码
+				this.getDataList();
 			} else if (this.TabCur == 2) {
 				this.queryInfo1.pageNum = 1; //重置分页页码
-			} else {
-				this.queryInfo2.pageNum = 1; //重置分页页码
+				this.getDataList1();
 			}
-			this.getDataList();
+
 		},
 		onReachBottom() {
 			if (this.TabCur == 1) {
@@ -199,19 +194,14 @@
 				if (this.loadmore1 == 'noMore') return;
 				this.queryInfo1.pageNum += 1;
 				this.ifBottomRefresh1 = true;
-				this.getDataList();
-			} else {
-				if (this.loadmore2 == 'noMore') return;
-				this.queryInfo2.pageNum += 1;
-				this.ifBottomRefresh2 = true;
-				this.getDataList();
+				this.getDataList1();
 			}
 		},
 		methods: {
 			searchTap(e) {
-				console.log(e)
 				this.deviceNo = e;
 				this.getDataList()
+				this.getDataList1()
 			},
 			goDetail(sellFormId) {
 				uni.navigateTo({
@@ -249,12 +239,15 @@
 				this.show = false;
 			},
 			aaa(value) {
-				setTimeout(() => {
-					console.log(this.day(this.value1), value);
-					this.time = this.day(this.value1);
-					this.show = false;
+				this.startTime = value[0];
+				this.endTime = value[1];
+				this.time = value[0] + '-' + value[1];
+				if (this.TabCur == 1) {
 					this.getDataList();
-				}, 100);
+				} else {
+					this.getDataList1();
+				}
+				this.show = false;
 			},
 			copy(value) {
 				uni.setClipboardData({
@@ -270,10 +263,38 @@
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60;
 			},
+			getDataList1() {
+				let that = this;
+				let paramsData = that.queryInfo1;
+				paramsData.startTime = this.startTime;
+				paramsData.endTime = this.endTime;
+				paramsData.deviceNo = this.deviceNo;
+				selecyMyOnLineSellFormList(paramsData)
+					.then((res) => {
+						let data = res.rows;
+						if (data) {
+							//判断是触底加载还是第一次进入页面的加载
+							if (that.TabCur == 2) {
+								if (that.ifBottomRefresh1) {
+									that.dataList1 = that.dataList1.concat(data);
+								} else {
+									that.dataList1 = data;
+								}
+								that.ifBottomRefresh1 = false;
+								that.loadmore1 = res.total == that.dataList1.length ? 'noMore' : 'more';
+							}
+						}
+					})
+					.finally(() => {
+						uni.stopPullDownRefresh();
+					});
+			},
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
 				paramsData.deviceNo = this.deviceNo;
+				paramsData.startTime = this.startTime;
+				paramsData.endTime = this.endTime;
 				selectMySellFormList(paramsData)
 					.then((res) => {
 						let data = res.rows;
@@ -287,22 +308,6 @@
 								}
 								that.ifBottomRefresh = false;
 								that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more';
-							} else if (that.TabCur == 2) {
-								if (that.ifBottomRefresh1) {
-									that.dataList1 = that.dataList1.concat(data);
-								} else {
-									that.dataList1 = data;
-								}
-								that.ifBottomRefresh1 = false;
-								that.loadmore1 = res.total == that.dataList1.length ? 'noMore' : 'more';
-							} else {
-								if (that.ifBottomRefresh2) {
-									that.dataList2 = that.dataList2.concat(data);
-								} else {
-									that.dataList2 = data;
-								}
-								that.ifBottomRefresh2 = false;
-								that.loadmore2 = res.total == that.dataList2.length ? 'noMore' : 'more';
 							}
 						}
 					})

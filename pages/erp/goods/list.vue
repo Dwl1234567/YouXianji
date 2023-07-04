@@ -20,7 +20,7 @@
 				总数量：{{wareCount.totalNumber}}
 			</view>
 			<view class="totalCost">
-				总价值：{{wareCount.totalCost}}
+				总价值：{{wareCount.totalCost ? wareCount.totalCost : 0}}
 			</view>
 		</view>
 		<!-- 下拉加载提示 -->
@@ -115,12 +115,15 @@
 			this.erpproductgetlistFuc();
 			this.selectWarehouseGoodsCount();
 		},
-		//下拉刷新
+		// 下拉刷新
 		onPullDownRefresh() {
-			this.erpproductgetlistFuc('refresh');
+			this.pageIndex = 1; //重置分页页码
+			this.erpproductgetlistFuc();
 		},
-		//加载更多
 		onReachBottom() {
+			if (this.loadmore == 'noMore') return;
+			this.pageIndex += 1;
+			this.ifBottomRefresh = true;
 			this.erpproductgetlistFuc();
 		},
 		onReady() {
@@ -141,10 +144,7 @@
 				})
 			},
 			seachSelect(e) {
-				console.log(e)
-				if (e) {
-					this.warehouse_id = e
-				}
+				this.warehouse_id = e
 				this.erpproductgetlistFuc()
 				this.selectWarehouseGoodsCount()
 			},
@@ -222,6 +222,7 @@
 				})
 			},
 			erpproductgetlistFuc() {
+				console.log(this.warehouse_id)
 				let that = this;
 				let paramsData = {
 					'pageNum': this.pageIndex,

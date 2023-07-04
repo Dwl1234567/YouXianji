@@ -61,6 +61,8 @@
 		},
 		data() {
 			return {
+				fittingsId: null,
+				fittingsName: null,
 				value: 0,
 				topWarehouseId: null,
 				listData: [{
@@ -105,6 +107,34 @@
 			});
 		},
 		methods: {
+			snTap() {
+				console.log('扫描二维码获取序列号筛选结果')
+				let that = this;
+				// 允许从相机和相册扫码
+				uni.scanCode({
+					scanType: ['qrCode'], //条形码
+					success: function(res) {
+						console.log('获取到货品号，调用接口', res)
+						// 微信小程序
+						if (res.errMsg == "scanCode:ok") {
+							// 扫描到的信息
+							const data = JSON.parse(res.result)
+							console.log(data.a)
+							that.fittingsName = null;
+							that.fittingsId = data.a;
+							that.getDataList();
+						} else {
+							console.log("未识别到二维码，请重新尝试！")
+							uni.$u.toast('未识别到二维码，请重新尝试！')
+						}
+
+					}
+				});
+			},
+			searchTap(e) {
+				this.fittingsName = e
+				this.getDataList();
+			},
 			// 切换进步
 			valChange(item) {
 				let info = [];
@@ -144,6 +174,8 @@
 				let that = this;
 				let paramsData = that.queryInfo;
 				paramsData.topWarehouseId = this.topWarehouseId;
+				paramsData.fittingsName = this.fittingsName;
+				paramsData.fittingsId = this.fittingsId;
 				fittingsList(paramsData)
 					.then((res) => {
 						let data = res.rows;

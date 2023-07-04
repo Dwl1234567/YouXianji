@@ -57,6 +57,8 @@
 		},
 		data() {
 			return {
+				reorganizeId: null,
+				tab: null,
 				isShow: true,
 				CustomBar: this.CustomBar,
 				pageNum: 1,
@@ -78,6 +80,8 @@
 			};
 		},
 		onLoad(options) {
+			this.reorganizeId = options.reorganizeId
+			this.tab = options.tab
 			this.isShow = options.isShow
 			console.log(this.isShow)
 			this.chooseStatus = options.chooseStatus;
@@ -85,11 +89,17 @@
 		},
 		onBackPress() {
 			console.log('物理返回')
-			uni.navigateTo({
-				url: '/pages/tabbarerp/home',
-			});
+			let pages = getCurrentPages() // 获取栈实例
+			let page = pages[pages.length - 1] // 获取当前页面的数据，包含页面路由
+			let prevPage = pages[pages.length - 2] // 获取上个页面的数据，包含页面
+			if (prevPage.route != 'pages/tabbarerp/home') {
+				uni.navigateTo({
+					url: '/pages/tabbarerp/home',
+				});
+			}
 		},
 		onShow() {
+			console.log(333)
 			this.getDataList();
 		},
 		onPullDownRefresh() {
@@ -113,10 +123,17 @@
 				if (this.chooseStatus) {
 					return;
 				}
-				uni.$emit('updatecustomer', info)
-				uni.navigateBack({
-					delta: 1
-				})
+				uni.setStorageSync('updatecustomer', info)
+				if (this.reorganizeId) {
+					uni.navigateTo({
+						url: '/pages/tabbarerp/push?tab=' + this.tab + '&reorganizeId=' + this.reorganizeId
+					})
+				} else {
+					uni.navigateTo({
+						url: '/pages/tabbarerp/push?tab=' + this.tab
+					})
+				}
+
 			},
 			seachFuc() {
 				this.getDataList();

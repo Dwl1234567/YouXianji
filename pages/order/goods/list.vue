@@ -93,7 +93,7 @@
 					</view>
 					<u-modal :show="showlogout" @cancel="showlogout = false" @confirm="confirmFuc" title="确认取消订单？"
 						:showCancelButton="true"></u-modal>
-					<u-popup :show="show" mode="bottom" @close="close" @open="open">
+					<u-popup :show="show" mode="bottom" @close="close">
 						<view class="prop">
 							<view class="title">选择支付方式</view>
 							<view class="pay">
@@ -119,7 +119,7 @@
 							<view class="querenbutton" @tap="initiatePayment">确认付款</view>
 						</view>
 					</u-popup>
-					<u-popup :show="salesShow" mode="bottom" @close="close" @open="open" zIndex="888" overlayStyle="z-index: 888">
+					<u-popup :show="salesShow" mode="bottom" @close="close" zIndex="888" overlayStyle="z-index: 888">
 						<view class="prop">
 							<view class="title">售后类型</view>
 							<view class="pay">
@@ -166,7 +166,7 @@
 						</view>
 					</u-popup>
 					<!-- 查看凭证 -->
-					<u-popup :show="seeShow" mode="bottom" @close="close" @open="open" zIndex="888" overlayStyle="z-index: 888">
+					<u-popup :show="seeShow" mode="bottom" @close="close" zIndex="888" overlayStyle="z-index: 888">
 						<view class="prop">
 							<view class="title">售后类型</view>
 							<!-- <u--textarea v-model="returnList.context" placeholder="请输入内容" class="textarea"></u--textarea> -->
@@ -217,7 +217,8 @@
 		clientReturn,
 		clientRefund,
 		selectNewest,
-		zfbContinuePayment
+		zfbContinuePayment,
+		paymentReturn
 	} from '@/api/malls.js';
 	export default {
 		components: {
@@ -409,6 +410,7 @@
 			},
 			// 确认付款
 			initiatePayment(e) {
+				let that = this
 				console.log({
 					orderId: Number(this.itemList.orderId),
 					paymentType: this.isWx ? '1' : '0',
@@ -423,7 +425,7 @@
 								orderInfo: res.data.orderStr,
 								success: function(ress) {
 									paymentReturn({
-										orderPaymentId: res.orderPaymentId,
+										orderPaymentId: res.data.orderPaymentId,
 										tradeno: ress.tradeno
 									}).then(resss => {
 										if (resss.code === 200) {
@@ -431,12 +433,13 @@
 												icon: 'none',
 												title: '支付成功',
 											});
-											this.loadData();
-											this.show = false;
-
+											that.navList[this.tabCurrentIndex].page = 1;
+											that.loadData();
+											that.show = false;
+											console.log('success:' + JSON.stringify(res));
 										}
 									})
-									console.log('success:' + JSON.stringify(res));
+
 								},
 								fail: function(err) {
 									if (err.code == -100) {
@@ -444,7 +447,7 @@
 											icon: 'none',
 											title: '支付失败',
 										});
-										this.loadData();
+										that.loadData();
 									}
 									console.log('fail:' + JSON.stringify(err));
 								}
@@ -494,6 +497,7 @@
 			},
 			//获取订单列表
 			async loadData(source) {
+				console.log(123123123123123)
 				//这里是将订单挂载到tab列表下
 				let index = this.tabCurrentIndex;
 				let navItem = this.navList[index];
@@ -501,9 +505,11 @@
 					//防止重复加载
 					return;
 				}
+				console.log(222222)
 				if (navItem.loadingType == 'noMore' && navItem.page !== 1) {
 					return;
 				}
+				console.log(33333)
 				let state = navItem.state;
 				navItem.loadingType = 'loading';
 				shoppingOrderList({
@@ -685,7 +691,7 @@
 			uploadFilePromise(urls) {
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.2.36:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {

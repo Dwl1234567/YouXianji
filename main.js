@@ -12,7 +12,7 @@ import socket from './socket/index.js'
 import pay from './pay/index.js'
 Vue.config.productionTip = false
 App.mpType = 'app'
-
+console.log(HTTP_REQUEST_IMAGEURL)
 // 引入全局方法
 import $mGraceChecker from '@/utils/graceChecker';
 Vue.prototype.$mGraceChecker = $mGraceChecker;

@@ -8,18 +8,28 @@
 			<view class="bg-white card goods-view">
 
 				<view class="margin-bottom-sm title-view">
-					<view class="cu-avatar sm round"
-						style="background-image:url(https://storage.youxianji.cc/images/20220412213814625580c6915e7.png)" />
-<!-- 					<view class="title-box">
+					<view class="">
 						<text class="text-black margin-right-xs">升级到</text>
-						<text class="bg-red cu-tag sm radius">{{dataInfo.name}}</text>
-					</view> -->
+						<text class="bg-red cu-tag sm radius">{{dataInfo.levelName}}</text>
+					</view>
 				</view>
 
 				<view class="margin-tb text-xl text-500 text-101010">我的特权</view>
-				<view class="text-black gift-list text-lg" v-for="(item,index) in dataInfo.tequan">
-					<view class="text-cut title">{{item.name}}</view>
-					<text class="text-right">{{(item.money * 100).toFixed(0)}}%</text>
+				<view class="text-black gift-list text-lg">
+					<view class="text-cut title">二手1级分佣</view>
+					<text class="text-right">{{(dataInfo.new1Ratio * 1).toFixed(2)}}%</text>
+				</view>
+				<view class="text-black gift-list text-lg">
+					<view class="text-cut title">二手2级分佣</view>
+					<text class="text-right">{{(dataInfo.new2Ratio * 1).toFixed(2)}}%</text>
+				</view>
+				<view class="text-black gift-list text-lg">
+					<view class="text-cut title">全新1级分佣</view>
+					<text class="text-right">{{(dataInfo.secondHand1Ratio * 1).toFixed(2)}}%</text>
+				</view>
+				<view class="text-black gift-list text-lg">
+					<view class="text-cut title">全新2级分佣</view>
+					<text class="text-right">{{(dataInfo.secondHand2Ratio * 1).toFixed(2)}}%</text>
 				</view>
 			</view>
 		</view>
@@ -37,8 +47,8 @@
 						<view class="text-gray text-sm">亿万用户的选择，更快更安全</view>
 					</view>
 					<view class="action">
-						<radio class="red radio" :class="radio=='wxpay'?'checked':''"
-							:checked="radio=='wxpay'?true:false" value="wxpay" />
+						<radio class="red radio" :class="radio=='wxpay'?'checked':''" :checked="radio=='wxpay'?true:false"
+							value="wxpay" />
 					</view>
 				</view>
 
@@ -52,8 +62,8 @@
 						<view class="text-gray text-sm">数亿用户都在用，安全可托付</view>
 					</view>
 					<view class="action">
-						<radio class="red radio" :class="radio=='alipay'?'checked':''"
-							:checked="radio=='alipay'?true:false" value="alipay" />
+						<radio class="red radio" :class="radio=='alipay'?'checked':''" :checked="radio=='alipay'?true:false"
+							value="alipay" />
 					</view>
 				</view>
 			</radio-group>
@@ -76,7 +86,7 @@
 		<view class="bg-white footer-fixed foot-padding-bottom">
 			<view class="cu-bar padding-lr">
 				<view class="text-black text-bold price-view">
-					<text>金额：<span class="text-yellow text-xxl text-400">{{dataInfo.money}}</span></text>
+					<text>金额：<span class="text-yellow text-xxl text-400">{{dataInfo.sellPrice}}</span></text>
 				</view>
 				<view class="btn-view ">
 					<button class="cu-btns radius-4 text-color-yellow text-white padding-lr-xl" @tap="submit">确认升级</button>
@@ -93,7 +103,11 @@
 		agentuserlevelview
 	} from "@/api/agent.js"
 	import barTitle from '@/components/common/basics/bar-title';
-
+	import {
+		selectMemberLevelRule,
+		createZfbPayment,
+		paymentReturn
+	} from '@/api/commons.js'
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		components: {
@@ -105,12 +119,13 @@
 				payType: 'wxpay',
 				servercheck: true,
 				dataInfo: '',
-				id:''
+				id: ''
 			}
 		},
 		onLoad(options) {
-			this.id = options.id;
-			this.agentuserlevelviewFuc(options.id)
+			this.itemList = uni.getStorageSync('itemList')
+			// this.id = options.id;
+			this.agentuserlevelviewFuc(this.itemList.ruleId)
 		},
 		onReady() {
 			_tool.setBarColor(true);
@@ -119,11 +134,14 @@
 				duration: 0
 			});
 		},
+		onUnload() {
+			uni.removeStorageSync('itemList')
+		},
 		methods: {
 			// 获取等级详情
 			agentuserlevelviewFuc(id) {
-				agentuserlevelview({
-					level_id: id
+				selectMemberLevelRule({
+					ruleId: id
 				}).then(res => {
 					this.dataInfo = res.data;
 				})
@@ -136,33 +154,46 @@
 				this.payType = type;
 			},
 			submit() {
+				console.log(this.payType)
 				let that = this;
 				// console.log('付款');
-				agentuserleveladdorder({
-					level_id:this.id,
-					price:this.dataInfo.money,
-					pay_type:this.payType == 'wxpay' ? '3' : '4'
-				}).then(res=>{
-					agentuserlevelgopay({
-						order_id:res.data.order_id,
-						pay_type:that.payType == 'wxpay' ? '3' : '4'
-					}).then(res1=>{
-						let payinfo = res1.data.orderInfo;
-						uni.requestPayment({
-							provider: that.payType,
-							orderInfo: payinfo,
-							success: function(res) {
-								that.$api.msg('支付成功');
-								uni.navigateBack();
-							},
-							fail: function(err) {
-								console.log(err);
-								that.$api.msg('支付失败');
-							}
-						});
-						
+				if (this.payType != 'wxpay') {
+					createZfbPayment({
+						ruleId: this.itemList.ruleId
+					}).then(res => {
+						if (res.code === 200) {
+							uni.requestPayment({
+								provider: 'alipay',
+								orderInfo: res.data.orderStr,
+								success: function(ress) {
+									paymentReturn({
+										orderId: res.data.orderId,
+										tradeno: ress.tradeno
+									}).then(resss => {
+										if (resss.code === 200) {
+											uni.showToast({
+												icon: 'none',
+												title: '支付成功',
+											});
+											uni.navigateBack()
+										}
+									})
+									console.log('success:' + JSON.stringify(res));
+								},
+								fail: function(err) {
+									if (err.code == -100) {
+										uni.showToast({
+											icon: 'none',
+											title: '支付失败',
+										});
+									}
+									console.log('fail:' + JSON.stringify(err));
+								}
+							})
+						}
 					})
-				})
+				}
+
 			},
 		},
 
@@ -172,7 +203,8 @@
 <style lang="scss">
 	@import "@/uni_modules/mpb-ui/shop/pay.scss";
 	@import "@/uni_modules/mpb-ui/shop/settlement.scss";
-	page{
+
+	page {
 		background: #F0F0F0;
 	}
 </style>

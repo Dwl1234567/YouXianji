@@ -35,6 +35,7 @@
 						维修价：{{item.maintainApprove.maintainPrice}}
 					</text>
 					<text class="text_13" v-if="item.maintainApprove">维修内容：{{item.maintainApprove.context}}</text>
+					<text class="text_13" v-if="item.maintainApprove">拒绝理由：{{item.approveOpinion}}</text>
 					<view class="button">
 						<view class="receipt" @tap.stop="dayin(item)">打印标签</view>
 						<view class="receipt" v-if="item.reorganizeStatus == 0" @tap.stop="sell(item)">抛售</view>
