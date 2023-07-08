@@ -258,7 +258,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="querenbutton" @tap="initiatePayment">确认</view>
+				<view class="querenbutton" @tap="show = false">确认</view>
 			</view>
 		</u-popup>
 	</view>

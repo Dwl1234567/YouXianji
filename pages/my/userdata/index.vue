@@ -5,7 +5,7 @@
 			<view class="cu-item arrow" @tap="setaAvatarTap">
 				<view class="content">头像</view>
 				<view class="action">
-					<view class="cu-avatar radius sm" :style="[{backgroundImage:'url('+ userInfo.avatar +')'}]" />
+					<view class="cu-avatar radius sm" :style="[{backgroundImage:'url('+ $httpImage + userInfo.avatar +')'}]" />
 				</view>
 			</view>
 			<view class="cu-item arrow" @tap="editNameTap">
@@ -28,7 +28,7 @@
 					<picker mode="date" :value="dateValue" start="1920-01-01" :end="endtime" @change="datePickerChange">
 						<view class="picker text-gray">{{dateValue}}</view>
 					</picker>
-					
+
 				</view>
 			</view>
 			<!-- <view class="cu-item arrow" @tap="synopsisTap">
@@ -57,14 +57,23 @@
 				<view class="content">注销账户</view>
 			</view>
 		</view> -->
-		
+
 	</view>
 </template>
 
 <script>
-	import { getUserInfo, userset } from '@/api/user.js';
-	import { UPLOAD_IMG_URL } from '@/config/app.js';
-	import { getNowDay } from '@/utils/pub.js';
+	import Vue from 'vue';
+	import {
+		getUserInfo,
+		userset,
+		addAvatar
+	} from '@/api/user.js';
+	import {
+		UPLOAD_IMG_URL
+	} from '@/config/app.js';
+	import {
+		getNowDay
+	} from '@/utils/pub.js';
 	import barTitle from '@/components/common/basics/bar-title';
 	export default {
 		components: {
@@ -108,13 +117,14 @@
 				uni.chooseImage({
 					success: (chooseImageRes) => {
 						const tempFilePaths = chooseImageRes.tempFilePaths;
-						console.log(tempFilePaths);
+						console.log(chooseImageRes);
 						uni.uploadFile({
 							url: UPLOAD_IMG_URL,
 							filePath: tempFilePaths[0],
 							name: 'file',
 							header: {
-								'content-type': 'multipart/form-data',
+								'Authorization': Vue.prototype.$store.state.token,
+								// 'content-type': 'multipart/form-data',
 							},
 							formData: {
 								// 'file': 'touxiang'
@@ -122,14 +132,22 @@
 							success: (res) => {
 								console.log(JSON.parse(res.data));
 								let data = JSON.parse(res.data);
-								let params = {
-									key: 'avatar',
-									value: data.data.imgurl,
-								};
-								//临时更新用户头像
-								this.avatar = data.data.imgurl;
-								//传参修改用户头像信息
-								userset(params).then((res) => {});
+								// let params = {
+								// 	key: 'avatar',
+								// 	value: data.data.imgurl,
+								// };
+								// 临时更新用户头像
+								this.userInfo.avatar = data.fileName
+								// 传参修改用户头像信息
+								addAvatar({
+									avatar: data.fileName
+								}).then((res) => {
+									if (res.code === 200) {
+										uni.showToast({
+											title: '保存成功'
+										})
+									}
+								});
 							},
 						});
 					},

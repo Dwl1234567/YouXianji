@@ -452,6 +452,18 @@
 							badge: 0,
 							name: '收入列表',
 						},
+						{
+							cuIcon: 'icon-income',
+							color: 'red',
+							badge: 0,
+							name: '维修收付',
+						},
+						{
+							cuIcon: 'icon-income',
+							color: 'red',
+							badge: 0,
+							name: '抛售列表',
+						},
 					],
 				},
 				{
@@ -762,6 +774,12 @@
 					}
 					if (index == 2) {
 						var value = 'finance/income/list';
+					}
+					if (index == 3) {
+						var value = 'maint/list';
+					}
+					if (index == 4) {
+						var value = 'sellOff/list';
 					}
 				}
 				if (key == 4) {

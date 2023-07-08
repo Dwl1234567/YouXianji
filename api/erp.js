@@ -1281,3 +1281,53 @@ export function selecyStoreOnLineSellFormList(data) {
 		noLogin: true
 	});
 }
+
+/**
+ * 查询回收列表的回收详情
+ *
+ */
+export function selectRecycleListDetail(data) {
+	return request.get('/yxj/app/recycleForm/selectRecycleListDetail/' + data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询维修付款列表
+ *
+ */
+export function selectMaintainPaymentList(data) {
+	return request.get('/yxj/app/sorting/selectMaintainPaymentList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 上传维修付款凭证
+ *
+ */
+export function uploadMaintainPaymentVoucher(data) {
+	return request.post('/yxj/app/sorting/uploadMaintainPaymentVoucher', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询抛售列表
+ *
+ */
+export function selectUndersellList(data) {
+	return request.get('/yxj/app/sorting/selectUndersellList', data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询抛售统计
+ *
+ */
+export function selectUndersellCount(data) {
+	return request.get('/yxj/app/sorting/selectUndersellCount', data, {
+		noLogin: true
+	});
+}

@@ -164,6 +164,7 @@
 			});
 		},
 		onLoad() {
+			this.pageIndex = 1;
 			let that = this;
 			let userInfo = uni.getStorageSync('userInfo');
 
@@ -202,8 +203,10 @@
 			this.getProduct();
 		},
 		onReachBottom() {
+			console.log(2222)
 			if (this.loadmore == 'noMore') return;
 			this.pageIndex += 1;
+			this.ifBottomRefresh = true
 			this.getProduct();
 		},
 		methods: {
@@ -214,37 +217,39 @@
 				this.getProduct()
 			},
 			isBindOpenid() {
-				let that = this
-				isBindOpenid().then(res => {
-					if (res.code === 200) {
-						if (!res.data) {
-							uni.showModal({
-								title: '温馨提示',
-								content: '请绑定微信以方便接受后续消息提示',
-								showCancel: false,
-								success(res) {
-									uni.login({
-										provider: 'weixin',
-										success: function(loginRes) {
-											console.log(loginRes.authResult.openid);
-											that.bindOpenids(loginRes.authResult.openid)
-										},
-										fail(res) {
-											if (res.code == -8) {
-												uni.showToast({
-													icon: 'none',
-													duration: 5000,
-													title: '客户端未安装，请安装客户端后使用'
-												})
-											}
-										}
-									});
-								},
-							})
-						}
+				// let that = this
+				// isBindOpenid().then(res => {
+				// 	if (res.code === 200) {
+				// 		if (!res.data) {
+				// 			uni.showModal({
+				// 				title: '温馨提示',
+				// 				content: '请绑定微信以方便接受后续消息提示',
+				// 				showCancel: false,
+				// 				success(res) {
+				// 					uni.login({
+				// 						provider: 'weixin',
+				// 						onlyAuthorize: true,
+				// 						success: function(loginRes) {
+				// 							console.log(loginRes, '登陆成功---------------------');
+				// 							that.bindOpenids(loginRes.authResult.openid)
+				// 						},
+				// 						fail(res) {
+				// 							console.log(res, '登陆报错---------------------')
+				// 							if (res.code == -8) {
+				// 								uni.showToast({
+				// 									icon: 'none',
+				// 									duration: 5000,
+				// 									title: '客户端未安装，请安装客户端后使用'
+				// 								})
+				// 							}
+				// 						}
+				// 					});
+				// 				},
+				// 			})
+				// 		}
 
-					}
-				})
+				// 	}
+				// })
 			},
 			bindOpenids(openId) {
 				bindOpenid({

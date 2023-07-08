@@ -334,7 +334,7 @@
 				goodsdesc: '',
 				modelName: '',
 				photo: '',
-				action: 'http://192.168.31.92:8080/common/upload',
+				action: 'http://192.168.31.91:8080/common/upload',
 				fileList: [],
 				priceId: 0,
 				storeAddress: '',

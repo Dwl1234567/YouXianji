@@ -69,7 +69,7 @@
 								<!--<image src="@/static/item/win.png">{{index+1}}</image>-->
 							</view>
 							<view class="t_01_2">
-								<image :src="item.avatar || '/static/img/avatar/1.png'"></image>
+								<image :src="$httpImage + item.avatar || '/static/img/avatar/1.png'"></image>
 								{{item.nickName}}
 							</view>
 							<view class="t_01_3">

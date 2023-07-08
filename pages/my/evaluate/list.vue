@@ -1,28 +1,36 @@
 <template>
 	<view>
-		<view class="padding bg-F0F0F0">
-			<view class="cu-list solids-top">
-				<view class="cu-item bg-white padding margin-bottom-sm radius-6" v-for="(item,index) in dataList">
-					<view class="content">
-						<view class="flex justify-between">
-							<view>订单号:{{item.order_id}}</view>
-							<view class="cu-tag bg-red sm radius margin-left-xs" @click="deletecom(item.id)">删除评价</view>
-						</view>
-						<view class="text-gray text-content flex justify-around">
-							<view class="">
-								<text class="text-red">{{item.spec}}</text>
+		<view class="padding">
+			<block v-for="(items,index) in dataList" :key="index">
+				<view class="view-box" style="padding: 0rpx;">
+					<view class="flex-wrap text-sm" style="margin-bottom: 32rpx;">
+						<view class="basis-1 margin-right-sm" style="display: flex;align-items: center;">
+							<view class="cu-avatar sm round" :style="'backgroundImage: url(' + $httpImage + items.avatar + ')'"
+								style="width: 53rpx; height: 53rpx;" />
+							<view class=""
+								style="font-size: 27rpx;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;color: #4F4F50; margin-left:8rpx">
+								{{items.nickName}}
 							</view>
 						</view>
-						<view class="bg-gray padding-sm radius margin-top-sm  text-sm">
-							{{item.comment}}
+						<view style="margin-top: 10rpx;">
+							已购：{{items.modelName}} {{items.basePriceLabel}}
+						</view>
+						<view class="basis-9" style="margin-top: 26rpx;">
+
+							<view class="margin-top-xs"
+								style="word-break: break-all;width: 80vw;font-size: 25rpx;font-family: PingFangSC-Regular, PingFang SC;font-weight: 400;color: #4F4F50;">
+								{{items.context}}
+							</view>
+							<!-- <view class="text-gray margin-top-sm">{{items.spec}}</view> -->
+						</view>
+						<view v-if="items.photo" style="margin-top: 24rpx;display: flex;">
+							<image v-for="(item, index) in items.photo" :src="$httpImage + item"
+								style="width: 153rpx; height: 153rpx;margin-right: 11rpx;"></image>
 						</view>
 
-						<view class="margin-top-sm flex justify-between">
-							<view class="text-gray text-df">{{item.createtime_text}}</view>
-						</view>
 					</view>
 				</view>
-			</view>
+			</block>
 		</view>
 		<!-- 下拉加载提示 -->
 		<uni-load-more :status="loadmore" :contentText="contentText"></uni-load-more>
@@ -31,9 +39,8 @@
 
 <script>
 	import {
-		userevaluate,
-		userdelevaluate
-	} from "@/api/mall.js"
+		selectMyEvaluateList,
+	} from "@/api/malls.js"
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
 		components: {},
@@ -41,8 +48,8 @@
 			return {
 				dataList: [],
 				queryInfo: {
-					page: 1,
-					pagesize: 10,
+					pageNum: 1,
+					pageSize: 10,
 				},
 				loadmore: 'more', //more 还有数据   noMore 无数据
 				contentText: {
@@ -65,12 +72,12 @@
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
-			this.queryInfo.page = 1; //重置分页页码
+			this.queryInfo.pageNum = 1; //重置分页页码
 			this.getDataList();
 		},
 		onReachBottom() {
 			if (this.loadmore == 'noMore') return
-			this.queryInfo.page += 1;
+			this.queryInfo.pageNum += 1;
 			this.ifBottomRefresh = true
 			this.getDataList();
 		},
@@ -78,8 +85,8 @@
 			getDataList() {
 				let that = this;
 				let paramsData = that.queryInfo;
-				userevaluate(paramsData).then(res => {
-						let data = res.data.list;
+				selectMyEvaluateList(paramsData).then(res => {
+						let data = res.rows;
 						if (data) {
 							//判断是触底加载还是第一次进入页面的加载
 							if (that.ifBottomRefresh) {
@@ -88,7 +95,7 @@
 								that.dataList = data
 							}
 							that.ifBottomRefresh = false
-							that.loadmore = res.data.total == that.dataList.length ? 'noMore' : 'more'
+							that.loadmore = res.total == that.dataList.length ? 'noMore' : 'more'
 						}
 					})
 					.finally(() => {
@@ -96,7 +103,7 @@
 					})
 			},
 			deletecom(id) {
-				let that =  this;
+				let that = this;
 				uni.showModal({
 					title: '提示',
 					content: '确定删除该评价嘛？',

@@ -32,7 +32,7 @@
 					<text>iPhone 13 Pro</text>
 					<view class="sbtn cu-btn btn bg-red radius-4">搜索</view>
 				</view>
-				<text class="cuIcon-scan" @tap="snTap" />
+				<text class="iconfont icon-saomiao" @tap="snTap" style="margin-right: 15px;" />
 			</view>
 
 			<!--选项卡-->
@@ -492,7 +492,9 @@
 						// 微信小程序
 						if (res.errMsg == 'scanCode:ok') {
 							// 扫描到的信息
+							console.log(res.result, 'res.result')
 							const data = JSON.parse(res.result)
+							console.log(data, '22222222222222222222222222')
 							if (data.way == 1) {
 								setTimeout(() => {
 									uni.navigateTo({
@@ -811,7 +813,7 @@
 					height: 32px;
 					line-height: 32px;
 					position: absolute;
-					right: 66rpx;
+					right: 83rpx;
 					background-image: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%);
 				}
 

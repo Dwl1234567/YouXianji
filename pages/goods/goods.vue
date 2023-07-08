@@ -146,16 +146,16 @@
 						</view>
 						<block v-for="(items,index) in rateList.shoppingOrderEvaluates" :key="index">
 							<view class="view-box" style="padding: 0rpx;">
-								<view class="flex-wrap text-sm" style="margin-top: 32rpx;">
+								<view class="flex-wrap text-sm" style="margin-bottom: 32rpx;">
 									<view class="basis-1 margin-right-sm" style="display: flex;align-items: center;">
 										<view class="cu-avatar sm round" :style="'backgroundImage: url(' + $httpImage + items.avatar + ')'"
 											style="width: 53rpx; height: 53rpx;" />
 										<view class=""
-											style="font-size: 27rpx;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;color: #4F4F50;">
+											style="font-size: 27rpx;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;color: #4F4F50; margin-left:8rpx">
 											{{items.nickName}}
 										</view>
 									</view>
-									<view>
+									<view style="margin-top: 10rpx;">
 										已购：{{items.modelName}}
 									</view>
 									<view class="basis-9" style="margin-top: 26rpx;">
@@ -174,38 +174,6 @@
 								</view>
 							</view>
 						</block>
-						<!--
-						<view class="cu-bar bg-white">
-							<view class="action">
-								<text class="text-black text-lg"
-									v-if="product.evaluate_data">评价（{{product.evaluate_data.count}}）</text>
-							</view>
-							<view class="action">
-								<view class="text-sm">
-									<text class="margin-right-xs">好评率</text>
-									<text class="text-black text-lg"
-										v-if="product.evaluate_data">{{product.evaluate_data.avg}}%</text>
-									<text class="cuIcon-right icon margin-left-xs" />
-								</view>
-							</view>
-						</view>
-						<view class="border-view" />
-						<block v-for="(items,index) in evalueteList" :key="index">
-							<view class="view-box">
-								<view class="flex flex-wrap text-sm">
-									<view class="basis-1">
-										<view class="cu-avatar sm round" :style='backgroundImage:' url('+items.avatar+')'' />
-									</view>
-									<view class="basis-9 text-sm">
-										<view>{{items.username}}</view>
-										<view class="margin-top-xs">{{items.comment}}</view>
-										<view class="text-gray margin-top-sm">iPhone X 64G深空灰色</view>
-									</view>
-								</view>
-							</view>
-							<view class="border-view" />
-						</block>
-						-->
 					</view>
 					<!--验机报告-->
 					<view class="">
@@ -292,6 +260,14 @@
 										</view>
 										<view class="texts">
 											{{qualityInfoList[index].value}}
+										</view>
+									</view>
+									<view style="margin-right: 80rpx;margin-bottom: 36rpx;">
+										<view class="titles">
+											机器序列号
+										</view>
+										<view class="texts">
+											{{product.deviceNo}}
 										</view>
 									</view>
 								</view>
@@ -490,17 +466,18 @@
 		<!-- <view class="cu-modal bottom-modal bottom-modal-box" :class="imageModal?'show':''"> -->
 
 		<!-- </view> -->
+		<!-- :class="imageModal?'show':''" -->
 		<view class="background-q" :class="imageModal?'show':''">
 			<view id="qrcodes">
 				<canvas id="img1" canvas-id="img1" style="width: 324px; height: 324px" />
-				<view class="text">{{product.title}}</view>
+				<view class="text">{{product.modelName}}</view>
 				<view class="price">￥{{product.sellPrice}}</view>
 				<view class="head">
 					<canvas id="img2" canvas-id="img2" style="width: 40px; height: 40px" />
 					<!-- <img :src="this.userInfo.avatar" alt="" crossorigin="anonymous" /> -->
 				</view>
-				<view class="name">优闲集 + {{this.userInfo.nickName}}</view>
-				<canvas id="qrcode" canvas-id="qrcode" :style="{'width': '68px', 'height': '68px'}" />
+				<view class="name">{{this.userInfo.nickName}}</view>
+				<canvas id="qrcode" canvas-id="qrcode" :style="{'width': '110px', 'height': '110px'}" />
 			</view>
 		</view>
 		<!--弹出框-->
@@ -825,12 +802,12 @@
 			// this.getDetail(this.goodsid, flash_id);
 			// 添加用户足迹
 			let loginInfo = JSON.parse(uni.getStorageSync('app_config_data') || '{}'); // 解决缓存值为空导致JSON.parse解析语法报错
-			if (loginInfo.hasLogin) {
-				setuservisit({
-					type: 1,
-					goods_id: options.id,
-				}).then((res) => {});
-			}
+			// if (loginInfo.hasLogin) {
+			// 	setuservisit({
+			// 		type: 1,
+			// 		goods_id: options.id,
+			// 	}).then((res) => {});
+			// }
 		},
 		filters: {
 			/**
@@ -1009,7 +986,7 @@
 						canvasId: 'qrcode',
 						componentInstance: this,
 						text: this.qrUrl,
-						size: 58,
+						size: 100,
 						margin: 0,
 						backgroundColor: '#ffffff',
 						foregroundColor: '#000000',
@@ -1632,8 +1609,8 @@
 
 		.price {
 			position: absolute;
-			right: 19px;
-			top: 345px;
+			left: 25px;
+			top: 375px;
 			font-family: PingFangSC-Medium;
 			font-size: 24px;
 			color: #ff2f0f;
@@ -1652,7 +1629,7 @@
 			border-radius: 40px;
 			overflow: hidden;
 			position: absolute;
-			left: 30px;
+			left: 28px;
 			bottom: 20px;
 
 			img {

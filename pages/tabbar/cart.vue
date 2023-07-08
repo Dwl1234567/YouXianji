@@ -44,7 +44,7 @@
 							></view> -->
 						</view>
 						<view class="item-right">
-							<text class="clamp title">{{item.goodsInfo.title}}</text>
+							<text class="clamp title">{{item.goodsInfo.modelName}} {{item.goodsInfo.basePriceLabel}}</text>
 							<text class="attr" v-if="item.sellPrice">{{item.sellPrice}}</text>
 							<view class="price margin-top-xs">
 								￥
@@ -393,9 +393,11 @@
 			deleteOrder() {
 				let isTrue = true;
 				const shoppingOrderItemList = [];
+				let number = 0;
 				this.cartList.map((item) => {
 					if (item.disabled) {
 						isTrue = false
+						number = number + item.goodsInfo.sellPrice
 						shoppingOrderItemList.push(item.cartId);
 					}
 				});
@@ -404,6 +406,7 @@
 						uni.showToast({
 							title: '删除成功'
 						})
+						this.total = this.total - number
 						this.getCart()
 					}
 				})

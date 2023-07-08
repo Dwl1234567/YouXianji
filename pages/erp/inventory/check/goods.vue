@@ -51,8 +51,8 @@
 				<view class="time">
 					<view>盘点时间:{{item.checkTime}}</view>
 					<view>盘点人：{{item.checkPeopleName}}</view>
-					<view class="">数量：{{item.fittingsNumber}}</view>
-					<view class="">盘点数量：{{item.checkNumber}}</view>
+					<view class="" v-if="item.fittingsNumber">数量：{{item.fittingsNumber}}</view>
+					<view class="" v-if="item.checkNumber">盘点数量：{{item.checkNumber}}</view>
 				</view>
 				<view class="over" @tap="seePic(item)">查看</view>
 			</view>
@@ -296,7 +296,9 @@
 							}
 
 						})
-						.finally(() => {})
+						.finally(() => {
+							uni.stopPullDownRefresh();
+						})
 				} else {
 					selectFittingsList(paramsData).then(res => {
 							let data = res.rows;
@@ -312,7 +314,9 @@
 							}
 
 						})
-						.finally(() => {})
+						.finally(() => {
+							uni.stopPullDownRefresh();
+						})
 				}
 
 			},
@@ -394,7 +398,7 @@
 				console.log(222)
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: 'http://192.168.31.91:8080/common/upload', // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {

@@ -58,13 +58,14 @@
 							</view>
 							<view class="flex margin-top-xxs">
 								<view class="cu-progress round">
-									<view class="bg-red" :style="{width: dataInfo.ancestorDifference ? dataInfo.ancestorDifference :''}">
+									<view class="bg-red"
+										:style="{width: dataInfo.ancestorDifferenceP ? dataInfo.ancestorDifferenceP :''}">
 									</view>
 								</view>
 								<!-- <text class="margin-left-sm cuIcon-roundcheckfill" :class="item1.finish_rate=='100%'?'text-red':'text-lightgrey'"></text> -->
 							</view>
 							<view class="flex justify-between text-lg">
-								<view>0</view>
+								<view>{{dataInfo.ancestorDifference}}</view>
 								<view>{{dataInfo.ancestorNum}}</view>
 							</view>
 						</block>
@@ -76,20 +77,20 @@
 							<view class="flex margin-top-xxs">
 								<view class="cu-progress round">
 									<view class="bg-red"
-										:style="{width: dataInfo.validAncestorDifference ? dataInfo.validAncestorDifference :''}">
+										:style="{width: dataInfo.validAncestorDifferenceP ? dataInfo.validAncestorDifferenceP :''}">
 									</view>
 								</view>
 								<!-- <text class="margin-left-sm cuIcon-roundcheckfill" :class="item1.finish_rate=='100%'?'text-red':'text-lightgrey'"></text> -->
 							</view>
 							<view class="flex justify-between text-lg">
-								<view>0</view>
+								<view>{{dataInfo.validAncestorDifference}}</view>
 								<view>{{dataInfo.validAncestorNum}}</view>
 							</view>
 						</block>
 					</view>
 				</view>
 				<view class="text-center margin-top">
-					<button class="cu-btn sm round bg-orange" @click="upTap(dataInfo)">立即升级</button>
+					<button class="cu-btn sm round bg-orange" @click="upTap(dataInfo)">立即升级需{{dataInfo.sellPrice}}元</button>
 				</view>
 				<view class="cu-bar solid-bottom margin-top text-xl text-500">
 					等级特权
@@ -207,8 +208,8 @@
 				selectMemberLevelRuleList({}).then(res => {
 					let ind = 0;
 					res.data.map((item, index) => {
-						item.ancestorDifference = ((item.ancestorDifference / item.ancestorNum) * 100) + '%'
-						item.validAncestorDifference = ((item.validAncestorDifference / item.validAncestorNum) * 100) + '%'
+						item.ancestorDifferenceP = ((item.ancestorDifference / item.ancestorNum) * 100) + '%'
+						item.validAncestorDifferenceP = ((item.validAncestorDifference / item.validAncestorNum) * 100) + '%'
 						if (item.ruleId == this.ruleId) {
 							ind = index
 						}

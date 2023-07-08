@@ -14,9 +14,10 @@
 		<!--为上面的临时筛选条进行的临时兼容处理-->
 		<view style="padding: 0px 20rpx">
 			<!-- :class="admin ? 'transform' : 'transformRight'" -->
-			<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px">
+			<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px"
+				@tap="goDetail(item)">
 				<view :class="admin ? '' : 'transform'" style="margin-right: 28rpx">
-					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
+					<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap.stop="radioChange(index)"></view>
 				</view>
 				<view class="group_3 flex-col">
 					<view class="text-wrapper_1 flex-row justify-between">
@@ -103,54 +104,54 @@
 					<text class="text_13" v-if="item.maintainApprove.context">维修内容：{{item.maintainApprove.context}}</text>
 					<view class="button">
 						<view class="receipt" v-if="item.sortStatus == 2 && roles.sorting_people && item.updateStatus == 1"
-							@tap="goBack(item)">
+							@tap.stop="goBack(item)">
 							返回门店
 						</view>
 						<view class="receipt" v-if="item.sortStatus == 2 && roles.sorting_people && item.updateStatus == 0"
-							@tap="goDiandian(item)">
+							@tap.stop="goDiandian(item)">
 							待修改
 						</view>
-						<view class="checkLogistics" v-if="item.sortStatus == 1" @tap="test(item)">查看物流</view>
-						<view class="receipt" @tap="receiveInspectDevices(item.sortId)"
+						<view class="checkLogistics" v-if="item.sortStatus == 1" @tap.stop="test(item)">查看物流</view>
+						<view class="receipt" @tap.stop="receiveInspectDevices(item.sortId)"
 							v-if="item.status === '0' && item.sortStatus == 1 && roles.sorting_leader">
 							确认收货
 						</view>
-						<view class="checkLogistics" v-if="item.sortStatus == 3" @tap="test(item)">
+						<view class="checkLogistics" v-if="item.sortStatus == 3" @tap.stop="test(item)">
 							物流信息
 						</view>
-						<view class="receipt" @tap="getstoreAdminConfirm(item.sortId)"
+						<view class="receipt" @tap.stop="getstoreAdminConfirm(item.sortId)"
 							v-if="roles.store_admin && item.sortStatus == 3">
 							确认收货
 						</view>
 						<view class="checkLogistics"
 							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && item.sortStatus == 4"
-							@tap="test(item)">
+							@tap.stop="test(item)">
 							物流信息
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 4">已收货</view>
 						<view class="receipt" v-if="item.status === '1' && item.sortStatus == 1">已收货</view>
-						<view class="checkLogistics" @tap="falseshowSell(item)"
+						<view class="checkLogistics" @tap.stop="falseshowSell(item)"
 							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 0">
 							拒绝
 						</view>
-						<view class="receipt" @tap="goshowSell(item)"
+						<view class="receipt" @tap.stop="goshowSell(item)"
 							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 0">
 							接受
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 6">已接受</view>
-						<view class="checkLogistics" @tap="showImg2(item)"
+						<view class="checkLogistics" @tap.stop="showImg2(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 6 || item.sortStatus == 7) && !item.undersellApprove.collectionVoucher">
 							上传收款凭证
 						</view>
-						<view class="receipt" @tap="showImg1(item)"
+						<view class="receipt" @tap.stop="showImg1(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 6 || item.sortStatus == 7) && !item.undersellApprove.undersellVoucher">
 							上传抛售凭证
 						</view>
-						<view class="receipt" @tap="seeImg1(item)"
+						<view class="receipt" @tap.stop="seeImg1(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 6 || item.sortStatus == 7) && item.undersellApprove.undersellVoucher">
 							查看抛售凭证
 						</view>
-						<view class="receipt" @tap="seeImg2(item)"
+						<view class="receipt" @tap.stop="seeImg2(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 6 || item.sortStatus == 7) && item.undersellApprove.collectionVoucher">
 							查看收款凭证
 						</view>
@@ -158,44 +159,44 @@
 							v-if="roles.store_admin && item.sortStatus == 5 && item.undersellApprove.status == 2">
 							已拒绝
 						</view>
-						<view class="checkLogistics" @tap="goBack(item)"
+						<view class="checkLogistics" @tap.stop="goBack(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader) && item.sortStatus == 5 && item.undersellApprove.status == 2">
 							返回门店
 						</view>
-						<view class="checkLogistics" @tap="falseshowMain(item)"
+						<view class="checkLogistics" @tap.stop="falseshowMain(item)"
 							v-if="roles.store_admin && item.sortStatus == 8 && item.maintainApprove.status == 0">
 							拒绝
 						</view>
-						<view class="receipt" @tap="goshowMain(item)"
+						<view class="receipt" @tap.stop="goshowMain(item)"
 							v-if="roles.store_admin && item.sortStatus == 8 && item.maintainApprove.status == 0">
 							接受
 						</view>
 						<view class="receipt" v-if="roles.store_admin && item.sortStatus == 9">已接受</view>
-						<view class="receipt" @tap="empMaintainFail(item)"
+						<view class="receipt" @tap.stop="empMaintainFail(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 9) && !item.maintainApprove.maintainVoucher">
 							维修失败
 						</view>
-						<view class="receipt" @tap="showMainImg1(item)"
+						<view class="receipt" @tap.stop="showMainImg1(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 9) && !item.maintainApprove.maintainVoucher">
 							上传维修凭证
 						</view>
-						<view class="checkLogistics" @tap="storeAdminSelectHandleType(item, '0')"
+						<view class="checkLogistics" @tap.stop="storeAdminSelectHandleType(item, '0')"
 							v-if="(roles.store_admin) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.status == 1 && item.maintainApprove.handleType == null">
 							抛售
 						</view>
-						<view class="receipt" @tap="seeImg3(item)"
+						<view class="receipt" @tap.stop="seeImg3(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader || roles.store_admin) && (item.sortStatus == 10) && item.maintainApprove.maintainVoucher">
 							查看维修凭证
 						</view>
-						<view class="checkLogistics" @tap="storeAdminSelectHandleType(item, '1')"
+						<view class="checkLogistics" @tap.stop="storeAdminSelectHandleType(item, '1')"
 							v-if="(roles.store_admin) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.status == 1 && item.maintainApprove.handleType == null">
 							返回门店
 						</view>
-						<view class="checkLogistics" @tap="goDiandian(item)"
+						<view class="checkLogistics" @tap.stop="goDiandian(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.handleType == 0">
 							抛售
 						</view>
-						<view class="checkLogistics" @tap="goBack(item)"
+						<view class="checkLogistics" @tap.stop="goBack(item)"
 							v-if="(roles.sorting_people || roles.sorting_leader) && (item.sortStatus == 10 || item.sortStatus == 11) && item.maintainApprove.handleType == 1">
 							返回门店
 						</view>
@@ -212,8 +213,8 @@
 					全选
 				</u-checkbox-group>
 			</view>
-			<view class="goXiu" @tap="goXiu" v-if="roles.store_admin">送检</view>
-			<view class="goXiu" @tap="task" v-if="roles.sorting_leader">任务分配</view>
+			<view class="goXiu" @tap.stop="goXiu" v-if="roles.store_admin">送检</view>
+			<view class="goXiu" @tap.stop="task" v-if="roles.sorting_leader">任务分配</view>
 		</view>
 		<!--弹窗-->
 		<!-- 维修弹框 -->
@@ -260,13 +261,13 @@
 		<u-popup :show="yunShowImg2" mode="center" closeOnClickOverlay @close="close" :closeIconPos="'top-right'">
 			<view class="yunShow-top">
 				<view class="yunShow-title">上传收款凭证</view>
-				<view class="yunShow-item" v-if="checkTaskType == 2">
+				<view class="yunShow-item">
 					<view class="left">实收款</view>
 					<view class="input">
 						<u--input placeholder="请输入内容" :border="'surround'" v-model="fundsReceived"></u--input>
 					</view>
 				</view>
-				<view class="yunShow-img">
+				<view class="yunShow-img" style="margin-top: 10rpx;">
 					<u-upload :fileList="fileList2" @afterRead="afterRead" @delete="deletePic" name="2" multiple
 						:maxCount="3"></u-upload>
 				</view>
@@ -366,6 +367,9 @@
 </template>
 
 <script>
+	import {
+		UPLOAD_IMG_URL
+	} from '@/config/app';
 	import Vue from 'vue';
 	import {
 		sortingList,
@@ -398,6 +402,7 @@
 		},
 		data() {
 			return {
+				itemList: {},
 				fundsReceived: null,
 				active: null,
 				logisticsInfo: [],
@@ -653,6 +658,11 @@
 			});
 		},
 		methods: {
+			goDetail(item) {
+				uni.navigateTo({
+					url: '/pages/erp/purchase/form?recycleFormId=' + item.recycleFormId
+				})
+			},
 			showFalse() {
 				this.test1111 = false
 			},
@@ -860,6 +870,7 @@
 			},
 			// 点击上收款售凭证
 			showImg2(e) {
+				this.itemList = e
 				this.undersellId = e.undersellApprove.undersellId;
 				this.sortId = e.sortId;
 				this.yunShowImg2 = true;
@@ -1295,7 +1306,7 @@
 			uploadFilePromise(urls) {
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: UPLOAD_IMG_URL, // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {

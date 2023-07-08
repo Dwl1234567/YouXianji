@@ -399,6 +399,15 @@
 			}
 		},
 		{
+			//维修收付
+			"path": "pages/erp/maint/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+				// "navigationBarTitleText": "销售列表"
+			}
+		},
+		{
 			//配件列表
 			"path": "pages/erp/accessory/list",
 			"style": {
@@ -450,6 +459,14 @@
 		{
 			//库存列表、商品列表
 			"path": "pages/erp/goods/list",
+			"style": {
+				"enablePullDownRefresh": true, //开启下拉刷新
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			//抛售列表
+			"path": "pages/erp/sellOff/list",
 			"style": {
 				"enablePullDownRefresh": true, //开启下拉刷新
 				"navigationStyle": "custom"
@@ -1051,7 +1068,7 @@
 		{
 			"path": "pages/order/goods/list",
 			"style": {
-				// "navigationStyle": "custom"
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "我买到的"
 			}
 		}, //我买到的订单详情

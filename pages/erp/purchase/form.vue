@@ -206,7 +206,8 @@
 		getStoreOnlineCostConfig,
 		selectRecycleFormDetail,
 		secondGoods,
-		selectSellFormDetail
+		selectSellFormDetail,
+		selectRecycleListDetail
 	} from '@/api/erp.js'
 	import barTitle from '@/components/common/basics/bar-title';
 	import LiFilter from '@/components/Li-Filter/Li-Filter.vue';
@@ -220,6 +221,7 @@
 		},
 		data() {
 			return {
+				recId: null,
 				sellFormId: null,
 				goodsId: null,
 				radiolist2: [{
@@ -319,12 +321,18 @@
 			}
 		},
 		onLoad(options) {
+			this.recId = options.recId
 			this.sellFormId = options.sellFormId
 			this.recycleFormId = options.recycleFormId
 			this.goodsId = options.goodsId
 			this.recycleOrderId = options.recycleOrderId
 			this.guidePrice = options.forecastMoney;
-			this.selectRecycleFormDetail()
+			if (this.recId) {
+				this.selectRecycleListDetail()
+			} else {
+				this.selectRecycleFormDetail()
+			}
+
 		},
 		onShow() {
 
@@ -351,6 +359,22 @@
 			tabSelect(e) {
 				let index = e.currentTarget.dataset.id;
 				this.tab_cur = index;
+			},
+			selectRecycleListDetail() {
+				selectRecycleListDetail(this.recId).then(res => {
+					if (res.code === 200) {
+						this.formList = res.data
+						this.qualityInfoList = JSON.parse(res.data.qualityInfoList)
+						this.phoneImgArr.push(res.data.frontPhoto)
+						this.phoneImgArr.push(res.data.backPhoto)
+						this.phoneImgArr.push(res.data.topPhoto)
+						this.phoneImgArr.push(res.data.bottomPhoto)
+						this.phoneImgArr.push(res.data.leftPhoto)
+						this.phoneImgArr.push(res.data.rightPhoto)
+						this.phoneImgArr.push(res.data.cameraPhoto)
+						this.phoneImgArr.push(res.data.otherPhoto)
+					}
+				})
 			},
 			// 获取详情
 			selectRecycleFormDetail() {

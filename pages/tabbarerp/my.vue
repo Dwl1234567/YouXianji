@@ -213,7 +213,7 @@
 			console.log(this.storeInfo)
 		},
 		onShow() {
-			this.erpuserbacklogFuc();
+			// this.erpuserbacklogFuc();
 		},
 		methods: {
 			// 回收

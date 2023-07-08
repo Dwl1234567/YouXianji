@@ -164,7 +164,7 @@
 				})
 			},
 			onClick_2(item) {
-				uni.setStorageSync('updatecustomer', item);
+				uni.setStorageSync('updatecustomera', item);
 				uni.navigateTo({
 					url: '/pages/tabbarerp/push?sellFormId=' + item.sellFormId
 				})

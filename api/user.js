@@ -361,3 +361,11 @@ export function selectMySellCount(data) {
 export function selectMyBuyCount(data) {
 	return request.get('/yxj/app/shoppingOrder/selectMyBuyCount', data);
 }
+
+/**
+ * 保存用户头像
+ * 
+ */
+export function addAvatar(data) {
+	return request.post('/yxj/app/user/addAvatar', data);
+}

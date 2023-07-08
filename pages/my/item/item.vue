@@ -78,14 +78,14 @@
 					</view>
 					<view class="flex margin-top-xxs">
 						<view class="cu-progress round">
-							<view class="bg-red" v-if="dataInfo.userMemberInfo.ancestorDifference"
-								:style="{width: dataInfo.userMemberInfo.ancestorDifference ? dataInfo.userMemberInfo.ancestorDifference :''}">
+							<view class="bg-red" v-if="dataInfo.userMemberInfo.ancestorDifferenceP"
+								:style="{width: dataInfo.userMemberInfo.ancestorDifferenceP ? dataInfo.userMemberInfo.ancestorDifferenceP :''}">
 							</view>
 						</view>
 						<!-- <text class="margin-left-sm cuIcon-roundcheckfill" :class="item1.finish_rate=='100%'?'text-red':'text-lightgrey'"></text> -->
 					</view>
 					<view class="flex justify-between margin-bottom-xs text-white text-sm">
-						<view>0</view>
+						<view>{{dataInfo.userMemberInfo.ancestorDifference}}</view>
 						<view>{{dataInfo.userMemberInfo.ancestorNum}}</view>
 					</view>
 				</block>
@@ -97,13 +97,13 @@
 					<view class="flex margin-top-xxs">
 						<view class="cu-progress round">
 							<view class="bg-red"
-								:style="{width: dataInfo.userMemberInfo.validAncestorDifference ? dataInfo.userMemberInfo.validAncestorDifference :''}">
+								:style="{width: dataInfo.userMemberInfo.validAncestorDifferenceP ? dataInfo.userMemberInfo.validAncestorDifferenceP :''}">
 							</view>
 						</view>
 						<!-- <text class="margin-left-sm cuIcon-roundcheckfill" :class="item1.finish_rate=='100%'?'text-red':'text-lightgrey'"></text> -->
 					</view>
 					<view class="flex justify-between margin-bottom-xs text-white text-sm">
-						<view>0</view>
+						<view>{{dataInfo.userMemberInfo.validAncestorDifference}}</view>
 						<view>{{dataInfo.userMemberInfo.validAncestorNum}}</view>
 					</view>
 				</block>
@@ -127,8 +127,11 @@
 						<view>{{item1.number}}</view>
 					</view>
 				</view>
-				<view class="shengji" @click="jump_level">
-					<view class="btn text-color-yellow text-center radius-6 text-white text-sm">立即升级</view>
+				<view class="shengji">
+					<view class="btn text-color-yellow text-center radius-6 text-white text-sm"
+						v-if="dataInfo.userMemberInfo.validAble == 1" @tap="jump_level">付费升级</view>
+					<view class="btn text-color-yellow text-center radius-6 text-white text-sm" v-else @tap="onClick_2(dataInfo)">
+						立即激活{{dataInfo.userMemberInfo.activatePrice}}元</view>
 				</view>
 			</view>
 			<view class="icon">
@@ -146,6 +149,32 @@
 			</view>
 			<view class="kong"></view>
 		</view>
+		<u-popup :show="show" mode="bottom" @close="close">
+			<view class="prop">
+				<view class="title">选择支付方式</view>
+				<view class="pay">
+					<view class="wxPay">
+						<view class="left">
+							<image src="/static/微信@2x.png" mode=""></image>
+							<text>微信</text>
+						</view>
+						<view class="right">
+							<image :src="isWx ? '/static/checkYuan.png' : '/static/yuan.png'" @tap="checkWx"></image>
+						</view>
+					</view>
+					<view class="zfbPay">
+						<view class="left">
+							<image src="/static/zhifubao.png" mode=""></image>
+							<text>支付宝</text>
+						</view>
+						<view class="right">
+							<image :src="!isWx ? '/static/checkYuan.png' : '/static/yuan.png'" @tap="checkWx"></image>
+						</view>
+					</view>
+				</view>
+				<view class="querenbutton" @tap="initiatePayment">确认付款</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -155,7 +184,10 @@
 	} from "@/api/agent.js"
 	import barTitle from '@/components/common/basics/bar-title';
 	import {
-		getDistributionIncomeInfo
+		getDistributionIncomeInfo,
+		createZfbPayment,
+		createWxPayment,
+		paymentReturn
 	} from '@/api/commons.js'
 	import _tool from '@/utils/tools.js'; //工具函数
 	export default {
@@ -164,6 +196,9 @@
 		},
 		data() {
 			return {
+				show: false,
+				isWx: true,
+				itemList: {},
 				list: [{
 						title: '推广名片',
 						img: "../../../static/item/111.png",
@@ -206,13 +241,106 @@
 			this.agentIndexFuc();
 		},
 		methods: {
+			// 确认付款
+			initiatePayment(e) {
+				let that = this;
+				// console.log('付款');
+				// #ifdef APP-PLUS
+				if (!this.isWx) {
+					createZfbPayment({
+						businessType: 1
+					}).then(res => {
+						if (res.code === 200) {
+							uni.requestPayment({
+								provider: 'alipay',
+								orderInfo: res.data.orderStr,
+								success: function(ress) {
+									paymentReturn({
+										tradeno: ress.tradeno
+									}).then(resss => {
+										if (resss.code === 200) {
+											uni.showToast({
+												icon: 'none',
+												title: '支付成功',
+											});
+											this.show = false
+											that.getDistributionIncomeInfo()
+										}
+									})
+									console.log('success:' + JSON.stringify(res));
+								},
+								fail: function(err) {
+									if (err.code == -100) {
+										uni.showToast({
+											icon: 'none',
+											title: '支付失败',
+										});
+									}
+									console.log('fail:' + JSON.stringify(err));
+								}
+							})
+						}
+					})
+				} else {
+					createWxPayment({
+						businessType: 1
+					}).then(res => {
+						if (res.code === 200) {
+							uni.requestPayment({
+								provider: 'wxpay',
+								orderInfo: res.data.result,
+								success: function(ress) {
+									paymentReturn({
+										orderId: res.data.orderId,
+									}).then(resss => {
+										if (resss.code === 200) {
+											uni.showToast({
+												icon: 'none',
+												title: '支付成功',
+											});
+											this.show = false
+											that.getDistributionIncomeInfo()
+										}
+									})
+									console.log('success:' + JSON.stringify(res));
+								},
+								fail: function(err) {
+									if (err.code == -100) {
+										uni.showToast({
+											icon: 'none',
+											title: '支付失败',
+										});
+									}
+									console.log('fail:' + JSON.stringify(err));
+								}
+							})
+						}
+					})
+				}
+				// #endif
+				// #ifdef MP-WEIXIN
+				// #endif
+
+			},
+			// 关闭弹框
+			close() {
+				this.show = false;
+			},
+			checkWx() {
+				this.isWx = !this.isWx;
+			},
+			// 确认付款
+			onClick_2(item) {
+				this.itemList = item;
+				this.show = true;
+			},
 			// 获取分销信息
 			getDistributionIncomeInfo() {
 				getDistributionIncomeInfo().then(res => {
 					if (res.code === 200) {
-						res.data.userMemberInfo.ancestorDifference = ((res.data.userMemberInfo.ancestorDifference / res.data
+						res.data.userMemberInfo.ancestorDifferenceP = ((res.data.userMemberInfo.ancestorDifference / res.data
 							.userMemberInfo.ancestorNum) * 100) + '%'
-						res.data.userMemberInfo.validAncestorDifference = ((res.data.userMemberInfo.validAncestorDifference /
+						res.data.userMemberInfo.validAncestorDifferenceP = ((res.data.userMemberInfo.validAncestorDifference /
 							res.data
 							.userMemberInfo.validAncestorNum) * 100) + '%'
 						this.dataInfo = res.data
@@ -271,6 +399,108 @@
 <style lang="scss">
 	page {
 		background: #F0F0F0;
+	}
+
+	.prop {
+		padding: 34rpx 47rpx 120rpx 47rpx;
+
+		.title {
+			font-size: 34rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #4f4f50;
+			line-height: 48rpx;
+			text-align: center;
+		}
+
+		.group_4 {
+			margin: 0;
+			margin-top: 28rpx;
+			border: 2rpx solid #d8d8d8;
+			padding: 32rpx 17rpx;
+			border-radius: 11rpx;
+			margin-bottom: 13rpx;
+		}
+
+		.textarea {
+			height: 155rpx !important;
+			border: 2rpx solid #d8d8d8;
+			border-radius: 11rpx;
+			margin-top: 28rpx;
+			margin-bottom: 43rpx;
+		}
+
+		.upload {
+			margin-bottom: 28rpx;
+		}
+	}
+
+	.querenbutton {
+		background: linear-gradient(90deg, #f3c81a 0%, #ffb629 100%);
+		border-radius: 13rpx 13rpx 13rpx 11rpx;
+		font-size: 36rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #4f4f50;
+		height: 84rpx;
+		line-height: 84rpx;
+		text-align: center;
+	}
+
+	.pay {
+		margin: 20rpx;
+		background: #ffffff;
+		border-radius: 11rpx;
+		padding: 30rpx 0rpx;
+	}
+
+	.zfbPay {
+		margin-top: 34rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.left {
+			display: flex;
+			align-items: center;
+
+			image {
+				width: 57rpx;
+				height: 57rpx;
+				margin-right: 11rpx;
+			}
+		}
+
+		.right {
+			image {
+				width: 38rpx;
+				height: 38rpx;
+			}
+		}
+	}
+
+	.wxPay {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.left {
+			display: flex;
+			align-items: center;
+
+			image {
+				width: 57rpx;
+				height: 57rpx;
+				margin-right: 11rpx;
+			}
+		}
+
+		.right {
+			image {
+				width: 38rpx;
+				height: 38rpx;
+			}
+		}
 	}
 
 	.reseller {

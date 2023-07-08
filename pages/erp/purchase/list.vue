@@ -30,14 +30,15 @@
 			<view class=" cu-list card-menu">
 				<view style="">
 					<!-- :class="admin ? 'transform' : 'transformRight'" -->
-					<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px">
+					<view v-for="(item, index) in dataList" style="display: flex; align-items: center; margin-bottom: 10px"
+						@tap="goDetail(item)">
 						<!-- :class="admin ? '' : 'transform'" -->
 						<view style="margin-right: 28rpx" class="transform">
 							<view class="radio" :class="item.disabled ? 'radio-red' : ''" @tap="radioChange(index)"></view>
 						</view>
 						<view class="group_3 flex-col">
 							<view class="text-wrapper_1 flex-row justify-between">
-								<text class="text_7">时间:{{item.createTime}}</text>
+								<text class="text_7">时间:{{item.updateTime}}</text>
 							</view>
 							<view class="section_1 flex-row">
 								<view class=""></view>
@@ -235,6 +236,11 @@
 			this.getDataList();
 		},
 		methods: {
+			goDetail(item) {
+				uni.navigateTo({
+					url: '/pages/erp/purchase/form?recId=' + item.recycleFormId
+				})
+			},
 			searchTap(e) {
 				this.deviceNo = e
 				this.getDataList();

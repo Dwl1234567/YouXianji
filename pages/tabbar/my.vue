@@ -49,7 +49,7 @@
 					<view class="cu-list menu-avatar" v-else>
 						<view class="cu-item">
 							<view class="cu-avatar radius-1-5 lg"
-								:style="{backgroundImage:'url('+ (userInfo.avatar ? userInfo.avatar : '/static/img/avatar/1.jpg') +')'}" />
+								:style="{backgroundImage:'url('+ $httpImage +  (userInfo.avatar ? userInfo.avatar : '/static/img/avatar/1.jpg') +')'}" />
 							<view class="content .text-xxl">
 								<view class="">
 									<text class="margin-right" v-if="userInfo.nickName">{{userInfo.nickName}}</text>
@@ -130,18 +130,24 @@
 			<view class="padding-tb-sm bg-F9F9FB radius-6">
 				<view class="text-black text-xl text-bold padding-sm">我的交易</view>
 				<view class="margin-lr-sm bg-white nav-item">
-					<scroll-view scroll-x class="nav text-center">
-						<view style="display: inline-flex" class="cu-item flex text-center radius-6"
+
+					<view scroll-x class="nav text-center" style=" width: 100%;">
+
+						<view style="display: inline-flex; position: relative;" class="cu-item flex text-center radius-6"
 							:class="index==jiaoyicurrent?'text-color-yellow text-white cur':'bg-white'"
 							v-for="(item,index) in jiaoyilist" :key="index" @tap="sectionChange" :data-id="index">
 							<!-- <view class="flex-sub iconfont" :class="item.icon"></view> -->
+							<view class="cu-tag badge" v-if="sellCount.allTotal!=0 && index ==0" style="z-index: 100;">
+								{{sellCount.allTotal|| 0}}
+							</view>
+							<view class="cu-tag badge" v-if="buyCount.allTotal!=0 && index ==1">{{buyCount.allTotal|| 0}}</view>
 							<view class="flex-twice label text-center">{{item.label}}</view>
 							<!--<view class="flex justify-start">
 								<view class="flex-sub "><image class="img" :src="item.icon" mode="heightFix"></image></view>
 								<view class="flex-sub ">{{item.label}}</view>
 							</view>-->
 						</view>
-					</scroll-view>
+					</view>
 				</view>
 				<!--<u-subsection :list="jiaoyilist" :current="jiaoyicurrent" keyName="label" @change="sectionChange">
 				</u-subsection>-->
@@ -398,6 +404,8 @@
 			selectMyBuyCount() {
 				selectMyBuyCount().then(res => {
 					if (res.code === 200) {
+						res.data.allTotal = res.data.shipments_count + res.data.receiving_count + res.data.payment_count + res
+							.data.evaluate_count
 						this.buyCount = res.data
 					}
 				})
@@ -406,6 +414,8 @@
 			selectMySellCount() {
 				selectMySellCount().then(res => {
 					if (res.code === 200) {
+						res.data.allTotal = res.data.evaluate_count + res.data.payment_count + res.data.quality_testing_count +
+							res.data.return_count + res.data.shipments_count
 						this.sellCount = res.data
 					}
 				})

@@ -80,10 +80,10 @@
 			};
 		},
 		onLoad(options) {
-			this.reorganizeId = options.reorganizeId
+			this.sellFormId = options.sellFormId ? options.sellFormId : ''
+			this.reorganizeId = options.reorganizeId ? options.reorganizeId : ''
 			this.tab = options.tab
 			this.isShow = options.isShow
-			console.log(this.isShow)
 			this.chooseStatus = options.chooseStatus;
 			// this.getDataList();
 		},
@@ -99,7 +99,6 @@
 			}
 		},
 		onShow() {
-			console.log(333)
 			this.getDataList();
 		},
 		onPullDownRefresh() {
@@ -127,6 +126,10 @@
 				if (this.reorganizeId) {
 					uni.navigateTo({
 						url: '/pages/tabbarerp/push?tab=' + this.tab + '&reorganizeId=' + this.reorganizeId
+					})
+				} else if (this.sellFormId) {
+					uni.navigateTo({
+						url: '/pages/tabbarerp/push?tab=' + this.tab + '&sellFormId=' + this.sellFormId
 					})
 				} else {
 					uni.navigateTo({

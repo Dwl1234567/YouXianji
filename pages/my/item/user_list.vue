@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view class="head text-red">
-				共 <text class="big">{{total}}</text> 人
+				<text class="big">共{{total}}个</text>
 			</view>
 			<view class="t" v-if="tabId ==1">
 				<view class="t_tou">

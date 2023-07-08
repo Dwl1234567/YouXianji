@@ -311,6 +311,16 @@ export function testAliPay(data) {
 }
 
 /**
+ * 微信支付
+ *
+ */
+export function testWxPay(data) {
+	return request.get('/yxj/app/shoppingOrder/createWxPayment', data, {
+		noLogin: true
+	});
+}
+
+/**
  * 支付宝支付成功回掉
  *
  */
@@ -326,6 +336,15 @@ export function paymentReturn(data) {
  */
 export function zfbContinuePayment(data) {
 	return request.get('/yxj/app/shoppingOrder/zfbContinuePayment', data, {
+		noLogin: true
+	});
+}
+/**
+ * 发起微信继续付款支付接口
+ *
+ */
+export function wxContinuePayment(data) {
+	return request.get('/yxj/app/shoppingOrder/wxContinuePayment', data, {
 		noLogin: true
 	});
 }
@@ -366,6 +385,16 @@ export function bindOpenid(data) {
  */
 export function deleteshoppingCart(data) {
 	return request.delete('/yxj/app/shoppingCart/' + data, {
+		noLogin: true
+	});
+}
+
+/**
+ * 查询我的评论
+ *
+ */
+export function selectMyEvaluateList(data) {
+	return request.get('/yxj/app/shoppingOrderEvaluate/selectMyEvaluateList', data, {
 		noLogin: true
 	});
 }

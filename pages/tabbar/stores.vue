@@ -10,49 +10,71 @@
 			</view>
 		</view>
 		<view class="cu-card article">
-			<view class="margin-sm cu-item bg-white listItem" v-for="(item,index) in storeList">
-				<view class="content" @click="gostoreInfo(item)">
-					<image :src="$httpImage + item.photo" mode="aspectFill"></image>
-					<view class="desc">
+			<view style="padding: 15rpx 20rpx; position: relative;" v-for="(item,index) in storeList" v-if="index == 0"
+				class="max">
+				<image :src="$httpImage + item.photo" mode="widthFix"
+					style="width: 218rpx;border-radius: 11rpx; position: absolute;right: 40rpx; top: 0rpx;"></image>
+				<view class="max_title">
+					{{item.storeName}}
+				</view>
+				<view class="max_time">
+					{{item.businessHours}}
+				</view>
+				<view class="max_background">
+					<view class="max_photo">
+						{{item.linkPhonenumber}}
+					</view>
+					<view class="flex justify-between">
+						<view>{{item.location}}</view>
+						<view>距离<text> {{item.distance.toFixed(2)}}km</text></view>
+					</view>
+					<image src="/static/mendian.png" mode="widthFix"></image>
+				</view>
+				<view class="bg-white max_background_white">
+					<view class="max_button">呼叫客服</view>
+				</view>
+			</view>
+			<view class="margin-bottom-xs cu-item bg-white listItem" v-for="(item,index) in storeList">
+				<view class="content" @click="gostoreInfo(item)" v-if="index !== 0">
+
+					<view class="desc" style="padding: 26rpx 30rpx;">
 						<view class="title flex justify-between" style="margin-bottom: 8rpx;">
 							<view class="text-cut">
 								{{item.storeName}}
 							</view>
 							<view class="right">
-								<text class="margin-right-sm more text-red iconfont icon-nextpageorange"></text>
+								<view class="text-sm text1" v-if="item.km !== '99999'" style="margin-bottom: 4rpx;">
+									距离<text> {{item.distance.toFixed(2)}}km</text>
+								</view>
 							</view>
 						</view>
 						<view class="text-content text-bold">
-							<view class="text-sm text1" v-if="item.km !== '99999'" style="margin-bottom: 4rpx;">
-								距离<text> {{item.distance}}km</text>
-							</view>
-							<view class="count" style="margin-bottom: 10rpx;">
+							<!-- 							<view class="count" style="margin-bottom: 10rpx;">
 								<text class="text-red"> {{item.onSellCount}} 款在售机型</text>
+							</view> -->
+							<view class="flex" style="margin-top: 5rpx;">
+								<image :src="$httpImage + item.photo" mode="aspectFill"></image>
+								<view class="" style="margin-left: 17rpx;">
+									<image src="/static/huishou2.png" mode="heightFix" style="height: 32rpx;margin-bottom: 10rpx;">
+									</image>
+									<view class="text1">
+										<view class="">
+											{{item.linkPeople}}
+											{{item.linkPhonenumber}}
+										</view>
+										<view class="">
+											{{item.location}}
+										</view>
+									</view>
+								</view>
 							</view>
-							<view class="text1">
-								<text class="lg text-gray iconfont icon-meblue text1" style="margin-bottom: 7rpx;"></text>
-								{{item.linkPeople}}
-								<text class="lg text-gray iconfont icon-call " style="margin-left:20rpx;"></text>
-								{{item.linkPhonenumber}}
-							</view>
-							<view class="text1">
-								<text class="lg text-gray iconfont icon-locationgray "></text>
-								{{item.location}}
+							<view class="fuwu">
+								<view>特色服务</view>
+								<view>以旧换新 | 周边配件|手机贴膜 | iPhone贴膜 | 隐私清 除 | 数据迁移</view>
 							</view>
 						</view>
 					</view>
 				</view>
-				<!-- <view class="margin-lr-sm margin-top-sm cate-box" v-if="index == 0">
-					<view class="action margin-bottom-sm text-bold">
-						品类回收
-					</view>
-					<scroll-view class="scroll-view_H" :scroll-x="true">
-						<image class="img" @click="gocateFuc(0)" src="../../static/img/push/cate-1.png" mode="scaleToFill"></image>
-						<image class="img" @click="gocateFuc(1)" src="../../static/img/push/cate-2.png" mode="scaleToFill"></image>
-						<image class="img" @click="gocateFuc(2)" src="../../static/img/push/cate-3.png" mode="scaleToFill"></image>
-						<image class="img" @click="gocateFuc(3)" src="../../static/img/push/cate-3.png" mode="scaleToFill"></image>
-					</scroll-view>
-				</view> -->
 			</view>
 		</view>
 
@@ -307,6 +329,91 @@
 
 	@import "@/uni_modules/mpb-ui/shop/sort_list.scss";
 
+	page {
+		background-color: #f4f4f4;
+	}
+
+	.max {
+		image {
+			margin-top: 17rpx;
+			margin-bottom: -5px;
+			width: 100%;
+		}
+
+		.max_background_white {
+			padding: 24rpx 11rpx;
+
+			.max_button {
+				background: #FEEB39;
+				border-radius: 40rpx;
+				height: 78rpx;
+				line-height: 78rpx;
+				text-align: center;
+				font-size: 31rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #35372C;
+			}
+		}
+
+		.max_title {
+			font-size: 31rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #101010;
+			line-height: 42rpx;
+		}
+
+		.max_time {
+			margin-top: 10rpx;
+			font-size: 23rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #101010;
+			line-height: 32rpx;
+		}
+
+		.max_background {
+			overflow: hidden;
+			margin-top: 26rpx;
+			background: #FFEE68;
+			border-radius: 11rpx 11rpx 0rpx 0rpx;
+			padding: 34rpx 20rpx;
+			padding-bottom: 0rpx !important;
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #101010;
+			line-height: 34rpx;
+		}
+
+		.max_photo {
+			margin-bottom: 22rpx;
+		}
+	}
+
+	.fuwu {
+		display: flex;
+		margin-top: 26rpx;
+
+		view:nth-child(1) {
+			width: 160rpx !important;
+			font-size: 23rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #696969;
+			line-height: 32rpx;
+		}
+
+		view:nth-child(2) {
+			font-size: 23rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #696969;
+			line-height: 32rpx;
+		}
+	}
+
 	.text1 {
 		font-size: 21rpx !important;
 		font-family: PingFangSC-Regular, PingFang SC;
@@ -315,15 +422,15 @@
 	}
 
 	.listItem {
-		border: 0.5px solid rgba(213, 218, 223, 1);
-		border-radius: 6px;
+		// border: 0.5px solid rgba(213, 218, 223, 1);
+		// border-radius: 6px;
 		padding: 0px !important;
 
 		.content {
 			image {
 				margin-left: 0px !important;
-				width: 265rpx !important;
-				height: 267rpx !important;
+				width: 119rpx;
+				height: 115rpx;
 				border-radius: 0px !important;
 			}
 

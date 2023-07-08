@@ -311,7 +311,7 @@
 			uploadFilePromise(urls) {
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: 'http://192.168.31.91:8080/common/upload', // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {

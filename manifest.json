@@ -78,7 +78,7 @@
 					},
 					"weixin": {
 						"__platform__": ["ios", "android"],
-						"appid": "wx0f0fd9d0185ef6b7",
+						"appid": "wxef026b8b76d67ebf",
 						"UniversalLinks": "https://static-mp-d4156c7a-83df-4f25-9c2c-f29aab6f4299.next.bspapp.com/uni-universallinks/__UNI__E807203/"
 					}
 				},
@@ -88,16 +88,9 @@
 						"appkey_android": "ac5ff830bba0a80d04b28974f44059d4"
 					}
 				},
-				"push": {
-					"unipush": {
-						"version": "2",
-						"offline": true,
-						"hms": {}
-					}
-				},
 				"oauth": {
 					"weixin": {
-						"appid": "wx0f0fd9d0185ef6b7",
+						"appid": "wxef026b8b76d67ebf",
 						"UniversalLinks": "https://static-mp-d4156c7a-83df-4f25-9c2c-f29aab6f4299.next.bspapp.com/uni-universallinks/__UNI__E807203/"
 					}
 				}
@@ -149,9 +142,6 @@
 			"scope.userLocation": {
 				"desc": ""
 			}
-		},
-		"unipush": {
-			"enable": false
 		}
 	},
 	"mp-alipay": {
@@ -178,7 +168,7 @@
 			"proxy": {
 				"/api": {
 					// "target" : "https://youxianji.zansuo.com/api/v1",
-					"target": "http://192.168.31.92:8080",
+					"target": "http://192.168.31.91:8080",
 					"changeOrigin": true,
 					"secure": false,
 					"pathRewrite": {
@@ -193,9 +183,6 @@
 			"treeShaking": {
 				"enable": true
 			}
-		},
-		"unipush": {
-			"enable": false
 		}
 	},
 	"_spaceID": "mp-d4156c7a-83df-4f25-9c2c-f29aab6f4299"

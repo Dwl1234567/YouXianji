@@ -493,6 +493,7 @@
 			uni.removeStorageSync('updatehouse')
 			uni.removeStorageSync('updatecustomer')
 			uni.removeStorageSync('updatecustomers')
+			uni.removeStorageSync('updatecustomera')
 		},
 		watch: {
 			customer() {
@@ -561,17 +562,17 @@
 				id: 1,
 				name: '回收'
 			}];
-			this.reorganizeId = options.reorganizeId
-			this.sellFormId = options.sellFormId
+			this.reorganizeId = options.reorganizeId ? options.reorganizeId : ''
+			this.sellFormId = options.sellFormId ? options.sellFormId : ''
 			if (options.sellFormId) {
-				this.customerInfo.clientName = uni.getStorageSync('updatecustomer').clienterName
-				this.customerInfo.clientId = uni.getStorageSync('updatecustomer').clienterId
-				this.remark = uni.getStorageSync('updatecustomer').remark
-				this.deviceId = uni.getStorageSync('updatecustomer').deviceId
-				this.recycleFormId = uni.getStorageSync('updatecustomer').recycleFormId
-				this.qualityInfoId = uni.getStorageSync('updatecustomer').qualityInfoId
-				this.ReceivablesMoney = uni.getStorageSync('updatecustomer').debtPrice
-				this.totalPrice = uni.getStorageSync('updatecustomer').debtPrice
+				this.customerInfo.clientName = uni.getStorageSync('updatecustomera').clienterName
+				this.customerInfo.clientId = uni.getStorageSync('updatecustomera').clienterId
+				this.remark = uni.getStorageSync('updatecustomera').remark
+				this.deviceId = uni.getStorageSync('updatecustomera').deviceId
+				this.recycleFormId = uni.getStorageSync('updatecustomera').recycleFormId
+				this.qualityInfoId = uni.getStorageSync('updatecustomera').qualityInfoId
+				this.ReceivablesMoney = uni.getStorageSync('updatecustomera').debtPrice
+				this.totalPrice = uni.getStorageSync('updatecustomera').debtPrice
 			}
 			this.typeListData = typeListData;
 			if (options.reorganizeId) {
@@ -580,11 +581,6 @@
 		},
 		onShow() {
 			let that = this;
-			uni.$once('updatecustomer', function(data) {
-				this.customerInfo = {
-					...data
-				};
-			})
 			// 拿到客户
 			if (uni.getStorageSync('updatecustomer')) {
 				this.customerInfo = uni.getStorageSync('updatecustomer')
@@ -668,7 +664,7 @@
 			uploadFilePromise(urls) {
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: 'http://192.168.31.91:8080/common/upload', // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {
@@ -860,7 +856,7 @@
 			customerTap() {
 				uni.navigateTo({
 					url: '/pages/erp/customer/customer?isShow=' + false + "&tab=" + this.TabCur + '&reorganizeId=' + this
-						.reorganizeId
+						.reorganizeId + '&sellFormId=' + this.sellFormId
 				})
 			},
 			supplierTap() {

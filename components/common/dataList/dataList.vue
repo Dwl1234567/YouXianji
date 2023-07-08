@@ -35,14 +35,14 @@
 					</view> -->
 				</view>
 			</view>
-			<text class="text_13">库龄时长：{{item.storageAge}}天</text>
+			<text class="text_13" v-if="item.storageAge">库龄时长：{{item.storageAge}}天</text>
 			<text class="text_13" v-if="item.recyclePrice">回收价:{{item.recyclePrice}}元</text>
 			<text class="text_13" v-if="item.recyclePeople">回收人:{{item.recyclePeople}}</text>
 			<text class="text_13" v-if="item.sellPrice">销售价：{{item.sellPrice}}元</text>
 			<text class="text_13" v-if="item.sellPeople">销售人：{{item.sellPeople}}</text>
 			<text class="text_13" v-if="item.operationCenterName">运营中心：{{item.operationCenterName}}元</text>
 			<text class="text_13" v-if="item.logisticsNo">物流单号：{{item.logisticsNo}}元</text>
-			<text class="text_13" v-if="item.sortingPeople">分拣人：{{item.sortingPeople}}元</text>
+			<text class="text_13" v-if="item.sortingPeople">分拣人：{{item.sortingPeople}}</text>
 			<text class="text_13" v-if="item.undersellChannel">销售渠道：{{item.undersellChannel}}元</text>
 			<text class="text_13" v-if="item.undersellPrice">销售价格：{{item.undersellPrice}}元</text>
 			<text class="text_13" v-if="item.maintainChannel">维修渠道：{{item.maintainChannel}}元</text>
@@ -54,6 +54,8 @@
 			<text class="text_13" v-if="item.newAllotPrice">新回收价格：{{item.newAllotPrice}}元</text>
 			<text class="text_13" v-if="item.newAllotPrice">新调拨价：{{item.newAllotPrice}}元</text>
 			<text class="text_13" v-if="item.newSellPrice">新销售价：{{item.newSellPrice}}元</text>
+			<text class="text_13" v-if="item.undersellApprove">抛售价格：{{item.undersellApprove.undersellPrice}}元</text>
+			<text class="text_13" v-if="item.undersellApprove">抛售渠道：{{item.undersellApprove.channel}}</text>
 			<!-- <text class="text_13" v-if="item.sellPeople">销售人：{{item.sellPeople}}元</text> -->
 			<text class="text_13" v-if="item.returnPrice">退款价：{{item.returnPrice}}元</text>
 			<view class="group_5 flex-row justify-between" v-if="isSn == 1">

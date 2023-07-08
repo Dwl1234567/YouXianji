@@ -1,5 +1,9 @@
 <template>
 	<view class="content">
+		<bar-title bgColor="bg-white" adress="/pages/tabbar/my">
+			<block slot="content">我买到的</block>
+			<block slot="right"></block>
+		</bar-title>
 		<view class="navbar">
 			<view v-for="(item, index) in navList" :key="index" class="nav-item" :class="{current: tabCurrentIndex === index}"
 				@click="tabClick(index)">
@@ -12,7 +16,8 @@
 				<scroll-view class="list-scroll-content" scroll-y @scrolltolower="loadData">
 					<!-- 空白页 -->
 					<empty v-if="tabItem.loaded === true && tabItem.orderList.length === 0"></empty>
-					<view class="box_2 flex-col" v-for="(item,index) in tabItem.orderList" :key="index">
+					<view class="box_2 flex-col" v-for="(item,index) in tabItem.orderList" :key="index"
+						style="width: 100vw !important;">
 						<view class="box_3 flex-col">
 							<view class="group_3 flex-row">
 								<view class="image-text_1 flex-row justify-between">
@@ -206,6 +211,7 @@
 
 <script>
 	// import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+	import barTitle from '@/components/common/basics/bar-title';
 	import empty from '@/components/empty';
 	import Vue from 'vue';
 	import {
@@ -218,11 +224,13 @@
 		clientRefund,
 		selectNewest,
 		zfbContinuePayment,
-		paymentReturn
+		paymentReturn,
+		wxContinuePayment
 	} from '@/api/malls.js';
 	export default {
 		components: {
 			empty,
+			barTitle,
 		},
 		data() {
 			return {
@@ -412,17 +420,56 @@
 			initiatePayment(e) {
 				let that = this
 				console.log({
-					orderId: Number(this.itemList.orderId),
-					paymentType: this.isWx ? '1' : '0',
+					orderId: Number(that.itemList.orderId),
+					paymentType: that.isWx ? '1' : '0',
 				});
-				if (!this.isWx) {
+				// #ifdef APP-PLUS
+				if (!that.isWx) {
 					zfbContinuePayment({
-						orderId: this.itemList.orderId
+						orderId: that.itemList.orderId
 					}).then(res => {
 						if (res.code === 200) {
 							uni.requestPayment({
 								provider: 'alipay',
-								orderInfo: res.data.orderStr,
+								orderInfo: res.data,
+								success: function(ress) {
+									paymentReturn({
+										orderPaymentId: res.data.orderPaymentId,
+									}).then(resss => {
+										if (resss.code === 200) {
+											uni.showToast({
+												icon: 'none',
+												title: '支付成功',
+											});
+											that.navList[that.tabCurrentIndex].page = 1;
+											that.loadData();
+											that.show = false;
+											console.log('success:' + JSON.stringify(res));
+										}
+									})
+
+								},
+								fail: function(err) {
+									if (err.code == -100) {
+										uni.showToast({
+											icon: 'none',
+											title: '支付失败',
+										});
+										that.loadData();
+									}
+									console.log('fail:' + JSON.stringify(err));
+								}
+							})
+						}
+					})
+				} else {
+					wxContinuePayment({
+						orderId: that.itemList.orderId
+					}).then(res => {
+						if (res.code === 200) {
+							uni.requestPayment({
+								provider: 'wxpay',
+								orderInfo: res.data.result,
 								success: function(ress) {
 									paymentReturn({
 										orderPaymentId: res.data.orderPaymentId,
@@ -433,7 +480,7 @@
 												icon: 'none',
 												title: '支付成功',
 											});
-											that.navList[this.tabCurrentIndex].page = 1;
+											that.navList[that.tabCurrentIndex].page = 1;
 											that.loadData();
 											that.show = false;
 											console.log('success:' + JSON.stringify(res));
@@ -455,6 +502,10 @@
 						}
 					})
 				}
+				// #endif
+				// #ifdef MP-WEIXIN
+				// #endif
+
 			},
 			checkWx() {
 				this.isWx = !this.isWx;
@@ -691,7 +742,7 @@
 			uploadFilePromise(urls) {
 				return new Promise((resolve, reject) => {
 					uni.uploadFile({
-						url: 'http://192.168.31.92:8080/common/upload', // 仅为示例，非真实的接口地址
+						url: 'http://192.168.31.91:8080/common/upload', // 仅为示例，非真实的接口地址
 						filePath: urls,
 						name: 'file',
 						header: {
@@ -955,7 +1006,6 @@
 	}
 
 	.group_4 {
-		width: 342px;
 		margin: 10px 15px 0 9px;
 	}
 
@@ -1020,7 +1070,6 @@
 
 	.group_6 {
 		background-color: rgba(216, 216, 216, 1);
-		width: 366px;
 		height: 1px;
 		margin-top: 16px;
 	}

@@ -3,31 +3,33 @@
 		<view class="cu-list menu-avatar">
 			<block v-for="(item,index) in list_data" :key="index">
 				<view class="cu-item margin-sm bg-white radius-2" @tap="listTap(item,index)">
-					<view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ $httpImage + item.backPhoto +')'}]">
+					<view class="cu-avatar radius" :style="[{backgroundImage:'url('+ $httpImage + item.backPhoto +')'}]"
+						style="width: 120px; height: 120px;">
 					</view>
 					<view class="content">
 						<!--标题-->
 						<view class="text-black text-cut">
 							<text class="cu-tag bg-red radius sm" v-if="item.autarky">自营</text>
 							<text class="text-bold" style=" white-space: pre-wrap;">{{item.modelName}} {{item.basePriceLabel}}</text>
+							<!-- <view class="text-sm text-gray" style=" white-space: pre-wrap;">{{item.deviceLabel}}</view> -->
+						</view>
+
+						<!--价格-->
+						<view class="text-gray text-cut text-sm tag-view" style="margin-top: 5rpx;">
+							<text class="text-red text-bold text-price text-xl">{{item.sellPrice}}</text>
+							<text class="text-gray text-cut text-sm" style="margin-left: 15rpx;">{{item.evaluateCount}}条评价</text>
 						</view>
 						<!--标签-->
-						<view class="text-gray text-cut text-sm">
+						<view class="text-gray text-cut text-sm" style="margin-top: 5rpx;">
 							<!--item.type-->
-							<text class="">{{item.tags}}</text>
-							<!--
-							<block v-for="(items,indexs) in item.tags" :key="indexs">
-								<text class="text-black  margin-right-sm"> {{items}}</text>
+							<!-- <text class="">{{item.tags}}</text> -->
+
+							<block v-for="(items,indexs) in item.recycleFormClassificationLabelList" :key="indexs">
+								<text class="text-black  margin-right-sm" style="background: #E5FCF1;
+						border-radius: 8rpx;height: 27rpx;padding: 5rpx 15rpx;color: #00C082;font-weight: 500;">
+									{{items.labelName}}</text>
 							</block>
-							-->
-						</view>
-						<!--价格-->
-						<view class="text-gray text-cut text-sm tag-view">
-							<text class="text-red text-bold text-price text-xl">{{item.sellPrice}}</text>
-							<!-- <text class="text-gray through" v-if="item.cost_price">￥{{item.cost_price}}</text> -->
-							<block v-for="(items,indexs) in item.discount" :key="indexs">
-								<text class="cu-tag line-orange radius sm">{{items}}</text>
-							</block>
+
 						</view>
 						<!--验机状态-->
 						<view class="text-gray text-cut text-sm">
@@ -37,7 +39,7 @@
 							</block>
 						</view>
 						<!--门店-->
-						<view class="text-gray text-cut text-sm">
+						<view class="text-gray text-cut text-sm" style="margin-top: 6rpx;">
 							<text class="text-sm">优闲集小强回收直营店</text>
 						</view>
 					</view>
@@ -85,7 +87,7 @@
 		display: none;
 
 		.cu-list.menu-avatar>.cu-item {
-			height: 140px;
+			height: 120px;
 			background: #ffffff;
 			border: 0.5px solid rgba(213, 218, 223, 1);
 			border-radius: 6px;
@@ -104,9 +106,9 @@
 			}
 
 			.content {
-				left: 153px;
-				width: calc(100% - 94.54rpx - 59.99rpx - 119.99rpx);
-				line-height: 1.7em;
+				left: 130px;
+				width: calc(100% - 94.54rpx - 59.99rpx - 90.99rpx);
+				line-height: 1.4em;
 
 				.cu-tag.sm {
 					display: inline-block;
@@ -132,7 +134,6 @@
 				}
 
 				.tag-view {
-					margin-top: 12px;
 					font-family: PingFangSC-Medium;
 					font-size: 20px;
 					color: #ff3a31;

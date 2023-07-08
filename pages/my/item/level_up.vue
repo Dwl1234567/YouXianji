@@ -106,6 +106,7 @@
 	import {
 		selectMemberLevelRule,
 		createZfbPayment,
+		createWxPayment,
 		paymentReturn
 	} from '@/api/commons.js'
 	import _tool from '@/utils/tools.js'; //工具函数
@@ -157,6 +158,7 @@
 				console.log(this.payType)
 				let that = this;
 				// console.log('付款');
+				// #ifdef APP-PLUS
 				if (this.payType != 'wxpay') {
 					createZfbPayment({
 						ruleId: this.itemList.ruleId
@@ -192,7 +194,45 @@
 							})
 						}
 					})
+				} else {
+					createWxPayment({
+						ruleId: this.itemList.ruleId
+					}).then(res => {
+						if (res.code === 200) {
+							uni.requestPayment({
+								provider: 'wxpay',
+								orderInfo: res.data.result,
+								success: function(ress) {
+									paymentReturn({
+										orderId: res.data.orderId,
+									}).then(resss => {
+										if (resss.code === 200) {
+											uni.showToast({
+												icon: 'none',
+												title: '支付成功',
+											});
+											uni.navigateBack()
+										}
+									})
+									console.log('success:' + JSON.stringify(res));
+								},
+								fail: function(err) {
+									if (err.code == -100) {
+										uni.showToast({
+											icon: 'none',
+											title: '支付失败',
+										});
+									}
+									console.log('fail:' + JSON.stringify(err));
+								}
+							})
+						}
+					})
 				}
+				// #endif
+				// #ifdef MP-WEIXIN
+				// #endif
+
 
 			},
 		},

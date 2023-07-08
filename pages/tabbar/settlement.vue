@@ -158,6 +158,7 @@
 		getDefaultAddress,
 		initiatePayment,
 		testAliPay,
+		testWxPay,
 		paymentReturn
 	} from '@/api/malls.js';
 	import {
@@ -380,30 +381,37 @@
 			},
 			//创建订单
 			createOrder() {
-				if (this.addressId) {
+				let that = this
+				if (that.addressId) {
 					uni.showToast({
 						title: '没有地址请添加地址'
 					})
 					return
 				}
-				if (!this.isWx) {
+				// #ifdef APP-PLUS
+				if (!that.isWx) {
+					// 支付宝支付
 					testAliPay({
-						orderPaymentId: this.orderPaymentId,
-						addressId: this.addressN.addressId
+						orderPaymentId: that.orderPaymentId,
+						addressId: that.addressN.addressId
 					}).then(res => {
+						console.log('发起支付 ---->', res.data)
 						if (res.code === 200) {
 							uni.requestPayment({
 								provider: 'alipay',
 								orderInfo: res.data,
 								success: function(ress) {
 									paymentReturn({
-										orderPaymentId: this.orderPaymentId,
+										orderPaymentId: that.orderPaymentId,
 										tradeno: ress.tradeno
 									}).then(resss => {
 										if (resss.code === 200) {
 											uni.showToast({
 												icon: 'none',
 												title: '支付成功',
+											});
+											uni.switchTab({
+												url: '/pages/tabbar/cart',
 											});
 										}
 									})
@@ -421,44 +429,50 @@
 							})
 						}
 					})
+				} else {
+					// 微信支付
+					testWxPay({
+						orderPaymentId: that.orderPaymentId,
+						addressId: that.addressN.addressId
+					}).then(res => {
+						if (res.code === 200) {
+							// res.data.package = 'Sign = WxPay'
+							uni.requestPayment({
+								provider: 'wxpay',
+								orderInfo: res.data,
+								success: function(ress) {
+									console.log(that.orderPaymentId, 'that.orderPaymentId')
+									paymentReturn({
+										orderPaymentId: that.orderPaymentId,
+									}).then(resss => {
+										if (resss.code === 200) {
+											uni.showToast({
+												icon: 'none',
+												title: '支付成功',
+											});
+											uni.switchTab({
+												url: '/pages/tabbar/cart',
+											});
+										}
+									})
+									console.log('success:' + JSON.stringify(ress));
+								},
+								fail: function(err) {
+									if (err.code == -100) {
+										uni.showToast({
+											icon: 'none',
+											title: '支付失败',
+										});
+									}
+									console.log('fail:' + JSON.stringify(err));
+								}
+							})
+						}
+					})
 				}
-
-
-				// initiatePayment({
-				// 	orderPaymentId: Number(this.orderPaymentId),
-				// 	paymentType: this.isWx ? '1' : '0',
-				// }).then((res) => {
-				// 	if (res.code === 200) {
-				// 		uni.showToast({
-				// 			icon: 'none',
-				// 			title: '结算成功',
-				// 		});
-				// 	}
-				// });
-				// uni.requestPayment({
-				// 	provider: 'wxpay',
-				// 	success(res) {
-				// 		console.log(res);
-				// 	},
-				// 	fail(res) {
-				// 		console.log(res);
-				// 	},
-				// 	complete(res) {
-				// 		console.log(res);
-				// 	},
-				// });
-				// let list = this.cartList;
-				// let cartId = [];
-				// list.forEach((item) => {
-				// 	if (item.choose) {
-				// 		cartId.push(item.cart_id);
-				// 	}
-				// });
-				// if (cartId.length == 0) {
-				// 	this.$api.msg('没有选中商品');
-				// 	return;
-				// }
-				// this.$api.navTo(`/pages/goods/settlement?cart=${cartId.join(',')}`);
+				// #endif
+				// #ifdef MP-WEIXIN
+				// #endif
 			},
 			navTo(url) {
 				this.$api.navTo(url);

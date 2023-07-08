@@ -370,6 +370,16 @@ export function createZfbPayment(data) {
 }
 
 /**
+ * 发起微信支付购买会员接口
+ *
+ */
+export function createWxPayment(data) {
+	return request.post('/yxj/app/userMemberInfo/createWxPayment', data, {
+		noLogin: true
+	});
+}
+
+/**
  * 支付完成回调接口
  *
  */
